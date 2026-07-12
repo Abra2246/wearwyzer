@@ -52,5 +52,5 @@ jobs:
       - name: Run Knowledge Graph validator
         run: node scripts/validate-knowledge-graph.mjs
 
-      - name: Compare legacy data against graph adapter output
+      - name: Compare legacy data against graph adapter output (report-only)
         run: node scripts/compare-legacy-adapter.mjs
