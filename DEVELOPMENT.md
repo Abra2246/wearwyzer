@@ -47,6 +47,21 @@ node scripts/compare-legacy-adapter.mjs
 ```
 Report-only — it always exits 0. See `docs/CURRENT_DATA_TO_GRAPH_MAPPING.md` "Intentional adapter differences" for the handful of differences that are expected, and `docs/KNOWLEDGE_GRAPH_MIGRATION.md` for the plan to eventually have a page read from the graph instead of `js/*.js` directly.
 
+## Validating hero product pages
+Before committing any change to `js/hero-pages.js` or a `product-*.dc.html` page, run:
+```
+node scripts/validate-hero-product-pages.mjs
+```
+Plain Node, zero dependencies. Checks every `js/hero-pages.js` registry entry's product id resolves in `data/products.js`, its page file exists on disk, and its controller's `PRODUCT_ID` constant matches the registry (catches copy/paste drift when a page is duplicated for a new product). Also regression-tests `data/taxonomies.js`'s `isPubliclyRecommendable()` gate against every relationship in the graph, including the one known `draft`/`unverified` edge, so a future change can't silently start surfacing an unverified relationship as a public recommendation. **Not yet wired into `.github/workflows/`** — run it manually until a maintainer with workflow-edit access adds it alongside the other four validators.
+
+## Adding a new hero product page
+See `docs/HERO_PRODUCT_V1.md` for the selection rationale behind the first page and exactly which graph relationships it renders.
+1. Duplicate `product-nb-9060-breakfast-tea.dc.html`, change the `PRODUCT_ID` constant at the top of its controller, and update the `<helmet>` title/meta/schema text.
+2. Add an entry to `js/hero-pages.js` (`productId → filename`) so nav links on `products.dc.html`, `shop.dc.html`, and the product's guide page pick it up automatically.
+3. Add the new page's URL to `sitemap.xml`.
+4. Run `node scripts/validate-hero-product-pages.mjs` and `node scripts/validate-knowledge-graph.mjs`.
+Only build a page for a product whose relationships are already `verified` in `data/relationships.js` — a `draft`/`unverified`/low-confidence relationship should never be the basis of a page section (see `data/taxonomies.js` `isPubliclyRecommendable()`).
+
 ## Adding a new style guide
 1. Duplicate the first object in `js/guides.js`. Fill in every field — `id`, `title`, `slug`, `outfits`, `slideImages`, `tags`, etc.
 2. Add cover + slide images under `assets/images/guides/<id>/`.

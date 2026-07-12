@@ -49,6 +49,7 @@ Status key: **Exists** · **Partial** · **Missing** · **Needs redesign**
 **Dependencies:** Milestone 3.
 **Deliverables:** `/products/:slug`, `/brands/:slug`, a real search endpoint backing the existing search UI.
 **Acceptance criteria:** search scales independent of how much is shipped to the browser on page load.
+**Note (issue #14):** one static, backend-free hero product page (`product-nb-9060-breakfast-tea.dc.html`) shipped ahead of this milestone as an explicitly scoped Knowledge Graph v1 vertical slice — see `ARCHITECTURE.md` "Decision — Hero Product page" and `docs/HERO_PRODUCT_V1.md`. It does not satisfy this milestone's real-search/brand-page/routing deliverables and should not be treated as evidence Milestone 4 can be skipped or is partially done outside its stated dependency on Milestone 3.
 
 ### Milestone 5 — Affiliate Engine
 **Scope:** multi-retailer offers, click tracking/redirect endpoint, revenue attribution (Architecture Rec. 4).

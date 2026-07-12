@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-12) — Hero Product v1 vertical slice (issue #14)
+### Added
+- `product-nb-9060-breakfast-tea.dc.html` — first customer-facing page driven entirely by the Knowledge Graph v1 foundation (`data/*.js`, issue #12); reusable template (see its own header comment for how to duplicate it for another product). Selected product: New Balance 9060 "Breakfast Tea with Angora," the hero of the existing `guide-nb9060.dc.html` — chosen over the other two guide-hero candidates because it's the only one with both a confirmed price and a 100%-`verified` relationship graph (audit + full rationale in new `docs/HERO_PRODUCT_V1.md`). Renders identity/brand/image, styling profile, the guide it's featured in, its canonical outfits, related products from that guide, and a "You Might Also Like" section that only renders `ALTERNATIVE_TO` relationships passing `data/taxonomies.js` `isPubliclyRecommendable()` — currently empty and correctly hidden, since this product has zero such edges. No fabricated price, affiliate link, or availability claim; `affiliateUrl` is unset like every other product today, so the page shows "Link coming soon," not a fake link.
+- `js/hero-pages.js` — hand-authored registry mapping a product id to its dedicated hero page, so nav links can be added without hardcoding a specific product id into every page that might link to one.
+- `scripts/validate-hero-product-pages.mjs` — validates every `js/hero-pages.js` entry resolves and its page file exists, and regression-tests `isPubliclyRecommendable()` against the graph's one known `draft`/`unverified` relationship (`on-cloud-x4` → `light-jeans`) as a permanent recommendation-eligibility negative test. **Not yet added to `.github/workflows/`** — outside this change's permitted scope (workflow files require separate maintainer access); run manually until wired into CI.
+- `docs/HERO_PRODUCT_V1.md` — hero product selection audit (all three guide-hero candidates compared against the graph) and a table mapping every rendered page section to the exact relationship predicate backing it.
+- `ARCHITECTURE.md` — new "Decision — Hero Product page" entry documenting that this ships ahead of `ROADMAP.md` Milestone 4 (which is gated on Milestone 3, not yet done) as an explicitly scoped, backend-free exception, not a precedent for skipping that sequencing generally. `ROADMAP.md` Milestone 4 cross-references the same note.
+- Navigation: "Full Profile →" link on the `nb-9060-breakfast-tea` card in `products.dc.html`; "Full product profile →" link on the same product's card in `shop.dc.html`; "Full Shoe Profile" button in `guide-nb9060.dc.html`'s hero section. All three are gated on `js/hero-pages.js` having a registered page for that product id, so no other product card changed.
+- `sitemap.xml` — added the new page's URL.
+### Verified
+- `node scripts/validate-content-data.mjs`, `node scripts/validate-knowledge-graph.mjs`, `node scripts/compare-legacy-adapter.mjs`, `node scripts/qa-static-site.mjs`, `node scripts/validate-hero-product-pages.mjs` — all exit 0 (the knowledge-graph and adapter scripts' pre-existing informational warning/diff are unrelated to this change and were already present before it, see the issue #12 entry below).
+- Headless-Chromium (Playwright) sweep of `product-nb-9060-breakfast-tea.dc.html`, `products.dc.html`, `shop.dc.html`, `guide-nb9060.dc.html`, and `guides.dc.html`: zero console warnings/errors, zero failed network requests, zero unresolved `{{ }}` bindings on any of the five pages.
+- Click-through of every new nav link in both directions (`products.dc.html`/`shop.dc.html`/`guide-nb9060.dc.html` → hero page, and hero page → guide) confirmed correct navigation.
+- Desktop (1280px) and mobile (390px) screenshots of the new page confirm a usable layout at both widths, consistent with the existing cream/black/gold palette and Oswald type — no new colors/fonts introduced.
+- This is also the first time `scripts/validate-knowledge-graph.mjs` and `scripts/compare-legacy-adapter.mjs` were actually executed since issue #12 introduced them — that PR's own changelog entry notes they were "designed and hand-traced" but never run because Bash execution was blocked in that session. Both pass cleanly now.
+
 ## Unreleased
 ### Added
 - `ENGINEERING_AUDIT.md`, `ARCHITECTURE.md`, `ROADMAP.md`, `DEVELOPMENT.md`, `CONTRIBUTING.md` — full engineering documentation set for the transition from prototype to platform.
