@@ -105,6 +105,10 @@ export const guides = [
       "gray-hoodie",
       "minimal-watch",
       "backpack",
+      "cream-tee",
+      "cap",
+      "black-trousers",
+      "tech-pants",
     ],
     instagramUrl: "", // TODO: paste the Instagram post URL when published
     publishedDate: "2026-07-01",
