@@ -36,3 +36,21 @@ jobs:
 
       - name: Run static-site QA check
         run: node scripts/qa-static-site.mjs
+
+  validate-knowledge-graph:
+    name: Validate Knowledge Graph v1 additive foundation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run Knowledge Graph validator
+        run: node scripts/validate-knowledge-graph.mjs
+
+      - name: Compare legacy data against graph adapter output (report-only)
+        run: node scripts/compare-legacy-adapter.mjs

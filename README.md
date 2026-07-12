@@ -15,10 +15,15 @@ Every push to `main` deploys automatically via `.github/workflows/pages.yml`. Pr
 
 ## Validating before you commit
 ```
-node scripts/validate-content-data.mjs   # js/guides.js <-> js/products.js cross-references
-node scripts/qa-static-site.mjs          # local asset/link references in every page
+node scripts/validate-content-data.mjs      # js/guides.js <-> js/products.js cross-references
+node scripts/qa-static-site.mjs             # local asset/link references in every page
+node scripts/validate-knowledge-graph.mjs   # data/*.js Knowledge Graph structural checks
+node scripts/compare-legacy-adapter.mjs     # report-only: legacy files vs. graph adapter output
 ```
-Both are plain Node, zero dependencies, and run in CI on every PR and push to `main` (`.github/workflows/content-validation.yml`).
+All four are plain Node, zero dependencies, and run in CI on every PR and push to `main` (`.github/workflows/content-validation.yml`).
+
+## Knowledge Graph v1 (additive, not yet used by any page)
+`data/*.js` is an additive, read-only projection of `js/products.js`/`js/guides.js` into a graph of typed entities (brands, retailers, offers, products, outfits, guides, collections) and relationships with confidence/verification metadata. It does not change what any page renders — see `docs/KNOWLEDGE_GRAPH_V1.md` for the entity/relationship model, `docs/KNOWLEDGE_GRAPH_MIGRATION.md` for the phased plan to eventually make it canonical, and `docs/CURRENT_DATA_TO_GRAPH_MAPPING.md` for the field-by-field audit of how it was derived.
 
 ## File map
 - `index.dc.html` — Home (announcement bar text is editable via Tweaks or `js/site-data.js`)
