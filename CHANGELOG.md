@@ -8,6 +8,18 @@ All notable changes to this project are recorded here.
 ### Removed
 - Dead/orphaned files: `Home.dc.html`, `SiteHeader.dc.html`, `SiteFooter.dc.html`, `js/data.js` (superseded, unreferenced duplicate of `Site Nav`/`Site Footer`/`js/site-data.js`), plus two one-off print-export snapshot files.
 
+## 2026-07-11 — Preview and automation foundation
+### Added
+- `scripts/preview.sh` — dependency-free local preview: starts `python3 -m http.server 8000` and opens `index.dc.html` in the default macOS browser via `open`. Documented in `README.md` and `DEVELOPMENT.md`.
+- `.github/workflows/pages.yml` — deploys the repository to GitHub Pages on every push to `main` (and via manual `workflow_dispatch`), using only official actions (`actions/checkout`, `actions/configure-pages`, `actions/upload-pages-artifact`, `actions/deploy-pages`). A `validate` job runs the existing `scripts/validate-content-data.mjs` before the Pages artifact is built, so a structural content error blocks deployment instead of shipping broken data. `include-hidden-files: true` is set on the upload step so `.nojekyll` (new, root) survives the artifact — without it, GitHub Pages runs the site through Jekyll and mishandles the space-containing filenames (`Site Nav.dc.html`, `Site Footer.dc.html`).
+- `index.html` — minimal root redirect to `index.dc.html` (meta-refresh + JS `location.replace`, relative path) so the bare Pages URL resolves to the home page under the `/wearwyzer/` project path.
+- `.github/ISSUE_TEMPLATE/engineering-task.yml`, `.github/pull_request_template.md`, `docs/AUTOMATION_WORKFLOW.md` — issue-driven engineering workflow (objective/source spec/scope/exclusions/acceptance criteria/validation requirements/risk tier/auto-implementation fields), documenting the intended `issue → implementation → branch → tests → PR → preview → review → merge` flow. No AI GitHub Action or API key was installed — `docs/AUTOMATION_WORKFLOW.md` documents that as the next step, since it needs Abraham's account-level authorization and a stored secret.
+### Verified
+- `node scripts/validate-content-data.mjs`: 0 structural errors (unchanged).
+- `./scripts/preview.sh` served the site locally and opened `index.dc.html`; all 14 pages (including the new `index.html` redirect) loaded over `http://localhost:8000` with headless Chromium — no new `[dc-runtime]` unresolved-binding warnings on any page. The three guide pages show a single pre-existing, out-of-scope transient 404 for the literal `{{ coverImage }}` string (the browser eagerly requests the raw `<img src>` before the runtime hydrates it); the image resolves correctly once hydration completes, and this behavior is unchanged from before this branch.
+- Simulated the `/wearwyzer/` GitHub Pages project path by serving a copy of the repo from a `wearwyzer/` subdirectory: `index.html` redirected correctly to `index.dc.html`, in-page nav links and image assets resolved with no console errors.
+- `.github/workflows/pages.yml`, `.github/workflows/content-validation.yml`, and `.github/ISSUE_TEMPLATE/engineering-task.yml` were parsed with a YAML loader to confirm syntactic validity.
+
 ## 2026-07-12 — Guide #1 relationship gaps closed + CI validation
 ### Fixed
 - `js/guides.js`: added `cream-tee`, `cap`, `black-trousers`, and `tech-pants` to Guide #1's (On Cloud X 4) `relatedProducts`. All 4 were confirmed genuine, correctly-described members of that guide before being added:
