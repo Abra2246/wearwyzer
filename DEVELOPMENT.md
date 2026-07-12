@@ -11,6 +11,13 @@ All editable content is in three files under `js/`:
 
 Never edit content by hand-writing it into a `.dc.html` template — it should always be sourced from these files so the library/search/related-guide surfaces stay in sync automatically.
 
+## Validating content data
+Before committing any change to `js/guides.js` or `js/products.js`, run:
+```
+node scripts/validate-content-data.mjs
+```
+No install step — it's plain Node (ESM, zero dependencies). It checks that every `productId`/`relatedProducts`/`featuredInGuides` reference actually resolves, that every published guide has a slug pointing to a real page file, that there are no duplicate ids, and flags (as warnings, not failures) product-guide relationships that don't line up symmetrically and guide items whose label doesn't obviously match the product they resolve to. Exit code `0` = no structural errors (warnings may still print and are worth reading — always eyeball them before committing); exit code `1` = a structural error was found and must be fixed. See the comment header at the top of the script for the full list of checks.
+
 ## Adding a new style guide
 1. Duplicate the first object in `js/guides.js`. Fill in every field — `id`, `title`, `slug`, `outfits`, `slideImages`, `tags`, etc.
 2. Add cover + slide images under `assets/images/guides/<id>/`.
