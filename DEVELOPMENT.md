@@ -34,6 +34,13 @@ node scripts/qa-static-site.mjs
 ```
 Also plain Node, zero dependencies. It scans every `*.dc.html` page and `index.html` for local `href`/`src` values and `<dc-import>` names, and confirms each one resolves to a real file — **case-sensitively**, even though this is normally run on macOS (case-insensitive filesystem), because GitHub Pages serves from a case-sensitive Linux host. Dynamic `{{ binding }}` values (resolved at runtime from `js/guides.js`/`js/products.js`) are skipped — that's `scripts/validate-content-data.mjs`'s job, not this script's.
 
+## Validating HTML metadata
+Before committing any change to a page's `<helmet>` block (title, meta tags, canonical link, JSON-LD), run:
+```
+node scripts/qa-html-metadata.mjs
+```
+Also plain Node, zero dependencies. It scans every `*.dc.html` page and `index.html` and checks: a non-empty `<title>`, a non-empty `<meta name="description">` on every indexable page (a page is exempt if it declares its own `<meta name="robots" content="noindex">`, or if it's an imported chrome partial like `Site Nav.dc.html`/`Site Footer.dc.html` that's never served as a standalone page), a non-empty `lang` attribute on the `<html>` tag, and that no literal `{{ ... }}` dc-runtime template token has leaked into the metadata surface (title, meta `content`, canonical `href`, or a JSON-LD script body) — those fields are always static text in this codebase, unlike the page body, so a `{{` there is a real bug rather than a dynamic binding in progress. See the comment header at the top of the script for the full list of checks and exceptions. Exit code `0` = no metadata errors; exit code `1` = at least one page is missing required metadata or has an unresolved token.
+
 ## Adding a new style guide
 1. Duplicate the first object in `js/guides.js`. Fill in every field — `id`, `title`, `slug`, `outfits`, `slideImages`, `tags`, etc.
 2. Add cover + slide images under `assets/images/guides/<id>/`.

@@ -17,8 +17,9 @@ Every push to `main` deploys automatically via `.github/workflows/pages.yml`. Pr
 ```
 node scripts/validate-content-data.mjs   # js/guides.js <-> js/products.js cross-references
 node scripts/qa-static-site.mjs          # local asset/link references in every page
+node scripts/qa-html-metadata.mjs        # title/description/lang + unresolved {{ }} tokens
 ```
-Both are plain Node, zero dependencies, and run in CI on every PR and push to `main` (`.github/workflows/content-validation.yml`).
+All three are plain Node, zero dependencies, and run in CI on every PR and push to `main` (`.github/workflows/content-validation.yml`).
 
 ## File map
 - `index.dc.html` — Home (announcement bar text is editable via Tweaks or `js/site-data.js`)
