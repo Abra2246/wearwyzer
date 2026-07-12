@@ -180,7 +180,7 @@ export const guides = [
           { name: "Brown Knit Polo (Zara)", productId: "zara-knit-polo-brown" },
           { name: "Tailored Trousers, Black (Massimo Dutti)", productId: "md-black-trousers" },
           { name: "Leather Belt, Brown (Mango Man)", productId: "mango-belt-brown" },
-          { name: "Minimal Watch (Mango Man)", productId: "mango-sunglasses" },
+          { name: "Minimal Watch (Mango Man)", productId: "minimal-watch" },
           { name: "9060 'Breakfast Tea'", productId: "nb-9060-breakfast-tea" },
         ],
         why: "Black trousers dress the polo up; the brown belt ties back to the shirt and shoe so the black doesn't feel disconnected.",
@@ -218,6 +218,7 @@ export const guides = [
       "mango-sunglasses",
       "mango-belt-brown",
       "gap-crew-socks",
+      "minimal-watch",
     ],
     instagramUrl: "", // TODO: paste the Instagram post URL when published
     publishedDate: "2026-07-09",

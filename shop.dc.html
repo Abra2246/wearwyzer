@@ -94,7 +94,7 @@
                       <span style="font-size:11px;color:#68645D;border:1px solid #DDD3C3;padding:3px 8px;background:#F6F1E8">{{ t }}</span>
                     </sc-for>
                   </div>
-                  <p style="font-size:12px;margin:8px 0 0"><a href="{{ p.guideHref }}" style="color:#C8941E;text-decoration:none" style-hover="text-decoration:underline">Featured in a guide →</a></p>
+                  <p style="font-size:12px;margin:8px 0 0"><a href="{{ p.guideHref }}" style="color:#C8941E;text-decoration:none" style-hover="text-decoration:underline">{{ p.guideLabel }}</a></p>
                   <div style="margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
                     <a href="{{ p.shopHref }}" rel="{{ p.rel }}" aria-disabled="{{ p.disabled }}" style="{{ p.ctaStyle }}">{{ p.ctaLabel }}</a>
                     <span title="Affiliate link — may earn commission" style="font-size:10px;font-weight:700;letter-spacing:1px;color:#68645D;border:1px solid #DDD3C3;padding:3px 7px">AD</span>
@@ -120,24 +120,40 @@
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script>
+// Resolves a product's real guide link. Rule (deterministic, documented):
+// walk the product's `featuredInGuides` in array order and use the first
+// entry that resolves to a real, published guide (a matching `id` in
+// js/guides.js that isn't `comingSoon` and has a non-empty `slug`). Guides
+// that don't resolve are skipped rather than followed. A product with no
+// resolvable guide gets `guide === null` and must fail safely — never fall
+// back to an unrelated specific guide.
+function resolveGuideForProduct(product, guides) {
+  const ids = product.featuredInGuides || [];
+  for (const id of ids) {
+    const g = guides.find(x => x.id === id && !x.comingSoon && x.slug);
+    if (g) return g;
+  }
+  return null;
+}
+
 class Component extends DCLogic {
-  state = { q: '', cat: 'All', occasion: 'All occasions', price: 'All', exact: 'All', products: [], occasions: [] };
+  state = { q: '', cat: 'All', occasion: 'All occasions', price: 'All', exact: 'All', products: [], occasions: [], guides: [] };
 
   async componentDidMount() {
-    const m = await import('./js/products.js');
+    const [pm, gm] = await Promise.all([import('./js/products.js'), import('./js/guides.js')]);
     // Support links like shop.dc.html#cat=Sneakers from the home page
     let cat = 'All';
     const h = (window.location.hash || '').match(/cat=([^&]+)/);
     if (h) {
       const v = decodeURIComponent(h[1]);
-      if (m.CATEGORIES.includes(v)) cat = v;
+      if (pm.CATEGORIES.includes(v)) cat = v;
     }
-    this.setState({ products: m.products, occasions: m.OCCASIONS, cat });
+    this.setState({ products: pm.products, occasions: pm.OCCASIONS, guides: gm.guides, cat });
   }
 
   renderVals() {
     const CATS = ['All', 'Sneakers', 'Shoes', 'Shirts', 'Pants', 'Outerwear', 'Hoodies', 'Accessories', 'Watches', 'Bags'];
-    const { q, cat, occasion, price, exact, products, occasions } = this.state;
+    const { q, cat, occasion, price, exact, products, occasions, guides } = this.state;
     const ql = q.trim().toLowerCase();
 
     const results = products.filter(p => {
@@ -157,6 +173,7 @@ class Component extends DCLogic {
     }).map(p => {
       const exactItem = p.exactOrSimilar === 'Exact item';
       const hasLink = !!p.affiliateUrl;
+      const guide = resolveGuideForProduct(p, guides);
       return {
         image: p.image,
         alt: p.name + (p.colorway ? ' in ' + p.colorway : ''),
@@ -173,7 +190,11 @@ class Component extends DCLogic {
         priceLine: p.price != null ? '$' + p.price + (p.retailer ? ' · ' + p.retailer : '')
           : 'Price TBD' + (p.retailer ? ' · ' + p.retailer : ' · Retailer TBD'),
         tags: (p.tags || []).slice(0, 3),
-        guideHref: 'guide-on-cloud-x4.dc.html',
+        // Fails safely: a product with no resolvable guide links to the
+        // guide library instead of an unrelated specific guide, and the
+        // label is honest about which state it's in.
+        guideHref: guide ? guide.slug : 'guides.dc.html',
+        guideLabel: guide ? 'Featured in a guide →' : 'Browse all guides →',
         shopHref: hasLink ? p.affiliateUrl : 'contact.dc.html',
         rel: hasLink ? 'sponsored noopener' : undefined,
         disabled: hasLink ? 'false' : 'true',

@@ -162,7 +162,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Business casual", "Date night", "Work"],
-    featuredInGuides: ["on-cloud-x4", "barrel-pants-nb530"],
+    featuredInGuides: ["on-cloud-x4", "barrel-pants-nb530", "nb9060-zara-polo"],
     lastChecked: "",
   },
   {
