@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Men's Style Guides — WearWyzer</title>
+  <meta name="description" content="Searchable library of product-first men's style guides. How to style sneakers, shoes, shirts, and pants for work, dates, travel, and everyday life.">
+  <meta property="og:title" content="Style Guides — WearWyzer">
+  <meta property="og:description" content="Product-first outfit guides for the pieces you actually own.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh;display:flex;flex-direction:column">
+  <a href="#main" style="position:absolute;left:-9999px;top:0;background:#0B0B0B;color:#F6F1E8;padding:12px 20px;z-index:200;text-decoration:none;font-size:14px" style-focus="left:16px;top:16px">Skip to content</a>
+  <div style="position:sticky;top:0;z-index:100">
+    <dc-import name="Site Nav" active="Style Guides" hint-size="100%,66px"></dc-import>
+  </div>
+
+  <main id="main" style="flex:1">
+    <section style="border-bottom:1px solid #DDD3C3;background:#FFFDF8">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">The Library</p>
+        <h1 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(34px,5vw,56px);text-transform:uppercase;line-height:1.05;margin:0 0 14px">Style Guides</h1>
+        <p style="font-size:16px;color:#68645D;line-height:1.6;margin:0 0 32px;max-width:560px">Every Instagram carousel, organized into a searchable guide. Find your product, get the outfits.</p>
+
+        <label for="guide-search" style="position:absolute;left:-9999px">Search guides by product or brand</label>
+        <input id="guide-search" type="search" placeholder="Search by product, brand, or colorway…" value="{{ q }}" onChange="{{ onSearch }}" style="width:100%;max-width:520px;box-sizing:border-box;padding:15px 18px;font-size:15px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit" style-focus="outline:2px solid #C8941E;outline-offset:1px">
+
+        <div role="group" aria-label="Filter guides" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px">
+          <sc-for list="{{ filterChips }}" as="c" hint-placeholder-count="13">
+            <button type="button" onClick="{{ c.onClick }}" aria-pressed="{{ c.pressed }}" style="{{ c.style }}" style-hover="border-color:#0B0B0B" style-focus="outline:2px solid #C8941E;outline-offset:1px">{{ c.label }}</button>
+          </sc-for>
+          <sc-if value="{{ hasActiveFilters }}" hint-placeholder-val="{{ false }}">
+            <button type="button" onClick="{{ clearFilters }}" style="font-size:13px;font-weight:600;padding:9px 16px;border:none;background:none;color:#C8941E;cursor:pointer;text-decoration:underline;font-family:inherit">Clear all</button>
+          </sc-if>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Guide results">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(36px,5vw,56px) 20px">
+        <p role="status" style="font-size:13px;color:#68645D;margin:0 0 24px">{{ resultCount }}</p>
+
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:28px">
+            <sc-for list="{{ results }}" as="g" hint-placeholder-count="1">
+              <article style="border:1px solid #DDD3C3;background:#FFFDF8" style-hover="border-color:#C8941E">
+                <a href="{{ g.slug }}" style="text-decoration:none;color:#0B0B0B;display:block">
+                  <img src="{{ g.coverImage }}" alt="{{ g.alt }}" width="1254" height="1254" style="width:100%;height:auto;display:block;background:#F0EEE8" loading="lazy">
+                  <div style="padding:20px">
+                    <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C8941E;margin:0 0 8px">{{ g.meta }}</p>
+                    <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:20px;text-transform:uppercase;line-height:1.15;margin:0 0 8px">{{ g.title }}</h2>
+                    <p style="font-size:14px;color:#68645D;margin:0 0 4px">{{ g.productLine }}</p>
+                    <p style="font-size:13px;color:#68645D;margin:0">Best for: {{ g.bestFor }}</p>
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:16px;gap:8px">
+                      <span style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;border-bottom:2px solid #C8941E;padding-bottom:3px">View Guide</span>
+                      <span style="font-size:12px;color:#68645D">{{ g.date }}</span>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;border:1px dashed #DDD3C3;padding:64px 24px;background:#FFFDF8">
+            <p style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:22px;text-transform:uppercase;margin:0 0 10px">No guides found</p>
+            <p style="font-size:15px;color:#68645D;margin:0 0 20px">Try another product or style category.</p>
+            <button type="button" onClick="{{ clearFilters }}" style="background:#0B0B0B;color:#F6F1E8;border:none;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 26px;font-family:inherit" style-hover="background:#C8941E;color:#0B0B0B">Reset filters</button>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+  </main>
+
+  <dc-import name="Site Footer" hint-size="100%,380px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { q: '', active: [], guides: [] };
+
+  async componentDidMount() {
+    const m = await import('./js/guides.js');
+    this.setState({ guides: m.guides.filter(g => !g.comingSoon) });
+  }
+
+  renderVals() {
+    const FILTERS = ['Sneakers', 'Shoes', 'Shirts', 'Pants', 'Jackets', 'Accessories',
+      'Business casual', 'Everyday', 'Date night', 'Travel', 'Summer', 'College', 'Work'];
+    const { q, active, guides } = this.state;
+    const ql = q.trim().toLowerCase();
+
+    const results = guides.filter(g => {
+      const hay = [g.title, g.productName, g.brand, g.colorway, g.category, ...(g.tags || [])].join(' ').toLowerCase();
+      const matchQ = !ql || hay.includes(ql);
+      const matchTags = active.every(t => g.category === t || (g.tags || []).includes(t));
+      return matchQ && matchTags;
+    }).map(g => ({
+      slug: g.slug,
+      coverImage: g.coverImage,
+      alt: g.title + ' — guide cover',
+      meta: g.category + ' · ' + g.outfitCount + ' outfits',
+      title: g.title,
+      productLine: [g.brand, g.productName, g.colorway].filter(Boolean).join(' · '),
+      bestFor: g.bestFor,
+      date: g.publishedDate ? new Date(g.publishedDate + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', year: 'numeric' }) : '',
+    }));
+
+    return {
+      q,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      filterChips: FILTERS.map(label => {
+        const on = active.includes(label);
+        return {
+          label,
+          pressed: on ? 'true' : 'false',
+          onClick: () => this.setState(s => ({
+            active: on ? s.active.filter(x => x !== label) : [...s.active, label],
+          })),
+          style: {
+            fontSize: '13px', fontWeight: 600, padding: '9px 16px', cursor: 'pointer',
+            fontFamily: 'inherit', letterSpacing: '0.3px',
+            border: on ? '1px solid #0B0B0B' : '1px solid #DDD3C3',
+            background: on ? '#0B0B0B' : '#F6F1E8',
+            color: on ? '#F6F1E8' : '#0B0B0B',
+          },
+        };
+      }),
+      hasActiveFilters: active.length > 0 || !!ql,
+      clearFilters: () => this.setState({ q: '', active: [] }),
+      results,
+      hasResults: results.length > 0,
+      showEmpty: guides.length > 0 && results.length === 0,
+      resultCount: guides.length === 0 ? 'Loading guides…'
+        : results.length + (results.length === 1 ? ' guide' : ' guides'),
+    };
+  }
+}
+</script>
+</body>
+</html>

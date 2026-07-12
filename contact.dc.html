@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Contact — WearWyzer</title>
+  <meta name="description" content="Contact WearWyzer with general questions, brand partnership inquiries, or products you want styled.">
+  <meta property="og:title" content="Contact WearWyzer">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh;display:flex;flex-direction:column">
+  <a href="#main" style="position:absolute;left:-9999px;top:0;background:#0B0B0B;color:#F6F1E8;padding:12px 20px;z-index:200;text-decoration:none;font-size:14px" style-focus="left:16px;top:16px">Skip to content</a>
+  <div style="position:sticky;top:0;z-index:100">
+    <dc-import name="Site Nav" active="Contact" hint-size="100%,66px"></dc-import>
+  </div>
+
+  <main id="main" style="flex:1">
+    <section style="border-bottom:1px solid #DDD3C3;background:#FFFDF8">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">Get in Touch</p>
+        <h1 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(34px,5vw,56px);text-transform:uppercase;line-height:1.05;margin:0 0 14px">Contact</h1>
+        <p style="font-size:16px;color:#68645D;line-height:1.6;margin:0;max-width:600px">Questions, partnerships, corrections — or a product you want styled. <strong style="color:#0B0B0B">Want us to style a product? Send the product name, colorway, and link.</strong></p>
+      </div>
+    </section>
+
+    <section aria-label="Contact form">
+      <div style="max-width:1100px;margin:0 auto;padding:clamp(36px,5vw,64px) 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:start">
+
+        <form onSubmit="{{ onSubmit }}" novalidate="{{ true }}" aria-label="Contact WearWyzer" style="display:flex;flex-direction:column;gap:20px;background:#FFFDF8;border:1px solid #DDD3C3;padding:clamp(24px,3vw,36px)">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label for="c-name" style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D">Name</label>
+            <input id="c-name" name="name" type="text" required="{{ true }}" autoComplete="name" value="{{ name }}" onChange="{{ onName }}" aria-invalid="{{ nameInvalid }}" style="padding:14px 16px;font-size:15px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit" style-focus="outline:2px solid #C8941E;outline-offset:1px">
+            <sc-if value="{{ nameErr }}" hint-placeholder-val="{{ false }}"><p style="font-size:13px;color:#a33a2a;margin:0">Please enter your name.</p></sc-if>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label for="c-email" style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D">Email</label>
+            <input id="c-email" name="email" type="email" required="{{ true }}" autoComplete="email" value="{{ email }}" onChange="{{ onEmail }}" aria-invalid="{{ emailInvalid }}" style="padding:14px 16px;font-size:15px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit" style-focus="outline:2px solid #C8941E;outline-offset:1px">
+            <sc-if value="{{ emailErr }}" hint-placeholder-val="{{ false }}"><p style="font-size:13px;color:#a33a2a;margin:0">Please enter a valid email address.</p></sc-if>
+          </div>
+
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label for="c-reason" style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D">Reason for contact</label>
+            <select id="c-reason" name="reason" value="{{ reason }}" onChange="{{ onReason }}" style="padding:14px 16px;font-size:15px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit" style-focus="outline:2px solid #C8941E;outline-offset:1px">
+              <option value="General question">General question</option>
+              <option value="Brand partnership">Brand partnership</option>
+              <option value="Product suggestion">Product suggestion</option>
+              <option value="Affiliate partnership">Affiliate partnership</option>
+              <option value="Correction request">Correction request</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <sc-if value="{{ isSuggestion }}" hint-placeholder-val="{{ false }}">
+            <p style="font-size:13px;color:#68645D;background:#F6F1E8;border-left:3px solid #C8941E;padding:10px 14px;margin:0">Include the product name, colorway, and a link so we can style the exact item.</p>
+          </sc-if>
+
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label for="c-message" style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D">Message</label>
+            <textarea id="c-message" name="message" required="{{ true }}" rows="{{ 6 }}" value="{{ message }}" onChange="{{ onMessage }}" aria-invalid="{{ messageInvalid }}" style="padding:14px 16px;font-size:15px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit;resize:vertical" style-focus="outline:2px solid #C8941E;outline-offset:1px"></textarea>
+            <sc-if value="{{ messageErr }}" hint-placeholder-val="{{ false }}"><p style="font-size:13px;color:#a33a2a;margin:0">Please write a message (at least 10 characters).</p></sc-if>
+          </div>
+
+          <!-- Honeypot: hidden from humans, bots fill it in -->
+          <div aria-hidden="true" style="position:absolute;left:-9999px;height:0;overflow:hidden">
+            <label for="c-website">Leave this field empty</label>
+            <input id="c-website" name="website" type="text" tabIndex="{{ -1 }}" autoComplete="off" value="{{ honeypot }}" onChange="{{ onHoneypot }}">
+          </div>
+
+          <button type="submit" style="background:#0B0B0B;color:#F6F1E8;border:none;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:16px 28px;font-family:inherit;align-self:flex-start" style-hover="background:#C8941E;color:#0B0B0B" style-focus="outline:2px solid #C8941E;outline-offset:2px">Send Message</button>
+
+          <sc-if value="{{ statusVisible }}" hint-placeholder-val="{{ false }}">
+            <p role="status" style="{{ statusStyle }}">{{ statusMsg }}</p>
+          </sc-if>
+        </form>
+
+        <aside style="display:flex;flex-direction:column;gap:28px">
+          <div style="border-top:2px solid #C8941E;padding-top:16px">
+            <p style="font-weight:700;font-size:16px;margin:0 0 8px">General questions</p>
+            <p style="font-size:14px;color:#68645D;line-height:1.6;margin:0">Style questions, feedback, or anything about a guide.</p>
+          </div>
+          <div style="border-top:2px solid #C8941E;padding-top:16px">
+            <p style="font-weight:700;font-size:16px;margin:0 0 8px">Brand &amp; affiliate partnerships</p>
+            <p style="font-size:14px;color:#68645D;line-height:1.6;margin:0">We only feature products that fit our outfits. Sponsored content is always labeled.</p>
+          </div>
+          <div style="border-top:2px solid #C8941E;padding-top:16px">
+            <p style="font-weight:700;font-size:16px;margin:0 0 8px">Product suggestions</p>
+            <p style="font-size:14px;color:#68645D;line-height:1.6;margin:0">Own something you can't figure out? Send the product name, colorway, and link — it might become the next guide.</p>
+          </div>
+          <div style="background:#0B0B0B;color:#F6F1E8;padding:24px">
+            <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C8941E;margin:0 0 10px">Prefer email?</p>
+            <a href="{{ mailto }}" style="color:#F6F1E8;font-size:15px;text-decoration:none;border-bottom:1px solid #C8941E;padding-bottom:2px" style-hover="color:#C8941E">{{ contactEmail }}</a>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <dc-import name="Site Footer" hint-size="100%,380px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = {
+    name: '', email: '', reason: 'General question', message: '', honeypot: '',
+    errs: {}, status: '', statusOk: false, site: null,
+  };
+
+  async componentDidMount() {
+    const m = await import('./js/site-data.js');
+    this.setState({ site: m.site });
+  }
+
+  renderVals() {
+    const s = this.state;
+    return {
+      name: s.name, onName: (e) => this.setState({ name: e.target.value }),
+      email: s.email, onEmail: (e) => this.setState({ email: e.target.value }),
+      reason: s.reason, onReason: (e) => this.setState({ reason: e.target.value }),
+      message: s.message, onMessage: (e) => this.setState({ message: e.target.value }),
+      honeypot: s.honeypot, onHoneypot: (e) => this.setState({ honeypot: e.target.value }),
+      isSuggestion: s.reason === 'Product suggestion',
+      nameErr: !!s.errs.name, nameInvalid: s.errs.name ? 'true' : 'false',
+      emailErr: !!s.errs.email, emailInvalid: s.errs.email ? 'true' : 'false',
+      messageErr: !!s.errs.message, messageInvalid: s.errs.message ? 'true' : 'false',
+      statusVisible: !!s.status,
+      statusMsg: s.status,
+      statusStyle: {
+        margin: 0, fontSize: '14px', lineHeight: 1.6, padding: '12px 16px',
+        background: s.statusOk ? '#F0EEE8' : '#f7e8e4',
+        borderLeft: s.statusOk ? '3px solid #C8941E' : '3px solid #a33a2a',
+        color: s.statusOk ? '#0B0B0B' : '#a33a2a',
+      },
+      contactEmail: s.site ? s.site.contactEmail : '',
+      mailto: s.site ? 'mailto:' + s.site.contactEmail : '#',
+      onSubmit: (e) => {
+        e.preventDefault();
+        // Honeypot filled -> silently drop (likely a bot)
+        if (this.state.honeypot) return;
+        const errs = {};
+        if (!this.state.name.trim()) errs.name = true;
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.state.email.trim())) errs.email = true;
+        if (this.state.message.trim().length < 10) errs.message = true;
+        if (Object.keys(errs).length) {
+          this.setState({ errs, status: 'Please fix the highlighted fields.', statusOk: false });
+          return;
+        }
+        // NOTE: no backend is configured. Wire this to Formspree, Netlify
+        // Forms, or your own endpoint — until then, be honest with the user:
+        this.setState({
+          errs: {},
+          statusOk: true,
+          status: 'Your message is valid, but this form isn\u2019t connected to a backend yet, so it was NOT sent. Please email us directly for now — the address is on the right.',
+        });
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

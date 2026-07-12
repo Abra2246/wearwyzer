@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+# TODO: replace with your real domain before launch
+Sitemap: https://www.wearwyzer.com/sitemap.xml

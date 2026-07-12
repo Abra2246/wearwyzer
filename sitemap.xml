@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- TODO: replace https://www.wearwyzer.com with your real domain.
+     Add one <url> entry per new style guide page. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://www.wearwyzer.com/</loc><priority>1.0</priority></url>
+  <url><loc>https://www.wearwyzer.com/guides.html</loc><priority>0.9</priority></url>
+  <url><loc>https://www.wearwyzer.com/guide-on-cloud-x4.html</loc><priority>0.9</priority></url>
+  <url><loc>https://www.wearwyzer.com/shop.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.wearwyzer.com/products.html</loc><priority>0.8</priority></url>
+  <url><loc>https://www.wearwyzer.com/about.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.wearwyzer.com/contact.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.wearwyzer.com/affiliate-disclosure.html</loc><priority>0.3</priority></url>
+  <url><loc>https://www.wearwyzer.com/privacy.html</loc><priority>0.3</priority></url>
+  <url><loc>https://www.wearwyzer.com/terms.html</loc><priority>0.3</priority></url>
+</urlset>

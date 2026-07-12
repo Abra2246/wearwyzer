@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Page Not Found — WearWyzer</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh;display:flex;flex-direction:column">
+  <div style="position:sticky;top:0;z-index:100">
+    <dc-import name="Site Nav" hint-size="100%,66px"></dc-import>
+  </div>
+
+  <main id="main" style="flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:60px 20px">
+    <div style="max-width:560px">
+      <p style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(72px,14vw,140px);line-height:1;color:#DDD3C3;margin:0">404</p>
+      <h1 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(26px,4vw,40px);text-transform:uppercase;line-height:1.1;margin:8px 0 14px">This page doesn't fit.</h1>
+      <p style="font-size:16px;color:#68645D;line-height:1.6;margin:0 0 30px">The page you're looking for moved or never existed. The guides, though, are right where you left them.</p>
+      <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
+        <a href="index.dc.html" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 28px" style-hover="background:#C8941E;color:#0B0B0B">Back Home</a>
+        <a href="guides.dc.html" style="background:transparent;color:#0B0B0B;border:1px solid #0B0B0B;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px" style-hover="background:#FFFDF8">Browse Guides</a>
+      </div>
+    </div>
+  </main>
+
+  <dc-import name="Site Footer" hint-size="100%,380px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>

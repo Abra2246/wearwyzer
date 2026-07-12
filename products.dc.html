@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Featured Products — What We've Styled — WearWyzer</title>
+  <meta name="description" content="Every product WearWyzer has covered, with styling profiles: what it works with, what to avoid, and which guides feature it.">
+  <meta property="og:title" content="Featured Products — WearWyzer">
+  <meta property="og:description" content="Styling profiles for the products guys actually ask about.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh;display:flex;flex-direction:column">
+  <a href="#main" style="position:absolute;left:-9999px;top:0;background:#0B0B0B;color:#F6F1E8;padding:12px 20px;z-index:200;text-decoration:none;font-size:14px" style-focus="left:16px;top:16px">Skip to content</a>
+  <div style="position:sticky;top:0;z-index:100">
+    <dc-import name="Site Nav" active="Products" hint-size="100%,66px"></dc-import>
+  </div>
+
+  <main id="main" style="flex:1">
+    <section style="border-bottom:1px solid #DDD3C3;background:#FFFDF8">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">The Index</p>
+        <h1 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(34px,5vw,56px);text-transform:uppercase;line-height:1.05;margin:0 0 14px">Featured Products</h1>
+        <p style="font-size:16px;color:#68645D;line-height:1.6;margin:0 0 32px;max-width:600px">Every product we've styled, with a full profile: what it works with, what to avoid, and where it's featured. New products are added with every guide.</p>
+        <label for="prod-search" style="position:absolute;left:-9999px">Search featured products</label>
+        <input id="prod-search" type="search" placeholder="Search by product, brand, or category…" value="{{ q }}" onChange="{{ onSearch }}" style="width:100%;max-width:520px;box-sizing:border-box;padding:15px 18px;font-size:15px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit" style-focus="outline:2px solid #C8941E;outline-offset:1px">
+        <p role="status" style="font-size:13px;color:#68645D;margin:16px 0 0">{{ resultCount }}</p>
+      </div>
+    </section>
+
+    <!-- Product profiles (template repeats per covered product) -->
+    <section aria-label="Product profiles">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(36px,5vw,56px) 20px;display:flex;flex-direction:column;gap:40px">
+
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+          <sc-for list="{{ results }}" as="p" hint-placeholder-count="1">
+            <article id="{{ p.anchorId }}" style="border:1px solid #DDD3C3;background:#FFFDF8">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0">
+                <div style="background:#F0EEE8;border-right:1px solid #DDD3C3;display:flex;align-items:center;justify-content:center;padding:24px">
+                  <img src="{{ p.image }}" alt="{{ p.alt }}" width="1200" height="1200" style="width:min(100%,360px);height:auto;display:block" loading="lazy">
+                </div>
+                <div style="padding:clamp(24px,3vw,40px)">
+                  <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C8941E;margin:0 0 8px">{{ p.metaLine }}</p>
+                  <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(26px,3vw,36px);text-transform:uppercase;line-height:1.08;margin:0 0 6px">{{ p.name }}</h2>
+                  <p style="font-size:14px;color:#68645D;margin:0 0 20px">{{ p.subline }}</p>
+
+                  <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#68645D;margin:0 0 6px">Why people ask about it</p>
+                  <p style="font-size:15px;line-height:1.6;margin:0 0 20px">{{ p.whyPeopleAsk }}</p>
+
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:22px">
+                    <div>
+                      <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#68645D;margin:0 0 8px">Best for</p>
+                      <div style="display:flex;flex-wrap:wrap;gap:6px">
+                        <sc-for list="{{ p.bestFor }}" as="t" hint-placeholder-count="4">
+                          <span style="font-size:12px;font-weight:600;border:1px solid #DDD3C3;padding:5px 10px;background:#F6F1E8">{{ t }}</span>
+                        </sc-for>
+                      </div>
+                    </div>
+                    <div>
+                      <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#68645D;margin:0 0 8px">Styling difficulty</p>
+                      <p style="font-size:14px;font-weight:700;margin:0">{{ p.difficulty }}</p>
+                    </div>
+                  </div>
+
+                  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px;margin-bottom:24px">
+                    <div style="border-left:3px solid #C8941E;padding-left:14px">
+                      <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#68645D;margin:0 0 6px">Works with</p>
+                      <p style="font-size:14px;line-height:1.6;margin:0">{{ p.worksWith }}</p>
+                    </div>
+                    <div style="border-left:3px solid #DDD3C3;padding-left:14px">
+                      <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#68645D;margin:0 0 6px">Avoid</p>
+                      <p style="font-size:14px;line-height:1.6;margin:0">{{ p.avoid }}</p>
+                    </div>
+                  </div>
+
+                  <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+                    <a href="{{ p.guideHref }}" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:13px 22px" style-hover="background:#C8941E;color:#0B0B0B">View the Style Guide</a>
+                    <a href="{{ p.shopHref }}" rel="{{ p.rel }}" style="{{ p.shopStyle }}">{{ p.shopLabel }}</a>
+                  </div>
+                  <p style="font-size:12px;color:#68645D;margin:18px 0 0">{{ p.priceLine }} · {{ p.lastChecked }}</p>
+                </div>
+              </div>
+            </article>
+          </sc-for>
+        </sc-if>
+
+        <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;border:1px dashed #DDD3C3;padding:64px 24px;background:#FFFDF8">
+            <p style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:22px;text-transform:uppercase;margin:0 0 10px">No products found</p>
+            <p style="font-size:15px;color:#68645D;margin:0 0 20px">We may not have covered it yet. Want us to style it?</p>
+            <a href="contact.dc.html" style="display:inline-block;background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 26px" style-hover="background:#C8941E;color:#0B0B0B">Suggest a Product</a>
+          </div>
+        </sc-if>
+
+        <!-- Supporting pieces index -->
+        <div>
+          <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(22px,3vw,32px);text-transform:uppercase;line-height:1.1;margin:0 0 8px">Supporting pieces</h2>
+          <p style="font-size:14px;color:#68645D;margin:0 0 24px;max-width:560px">The shirts, pants, and accessories used to build the outfits. These are "similar option" items — any comparable piece works.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px">
+            <sc-for list="{{ supporting }}" as="s" hint-placeholder-count="8">
+              <a href="shop.dc.html" style="text-decoration:none;color:#0B0B0B;border:1px solid #DDD3C3;background:#FFFDF8;display:block" style-hover="border-color:#C8941E">
+                <img src="{{ s.image }}" alt="{{ s.alt }}" width="1200" height="1200" style="width:100%;height:auto;display:block;background:#F0EEE8" loading="lazy">
+                <div style="padding:12px 14px">
+                  <p style="font-size:13px;font-weight:700;margin:0">{{ s.name }}</p>
+                  <p style="font-size:12px;color:#68645D;margin:2px 0 0">{{ s.category }}</p>
+                </div>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dc-import name="Site Footer" hint-size="100%,380px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { q: '', products: [] };
+
+  async componentDidMount() {
+    const m = await import('./js/products.js');
+    this.setState({ products: m.products });
+  }
+
+  renderVals() {
+    const { q, products } = this.state;
+    const ql = q.trim().toLowerCase();
+    // "Featured" products are the ones with a full styling profile.
+    const featured = products.filter(p => p.profile);
+    const results = featured.filter(p => {
+      const hay = [p.name, p.brand, p.category, p.colorway, ...(p.tags || [])].join(' ').toLowerCase();
+      return !ql || hay.includes(ql);
+    }).map(p => {
+      const hasLink = !!p.affiliateUrl;
+      return {
+        anchorId: 'p-' + p.id,
+        image: p.image,
+        alt: p.name + ' in ' + p.colorway,
+        metaLine: [p.category, p.profile.type].filter(Boolean).join(' · '),
+        name: p.brand ? p.brand + ' ' + p.name.replace(p.brand + ' ', '') : p.name,
+        subline: 'Colorway: ' + p.colorway,
+        whyPeopleAsk: p.profile.whyPeopleAsk,
+        bestFor: p.profile.bestFor,
+        difficulty: p.profile.stylingDifficulty,
+        worksWith: p.profile.worksWith.join(', '),
+        avoid: p.profile.avoid.join(', '),
+        guideHref: 'guide-on-cloud-x4.dc.html',
+        shopHref: hasLink ? p.affiliateUrl : 'shop.dc.html',
+        rel: hasLink ? 'sponsored noopener' : undefined,
+        shopLabel: hasLink ? 'Shop →' : 'Shop link coming soon',
+        shopStyle: {
+          display: 'inline-block', fontSize: '12px', fontWeight: 700, letterSpacing: '1.5px',
+          textTransform: 'uppercase', textDecoration: 'none', padding: '12px 22px',
+          background: 'transparent',
+          color: hasLink ? '#0B0B0B' : '#68645D',
+          border: hasLink ? '1px solid #0B0B0B' : '1px solid #DDD3C3',
+        },
+        priceLine: p.price != null ? 'Price: $' + p.price : 'Price: TBD',
+        lastChecked: p.lastChecked ? 'Last checked ' + p.lastChecked : 'Availability not yet verified',
+      };
+    });
+
+    return {
+      q,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      results,
+      hasResults: results.length > 0,
+      showEmpty: products.length > 0 && results.length === 0,
+      resultCount: products.length === 0 ? 'Loading products…'
+        : results.length + (results.length === 1 ? ' featured product' : ' featured products') + ' · more added with every guide',
+      supporting: products.filter(p => !p.profile).map(s => ({
+        image: s.image,
+        alt: s.name + (s.colorway ? ' in ' + s.colorway : ''),
+        name: s.name,
+        category: s.category,
+      })),
+    };
+  }
+}
+</script>
+</body>
+</html>

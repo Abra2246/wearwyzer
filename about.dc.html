@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>About — WearWyzer</title>
+  <meta name="description" content="WearWyzer makes product-first style guides that help men wear what they already own better. Usefulness first, trust before monetization.">
+  <meta property="og:title" content="About WearWyzer">
+  <meta property="og:description" content="The men's style manual for the clothes and sneakers guys actually own.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh;display:flex;flex-direction:column">
+  <a href="#main" style="position:absolute;left:-9999px;top:0;background:#0B0B0B;color:#F6F1E8;padding:12px 20px;z-index:200;text-decoration:none;font-size:14px" style-focus="left:16px;top:16px">Skip to content</a>
+  <div style="position:sticky;top:0;z-index:100">
+    <dc-import name="Site Nav" active="About" hint-size="100%,66px"></dc-import>
+  </div>
+
+  <main id="main" style="flex:1">
+    <section style="border-bottom:1px solid #DDD3C3;background:#FFFDF8">
+      <div style="max-width:820px;margin:0 auto;padding:clamp(48px,7vw,96px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 16px">About WearWyzer</p>
+        <h1 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(34px,5vw,58px);text-transform:uppercase;line-height:1.05;margin:0 0 28px;text-wrap:balance">"What do I actually wear with this?"</h1>
+        <p style="font-size:clamp(16px,2vw,19px);line-height:1.7;color:#0B0B0B;margin:0 0 20px">WearWyzer was built for guys who buy a piece they like — a sneaker, a shirt, a watch — then get stuck asking exactly that question.</p>
+        <p style="font-size:16px;line-height:1.7;color:#68645D;margin:0 0 20px">We make product-first outfit guides: visual, practical, and easy to save. Each one starts with a specific item and ends with complete outfits you can actually wear — for work, everyday life, dates, and travel.</p>
+        <p style="font-size:16px;line-height:1.7;color:#68645D;margin:0">No fashion jargon. No insider rules. Just clear answers for the clothes and sneakers you actually own.</p>
+      </div>
+    </section>
+
+    <section aria-labelledby="mission-heading" style="border-bottom:1px solid #DDD3C3">
+      <div style="max-width:820px;margin:0 auto;padding:clamp(40px,5vw,72px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">The Mission</p>
+        <h2 id="mission-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(26px,4vw,42px);text-transform:uppercase;line-height:1.08;margin:0">Help men wear what they already own <span style="color:#C8941E">better</span>.</h2>
+      </div>
+    </section>
+
+    <section aria-labelledby="values-heading" style="background:#FFFDF8;border-bottom:1px solid #DDD3C3">
+      <div style="max-width:1000px;margin:0 auto;padding:clamp(40px,5vw,72px) 20px">
+        <h2 id="values-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(24px,3vw,34px);text-transform:uppercase;line-height:1.1;margin:0 0 32px">What we stand by</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:#DDD3C3;border:1px solid #DDD3C3">
+          <sc-for list="{{ values }}" as="v" hint-placeholder-count="6">
+            <div style="background:#FFFDF8;padding:26px 24px">
+              <p style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;color:#C8941E;margin:0 0 10px">{{ v.num }}</p>
+              <p style="font-size:16px;font-weight:700;margin:0 0 6px">{{ v.title }}</p>
+              <p style="font-size:14px;color:#68645D;line-height:1.6;margin:0">{{ v.sub }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="how-heading" style="border-bottom:1px solid #DDD3C3">
+      <div style="max-width:820px;margin:0 auto;padding:clamp(40px,5vw,72px) 20px">
+        <h2 id="how-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(24px,3vw,34px);text-transform:uppercase;line-height:1.1;margin:0 0 16px">How the guides are made</h2>
+        <p style="font-size:16px;line-height:1.7;color:#68645D;margin:0 0 16px">Every guide starts with a real product and a real question — usually one guys are already searching for. We use modern tools to research combinations, test palettes, and produce guides quickly, but every recommendation follows the same rule: it has to work as an outfit first.</p>
+        <p style="font-size:16px;line-height:1.7;color:#68645D;margin:0">Some links are affiliate links. They never decide what gets recommended — the outfit does. <a href="affiliate-disclosure.dc.html" style="color:#C8941E">Read the full disclosure</a>.</p>
+      </div>
+    </section>
+
+    <section style="text-align:center">
+      <div style="max-width:700px;margin:0 auto;padding:clamp(48px,6vw,88px) 20px">
+        <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(28px,4vw,44px);text-transform:uppercase;line-height:1.08;margin:0 0 28px;text-wrap:balance">Start with something you own.</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
+          <a href="guides.dc.html" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:16px 30px" style-hover="background:#C8941E;color:#0B0B0B">Browse Guides</a>
+          <a href="contact.dc.html" style="background:transparent;color:#0B0B0B;border:1px solid #0B0B0B;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 30px" style-hover="background:#FFFDF8">Suggest a Product</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dc-import name="Site Footer" hint-size="100%,380px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      values: [
+        ['Usefulness first', 'If a guide doesn\u2019t answer a real question, it doesn\u2019t get published.'],
+        ['Trust before monetization', 'Recommendations are never driven by commission.'],
+        ['Clear answers', 'Yes, no, or here\u2019s the better option. No hedging, no jargon.'],
+        ['Wearable outfits', 'Looks for real life — the office, campus, a date, an airport.'],
+        ['Product accuracy', 'Exact items and similar options are always labeled.'],
+        ['Better combinations over more clothes', 'The goal is a smarter wardrobe, not a bigger one.'],
+      ].map(([title, sub], i) => ({ num: '0' + (i + 1), title, sub })),
+    };
+  }
+}
+</script>
+</body>
+</html>

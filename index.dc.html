@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>WearWyzer — Men's Style Guides for the Sneakers &amp; Clothes You Own</title>
+  <meta name="description" content="Product-first men's outfit guides. Clear answers on how to style sneakers, shoes, and clothes for work, everyday life, dates, and travel.">
+  <meta property="og:title" content="WearWyzer — You bought it. Now wear it wyzer.">
+  <meta property="og:description" content="Clear men's outfit guides for the sneakers, shoes, and clothes you already own or are thinking about buying.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/guides/on-cloud-x4-cover.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebSite","name":"WearWyzer","description":"Product-first style guides for men who want to wear what they bought better."}
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+    }
+  </style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh">
+
+  <a href="#main" style="position:absolute;left:-9999px;top:0;background:#0B0B0B;color:#F6F1E8;padding:12px 20px;z-index:200;text-decoration:none;font-size:14px" style-focus="left:16px;top:16px">Skip to content</a>
+
+  <!-- A. Announcement bar (editable via Tweaks or js/site-data.js) -->
+  <div style="background:#0B0B0B;color:#F6F1E8;text-align:center;padding:10px 20px;font-size:13px;display:flex;justify-content:center;align-items:center;gap:14px;flex-wrap:wrap">
+    <span>{{ announcementText }}</span>
+    <a href="{{ announcementHref }}" style="color:#C8941E;font-weight:700;text-decoration:none;letter-spacing:0.5px;text-transform:uppercase;font-size:12px" style-hover="text-decoration:underline">View Guide →</a>
+  </div>
+
+  <div style="position:sticky;top:0;z-index:100">
+    <dc-import name="Site Nav" hint-size="100%,66px"></dc-import>
+  </div>
+
+  <main id="main">
+
+    <!-- B. Hero -->
+    <section style="border-bottom:1px solid #DDD3C3">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(48px,7vw,96px) 20px;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:center">
+        <div>
+          <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 20px">The Men's Style Manual</p>
+          <h1 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(40px,6vw,72px);line-height:1.02;text-transform:uppercase;letter-spacing:0.5px;margin:0 0 24px;text-wrap:balance">You bought it.<br>Now wear it <span style="color:#C8941E">wyzer</span>.</h1>
+          <p style="font-size:clamp(16px,2vw,19px);line-height:1.6;color:#68645D;margin:0 0 32px;max-width:480px;text-wrap:pretty">Product-first outfit guides for men who want clear answers, wearable looks, and smarter shopping.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:14px">
+            <a href="guides.dc.html" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:16px 30px" style-hover="background:#C8941E;color:#0B0B0B">Explore Style Guides</a>
+            <a href="shop.dc.html" style="background:transparent;color:#0B0B0B;border:1px solid #0B0B0B;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 30px" style-hover="background:#FFFDF8">Shop Featured Looks</a>
+          </div>
+        </div>
+        <div style="position:relative;justify-self:center;width:min(100%,440px)">
+          <img src="assets/images/guides/on-cloud-x4-cover.png" alt="Cover of the WearWyzer style guide for the On Cloud X 4 in Ivory / Black" width="1254" height="1254" style="width:100%;height:auto;display:block;border:1px solid #DDD3C3;background:#F0EEE8" loading="eager">
+          <div style="position:absolute;left:-12px;bottom:24px;background:#FFFDF8;border:1px solid #DDD3C3;padding:14px 18px;box-shadow:0 8px 24px rgba(11,11,11,0.08)">
+            <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C8941E">Latest Guide</p>
+            <p style="margin:4px 0 0;font-size:14px;font-weight:700">On Cloud X 4 · 5 outfits</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- C. Featured guide -->
+    <section aria-labelledby="featured-heading" style="background:#FFFDF8;border-bottom:1px solid #DDD3C3">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(48px,6vw,80px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">Featured Guide · Post #1</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:48px;align-items:center">
+          <img src="assets/images/guides/on-cloud-x4/slide-01.png" alt="Slide one of the On Cloud X 4 styling carousel" width="1254" height="1254" style="width:min(100%,420px);height:auto;display:block;border:1px solid #DDD3C3;background:#F0EEE8" loading="lazy">
+          <div>
+            <h2 id="featured-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(28px,4vw,44px);line-height:1.08;text-transform:uppercase;margin:0 0 16px;text-wrap:balance">How to Style the On Cloud X 4 Ivory / Black</h2>
+            <p style="font-size:16px;color:#68645D;line-height:1.6;margin:0 0 24px">5 wearable outfits for one versatile trainer — from the office to the airport.</p>
+            <ul style="list-style:none;margin:0 0 28px;padding:0;display:flex;flex-wrap:wrap;gap:8px">
+              <li style="font-size:12px;font-weight:600;letter-spacing:0.5px;border:1px solid #DDD3C3;padding:7px 14px;background:#F6F1E8">Business casual</li>
+              <li style="font-size:12px;font-weight:600;letter-spacing:0.5px;border:1px solid #DDD3C3;padding:7px 14px;background:#F6F1E8">Everyday casual</li>
+              <li style="font-size:12px;font-weight:600;letter-spacing:0.5px;border:1px solid #DDD3C3;padding:7px 14px;background:#F6F1E8">Date night</li>
+              <li style="font-size:12px;font-weight:600;letter-spacing:0.5px;border:1px solid #DDD3C3;padding:7px 14px;background:#F6F1E8">Travel day</li>
+              <li style="font-size:12px;font-weight:600;letter-spacing:0.5px;border:1px solid #DDD3C3;padding:7px 14px;background:#F6F1E8">One shoe. Any plan.</li>
+            </ul>
+            <div style="display:flex;flex-wrap:wrap;gap:14px">
+              <a href="guide-on-cloud-x4.dc.html" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 28px" style-hover="background:#C8941E;color:#0B0B0B">View Full Guide</a>
+              <a href="guide-on-cloud-x4.dc.html#shop-the-look" style="background:transparent;color:#0B0B0B;border:1px solid #0B0B0B;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 28px" style-hover="background:#F6F1E8">Shop the Look</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- D. Style problems grid -->
+    <section aria-labelledby="problems-heading" style="border-bottom:1px solid #DDD3C3">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(48px,6vw,80px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">What We Answer</p>
+        <h2 id="problems-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(28px,4vw,44px);text-transform:uppercase;line-height:1.08;margin:0 0 36px">The questions every guide solves</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:#DDD3C3;border:1px solid #DDD3C3">
+          <sc-for list="{{ problems }}" as="p" hint-placeholder-count="8">
+            <div style="background:#F6F1E8;padding:28px 24px" style-hover="background:#FFFDF8">
+              <p style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;color:#C8941E;margin:0 0 10px">{{ p.num }}</p>
+              <p style="font-size:17px;font-weight:700;margin:0 0 6px">{{ p.title }}</p>
+              <p style="font-size:14px;color:#68645D;line-height:1.55;margin:0">{{ p.sub }}</p>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <!-- E. Latest Instagram guides -->
+    <section aria-labelledby="latest-heading" style="background:#FFFDF8;border-bottom:1px solid #DDD3C3">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(48px,6vw,80px) 20px">
+        <div style="display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:16px;margin-bottom:36px">
+          <div>
+            <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">From Instagram</p>
+            <h2 id="latest-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(28px,4vw,44px);text-transform:uppercase;line-height:1.08;margin:0">Latest guides</h2>
+          </div>
+          <a href="guides.dc.html" style="color:#0B0B0B;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;border-bottom:2px solid #C8941E;padding-bottom:4px" style-hover="color:#C8941E">All guides →</a>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px">
+          <article style="border:1px solid #DDD3C3;background:#F6F1E8">
+            <a href="guide-on-cloud-x4.dc.html" style="text-decoration:none;color:#0B0B0B;display:block">
+              <img src="assets/images/guides/on-cloud-x4-cover.png" alt="On Cloud X 4 Ivory / Black style guide cover" width="1254" height="1254" style="width:100%;height:auto;display:block;background:#F0EEE8" loading="lazy">
+              <div style="padding:20px">
+                <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#C8941E;margin:0 0 8px">Sneakers · 5 outfits</p>
+                <h3 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:20px;text-transform:uppercase;line-height:1.15;margin:0 0 8px">How to Style the On Cloud X 4</h3>
+                <p style="font-size:14px;color:#68645D;margin:0">On · Ivory / Black</p>
+                <p style="font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#0B0B0B;margin:16px 0 0;border-bottom:2px solid #C8941E;display:inline-block;padding-bottom:3px">View Guide</p>
+              </div>
+            </a>
+          </article>
+          <article style="border:1px dashed #DDD3C3;background:#F6F1E8">
+            <img src="assets/images/guides/coming-soon-1.png" alt="Placeholder for an upcoming style guide" width="1200" height="1500" style="width:100%;height:auto;display:block;background:#F0EEE8;opacity:0.65" loading="lazy">
+            <div style="padding:20px">
+              <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#68645D;margin:0 0 8px">Next up</p>
+              <h3 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:20px;text-transform:uppercase;line-height:1.15;margin:0 0 8px;color:#68645D">Guide in production</h3>
+              <p style="font-size:14px;color:#68645D;margin:0">Follow on Instagram to see it first.</p>
+            </div>
+          </article>
+          <article style="border:1px dashed #DDD3C3;background:#F6F1E8">
+            <img src="assets/images/guides/coming-soon-2.png" alt="Placeholder for an upcoming style guide" width="1200" height="1500" style="width:100%;height:auto;display:block;background:#F0EEE8;opacity:0.65" loading="lazy">
+            <div style="padding:20px">
+              <p style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#68645D;margin:0 0 8px">Next up</p>
+              <h3 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:20px;text-transform:uppercase;line-height:1.15;margin:0 0 8px;color:#68645D">Guide in production</h3>
+              <p style="font-size:14px;color:#68645D;margin:0">Follow on Instagram to see it first.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- F. Shop the look categories -->
+    <section aria-labelledby="shop-heading" style="border-bottom:1px solid #DDD3C3">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(48px,6vw,80px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">Shop the Look</p>
+        <h2 id="shop-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(28px,4vw,44px);text-transform:uppercase;line-height:1.08;margin:0 0 36px">Curated by category</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:20px">
+          <sc-for list="{{ shopCategories }}" as="c" hint-placeholder-count="6">
+            <a href="{{ c.href }}" style="text-decoration:none;color:#0B0B0B;border:1px solid #DDD3C3;background:#FFFDF8;display:block" style-hover="border-color:#C8941E">
+              <img src="{{ c.image }}" alt="{{ c.alt }}" width="1200" height="1200" style="width:100%;height:auto;display:block;background:#F0EEE8" loading="lazy">
+              <div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center;gap:8px">
+                <span style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:15px;text-transform:uppercase;letter-spacing:0.5px">{{ c.label }}</span>
+                <span aria-hidden="true" style="color:#C8941E;font-weight:700">→</span>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </div>
+    </section>
+
+    <!-- G. Trust section -->
+    <section aria-labelledby="trust-heading" style="background:#0B0B0B;color:#F6F1E8">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(48px,6vw,80px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">How We Recommend</p>
+        <h2 id="trust-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(28px,4vw,44px);text-transform:uppercase;line-height:1.08;margin:0 0 36px;max-width:640px">Trust comes before monetization</h2>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:32px">
+          <div style="border-top:2px solid #C8941E;padding-top:18px">
+            <p style="font-weight:700;font-size:16px;margin:0 0 8px">The outfit decides</p>
+            <p style="font-size:14px;color:#a8a49c;line-height:1.6;margin:0">A product only gets featured if it fits the outfit. Never because of commission.</p>
+          </div>
+          <div style="border-top:2px solid #C8941E;padding-top:18px">
+            <p style="font-weight:700;font-size:16px;margin:0 0 8px">No extra cost to you</p>
+            <p style="font-size:14px;color:#a8a49c;line-height:1.6;margin:0">Affiliate links may earn us a commission. The price you pay never changes.</p>
+          </div>
+          <div style="border-top:2px solid #C8941E;padding-top:18px">
+            <p style="font-weight:700;font-size:16px;margin:0 0 8px">Clearly labeled</p>
+            <p style="font-size:14px;color:#a8a49c;line-height:1.6;margin:0">Exact items and similar options are marked. Sponsored content will always be labeled.</p>
+          </div>
+        </div>
+        <a href="affiliate-disclosure.dc.html" style="display:inline-block;margin-top:32px;color:#C8941E;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;text-decoration:none;border-bottom:1px solid #C8941E;padding-bottom:3px" style-hover="color:#F6F1E8">Read our affiliate disclosure</a>
+      </div>
+    </section>
+
+    <!-- H. Email capture -->
+    <section aria-labelledby="email-heading" style="background:#FFFDF8;border-bottom:1px solid #DDD3C3">
+      <div style="max-width:720px;margin:0 auto;padding:clamp(48px,6vw,80px) 20px;text-align:center">
+        <h2 id="email-heading" style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:clamp(26px,3.5vw,38px);text-transform:uppercase;line-height:1.1;margin:0 0 12px;text-wrap:balance">Get better outfits from what you already own.</h2>
+        <p style="font-size:15px;color:#68645D;margin:0 0 28px">New style guides, straight from the feed. No spam, no fluff.</p>
+        <form onSubmit="{{ onEmailSubmit }}" novalidate="{{ true }}" style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center">
+          <label for="ww-email" style="position:absolute;left:-9999px">Email address</label>
+          <input id="ww-email" name="email" type="email" required="{{ true }}" placeholder="you@email.com" value="{{ email }}" onChange="{{ onEmailChange }}" style="flex:1 1 260px;max-width:360px;padding:15px 18px;font-size:15px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit" style-focus="outline:2px solid #C8941E;outline-offset:1px">
+          <button type="submit" style="background:#0B0B0B;color:#F6F1E8;border:none;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 28px;font-family:inherit" style-hover="background:#C8941E;color:#0B0B0B">Send Me Style Guides</button>
+        </form>
+        <sc-if value="{{ emailMsgVisible }}" hint-placeholder-val="{{ false }}">
+          <p role="status" style="{{ emailMsgStyle }}">{{ emailMsg }}</p>
+        </sc-if>
+      </div>
+    </section>
+
+    <!-- I. Final CTA -->
+    <section style="text-align:center">
+      <div style="max-width:800px;margin:0 auto;padding:clamp(56px,8vw,110px) 20px">
+        <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(32px,5vw,58px);text-transform:uppercase;line-height:1.05;margin:0 0 32px;text-wrap:balance">Find the item.<br>Wear it <span style="color:#C8941E">better</span>.</h2>
+        <div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center">
+          <a href="guides.dc.html" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:16px 32px" style-hover="background:#C8941E;color:#0B0B0B">Browse Guides</a>
+          <a href="shop.dc.html" style="background:transparent;color:#0B0B0B;border:1px solid #0B0B0B;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 32px" style-hover="background:#FFFDF8">Shop Looks</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <dc-import name="Site Footer" hint-size="100%,380px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;announcementText&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;New guide: How to style the On Cloud X 4 Ivory / Black&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Announcement bar&quot;},&quot;announcementHref&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;guide-on-cloud-x4.dc.html&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Announcement bar&quot;}}">
+class Component extends DCLogic {
+  state = { email: '', emailMsg: '', emailOk: false };
+
+  renderVals() {
+    const P = this.props;
+    return {
+      announcementText: P.announcementText ?? 'New guide: How to style the On Cloud X 4 Ivory / Black',
+      announcementHref: P.announcementHref ?? 'guide-on-cloud-x4.dc.html',
+      problems: [
+        ['01', 'Is it business casual?', 'A straight answer for every featured piece — office-safe or not.'],
+        ['02', 'What goes with it?', 'Exact pants, tops, and accessories that work with the item.'],
+        ['03', 'How to style it all week', 'One piece, five plans — work, weekend, and everything between.'],
+        ['04', 'Best pants with this shoe', 'Cuts, colors, and fits matched to the silhouette.'],
+        ['05', 'Date night outfit', 'Sharp without trying too hard.'],
+        ['06', 'Travel outfit', 'Comfort that still looks put-together at the gate.'],
+        ['07', 'Buy / skip / alternative', 'Honest calls, including cheaper options that do the same job.'],
+        ['08', 'Color combinations that work', 'Palettes that make the piece look intentional.'],
+      ].map(([num, title, sub]) => ({ num, title, sub })),
+      shopCategories: [
+        ['Sneakers', 'on-cloud-x4', 'Featured sneakers'],
+        ['Shirts', 'oxford-shirt', 'Shirts'],
+        ['Pants', 'beige-chinos', 'Pants'],
+        ['Hoodies', 'gray-hoodie', 'Hoodies'],
+        ['Watches', 'minimal-watch', 'Watches'],
+        ['Accessories', 'cap', 'Accessories'],
+      ].map(([cat, img, label]) => ({
+        label,
+        href: 'shop.dc.html#cat=' + encodeURIComponent(cat),
+        image: 'assets/images/products/' + img + '.png',
+        alt: label + ' — curated picks',
+      })),
+      email: this.state.email,
+      onEmailChange: (e) => this.setState({ email: e.target.value }),
+      onEmailSubmit: (e) => {
+        e.preventDefault();
+        const v = this.state.email.trim();
+        const ok = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+        // NOTE: no email backend is configured. Connect a provider
+        // (Mailchimp, ConvertKit, Buttondown...) and post the address there.
+        this.setState({
+          emailOk: ok,
+          emailMsg: ok
+            ? 'Looks good — but the newsletter backend isn\u2019t connected yet, so nothing was sent. (Developer: wire this form to your email provider.)'
+            : 'Please enter a valid email address.',
+        });
+      },
+      emailMsgVisible: !!this.state.emailMsg,
+      emailMsg: this.state.emailMsg,
+      emailMsgStyle: {
+        marginTop: '16px', fontSize: '14px',
+        color: this.state.emailOk ? '#0B0B0B' : '#a33a2a',
+      },
+    };
+  }
+}
+</script>
+</body>
+</html>

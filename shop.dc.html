@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Shop the Look — Men's Sneakers, Shirts &amp; Pants — WearWyzer</title>
+  <meta name="description" content="Curated affiliate storefront of every piece featured in WearWyzer style guides — sneakers, shirts, pants, hoodies, watches, and accessories.">
+  <meta property="og:title" content="Shop the Look — WearWyzer">
+  <meta property="og:description" content="Every piece featured in our style guides, in one place.">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary">
+  <link rel="icon" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh;display:flex;flex-direction:column">
+  <a href="#main" style="position:absolute;left:-9999px;top:0;background:#0B0B0B;color:#F6F1E8;padding:12px 20px;z-index:200;text-decoration:none;font-size:14px" style-focus="left:16px;top:16px">Skip to content</a>
+  <div style="position:sticky;top:0;z-index:100">
+    <dc-import name="Site Nav" active="Shop" hint-size="100%,66px"></dc-import>
+  </div>
+
+  <main id="main" style="flex:1">
+    <section style="border-bottom:1px solid #DDD3C3;background:#FFFDF8">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(40px,5vw,64px) 20px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 12px">The Storefront</p>
+        <h1 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(34px,5vw,56px);text-transform:uppercase;line-height:1.05;margin:0 0 14px">Shop the Look</h1>
+        <p style="font-size:16px;color:#68645D;line-height:1.6;margin:0 0 12px;max-width:560px">Every piece featured in a guide, in one place. Exact items and similar options are clearly marked.</p>
+        <p style="font-size:13px;color:#68645D;margin:0 0 32px;max-width:560px">ⓘ {{ disclosure }} <a href="affiliate-disclosure.dc.html" style="color:#C8941E">Full disclosure</a></p>
+
+        <label for="shop-search" style="position:absolute;left:-9999px">Search products</label>
+        <input id="shop-search" type="search" placeholder="Search products, brands, colorways…" value="{{ q }}" onChange="{{ onSearch }}" style="width:100%;max-width:520px;box-sizing:border-box;padding:15px 18px;font-size:15px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit" style-focus="outline:2px solid #C8941E;outline-offset:1px">
+
+        <div role="group" aria-label="Filter by category" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:20px">
+          <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="10">
+            <button type="button" onClick="{{ c.onClick }}" aria-pressed="{{ c.pressed }}" style="{{ c.style }}" style-hover="border-color:#0B0B0B" style-focus="outline:2px solid #C8941E;outline-offset:1px">{{ c.label }}</button>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:16px;margin-top:20px">
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label for="f-occasion" style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D">Occasion</label>
+            <select id="f-occasion" value="{{ occasion }}" onChange="{{ onOccasion }}" style="padding:11px 14px;font-size:14px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit;min-width:170px" style-focus="outline:2px solid #C8941E">
+              <sc-for list="{{ occasionOptions }}" as="o" hint-placeholder-count="8">
+                <option value="{{ o }}">{{ o }}</option>
+              </sc-for>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label for="f-price" style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D">Price</label>
+            <select id="f-price" value="{{ price }}" onChange="{{ onPrice }}" style="padding:11px 14px;font-size:14px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit;min-width:150px" style-focus="outline:2px solid #C8941E">
+              <option value="All">All prices</option>
+              <option value="under50">Under $50</option>
+              <option value="50to100">$50 – $100</option>
+              <option value="over100">$100+</option>
+              <option value="tbd">Price TBD</option>
+            </select>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <label for="f-exact" style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D">Match type</label>
+            <select id="f-exact" value="{{ exact }}" onChange="{{ onExact }}" style="padding:11px 14px;font-size:14px;border:1px solid #DDD3C3;background:#F6F1E8;color:#0B0B0B;font-family:inherit;min-width:160px" style-focus="outline:2px solid #C8941E">
+              <option value="All">All items</option>
+              <option value="Exact item">Exact item</option>
+              <option value="Similar option">Similar option</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Product results">
+      <div style="max-width:1200px;margin:0 auto;padding:clamp(36px,5vw,56px) 20px">
+        <p role="status" style="font-size:13px;color:#68645D;margin:0 0 24px">{{ resultCount }}</p>
+
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:24px">
+            <sc-for list="{{ results }}" as="p" hint-placeholder-count="12">
+              <article style="border:1px solid #DDD3C3;background:#FFFDF8;display:flex;flex-direction:column" style-hover="border-color:#C8941E">
+                <div style="position:relative">
+                  <img src="{{ p.image }}" alt="{{ p.alt }}" width="1200" height="1200" style="width:100%;height:auto;display:block;background:#F0EEE8" loading="lazy">
+                  <span style="{{ p.badgeStyle }}">{{ p.exactOrSimilar }}</span>
+                </div>
+                <div style="padding:16px;display:flex;flex-direction:column;gap:4px;flex:1">
+                  <p style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D;margin:0">{{ p.brandLine }}</p>
+                  <h2 style="font-size:15px;font-weight:700;margin:0;line-height:1.3">{{ p.name }}</h2>
+                  <p style="font-size:13px;color:#68645D;margin:0">{{ p.priceLine }}</p>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+                    <sc-for list="{{ p.tags }}" as="t" hint-placeholder-count="2">
+                      <span style="font-size:11px;color:#68645D;border:1px solid #DDD3C3;padding:3px 8px;background:#F6F1E8">{{ t }}</span>
+                    </sc-for>
+                  </div>
+                  <p style="font-size:12px;margin:8px 0 0"><a href="{{ p.guideHref }}" style="color:#C8941E;text-decoration:none" style-hover="text-decoration:underline">Featured in a guide →</a></p>
+                  <div style="margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
+                    <a href="{{ p.shopHref }}" rel="{{ p.rel }}" aria-disabled="{{ p.disabled }}" style="{{ p.ctaStyle }}">{{ p.ctaLabel }}</a>
+                    <span title="Affiliate link — may earn commission" style="font-size:10px;font-weight:700;letter-spacing:1px;color:#68645D;border:1px solid #DDD3C3;padding:3px 7px">AD</span>
+                  </div>
+                </div>
+              </article>
+            </sc-for>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showEmpty }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;border:1px dashed #DDD3C3;padding:64px 24px;background:#FFFDF8">
+            <p style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:22px;text-transform:uppercase;margin:0 0 10px">No products found</p>
+            <p style="font-size:15px;color:#68645D;margin:0 0 20px">Try another category, occasion, or price range.</p>
+            <button type="button" onClick="{{ clearFilters }}" style="background:#0B0B0B;color:#F6F1E8;border:none;cursor:pointer;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 26px;font-family:inherit" style-hover="background:#C8941E;color:#0B0B0B">Reset filters</button>
+          </div>
+        </sc-if>
+      </div>
+    </section>
+  </main>
+
+  <dc-import name="Site Footer" hint-size="100%,380px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { q: '', cat: 'All', occasion: 'All occasions', price: 'All', exact: 'All', products: [], occasions: [] };
+
+  async componentDidMount() {
+    const m = await import('./js/products.js');
+    // Support links like shop.dc.html#cat=Sneakers from the home page
+    let cat = 'All';
+    const h = (window.location.hash || '').match(/cat=([^&]+)/);
+    if (h) {
+      const v = decodeURIComponent(h[1]);
+      if (m.CATEGORIES.includes(v)) cat = v;
+    }
+    this.setState({ products: m.products, occasions: m.OCCASIONS, cat });
+  }
+
+  renderVals() {
+    const CATS = ['All', 'Sneakers', 'Shoes', 'Shirts', 'Pants', 'Outerwear', 'Hoodies', 'Accessories', 'Watches', 'Bags'];
+    const { q, cat, occasion, price, exact, products, occasions } = this.state;
+    const ql = q.trim().toLowerCase();
+
+    const results = products.filter(p => {
+      const hay = [p.name, p.brand, p.category, p.colorway, ...(p.tags || [])].join(' ').toLowerCase();
+      if (ql && !hay.includes(ql)) return false;
+      if (cat !== 'All' && p.category !== cat) return false;
+      if (occasion !== 'All occasions' && !(p.tags || []).includes(occasion)) return false;
+      if (exact !== 'All' && p.exactOrSimilar !== exact) return false;
+      if (price !== 'All') {
+        if (price === 'tbd') { if (p.price != null) return false; }
+        else if (p.price == null) return false;
+        else if (price === 'under50' && p.price >= 50) return false;
+        else if (price === '50to100' && (p.price < 50 || p.price > 100)) return false;
+        else if (price === 'over100' && p.price <= 100) return false;
+      }
+      return true;
+    }).map(p => {
+      const exactItem = p.exactOrSimilar === 'Exact item';
+      const hasLink = !!p.affiliateUrl;
+      return {
+        image: p.image,
+        alt: p.name + (p.colorway ? ' in ' + p.colorway : ''),
+        exactOrSimilar: p.exactOrSimilar,
+        badgeStyle: {
+          position: 'absolute', top: '10px', left: '10px', fontSize: '10px', fontWeight: 700,
+          letterSpacing: '1.5px', textTransform: 'uppercase', padding: '5px 10px',
+          background: exactItem ? '#0B0B0B' : '#FFFDF8',
+          color: exactItem ? '#F6F1E8' : '#68645D',
+          border: exactItem ? 'none' : '1px solid #DDD3C3',
+        },
+        brandLine: (p.brand || 'Any brand') + ' · ' + p.category,
+        name: p.name,
+        priceLine: p.price != null ? '$' + p.price + (p.retailer ? ' · ' + p.retailer : '')
+          : 'Price TBD' + (p.retailer ? ' · ' + p.retailer : ' · Retailer TBD'),
+        tags: (p.tags || []).slice(0, 3),
+        guideHref: 'guide-on-cloud-x4.dc.html',
+        shopHref: hasLink ? p.affiliateUrl : 'contact.dc.html',
+        rel: hasLink ? 'sponsored noopener' : undefined,
+        disabled: hasLink ? 'false' : 'true',
+        ctaLabel: hasLink ? 'Shop →' : 'Link coming soon',
+        ctaStyle: {
+          display: 'inline-block', fontSize: '12px', fontWeight: 700, letterSpacing: '1.5px',
+          textTransform: 'uppercase', textDecoration: 'none', padding: '11px 18px',
+          background: hasLink ? '#0B0B0B' : 'transparent',
+          color: hasLink ? '#F6F1E8' : '#68645D',
+          border: hasLink ? 'none' : '1px solid #DDD3C3',
+        },
+      };
+    });
+
+    return {
+      q,
+      onSearch: (e) => this.setState({ q: e.target.value }),
+      catChips: CATS.map(label => {
+        const on = cat === label;
+        return {
+          label,
+          pressed: on ? 'true' : 'false',
+          onClick: () => this.setState({ cat: label }),
+          style: {
+            fontSize: '13px', fontWeight: 600, padding: '9px 16px', cursor: 'pointer',
+            fontFamily: 'inherit', letterSpacing: '0.3px',
+            border: on ? '1px solid #0B0B0B' : '1px solid #DDD3C3',
+            background: on ? '#0B0B0B' : '#F6F1E8',
+            color: on ? '#F6F1E8' : '#0B0B0B',
+          },
+        };
+      }),
+      occasionOptions: ['All occasions', ...occasions],
+      occasion,
+      onOccasion: (e) => this.setState({ occasion: e.target.value }),
+      price,
+      onPrice: (e) => this.setState({ price: e.target.value }),
+      exact,
+      onExact: (e) => this.setState({ exact: e.target.value }),
+      clearFilters: () => this.setState({ q: '', cat: 'All', occasion: 'All occasions', price: 'All', exact: 'All' }),
+      results,
+      hasResults: results.length > 0,
+      showEmpty: products.length > 0 && results.length === 0,
+      resultCount: products.length === 0 ? 'Loading products…'
+        : results.length + (results.length === 1 ? ' product' : ' products'),
+      disclosure: 'Products are chosen because they fit the outfits — never because of commission. Links may earn us a commission at no extra cost to you. Prices marked TBD have not been confirmed.',
+    };
+  }
+}
+</script>
+</body>
+</html>

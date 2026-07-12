@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+</helmet>
+<header style="background:#FFFDF8;border-bottom:1px solid #DDD3C3;font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif">
+  <div style="max-width:1200px;margin:0 auto;padding:0 20px;display:flex;align-items:center;justify-content:space-between;gap:24px;height:66px">
+    <a href="index.dc.html" aria-label="WearWyzer home" style="display:flex;align-items:center;gap:10px;font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:21px;letter-spacing:1.5px;color:#0B0B0B;text-decoration:none;flex-shrink:0">
+      <img src="assets/logo/wearwyzer-mark.png" alt="" width="834" height="562" style="height:24px;width:auto;display:block">
+      WEAR<span style="color:#C8941E">WYZER</span>
+    </a>
+
+    <sc-if value="{{ isDesktop }}" hint-placeholder-val="{{ true }}">
+      <nav aria-label="Main navigation" style="display:flex;align-items:center;gap:26px">
+        <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="5">
+          <a href="{{ l.href }}" aria-current="{{ l.current }}" style="{{ l.style }}" style-hover="color:#0B0B0B">{{ l.label }}</a>
+        </sc-for>
+        <a href="shop.dc.html" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:11px 20px" style-hover="background:#C8941E;color:#0B0B0B">Shop the Look</a>
+      </nav>
+    </sc-if>
+
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+      <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuOpenStr }}" aria-controls="ww-mobile-menu" aria-label="{{ menuButtonLabel }}" style="background:none;border:1px solid #DDD3C3;padding:10px 12px;cursor:pointer;display:flex;flex-direction:column;gap:4px;min-height:44px;justify-content:center" style-focus="outline:2px solid #C8941E;outline-offset:2px">
+        <span aria-hidden="true" style="display:block;width:20px;height:2px;background:#0B0B0B"></span>
+        <span aria-hidden="true" style="display:block;width:20px;height:2px;background:#0B0B0B"></span>
+        <span aria-hidden="true" style="display:block;width:20px;height:2px;background:#0B0B0B"></span>
+      </button>
+    </sc-if>
+  </div>
+
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <nav id="ww-mobile-menu" aria-label="Mobile navigation" style="border-top:1px solid #DDD3C3;background:#FFFDF8;padding:8px 20px 20px;display:flex;flex-direction:column">
+      <sc-for list="{{ navLinks }}" as="l" hint-placeholder-count="5">
+        <a href="{{ l.href }}" aria-current="{{ l.current }}" style="{{ l.mobileStyle }}">{{ l.label }}</a>
+      </sc-for>
+      <a href="shop.dc.html" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 20px;text-align:center;margin-top:12px">Shop the Look</a>
+    </nav>
+  </sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1200,&quot;height&quot;:70},&quot;active&quot;:{&quot;editor&quot;:null,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { isMobile: false, menuOpen: false };
+
+  componentDidMount() {
+    this.mq = window.matchMedia('(max-width: 900px)');
+    this.onMq = () => this.setState({ isMobile: this.mq.matches, menuOpen: false });
+    this.onMq();
+    this.mq.addEventListener('change', this.onMq);
+  }
+  componentWillUnmount() {
+    if (this.mq) this.mq.removeEventListener('change', this.onMq);
+  }
+
+  renderVals() {
+    const active = this.props.active ?? '';
+    const base = {
+      textDecoration: 'none', fontSize: '14px', fontWeight: 500, color: '#68645D',
+      letterSpacing: '0.2px', padding: '4px 0',
+    };
+    const links = [
+      ['Style Guides', 'guides.dc.html'],
+      ['Shop', 'shop.dc.html'],
+      ['Products', 'products.dc.html'],
+      ['About', 'about.dc.html'],
+      ['Contact', 'contact.dc.html'],
+    ].map(([label, href]) => {
+      const isActive = active === label;
+      return {
+        label, href,
+        current: isActive ? 'page' : undefined,
+        style: {
+          ...base,
+          color: isActive ? '#0B0B0B' : '#68645D',
+          fontWeight: isActive ? 700 : 500,
+          borderBottom: isActive ? '2px solid #C8941E' : '2px solid transparent',
+        },
+        mobileStyle: {
+          ...base,
+          display: 'block', padding: '14px 0', fontSize: '16px',
+          borderBottom: '1px solid #F0EEE8',
+          color: isActive ? '#0B0B0B' : '#68645D',
+          fontWeight: isActive ? 700 : 500,
+        },
+      };
+    });
+    return {
+      navLinks: links,
+      isDesktop: !this.state.isMobile,
+      isMobile: this.state.isMobile,
+      menuOpen: this.state.isMobile && this.state.menuOpen,
+      menuOpenStr: this.state.menuOpen ? 'true' : 'false',
+      menuButtonLabel: this.state.menuOpen ? 'Close menu' : 'Open menu',
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+    };
+  }
+}
+</script>
+</body>
+</html>

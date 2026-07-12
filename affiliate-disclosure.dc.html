@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Affiliate Disclosure — WearWyzer</title>
+  <meta name="description" content="How WearWyzer uses affiliate links: no extra cost to you, recommendations based on fit and usefulness, sponsored content always labeled.">
+  <meta name="robots" content="index,follow">
+  <link rel="icon" href="assets/favicon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh;display:flex;flex-direction:column">
+  <a href="#main" style="position:absolute;left:-9999px;top:0;background:#0B0B0B;color:#F6F1E8;padding:12px 20px;z-index:200;text-decoration:none;font-size:14px" style-focus="left:16px;top:16px">Skip to content</a>
+  <div style="position:sticky;top:0;z-index:100">
+    <dc-import name="Site Nav" hint-size="100%,66px"></dc-import>
+  </div>
+
+  <main id="main" style="flex:1">
+    <div style="max-width:760px;margin:0 auto;padding:clamp(48px,6vw,80px) 20px">
+      <p style="font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#C8941E;margin:0 0 14px">Legal</p>
+      <h1 style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:clamp(32px,5vw,52px);text-transform:uppercase;line-height:1.05;margin:0 0 28px">Affiliate Disclosure</h1>
+
+      <p style="font-size:16px;line-height:1.7;margin:0 0 18px">WearWyzer may earn a commission from qualifying purchases made through links on this site. This is how the site is funded.</p>
+
+      <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:22px;text-transform:uppercase;margin:32px 0 12px">It never costs you more</h2>
+      <p style="font-size:16px;line-height:1.7;color:#68645D;margin:0 0 18px">Affiliate links do not affect the price you pay. The retailer pays the commission, not you.</p>
+
+      <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:22px;text-transform:uppercase;margin:32px 0 12px">How we choose products</h2>
+      <p style="font-size:16px;line-height:1.7;color:#68645D;margin:0 0 18px">Recommendations are based on fit, usefulness, and relevance to the outfit — never on commission rates. We will never recommend an inferior item because it pays more. Items are labeled as "Exact item" (the specific product featured) or "Similar option" (any comparable piece works).</p>
+
+      <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:22px;text-transform:uppercase;margin:32px 0 12px">Sponsored content</h2>
+      <p style="font-size:16px;line-height:1.7;color:#68645D;margin:0 0 18px">If content is ever sponsored or gifted, it will be clearly labeled as such. As of today, no content on this site is sponsored.</p>
+
+      <h2 style="font-family:'Oswald',Impact,sans-serif;font-weight:600;font-size:22px;text-transform:uppercase;margin:32px 0 12px">Prices and availability</h2>
+      <p style="font-size:16px;line-height:1.7;color:#68645D;margin:0 0 18px">Prices marked "TBD" have not been confirmed. Confirmed prices and availability can change at any time — the retailer's page is always the source of truth.</p>
+
+      <p style="font-size:14px;color:#68645D;border-top:1px solid #DDD3C3;padding-top:20px;margin:36px 0 0">Questions about this policy? <a href="contact.dc.html" style="color:#C8941E">Contact us</a>. <!-- TODO: add legal entity name and last-updated date before launch --></p>
+    </div>
+  </main>
+
+  <dc-import name="Site Footer" hint-size="100%,380px"></dc-import>
+</div>
+</x-dc>
+</body>
+</html>
