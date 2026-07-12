@@ -21,3 +21,18 @@ jobs:
 
       - name: Run content data validator
         run: node scripts/validate-content-data.mjs
+
+  static-site-qa:
+    name: Static-site asset/link check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run static-site QA check
+        run: node scripts/qa-static-site.mjs

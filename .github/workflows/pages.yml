@@ -30,6 +30,9 @@ jobs:
       - name: Run content data validator
         run: node scripts/validate-content-data.mjs
 
+      - name: Run static-site QA check
+        run: node scripts/qa-static-site.mjs
+
   build:
     name: Build Pages artifact
     needs: validate
