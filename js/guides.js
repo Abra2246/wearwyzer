@@ -225,6 +225,114 @@ export const guides = [
     comingSoon: false,
   },
 
+  {
+    id: "barrel-pants-nb530",
+    title: "How to Style Barrel Pants x New Balance 530 'Turtledove'",
+    slug: "guide-barrel-pants-nb530.dc.html",
+    productName: "New Balance 530 'Turtledove'",
+    brand: "New Balance",
+    colorway: "Turtledove",
+    category: "Sneakers",
+    verdict:
+      "A quiet, neutral-toned staple that pairs with almost anything — barrel pants give it the volume to feel current without losing the shoe's easy, everyday character. Five outfits, one shoe, no repeats.",
+    description:
+      "5 outfits for Uniqlo Barrel Pants and the New Balance 530 'Turtledove': coastal, city minimal, prep, weekend, and coffee date.",
+    coverImage: "assets/images/guides/barrel-pants-nb530-cover.png",
+    slideImages: [
+      { src: "assets/images/guides/barrel-pants-nb530/slide-01.png", label: "Cover" },
+      { src: "assets/images/guides/barrel-pants-nb530/slide-02.png", label: "Coastal" },
+      { src: "assets/images/guides/barrel-pants-nb530/slide-03.png", label: "City Minimal" },
+      { src: "assets/images/guides/barrel-pants-nb530/slide-04.png", label: "Prep" },
+      { src: "assets/images/guides/barrel-pants-nb530/slide-05.png", label: "Weekend" },
+      { src: "assets/images/guides/barrel-pants-nb530/slide-06.png", label: "Coffee Date" },
+      { src: "assets/images/guides/barrel-pants-nb530/slide-07.png", label: "Shop the Look" },
+    ],
+    outfitCount: 5,
+    bestFor: "Everyday · Summer · College · Date night",
+    outfits: [
+      {
+        name: "Coastal",
+        when: "Beach days, boardwalk walks, warm-weather travel.",
+        items: [
+          { name: "AIRism Oversized T-Shirt, Gray (Uniqlo)", productId: "uniqlo-airism-tee-gray" },
+          { name: "Barrel Pants, Cream (Uniqlo)", productId: "uniqlo-barrel-pants-cream" },
+          { name: "Round Sunglasses", productId: "sunglasses-round" },
+          { name: "New Balance 530 'Turtledove'", productId: "nb-530-turtledove" },
+        ],
+        why: "A relaxed, airy tee and cream barrel pants keep the whole outfit light and beach-ready; the sunglasses finish the coastal mood.",
+      },
+      {
+        name: "City Minimal",
+        when: "Everyday city errands, coffee runs, casual weekdays.",
+        items: [
+          { name: "Ivory Knit Polo", productId: "ivory-knit-polo" },
+          { name: "Barrel Pants, Brown (Uniqlo)", productId: "uniqlo-barrel-pants-brown" },
+          { name: "Leather Belt, Black", productId: "black-leather-belt" },
+          { name: "New Balance 530 'Turtledove'", productId: "nb-530-turtledove" },
+        ],
+        why: "Ivory and brown share the same warm neutral palette as the shoe's Turtledove upper, so nothing fights for attention.",
+      },
+      {
+        name: "Prep",
+        when: "Campus days, casual Fridays, smart-casual hangouts.",
+        items: [
+          { name: "Light Blue Oxford Shirt", productId: "oxford-shirt" },
+          { name: "Barrel Pants, Cream (Uniqlo)", productId: "uniqlo-barrel-pants-cream" },
+          { name: "Neutral Cap", productId: "cap" },
+          { name: "New Balance 530 'Turtledove'", productId: "nb-530-turtledove" },
+        ],
+        why: "An oxford dresses the barrel pants up just enough for campus or a casual office day without losing the sneaker-first feel.",
+      },
+      {
+        name: "Weekend",
+        when: "Weekend errands, brunch, easy hangouts.",
+        items: [
+          { name: "Lightweight Henley", productId: "lightweight-henley" },
+          { name: "Barrel Pants, Brown (Uniqlo)", productId: "uniqlo-barrel-pants-brown" },
+          { name: "Minimal Watch", productId: "minimal-watch" },
+          { name: "New Balance 530 'Turtledove'", productId: "nb-530-turtledove" },
+        ],
+        why: "A henley is easy and unstructured, brown pants stay grounded, and the watch is the one considered detail that keeps it from looking sloppy.",
+      },
+      {
+        name: "Coffee Date",
+        when: "Coffee dates, casual dinners, low-key evenings.",
+        items: [
+          { name: "Hemp Cotton Blend Knit Polo, Brown (Zara)", productId: "zara-knit-polo-brown" },
+          { name: "Barrel Pants, Cream (Uniqlo)", productId: "uniqlo-barrel-pants-cream" },
+          { name: "Leather Belt, Brown (Mango Man)", productId: "mango-belt-brown" },
+          { name: "New Balance 530 'Turtledove'", productId: "nb-530-turtledove" },
+        ],
+        why: "The knit texture reads a step dressier than a tee, and the brown belt ties back into both the polo and the shoe's warm tones.",
+      },
+    ],
+    styleNotes: [
+      "Keep the palette neutral — cream, brown, ivory, and gray work best with the Turtledove upper.",
+      "Barrel pants add volume on the bottom — balance with a slim or regular top, not another oversized piece.",
+      "A belt is doing real work here — brown or black both read fine against Turtledove, just match your other leather.",
+      "Works best in everyday, summer, campus, and casual date outfits — skip anything suit-level formal.",
+    ],
+    relatedProducts: [
+      "nb-530-turtledove",
+      "uniqlo-barrel-pants-cream",
+      "uniqlo-barrel-pants-brown",
+      "uniqlo-airism-tee-gray",
+      "ivory-knit-polo",
+      "lightweight-henley",
+      "black-leather-belt",
+      "sunglasses-round",
+      "oxford-shirt",
+      "cap",
+      "minimal-watch",
+      "zara-knit-polo-brown",
+      "mango-belt-brown",
+    ],
+    instagramUrl: "", // TODO: paste the Instagram post URL when published
+    publishedDate: "2026-07-11",
+    tags: ["Sneakers", "Everyday", "Summer", "College", "Date night"],
+    comingSoon: false,
+  },
+
   // ---- Upcoming guides (shown as "next up" cards; excluded from search) ----
   {
     id: "coming-soon-1",
