@@ -11,7 +11,7 @@ GitHub issue → Claude implementation → branch → tests → PR → preview �
 1. **GitHub issue** — Every engineering task starts as an issue using the [`Engineering task`](../.github/ISSUE_TEMPLATE/engineering-task.yml) template. It forces the objective, source specification, scope, exclusions, acceptance criteria, validation requirements, risk tier, and whether automatic implementation is allowed to be stated up front — the same information an agent (or a human) needs to avoid the scope-creep and unverified-claim failures already catalogued in `CHANGELOG.md` (e.g. the Guide #3 controller shipping blank, or the `productId` mismatches).
 2. **Claude implementation** — For issues marked "automatic implementation allowed," Claude (or another engineer) implements the change on a new branch, following `CLAUDE.md`, `CONTRIBUTING.md`, and this repo's content-integrity rules.
 3. **Branch** — One branch per issue, named for the change (e.g. `chore/preview-and-automation-foundation`).
-4. **Tests** — `node scripts/validate-content-data.mjs` for any `js/guides.js`/`js/products.js` change, plus manual verification via `./scripts/preview.sh` (see [README.md](../README.md) and `DEVELOPMENT.md`) — this repo has no automated test suite, so a loaded page with a clean console is the actual bar for "done" per `CLAUDE.md`.
+4. **Tests** — `node scripts/validate-content-data.mjs` for any `js/guides.js`/`js/products.js` change, `node scripts/qa-static-site.mjs` for any page/asset/local-link change, plus manual verification via `./scripts/preview.sh` (see [README.md](../README.md) and `DEVELOPMENT.md`) — this repo has no automated test suite, so a loaded page with a clean console is the actual bar for "done" per `CLAUDE.md`.
 5. **PR** — Opened using [`.github/pull_request_template.md`](../.github/pull_request_template.md), which links back to the issue and re-states scope, validation, and risk tier so a reviewer can check the PR against what was actually approved in the issue.
 6. **Preview** — Every push to `main` deploys automatically to GitHub Pages (`.github/workflows/pages.yml`); PR branches can be checked locally with `./scripts/preview.sh` before merge (GitHub Pages previews are configured for `main` only in this milestone — see "Next integration step" below for branch/PR previews).
 7. **Review** — A human (Abraham, or whoever owns the risk tier for that change) reviews the PR against its linked issue's acceptance criteria before merging.
@@ -21,7 +21,7 @@ GitHub issue → Claude implementation → branch → tests → PR → preview �
 
 - `.github/ISSUE_TEMPLATE/engineering-task.yml` — the structured issue form described above.
 - `.github/pull_request_template.md` — the PR checklist described above.
-- `.github/workflows/content-validation.yml` — existing CI, runs `scripts/validate-content-data.mjs` on every PR and push to `main`. Unchanged by this work.
+- `.github/workflows/content-validation.yml` — CI, runs `scripts/validate-content-data.mjs` and `scripts/qa-static-site.mjs` (as separate jobs) on every PR and push to `main`.
 - `.github/workflows/pages.yml` — new. Runs the same content validator, then deploys the repository to GitHub Pages on every push to `main` (or manually via `workflow_dispatch`).
 - `scripts/preview.sh` — local, dependency-free preview server for manual verification before opening a PR.
 

@@ -60,8 +60,9 @@ body:
       label: Validation requirements
       description: >
         How must this be verified before merge? Be concrete: which command(s) to run
-        (e.g. node scripts/validate-content-data.mjs), which pages to load with
-        ./scripts/preview.sh and check in a real browser console, which flows to click through.
+        (e.g. node scripts/validate-content-data.mjs, node scripts/qa-static-site.mjs),
+        which pages to load with ./scripts/preview.sh and check in a real browser console,
+        which flows to click through.
     validations:
       required: true
 

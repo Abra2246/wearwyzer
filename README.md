@@ -13,6 +13,13 @@ Serves the site at `http://localhost:8000` with Python's built-in HTTP server (n
 ## GitHub Pages preview
 Every push to `main` deploys automatically via `.github/workflows/pages.yml`. Preview URL: **https://abra2246.github.io/wearwyzer/**
 
+## Validating before you commit
+```
+node scripts/validate-content-data.mjs   # js/guides.js <-> js/products.js cross-references
+node scripts/qa-static-site.mjs          # local asset/link references in every page
+```
+Both are plain Node, zero dependencies, and run in CI on every PR and push to `main` (`.github/workflows/content-validation.yml`).
+
 ## File map
 - `index.dc.html` — Home (announcement bar text is editable via Tweaks or `js/site-data.js`)
 - `guides.dc.html` — searchable/filterable guide library

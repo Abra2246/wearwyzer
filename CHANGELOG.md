@@ -8,6 +8,23 @@ All notable changes to this project are recorded here.
 ### Removed
 - Dead/orphaned files: `Home.dc.html`, `SiteHeader.dc.html`, `SiteFooter.dc.html`, `js/data.js` (superseded, unreferenced duplicate of `Site Nav`/`Site Footer`/`js/site-data.js`), plus two one-off print-export snapshot files.
 
+## 2026-07-12 — Preview 404s eliminated + static-site QA (issue #7)
+### Fixed
+- `guide-on-cloud-x4.dc.html`, `guide-nb9060.dc.html`, `guide-barrel-pants-nb530.dc.html`: the hero cover image's `loading="eager"` caused the browser to eagerly fetch the raw, unhydrated `<img src="{{ coverImage }}">` template token as a literal URL during the browser's initial native HTML parse (before the dc-runtime replaced it) — every guide page load produced one harmless-but-visible `404` for `/%7B%7B%20coverImage%20%7D%7D`. Changed to `loading="lazy"`, which lets the runtime's hydration win the race before the browser's lazy-load algorithm ever requests the placeholder value; verified the final rendered `<img>` still resolves to the correct cover image and the hero section is visually unchanged. No `support.js`/`image-slot.js` edit was needed or made.
+### Added
+- `favicon.ico` (root, multi-size 16/32/48/64) and `apple-touch-icon.png` (root, 180×180) — generated locally with Pillow from the existing `assets/favicon.png` (no new artwork, no placeholder/fabricated asset). Added `<link rel="apple-touch-icon" href="apple-touch-icon.png">` next to the existing `<link rel="icon">` on all 13 pages that have one, so browsers/iOS "Add to Home Screen" resolve a real icon instead of 404ing on the implicit default path.
+- `scripts/qa-static-site.mjs` — dependency-free Node (ESM) static-asset/link checker, same style as `scripts/validate-content-data.mjs`. Scans every `*.dc.html` page and `index.html` for local `href`/`src` values and `<dc-import name="...">` references and confirms each resolves to a real file, case-sensitively (macOS is case-insensitive by default; GitHub Pages' Linux host is not — this is the same class of bug that produced the dead `SiteHeader.dc.html`/`SiteFooter.dc.html` files removed earlier). Skips dynamic `{{ }}` bindings, which `validate-content-data.mjs` already covers. Documented in `README.md` and `DEVELOPMENT.md`; added to `.github/pull_request_template.md`'s validation checklist.
+- `.github/workflows/content-validation.yml`: new `static-site-qa` job runs `scripts/qa-static-site.mjs` alongside the existing content-data job, on the same PR/push-to-`main` triggers.
+- `.github/workflows/pages.yml`: the `validate` job (which gates the Pages deploy) now also runs `scripts/qa-static-site.mjs`, so a broken static reference blocks deployment the same way a content-data error already does.
+### Verified
+- `node scripts/validate-content-data.mjs` — 0 structural errors (unchanged).
+- `node scripts/qa-static-site.mjs` — 0 broken references across 117 checked local references on 16 pages; sanity-checked the script actually fails by temporarily introducing a case-mismatched path and confirming a non-zero exit, then reverting.
+- `./scripts/preview.sh` + a full headless-Chromium sweep of all 14 site pages (plus the `index.html` redirect): zero console warnings/errors and zero network 404s on every page — down from the pre-existing single `{{ coverImage }}` 404 on each of the 3 guide pages.
+- `favicon.ico` and `apple-touch-icon.png` both return HTTP 200 when requested directly.
+- Re-ran the `/wearwyzer/` GitHub Pages project-path simulation (serving a copy of the repo from a `wearwyzer/` subdirectory): root redirect, favicon, and apple-touch-icon all resolve correctly under that path.
+- Screenshot comparison of the On Cloud X 4 guide's hero section confirms no visual regression from the `loading` attribute change.
+- `.github/workflows/pages.yml` and `.github/workflows/content-validation.yml` parsed with a YAML loader to confirm syntax after edits.
+
 ## 2026-07-11 — Preview and automation foundation
 ### Added
 - `scripts/preview.sh` — dependency-free local preview: starts `python3 -m http.server 8000` and opens `index.dc.html` in the default macOS browser via `open`. Documented in `README.md` and `DEVELOPMENT.md`.
