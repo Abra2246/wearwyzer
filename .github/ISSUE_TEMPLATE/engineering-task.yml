@@ -1,0 +1,91 @@
+name: Engineering task
+description: A scoped engineering task, sized for either a human or an automated implementer (e.g. Claude) to pick up.
+title: "[Task]: "
+labels: ["engineering"]
+body:
+  - type: textarea
+    id: objective
+    attributes:
+      label: Objective
+      description: What outcome does this task need to produce? One or two sentences, stated as an end result, not a to-do list.
+    validations:
+      required: true
+
+  - type: textarea
+    id: source-spec
+    attributes:
+      label: Source specification
+      description: >
+        What in the repo already says this should happen? Link/quote the ROADMAP.md milestone,
+        ARCHITECTURE.md recommendation, docs/TECHNICAL_DEBT.md or ENGINEERING_AUDIT.md item, or
+        other doc this implements. If nothing in the repo covers it yet, say so explicitly and
+        note where it should be documented before implementation starts.
+      placeholder: e.g. ARCHITECTURE.md Recommendation 1, or ROADMAP.md Milestone 4
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope
+      description: Exactly which files or areas this task is allowed to touch.
+    validations:
+      required: true
+
+  - type: textarea
+    id: exclusions
+    attributes:
+      label: Exclusions
+      description: >
+        What this task must NOT touch or attempt, even if related or tempting
+        (e.g. "do not edit support.js/image-slot.js", "do not fix unrelated
+        mismatches found along the way", "do not invent prices or affiliate links").
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance-criteria
+    attributes:
+      label: Acceptance criteria
+      description: A checklist of conditions that must all be true for this task to be considered done.
+      value: |
+        - [ ]
+        - [ ]
+    validations:
+      required: true
+
+  - type: textarea
+    id: validation-requirements
+    attributes:
+      label: Validation requirements
+      description: >
+        How must this be verified before merge? Be concrete: which command(s) to run
+        (e.g. node scripts/validate-content-data.mjs), which pages to load with
+        ./scripts/preview.sh and check in a real browser console, which flows to click through.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: risk-tier
+    attributes:
+      label: Risk tier
+      description: How much blast radius does this task have if it goes wrong?
+      options:
+        - "Low — content/copy only, single page or data entry, no shared files"
+        - "Medium — touches shared chrome (Site Nav/Footer), js/*.js data files, or multiple pages"
+        - "High — touches support.js/image-slot.js, CI/deploy config, legal pages, or pricing/affiliate data"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: auto-implementation
+    attributes:
+      label: May this be implemented automatically (e.g. by Claude) without a human writing the code first?
+      description: >
+        A "Yes" here does not skip human review — see docs/AUTOMATION_WORKFLOW.md. It only
+        signals whether an automated implementer may open the first draft PR.
+      options:
+        - "Yes — automatic implementation allowed; PR still requires human review before merge"
+        - "No — a human must implement, or pair with automation, before a PR is opened"
+    validations:
+      required: true

@@ -4,6 +4,15 @@
 
 **What this is today:** a static, front-end content site and affiliate storefront prototype — no backend, no database, no accounts. See `ENGINEERING_AUDIT.md` for a full audit, `ARCHITECTURE.md` for the incremental plan toward a real platform, and `ROADMAP.md` for milestone sequencing. This file stays focused on day-to-day content editing and deployment.
 
+## Local preview
+```
+./scripts/preview.sh
+```
+Serves the site at `http://localhost:8000` with Python's built-in HTTP server (no npm, no build step) and opens `index.dc.html` in your default browser on macOS. Pass a port as an argument (e.g. `./scripts/preview.sh 3000`) to use something other than 8000. Stop the server with `Ctrl+C` in the terminal it's running in.
+
+## GitHub Pages preview
+Every push to `main` deploys automatically via `.github/workflows/pages.yml`. Preview URL: **https://abra2246.github.io/wearwyzer/**
+
 ## File map
 - `index.dc.html` — Home (announcement bar text is editable via Tweaks or `js/site-data.js`)
 - `guides.dc.html` — searchable/filterable guide library
@@ -46,7 +55,7 @@ In `js/products.js`: set `price` (number), `priceStatus: "confirmed"`, and
 ## Deployment (after exporting to static HTML)
 - **Netlify:** drag the folder into app.netlify.com, or `netlify deploy --prod`. Add a `_redirects` file with `/* /404.html 404` for the 404 page. Contact form can use Netlify Forms (add `data-netlify="true"`).
 - **Vercel:** `vercel --prod` from the folder. 404 works automatically if the file is named `404.html`.
-- **GitHub Pages:** push to a repo, enable Pages on the main branch. `404.html` at the root is picked up automatically.
+- **GitHub Pages:** automated — see "GitHub Pages preview" above. `.github/workflows/pages.yml` deploys on every push to `main`; requires the one-time repo setting described in `docs/AUTOMATION_WORKFLOW.md` (Settings → Pages → Source → GitHub Actions).
 
 ## Repository status
-Not yet pushed to GitHub — GitHub isn't connected to this project. Once connected, a repo named `wearwyzer-platform` (per current engineering direction) can be created and this codebase pushed to `main`.
+Connected to GitHub at `abra2246/wearwyzer`. See `docs/AUTOMATION_WORKFLOW.md` for the issue-driven engineering workflow this repo is set up for.

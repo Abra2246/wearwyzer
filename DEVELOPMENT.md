@@ -3,6 +3,15 @@
 ## Running the site locally
 There is no build step. Every `.dc.html` file is a complete, self-contained page — open it directly in a browser, or serve the folder with any static file server.
 
+The fastest way:
+```
+./scripts/preview.sh
+```
+This starts Python's built-in HTTP server on port 8000 (no npm, no dependencies) and opens `index.dc.html` in your default browser on macOS. Pass a port number as an argument to use something else (`./scripts/preview.sh 3000`). Stop it with `Ctrl+C` in the terminal it's running in.
+
+## Previewing on GitHub Pages
+Every push to `main` deploys automatically via `.github/workflows/pages.yml` to **https://abra2246.github.io/wearwyzer/**. See `docs/AUTOMATION_WORKFLOW.md` for the full issue → PR → preview → merge workflow this is part of.
+
 ## Where content lives
 All editable content is in three files under `js/`:
 - `js/site-data.js` — brand name, tagline, announcement bar, contact email, affiliate disclosure copy, Instagram URL.
