@@ -34,6 +34,19 @@ node scripts/qa-static-site.mjs
 ```
 Also plain Node, zero dependencies. It scans every `*.dc.html` page and `index.html` for local `href`/`src` values and `<dc-import>` names, and confirms each one resolves to a real file — **case-sensitively**, even though this is normally run on macOS (case-insensitive filesystem), because GitHub Pages serves from a case-sensitive Linux host. Dynamic `{{ binding }}` values (resolved at runtime from `js/guides.js`/`js/products.js`) are skipped — that's `scripts/validate-content-data.mjs`'s job, not this script's.
 
+## Validating the Knowledge Graph v1 additive foundation
+Also before committing any change to `js/guides.js` or `js/products.js`, run:
+```
+node scripts/validate-knowledge-graph.mjs
+```
+`data/*.js` is a set of additive modules (brands, retailers, offers, products, outfits, guides, collections, relationships) derived from `js/products.js`/`js/guides.js` at import time — see `docs/KNOWLEDGE_GRAPH_V1.md`. No page reads from `data/*.js` yet, so nothing user-visible depends on this passing, but it's the same guarantee as the two validators above applied to the graph shape: unique ids/slugs, every cross-entity reference resolves, taxonomy/relationship vocabulary is approved, and commerce facts stay unpublished rather than fabricated. Since `data/*.js` is computed from the same two files, this should normally pass whenever `scripts/validate-content-data.mjs` does — a failure here usually points at an edge case in how the graph derives a field (e.g. an outfit item whose `productId` doesn't resolve to a real product), which the error message names directly.
+
+To see how the graph's `data/adapters.js` would reproduce the current `js/products.js`/`js/guides.js` contract (useful before/after any change to how a field is derived), run:
+```
+node scripts/compare-legacy-adapter.mjs
+```
+Report-only — it always exits 0. See `docs/CURRENT_DATA_TO_GRAPH_MAPPING.md` "Intentional adapter differences" for the handful of differences that are expected, and `docs/KNOWLEDGE_GRAPH_MIGRATION.md` for the plan to eventually have a page read from the graph instead of `js/*.js` directly.
+
 ## Adding a new style guide
 1. Duplicate the first object in `js/guides.js`. Fill in every field — `id`, `title`, `slug`, `outfits`, `slideImages`, `tags`, etc.
 2. Add cover + slide images under `assets/images/guides/<id>/`.

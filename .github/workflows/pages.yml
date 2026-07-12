@@ -16,7 +16,7 @@ concurrency:
 
 jobs:
   validate:
-    name: Validate guide/product data integrity
+    name: Validate site and Knowledge Graph data
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -32,6 +32,9 @@ jobs:
 
       - name: Run static-site QA check
         run: node scripts/qa-static-site.mjs
+
+      - name: Run Knowledge Graph validator
+        run: node scripts/validate-knowledge-graph.mjs
 
   build:
     name: Build Pages artifact
