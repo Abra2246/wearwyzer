@@ -8,6 +8,20 @@ All notable changes to this project are recorded here.
 ### Removed
 - Dead/orphaned files: `Home.dc.html`, `SiteHeader.dc.html`, `SiteFooter.dc.html`, `js/data.js` (superseded, unreferenced duplicate of `Site Nav`/`Site Footer`/`js/site-data.js`), plus two one-off print-export snapshot files.
 
+## 2026-07-12 — Guide #1 relationship gaps closed + CI validation
+### Fixed
+- `js/guides.js`: added `cream-tee`, `cap`, `black-trousers`, and `tech-pants` to Guide #1's (On Cloud X 4) `relatedProducts`. All 4 were confirmed genuine, correctly-described members of that guide before being added:
+  - **Everyday Casual outfit (slide 3):** the model visibly wears an oversized cream tee and a plain neutral cap — matches `cream-tee` ("Oversized Cream Tee") and `cap` ("Neutral Cap") exactly, both by garment type and color.
+  - **Date Night outfit (slide 4):** the model wears black tailored trousers — matches `black-trousers` ("Black Tailored Trousers") exactly.
+  - **Travel Day outfit (slide 5):** the model wears black technical jogger-style pants with a zip pocket — matches `tech-pants` ("Black Tech Pants") exactly.
+  All 4 products already declared `featuredInGuides: ["on-cloud-x4", ...]` — only the guide-side `relatedProducts` list was missing them, which is what the validator's asymmetry check caught. No product data was invented; all 4 already existed with accurate names before this change. (Guide #1's "Shop the Look" flat-lay slide, unlike Guide #2's, is only a 5-item preview with "+ MORE OPTIONS" and already omits 2 other already-correct related products — so its absence there was not treated as disqualifying evidence, unlike the definitive, complete flat-lay used to resolve Guide #2's bracelet/cap items.)
+### Added
+- `.github/workflows/content-validation.yml` — runs `node scripts/validate-content-data.mjs` on every pull request targeting `main` and every push to `main`, using `actions/checkout@v4` and `actions/setup-node@v4` (`node-version: lts/*`). The workflow fails automatically whenever the validator exits 1 — no extra failure-handling step needed, since a non-zero exit from a `run:` step already fails the job. No deployment, formatting, or unrelated checks were added.
+### Verified
+- `node scripts/validate-content-data.mjs`: **0 structural errors, 0 warnings** (down from 0 errors / 8 warnings before this change — all 8 were the asymmetry + dangling-anchor warnings for these same 4 products, now fully resolved).
+- Live (local server + headless Chromium): all 4 previously-dangling `#product-*` anchors on `guide-on-cloud-x4.dc.html` now resolve to a visible card with the correct name (`Oversized Cream Tee`, `Neutral Cap`, `Black Tailored Trousers`, `Black Tech Pants`); all 20 "Shop ↓" anchors on the page resolve (up from 16). Full 13-page site sweep (home, guide library, all 3 guides, shop, products, about, contact, 3 legal pages, 404) shows zero new console warnings and no regressions.
+- The workflow YAML was parsed and structurally validated (trigger branches, job/step shape, exact validator command) before committing.
+
 ## 2026-07-12 — Remaining product mismatches resolved + automated content validation
 ### Fixed
 - `js/guides.js`: the last two mismatched guide-item `productId` references from the engineering audit are resolved. Both were investigated using the actual carousel slide images and the guide's own "Shop the Look" flat-lay (slide 7 of `nb9060-zara-polo`), which is the guide's authoritative, price-confirmed shoppable-item list:

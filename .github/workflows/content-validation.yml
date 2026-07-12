@@ -1,0 +1,23 @@
+name: Content data validation
+
+"on":
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  validate-content-data:
+    name: Validate guide/product data integrity
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run content data validator
+        run: node scripts/validate-content-data.mjs
