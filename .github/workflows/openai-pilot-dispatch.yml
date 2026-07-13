@@ -1,0 +1,45 @@
+name: OpenAI Image Renderer Pilot Dispatcher
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without writing job status, the spend ledger, or opening an issue"
+        type: boolean
+        default: true
+      simulate:
+        description: "Force the no-key simulated provider even if OPENAI_API_KEY is configured (no real spend)"
+        type: boolean
+        default: true
+  schedule:
+    - cron: '13 * * * *'
+
+concurrency:
+  group: openai-pilot-dispatcher
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  dispatch:
+    if: github.repository == 'Abra2246/wearwyzer'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run the next approved OpenAI-hybrid guide job
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          node scripts/openai-renderer-cli.mjs \
+            ${{ inputs.dry_run == false && ' ' || '--dry-run' }} \
+            ${{ inputs.simulate == false && ' ' || '--simulate' }}
