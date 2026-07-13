@@ -11,7 +11,7 @@ function fakeFetch(responses) {
   };
 }
 
-test('checkRoute passes for a healthy 200 page with a title and no unresolved bindings', async () => {
+test('checkRoute passes for a healthy 200 page with a title', async () => {
   const fetchImpl = fakeFetch({ '/': { status: 200, body: '<html><head><title>Home</title></head></html>' } });
   const result = await checkRoute('https://example.com', '/', { fetchImpl });
   assert.equal(result.ok, true);
@@ -32,13 +32,13 @@ test('checkRoute fails when the page is missing a <title>', async () => {
   assert.ok(result.problems.some((p) => p.includes('title')));
 });
 
-test('checkRoute fails when an unresolved {{ }} binding leaks into rendered HTML', async () => {
+test('checkRoute does not treat raw dc-runtime bindings as a fetch-only production failure', async () => {
   const fetchImpl = fakeFetch({
-    '/guide.html': { status: 200, body: '<html><head><title>Guide</title></head><body>{{ verdict }}</body></html>' },
+    '/guide.dc.html': { status: 200, body: '<html><head><title>Guide</title></head><body>{{ verdict }}</body></html>' },
   });
-  const result = await checkRoute('https://example.com', '/guide.html', { fetchImpl });
-  assert.equal(result.ok, false);
-  assert.ok(result.problems.some((p) => p.includes('unresolved binding')));
+  const result = await checkRoute('https://example.com', '/guide.dc.html', { fetchImpl });
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.problems, []);
 });
 
 test('checkRoute reports a fetch failure without throwing', async () => {
