@@ -1,0 +1,42 @@
+name: Deploy Health Check
+
+on:
+  workflow_run:
+    workflows: ["Deploy to GitHub Pages"]
+    types: [completed]
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without opening an incident issue"
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy-health-check
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  check:
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run post-deploy health check
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/deploy-health-check-cli.mjs \
+            --base-url "https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}" \
+            --sha "${{ github.event.workflow_run.head_sha || github.sha }}" \
+            ${{ inputs.dry_run == true && '--dry-run' || '' }}
