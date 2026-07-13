@@ -122,6 +122,42 @@ no real network call — this environment's own permitted tool allowlist has no 
 is outside this change's permitted scope — see `docs/AUTOMATION_WORKFLOW.md` activation
 checklist).
 
+## Decision — Style Guides folder importer v1 (issue #34)
+**Current state:** issue #17 shipped a deterministic guide-manifest → PR pipeline (the guide
+factory) but no way to feed it from anything other than a hand-authored manifest;
+`automation/guide-jobs/` ships intentionally empty. Issue #34 asked to import a `Style Guides`
+source folder into that pipeline.
+**Problem / scope note:** the actual inventory (run before any conversion code was written —
+working tree, `git log --all`, and every one of this repo's 19 branches) found **no directory
+named `Style Guides` (or any variant) anywhere in this repository — 0 files, 0 formats.**
+Fabricating source content to demonstrate an importer would violate `CLAUDE.md`'s
+content-integrity rule the same way inventing a guide manifest would have for issue #17, so
+this change ships the importer as real, tested infrastructure proven against an isolated
+fixture universe instead of against invented "real" content. See
+`docs/STYLE_GUIDE_IMPORTER_V1.md` §1 for the full inventory finding and evidence.
+**Proposed solution (what shipped):** `scripts/style-guide-importer.mjs` (pure: format
+classification, structured-source → draft-manifest conversion, exact-duplicate check against
+canonical `js/guides.js`, and full validation reusing `scripts/guide-manifest-schema.mjs`
+verbatim) plus `scripts/style-guide-importer-cli.mjs` (the only I/O: scans the real `Style
+Guides/` directory if one ever exists, writes `status: "draft"` manifests to
+`automation/guide-jobs/` — never `"approved"`, matching that directory's existing
+human-promotion lifecycle — and a provenance/disposition report to
+`automation/status/style-guide-import-report.json`). `scripts/simulate-style-guide-import.mjs`
+proves the importer's draft-manifest output composes end-to-end with the existing guide
+factory. Does **not** add a new `data/*.js` write path — see that doc §6 for why doing so here
+would jump `docs/KNOWLEDGE_GRAPH_MIGRATION.md`'s explicit Phase 0 → Phase 1 sequencing.
+**Benefit:** the moment a real `Style Guides` folder is added, running the CLI does real,
+useful, non-destructive work against it (classify, dedup, draft, report) with zero further
+code changes for the common cases — while every fact-integrity rule this repo already enforces
+for hand-authored or guide-factory-generated content applies identically to imported content.
+**Migration effort:** additive; does not touch `js/guides.js`, `js/products.js`, `data/*.js`,
+any `.dc.html` page, or any existing asset under `assets/images/guides/`.
+**Priority:** N/A — shipped as scoped by issue #34 (high risk, per the issue's own risk tier).
+Stops before merge; no real source content existed to import, so no draft manifest was
+actually written to `automation/guide-jobs/` in this repository as of this change (confirmed by
+running the CLI live — see `docs/STYLE_GUIDE_IMPORTER_V1.md` §8); does not activate any new
+scheduled workflow.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
