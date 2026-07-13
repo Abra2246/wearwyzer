@@ -189,6 +189,17 @@ export function runGuideFactoryJob(manifest, {
   existingGuides = [],
   rendererMode,
   rendererProviderConfig = null,
+  // Optional pre-rendered assets (issue #18): scripts/openai-hybrid-renderer.mjs's
+  // provider calls are async (real network I/O), while this pipeline stays a
+  // synchronous, pure function like every other collaborator here. A caller
+  // that needs OpenAI-hybrid slides awaits that renderer first and passes the
+  // result through this parameter instead of through the synchronous
+  // renderSlides() call below — same renderedAssets shape either way, so
+  // every downstream check (content quality policy, asset naming) applies
+  // identically regardless of which renderer produced them. Default (null)
+  // preserves the exact existing synchronous behavior for every caller that
+  // doesn't pass it.
+  precomputedRenderedAssets = null,
   now,
 } = {}) {
   const resolvedRendererMode = rendererMode || (manifest.assets && manifest.assets.rendererMode) || 'deterministic-template';
@@ -210,7 +221,8 @@ export function runGuideFactoryJob(manifest, {
   const guideRecord = buildGuideRecord(manifest);
   const productRecords = buildNewProductRecords(manifest, guideRecord);
   const slideSpecs = generateSlideSpecs(manifest);
-  const renderedAssets = renderSlides(slideSpecs, { mode: resolvedRendererMode, providerConfig: rendererProviderConfig });
+  const renderedAssets =
+    precomputedRenderedAssets || renderSlides(slideSpecs, { mode: resolvedRendererMode, providerConfig: rendererProviderConfig });
   const metadata = generateMetadata(manifest, guideRecord);
 
   const rendererBlocked = renderedAssets.some((a) => a.status !== 'rendered');

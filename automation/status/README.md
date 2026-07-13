@@ -12,6 +12,13 @@ for the six categories that count as an exception).
 passed the post-deploy health check — the rollback planner
 (`scripts/rollback.mjs`) uses it to know what a safe revert target is.
 
+`openai-spend.jsonl` (created on first write by `scripts/openai-spend-ledger.mjs`,
+via `scripts/openai-renderer-cli.mjs`) is the append-only spend ledger issue #18
+section 6 requires: one JSON object per line, `{ guideId, timestampIso, costUsd,
+accepted, stage, slideOrder }`. `scripts/openai-cost-controls.mjs`'s
+`evaluateBudget`/`evaluateAttempt` read it to enforce the per-guide and monthly
+spend caps before any generation call is made.
+
 ## Reading the log
 
 ```
@@ -22,6 +29,7 @@ prints a daily-digest-style markdown summary (`scripts/status-log.mjs`
 `summarizeDaily`/`renderDailyDigestMarkdown`) — counts by type, plus every
 exception event verbatim. No dependencies, no network access.
 
-Both files are automation-generated and intentionally start absent from
+All three files are automation-generated and intentionally start absent from
 version control in this change; they are populated the first time the
-corresponding CLI runs against a real deployment.
+corresponding CLI runs against a real deployment (or, for `openai-spend.jsonl`,
+a real non-dry-run OpenAI renderer job).
