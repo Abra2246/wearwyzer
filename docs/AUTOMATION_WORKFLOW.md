@@ -142,6 +142,49 @@ branch/staged-file shapes.
    `pull-requests: read`).
 3. No new label required — reuses the existing label contract.
 
+## OpenAI Images API renderer (issue #18)
+
+`docs/OPENAI_IMAGE_RENDERER_V1.md` is the canonical spec for the OpenAI Images API provider
+adapter, prompt compiler, hybrid (generative + deterministic) rendering architecture, reference
+preservation/visual QA, asset pipeline, and cost/rate controls layered on top of the guide
+factory (issue #17). Summary of what's implemented:
+
+- `scripts/openai-image-provider.mjs` — fail-closed OpenAI Images API adapter; reads
+  `OPENAI_API_KEY` from the environment only, never logs it.
+- `scripts/openai-prompt-compiler.mjs`, `scripts/openai-cost-controls.mjs`,
+  `scripts/reference-preservation-check.mjs`, `scripts/openai-asset-pipeline.mjs` — pure,
+  unit-tested collaborators (prompt versioning, budget/attempt gating, conservative
+  needs-human-by-default visual QA, asset naming/checksums).
+- `scripts/openai-hybrid-renderer.mjs` — the async orchestration layer; produces the same
+  `{ slideOrder, mode, format, status, content }` shape `scripts/guide-renderer-adapter.mjs`'s
+  synchronous `renderSlides()` does, fed into `scripts/guide-factory.mjs`'s `runGuideFactoryJob`
+  via its new, additive `precomputedRenderedAssets` parameter (default `null` — every existing
+  caller/test is unaffected).
+- `scripts/openai-renderer-cli.mjs` — the I/O boundary: env-only key, automatic simulate-mode
+  fallback when no key is present, persists the spend ledger
+  (`automation/status/openai-spend.jsonl`, same append-only pattern as `events.jsonl`).
+- Proven end-to-end against an isolated fixture (never real site content, no real network call,
+  $0 real spend) with `node scripts/simulate-openai-pilot.mjs`.
+
+### Testing
+```
+node --test scripts/__tests__/*.test.mjs
+node scripts/simulate-openai-pilot.mjs
+```
+
+### Activation checklist (in addition to issue #16/#17's)
+1. Copy `docs/automation/workflows/openai-pilot-dispatch.yml` into `.github/workflows/` (same
+   workflow-edit-permission constraint as every prior issue — Claude's GitHub App token cannot
+   do this itself).
+2. Confirm the `OPENAI_API_KEY` repository secret referenced in issue #18's own comment thread
+   exists and is scoped to this workflow only.
+3. Author a real, `approved` guide job manifest with `assets.rendererMode: 'openai-hybrid'`
+   under `automation/guide-jobs/` once real, verified product/reference-image facts exist for
+   it — none ship in this change, same reasoning as issue #17's guide manifests.
+4. Leave the workflow's `simulate` input at its default (`true`) until a maintainer has reviewed
+   at least one real `needs-human` (or `ready-for-pr`, once a vision-QA pass exists) result from
+   a live run.
+
 ## One-time GitHub repository settings required
 
 - **Settings → Pages → Build and deployment → Source**: set to **GitHub Actions** (not "Deploy from a branch"). Without this, `.github/workflows/pages.yml` will fail at the `actions/deploy-pages` step with a permissions/configuration error.

@@ -1,0 +1,70 @@
+# STAGED WORKFLOW — not active. See dispatch-queue.yml in this directory
+# for why (Claude's GitHub App token cannot write to .github/workflows/).
+# Copy this file to .github/workflows/openai-pilot-dispatch.yml to
+# activate it. See docs/OPENAI_IMAGE_RENDERER_V1.md for the full spec and
+# activation checklist.
+#
+# Secure-by-construction boundaries (issue #18 section 7):
+#   - No `pull_request`/`pull_request_target` trigger of any kind — a
+#     forked PR can never see OPENAI_API_KEY through this workflow.
+#   - Only `workflow_dispatch` (manual) and a conservative schedule, both
+#     of which only ever run against this repository's own `main` branch
+#     context — never a fork's.
+#   - `dry_run` defaults to true; `simulate` defaults to true. A real,
+#     spend-incurring run requires a maintainer to explicitly flip both
+#     inputs to false when manually dispatching.
+#   - The key is read only via `secrets.OPENAI_API_KEY` into an `env:`
+#     var for the one step that needs it — never printed, echoed, or
+#     written into an artifact/log by this workflow.
+
+name: OpenAI Image Renderer Pilot Dispatcher
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without writing job status, the spend ledger, or opening an issue"
+        type: boolean
+        default: true
+      simulate:
+        description: "Force the no-key simulated provider even if OPENAI_API_KEY is configured (no real spend)"
+        type: boolean
+        default: true
+  schedule:
+    # Conservative, same cadence family as the guide factory dispatcher —
+    # never more than one job claimed per run.
+    - cron: '13 * * * *'
+
+concurrency:
+  group: openai-pilot-dispatcher
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  dispatch:
+    # Belt-and-suspenders alongside the trigger list above: refuse to run
+    # at all against anything but this repository's own ref, so a
+    # workflow_run/fork edge case can never reach this job with a forked
+    # checkout.
+    if: github.repository == 'Abra2246/wearwyzer'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run the next approved OpenAI-hybrid guide job
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: |
+          node scripts/openai-renderer-cli.mjs \
+            ${{ inputs.dry_run == false && ' ' || '--dry-run' }} \
+            ${{ inputs.simulate == false && ' ' || '--simulate' }}

@@ -78,6 +78,50 @@ Shared UI (`Site Nav.dc.html`, `Site Footer.dc.html`) is composed into every pag
 **Migration effort:** Low — additive scripts plus one staged workflow file; no change to `scripts/queue-rules.mjs`'s existing PR-sync/auto-merge logic, which still owns everything once a non-draft PR exists.
 **Priority:** N/A — shipped as scoped by issue #22 (medium risk). Stops before merge; does not activate any new scheduled workflow (`.github/workflows/` is outside this change's permitted scope — see `docs/AUTOMATION_WORKFLOW.md` activation checklist).
 
+## Decision — OpenAI Images API renderer pilot (issue #18)
+**Current state:** issue #17 shipped a deterministic SVG renderer as the guide factory's only
+working slide renderer, plus an inert `external-provider` interface in
+`scripts/guide-renderer-adapter.mjs` that always reports `blocked` because no image-generation
+credential or implementation existed yet — a deliberate scope boundary at the time, not a gap.
+**Problem / scope note:** this epic asks for a real, paid, external generative image provider
+(OpenAI Images API) wired in for editorial/outfit photography specifically, while keeping every
+piece of final typography (headlines, prices, product lists, logos, slide numbers) deterministic
+— never asking the image model to typeset the carousel — and never accepting a generated image
+automatically without either a real vision-QA pass (not available in this dependency-free repo)
+or a human review step.
+**Proposed solution (what shipped):** `scripts/openai-image-provider.mjs` (fail-closed adapter,
+env-only key, never logged), `scripts/openai-prompt-compiler.mjs` (versioned, editorial-imagery-
+only prompts — a separate `compileFinalLayoutPrompt()` exists solely to assert that layer never
+goes to the image model), `scripts/openai-cost-controls.mjs` (budget/attempt/backoff gating
+against the approved pilot defaults — $0.30/guide, $30/month, 2 attempts, 3 accepted images),
+`scripts/reference-preservation-check.mjs` (conservative rule-based QA that defaults every
+pixel-level category to `needs-human` rather than guess, since no vision-model dependency exists
+here — a documented, honest limitation with a clear extension point), `scripts/openai-asset-
+pipeline.mjs` (checksummed, separately-pathed source vs. final assets), and
+`scripts/openai-hybrid-renderer.mjs` — the async orchestration layer that produces the exact
+same `{ slideOrder, mode, format, status, content }` shape `scripts/guide-renderer-adapter.mjs`'s
+existing synchronous `renderSlides()` does. That adapter's own design (issue #17) is
+intentionally synchronous and network-free, and every existing test assumes a plain synchronous
+return value, so this epic does not force async network I/O through it; instead
+`scripts/guide-factory.mjs`'s `runGuideFactoryJob` gained one additive parameter
+(`precomputedRenderedAssets`, default `null`) so a caller can supply hybrid-rendered assets
+through the identical downstream contract (content quality policy, asset naming/existence) —
+same consumer, same gates, different (necessarily async) producer. See
+`docs/OPENAI_IMAGE_RENDERER_V1.md` for the full spec.
+**Benefit:** a real generative-imagery path exists behind every safety property the epic asked
+for — fail-closed credentials, cost/rate caps, conservative visual QA, deterministic final
+typography — without touching a single existing test or the guide factory's synchronous
+contract.
+**Migration effort:** additive throughout. Wiring a real vision-model review pass to replace the
+conservative `needs-human` default in `reference-preservation-check.mjs` is a deliberately
+separate future decision — the `visionSignals` extension point already exists for it.
+**Priority:** N/A — shipped as scoped by issue #18 (high risk, per the issue's own risk tier).
+Stops before merge; the pilot ran in simulation only (an injected fake provider, $0 real spend,
+no real network call — this environment's own permitted tool allowlist has no egress to
+`api.openai.com` regardless); does not activate any new scheduled workflow (`.github/workflows/`
+is outside this change's permitted scope — see `docs/AUTOMATION_WORKFLOW.md` activation
+checklist).
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
