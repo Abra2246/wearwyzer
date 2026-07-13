@@ -1,0 +1,30 @@
+name: Automation Queue Mark Failed
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Issue number to mark automation-failed / needs-human"
+        required: true
+      reason:
+        description: "Why the run could not complete"
+        required: true
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  mark-failed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Mark issue automation-failed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/queue-pr-state.mjs mark-failed \
+            --issue "${{ inputs.issue_number }}" \
+            --reason "${{ inputs.reason }}"
