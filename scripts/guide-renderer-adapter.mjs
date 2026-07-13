@@ -19,7 +19,11 @@
 
 export const RENDERER_MODES = Object.freeze(['deterministic-template', 'external-provider']);
 
-const PALETTE = Object.freeze({
+// Exported (additive — no existing behavior changes) so other
+// deterministic-overlay renderers, e.g. scripts/openai-hybrid-renderer.mjs
+// (issue #18), can stay visually consistent with this one without
+// duplicating the palette or the escaping helper.
+export const PALETTE = Object.freeze({
   cream: '#F6F1E8',
   surface: '#FFFDF8',
   ink: '#0B0B0B',
@@ -28,7 +32,7 @@ const PALETTE = Object.freeze({
   accent: '#C8941E',
 });
 
-function escapeXml(value) {
+export function escapeXml(value) {
   return String(value ?? '')
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')

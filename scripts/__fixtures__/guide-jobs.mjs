@@ -157,3 +157,27 @@ export const FABRICATED_PRICE_MANIFEST = baseManifest({
     },
   ],
 });
+
+// Issue #18 pilot fixture: 5 slides matching the approved pilot defaults
+// (slide 1 cover + slide 5 shop-the-looks summary stay deterministic-
+// template; slides 2-4 are editorial outfit imagery for the OpenAI hybrid
+// renderer). Same fixture universe as every manifest above — never
+// touches real site content.
+export const OPENAI_PILOT_HERO_PRODUCT = Object.freeze({
+  id: 'fx-hero-jacket-b',
+  name: 'Fixture Weatherproof Trail Shell',
+  colorway: 'moss green',
+  involvesHero: true,
+});
+
+export const OPENAI_PILOT_MANIFEST = baseManifest({
+  jobId: 'fx-openai-pilot-guide',
+  slides: [
+    { order: 1, label: 'Cover', copy: 'One jacket, five ways to wear it.', altText: 'Cover slide for the jacket guide.' },
+    { order: 2, label: 'Office Commute', copy: 'Shell over a crew tee and straight jeans.', altText: 'Office commute outfit slide.' },
+    { order: 3, label: 'Weekend Errands', copy: 'Shell, cap, and straight jeans.', altText: 'Weekend errands outfit slide.' },
+    { order: 4, label: 'Evening Walk', copy: 'Shell over a crew tee with a cap.', altText: 'Evening walk outfit slide.' },
+    { order: 5, label: 'Shop The Looks', copy: 'Every piece from this guide, ready to shop.', altText: 'Summary slide listing every shoppable product from the guide.' },
+  ],
+  assets: { rendererMode: 'openai-hybrid' },
+});
