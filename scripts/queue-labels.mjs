@@ -38,6 +38,11 @@ export const LABEL_CONTRACT = [
     description: 'Tracked by the autonomous engineering queue (docs/AUTONOMOUS_ENGINEERING_V1.md).',
   },
   {
+    name: 'site-incident',
+    color: 'B60205',
+    description: 'Production health check failed. Suspends the queue until resolved (docs/AUTONOMOUS_GUIDE_FACTORY_V1.md).',
+  },
+  {
     name: 'risk-low',
     color: 'C2E0C6',
     description: 'Low blast radius — eligible for the guarded low-risk auto-merge path.',

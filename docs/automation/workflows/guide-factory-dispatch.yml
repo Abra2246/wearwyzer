@@ -1,0 +1,45 @@
+# STAGED WORKFLOW — not active. See dispatch-queue.yml in this directory
+# for why (Claude's GitHub App token cannot write to .github/workflows/).
+# Copy this file to .github/workflows/guide-factory-dispatch.yml to
+# activate it. See docs/AUTONOMOUS_GUIDE_FACTORY_V1.md for the full
+# activation checklist and what this dispatches.
+
+name: Guide Factory Dispatcher
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without writing job status or opening an issue"
+        type: boolean
+        default: false
+  schedule:
+    # Conservative, same cadence as the engineering queue dispatcher —
+    # never more than one job claimed per run either way.
+    - cron: '47 * * * *'
+
+concurrency:
+  group: guide-factory-dispatcher
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run the next approved guide job
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/guide-factory-cli.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}

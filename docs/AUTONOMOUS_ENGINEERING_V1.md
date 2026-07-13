@@ -82,5 +82,8 @@ Every dispatch or failure must leave a GitHub comment with:
 - next expected event
 - blocking reason when applicable
 
+## Incident suspension (issue #17)
+An open `site-incident` issue (opened automatically by `scripts/deploy-health-check-cli.mjs` when a post-deploy health check fails) suspends this entire queue — `canDispatch()` in `scripts/queue-rules.mjs` checks it before every other gate, ahead of in-progress work or open PRs. This applies to every kind of work the queue dispatches (engineering issues, site upgrades, guide factory jobs alike). See `docs/AUTONOMOUS_GUIDE_FACTORY_V1.md` §4 and `docs/INCIDENT_RUNBOOK.md` for the full contract and human response procedure.
+
 ## Source of truth
 GitHub labels and issue bodies are the execution source of truth. Notion remains the strategic Book of Truth. Major workflow changes must be mirrored in both.

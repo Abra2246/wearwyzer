@@ -45,6 +45,41 @@ test('active work prevents dispatch: open automation-managed PR blocks', () => {
   assert.match(gate.reason, /#9/);
 });
 
+// -- site-incident suspends the queue ---------------------------------------
+
+test('open site-incident issue suspends dispatch even with no other active work', () => {
+  const gate = canDispatch({ inProgressIssues: [], openAutomationManagedPrs: [], openIncidentIssues: [{ number: 42 }] });
+  assert.equal(gate.allowed, false);
+  assert.match(gate.reason, /site-incident/);
+  assert.match(gate.reason, /#42/);
+});
+
+test('open site-incident issue takes priority over an in-progress issue in the reported reason', () => {
+  const gate = canDispatch({
+    inProgressIssues: [{ number: 5 }],
+    openAutomationManagedPrs: [],
+    openIncidentIssues: [{ number: 42 }],
+  });
+  assert.equal(gate.allowed, false);
+  assert.match(gate.reason, /#42/);
+});
+
+test('planDispatch is a noop when an incident issue is open, even with an eligible ready issue', () => {
+  const plan = planDispatch({
+    inProgressIssues: [],
+    openAutomationManagedPrs: [],
+    openIncidentIssues: [{ number: 42 }],
+    readyIssues: [READY_LOW_RISK_ISSUE],
+  });
+  assert.equal(plan.type, 'noop');
+  assert.match(plan.reason, /site-incident/);
+});
+
+test('no open incident issues does not block dispatch', () => {
+  const gate = canDispatch({ inProgressIssues: [], openAutomationManagedPrs: [], openIncidentIssues: [] });
+  assert.equal(gate.allowed, true);
+});
+
 // -- malformed issue rejected -------------------------------------------
 
 test('malformed issue rejected: missing acceptance criteria section', () => {

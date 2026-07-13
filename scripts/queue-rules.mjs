@@ -9,6 +9,12 @@
 
 export const RISK_LABELS = ['risk-low', 'risk-medium', 'risk-high'];
 
+// Label a deployment-health-check failure adds to the incident issue it
+// opens (scripts/deploy-health-check.mjs, scripts/rollback.mjs). Any open
+// issue carrying this label suspends the whole dispatcher — see
+// docs/AUTONOMOUS_GUIDE_FACTORY_V1.md §4.
+export const INCIDENT_LABEL = 'site-incident';
+
 // Mirrors the required textarea labels in
 // .github/ISSUE_TEMPLATE/engineering-task.yml, lower-cased, as they render
 // in the issue body ("### <label>").
@@ -140,8 +146,20 @@ export function selectNextIssue(issues) {
   };
 }
 
-/** Can the dispatcher run at all, or does active work already occupy the queue? */
-export function canDispatch({ inProgressIssues = [], openAutomationManagedPrs = [] } = {}) {
+/**
+ * Can the dispatcher run at all, or does active work already occupy the
+ * queue? An open `site-incident` issue always takes priority over every
+ * other gate and suspends dispatch entirely, regardless of in-progress
+ * work or open PRs — a production incident must be resolved by a human
+ * before any further automated change goes out (issue #17 §4).
+ */
+export function canDispatch({ inProgressIssues = [], openAutomationManagedPrs = [], openIncidentIssues = [] } = {}) {
+  if (openIncidentIssues.length > 0) {
+    return {
+      allowed: false,
+      reason: `queue suspended: open "${INCIDENT_LABEL}" issue #${openIncidentIssues[0].number} must be resolved first`,
+    };
+  }
   if (inProgressIssues.length > 0) {
     return { allowed: false, reason: `issue #${inProgressIssues[0].number} is already "in-progress"` };
   }
@@ -159,8 +177,8 @@ export function canDispatch({ inProgressIssues = [], openAutomationManagedPrs = 
  * plan is identical for a dry run and a live run; only the caller decides
  * whether to execute it.
  */
-export function planDispatch({ inProgressIssues, openAutomationManagedPrs, readyIssues }) {
-  const gate = canDispatch({ inProgressIssues, openAutomationManagedPrs });
+export function planDispatch({ inProgressIssues, openAutomationManagedPrs, openIncidentIssues, readyIssues }) {
+  const gate = canDispatch({ inProgressIssues, openAutomationManagedPrs, openIncidentIssues });
   if (!gate.allowed) {
     return { type: 'noop', reason: gate.reason };
   }
