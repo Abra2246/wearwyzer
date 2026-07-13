@@ -185,6 +185,41 @@ node scripts/simulate-openai-pilot.mjs
    at least one real `needs-human` (or `ready-for-pr`, once a vision-QA pass exists) result from
    a live run.
 
+## Mission Control ops dashboard (issue #19)
+
+`docs/OPS_DASHBOARD_V1.md` is the canonical spec for a read-only, mobile-first status
+dashboard over everything above — queue depth, active issue/PR, CI, deployment health,
+guide factory, OpenAI image renderer budget, and incident state. Summary of what's
+implemented:
+
+- `scripts/ops-status-schema.mjs`, `scripts/ops-status-builder.mjs` — pure, unit-tested
+  schema (closed shape + secret-like-value scan) and status-document assembly. See
+  `scripts/__tests__/ops-status-schema.test.mjs` / `ops-status-builder.test.mjs`.
+- `scripts/ops-status-cli.mjs` — reads local automation artifacts plus (when
+  `GITHUB_TOKEN` is available) live queue/CI state, and writes `ops/status.json` —
+  refusing to write anything that fails schema or secret-scan validation first.
+- `ops.dc.html` — the dashboard itself. `noindex, nofollow`, not linked from
+  `Site Nav.dc.html`/`Site Footer.dc.html`, `robots.txt`-disallowed. Polls
+  `ops/status.json` every 60 seconds and visually distinguishes stale data from a healthy
+  idle state.
+- `docs/automation/workflows/ops-status-refresh.yml` — staged, not active. Unlike every
+  other staged workflow in this repo, it needs `contents: write` to commit the refreshed
+  `ops/status.json` directly to `main` — see `docs/OPS_DASHBOARD_V1.md` "Why the status
+  artifact is committed, not published some other way" before activating it.
+
+### Testing
+```
+node --test scripts/__tests__/*.test.mjs
+node scripts/ops-status-cli.mjs --dry-run
+```
+
+### Activation checklist (in addition to issue #16/#17/#18/#22's)
+1. Read `docs/automation/workflows/ops-status-refresh.yml`'s header comment — it carries a
+   different permission/trust shape (`contents: write`, direct-to-`main` commit) than every
+   other staged workflow here.
+2. Copy `docs/automation/workflows/ops-status-refresh.yml` into `.github/workflows/`.
+3. No new label required.
+
 ## One-time GitHub repository settings required
 
 - **Settings → Pages → Build and deployment → Source**: set to **GitHub Actions** (not "Deploy from a branch"). Without this, `.github/workflows/pages.yml` will fail at the `actions/deploy-pages` step with a permissions/configuration error.

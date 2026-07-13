@@ -1,5 +1,10 @@
 User-agent: *
 Allow: /
+# Internal ops dashboard (issue #19) — unlinked from public nav, also
+# carries its own <meta name="robots" content="noindex, nofollow">.
+# Disallow here is defense in depth, not the access control itself.
+Disallow: /ops.dc.html
+Disallow: /ops/
 
 # TODO: replace with your real domain before launch
 Sitemap: https://www.wearwyzer.com/sitemap.xml
