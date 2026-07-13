@@ -60,9 +60,50 @@ The queue's logic ships in this PR; making it run on a schedule requires a maint
 
 ### Testing
 ```
-node --test scripts/__tests__/
+node --test scripts/__tests__/*.test.mjs
 ```
 Zero dependencies, deterministic, fixture-driven (`scripts/__tests__/fixtures.mjs`) — no network access, no mutation of the real repo. Covers: no eligible issue, active work blocking dispatch, malformed-issue rejection, risk-high rejection, deterministic priority ordering, exactly-one-issue-per-dispatch, dry-run-causes-no-mutation, protected-path detection, and the merge gate defaulting to `false`.
+
+## Guide factory & site health (issue #17)
+
+`docs/AUTONOMOUS_GUIDE_FACTORY_V1.md` is the canonical spec for the autonomous guide
+manifest/pipeline, deployment health/rollback, and notification-by-exception contract built
+on top of the queue above. Summary of what's implemented as of issue #17:
+
+- `scripts/guide-manifest-schema.mjs`, `scripts/guide-factory.mjs`,
+  `scripts/guide-renderer-adapter.mjs`, `scripts/content-quality-policy.mjs`,
+  `scripts/guide-page-template.mjs` — the pure guide factory pipeline. Proven end-to-end
+  against an isolated fixture (never real site content) with `node
+  scripts/simulate-guide-factory.mjs`.
+- `scripts/guide-factory-cli.mjs` — reads `automation/guide-jobs/*.json`, runs the pipeline
+  against the live `data/products.js`/`js/guides.js` snapshot, and either prints a
+  `ready-for-pr` evidence bundle or marks the job `needs-human` in place.
+- `scripts/deploy-health-check.mjs` / `scripts/rollback.mjs` / `scripts/deploy-health-check-cli.mjs`
+  — post-deploy route health checks and a reviewable-PR-only rollback plan. See
+  `docs/INCIDENT_RUNBOOK.md` for the human response procedure.
+- `scripts/notify-exception.mjs` / `scripts/status-log.mjs` / `scripts/record-status-event.mjs`
+  — the six-category notification-by-exception contract and the dashboard-ready
+  `automation/status/events.jsonl` log for everything else.
+- `scripts/queue-rules.mjs`'s `canDispatch()` now also suspends the entire queue (not just
+  guide jobs) while any `site-incident` issue is open — extending, not replacing, issue #16's
+  queue.
+
+### Testing
+```
+node --test scripts/__tests__/*.test.mjs
+node scripts/simulate-guide-factory.mjs
+```
+
+### Activation checklist (in addition to issue #16's)
+1. Copy `docs/automation/workflows/guide-factory-dispatch.yml` and
+   `docs/automation/workflows/deploy-health-check.yml` into `.github/workflows/` (same
+   workflow-edit-permission constraint as issue #16 — Claude's GitHub App token cannot do
+   this itself).
+2. Run `node scripts/queue-labels.mjs` again (or once more via its workflow) to create the
+   new `site-incident` label — it's already added to `LABEL_CONTRACT`.
+3. Author a real, `approved` guide job manifest under `automation/guide-jobs/` once real,
+   verified product/source facts exist for it — none ship in this change (see that
+   directory's own `README.md` for why).
 
 ## One-time GitHub repository settings required
 

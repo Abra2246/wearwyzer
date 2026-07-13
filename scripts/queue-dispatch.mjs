@@ -13,7 +13,7 @@
 // secret is introduced — this uses the workflow's own GITHUB_TOKEN.
 
 import { clientFromEnv } from './queue-github-client.mjs';
-import { planDispatch } from './queue-rules.mjs';
+import { planDispatch, INCIDENT_LABEL } from './queue-rules.mjs';
 
 export function buildDispatchComment({ issue, riskTier, reason }) {
   return [
@@ -31,12 +31,13 @@ export function buildDispatchComment({ issue, riskTier, reason }) {
 }
 
 export async function loadState(client) {
-  const [inProgressIssues, openAutomationManagedPrs, readyIssues] = await Promise.all([
+  const [inProgressIssues, openAutomationManagedPrs, readyIssues, openIncidentIssues] = await Promise.all([
     client.listOpenIssuesWithLabel('in-progress'),
     client.listOpenPullRequestsWithLabel('automation-managed'),
     client.listOpenIssuesWithLabel('ready'),
+    client.listOpenIssuesWithLabel(INCIDENT_LABEL),
   ]);
-  return { inProgressIssues, openAutomationManagedPrs, readyIssues };
+  return { inProgressIssues, openAutomationManagedPrs, readyIssues, openIncidentIssues };
 }
 
 export async function dispatch(client, { dryRun = false } = {}) {
