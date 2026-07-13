@@ -56,6 +56,9 @@
           <div style="display:flex;flex-wrap:wrap;gap:12px">
             <a href="#shop-the-look" style="background:#0B0B0B;color:#F6F1E8;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:15px 26px" style-hover="background:#C8941E;color:#0B0B0B">Shop the Shoe</a>
             <a href="#outfits" style="background:transparent;color:#0B0B0B;border:1px solid #0B0B0B;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 26px" style-hover="background:#FFFDF8">Shop the Outfits</a>
+            <sc-if value="{{ hasHeroProductPage }}" hint-placeholder-val="{{ true }}">
+              <a href="{{ heroProductPageHref }}" style="background:transparent;color:#0B0B0B;border:1px solid #0B0B0B;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 26px" style-hover="background:#FFFDF8">Full Shoe Profile</a>
+            </sc-if>
             <a href="{{ instagramHref }}" rel="noopener" style="background:transparent;color:#68645D;border:1px solid #DDD3C3;text-decoration:none;font-size:13px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:14px 26px" style-hover="border-color:#0B0B0B;color:#0B0B0B">{{ instagramLabel }}</a>
           </div>
         </div>
@@ -184,17 +187,19 @@
 // the guide's `slug` in js/guides.js, change GUIDE_ID below, and update the
 // <helmet> title/meta/schema text.
 const GUIDE_ID = 'nb9060-zara-polo';
+const HERO_SHOE_PRODUCT_ID = 'nb-9060-breakfast-tea';
 
 class Component extends DCLogic {
-  state = { guide: null, products: [], related: [] };
+  state = { guide: null, products: [], related: [], heroProductPageHref: null };
 
   async componentDidMount() {
-    const [gm, pm] = await Promise.all([import('./js/guides.js'), import('./js/products.js')]);
+    const [gm, pm, hm] = await Promise.all([import('./js/guides.js'), import('./js/products.js'), import('./js/hero-pages.js')]);
     const guide = gm.guides.find(g => g.id === GUIDE_ID) || null;
     this.setState({
       guide,
       products: pm.products,
       related: gm.guides.filter(g => g.id !== GUIDE_ID && !g.comingSoon).slice(0, 2),
+      heroProductPageHref: hm.getHeroProductPageHref(HERO_SHOE_PRODUCT_ID),
     });
   }
 
@@ -244,6 +249,8 @@ class Component extends DCLogic {
       coverAlt: 'Guide cover: ' + (g ? g.title : 'NB 9060 x Zara Polo'),
       instagramHref: g && g.instagramUrl ? g.instagramUrl : '#',
       instagramLabel: g && g.instagramUrl ? 'View Instagram Post' : 'Instagram Post Soon',
+      hasHeroProductPage: !!this.state.heroProductPageHref,
+      heroProductPageHref: this.state.heroProductPageHref || undefined,
       slides: (g ? g.slideImages : []).map((s, i) => ({
         src: s.src,
         alt: 'Slide ' + (i + 1) + ': ' + s.label,

@@ -54,3 +54,18 @@ jobs:
 
       - name: Compare legacy data against graph adapter output (report-only)
         run: node scripts/compare-legacy-adapter.mjs
+
+  validate-hero-product-pages:
+    name: Validate Hero Product page registry and recommendations
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run Hero Product page validator
+        run: node scripts/validate-hero-product-pages.mjs

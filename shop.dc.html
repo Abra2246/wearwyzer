@@ -96,6 +96,9 @@
                     </sc-for>
                   </div>
                   <p style="font-size:12px;margin:8px 0 0"><a href="{{ p.guideHref }}" style="color:#C8941E;text-decoration:none" style-hover="text-decoration:underline">{{ p.guideLabel }}</a></p>
+                  <sc-if value="{{ p.hasHeroPage }}" hint-placeholder-val="{{ false }}">
+                    <p style="font-size:12px;margin:4px 0 0"><a href="{{ p.heroPageHref }}" style="color:#C8941E;text-decoration:none" style-hover="text-decoration:underline">Full product profile →</a></p>
+                  </sc-if>
                   <div style="margin-top:auto;padding-top:12px;display:flex;align-items:center;justify-content:space-between;gap:8px">
                     <a href="{{ p.shopHref }}" rel="{{ p.rel }}" aria-disabled="{{ p.disabled }}" style="{{ p.ctaStyle }}">{{ p.ctaLabel }}</a>
                     <span title="Affiliate link — may earn commission" style="font-size:10px;font-weight:700;letter-spacing:1px;color:#68645D;border:1px solid #DDD3C3;padding:3px 7px">AD</span>
@@ -141,7 +144,7 @@ class Component extends DCLogic {
   state = { q: '', cat: 'All', occasion: 'All occasions', price: 'All', exact: 'All', products: [], occasions: [], guides: [] };
 
   async componentDidMount() {
-    const [pm, gm] = await Promise.all([import('./js/products.js'), import('./js/guides.js')]);
+    const [pm, gm, hm] = await Promise.all([import('./js/products.js'), import('./js/guides.js'), import('./js/hero-pages.js')]);
     // Support links like shop.dc.html#cat=Sneakers from the home page
     let cat = 'All';
     const h = (window.location.hash || '').match(/cat=([^&]+)/);
@@ -149,12 +152,12 @@ class Component extends DCLogic {
       const v = decodeURIComponent(h[1]);
       if (pm.CATEGORIES.includes(v)) cat = v;
     }
-    this.setState({ products: pm.products, occasions: pm.OCCASIONS, guides: gm.guides, cat });
+    this.setState({ products: pm.products, occasions: pm.OCCASIONS, guides: gm.guides, cat, getHeroProductPageHref: hm.getHeroProductPageHref });
   }
 
   renderVals() {
     const CATS = ['All', 'Sneakers', 'Shoes', 'Shirts', 'Pants', 'Outerwear', 'Hoodies', 'Accessories', 'Watches', 'Bags'];
-    const { q, cat, occasion, price, exact, products, occasions, guides } = this.state;
+    const { q, cat, occasion, price, exact, products, occasions, guides, getHeroProductPageHref } = this.state;
     const ql = q.trim().toLowerCase();
 
     const results = products.filter(p => {
@@ -175,6 +178,7 @@ class Component extends DCLogic {
       const exactItem = p.exactOrSimilar === 'Exact item';
       const hasLink = !!p.affiliateUrl;
       const guide = resolveGuideForProduct(p, guides);
+      const heroPageHref = getHeroProductPageHref ? getHeroProductPageHref(p.id) : null;
       return {
         image: p.image,
         alt: p.name + (p.colorway ? ' in ' + p.colorway : ''),
@@ -207,6 +211,8 @@ class Component extends DCLogic {
           color: hasLink ? '#F6F1E8' : '#68645D',
           border: hasLink ? 'none' : '1px solid #DDD3C3',
         },
+        hasHeroPage: !!heroPageHref,
+        heroPageHref: heroPageHref || undefined,
       };
     });
 
