@@ -1,0 +1,50 @@
+# STAGED WORKFLOW — not active.
+#
+# This file must be copied to .github/workflows/dispatch-queue.yml by a
+# maintainer with workflow-edit permissions. It lives here, not in
+# .github/workflows/, because the Claude GitHub App used to implement this
+# epic is deliberately not granted `workflows` permission (see this epic's
+# own exclusion: "Do not grant workflow or secret-management permissions to
+# Claude") — so this file could not be placed directly into the active
+# workflows directory as part of this PR.
+#
+# See docs/AUTOMATION_WORKFLOW.md "Autonomous queue (v1)" for the full
+# activation checklist.
+
+name: Automation Queue Dispatcher
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without mutating labels/comments"
+        type: boolean
+        default: false
+  schedule:
+    # Hourly at :17 (not the top of the hour) — conservative polling per
+    # docs/AUTONOMOUS_ENGINEERING_V1.md ("no more frequent than hourly").
+    - cron: '17 * * * *'
+
+concurrency:
+  # Repo-wide (not per-ref) so two scheduled/manual runs can never both
+  # claim work at once.
+  group: automation-queue-dispatcher
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dispatch next eligible issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/queue-dispatch.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}

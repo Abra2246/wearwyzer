@@ -17,6 +17,7 @@ Closes #
 - [ ] Ran `node scripts/compare-legacy-adapter.mjs` (required if anything under `data/` changed) — report-only, reviewed any diffs against `docs/CURRENT_DATA_TO_GRAPH_MAPPING.md`
 - [ ] Ran `./scripts/preview.sh` and loaded every page this PR touches in a real browser
 - [ ] Checked the browser console for `[dc-runtime] ... never resolved` warnings — none introduced
+- [ ] Ran `node --test scripts/__tests__/` (required if any `scripts/queue-*.mjs` changed) — exit code 0
 - [ ] No fabricated price, affiliate link, availability claim, or legal detail was introduced
 - [ ] `CHANGELOG.md` updated to describe what was actually verified working, not just what was written
 - [ ] `sitemap.xml` updated if a new page was added

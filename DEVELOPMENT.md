@@ -62,6 +62,13 @@ See `docs/HERO_PRODUCT_V1.md` for the selection rationale behind the first page 
 4. Run `node scripts/validate-hero-product-pages.mjs` and `node scripts/validate-knowledge-graph.mjs`.
 Only build a page for a product whose relationships are already `verified` in `data/relationships.js` — a `draft`/`unverified`/low-confidence relationship should never be the basis of a page section (see `data/taxonomies.js` `isPubliclyRecommendable()`).
 
+## Autonomous engineering queue (v1)
+`scripts/queue-labels.mjs`, `scripts/queue-dispatch.mjs`, and `scripts/queue-pr-state.mjs` implement the controlled issue-selection/dispatch/PR-state queue described in `docs/AUTONOMOUS_ENGINEERING_V1.md`. They're plain Node ESM, zero dependencies, and read `GITHUB_TOKEN`/`GITHUB_REPOSITORY` from the environment (the workflow's own token — no new secret). Run their tests with:
+```
+node --test scripts/__tests__/
+```
+See `docs/AUTOMATION_WORKFLOW.md` "Autonomous queue (v1)" for the label contract, the guarded (disabled-by-default) low-risk auto-merge gate, and the activation checklist for the staged workflow files under `docs/automation/workflows/`.
+
 ## Adding a new style guide
 1. Duplicate the first object in `js/guides.js`. Fill in every field — `id`, `title`, `slug`, `outfits`, `slideImages`, `tags`, etc.
 2. Add cover + slide images under `assets/images/guides/<id>/`.

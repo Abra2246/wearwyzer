@@ -1,0 +1,33 @@
+name: Automation Queue Dispatcher
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without mutating labels/comments"
+        type: boolean
+        default: false
+  schedule:
+    - cron: '17 * * * *'
+
+concurrency:
+  group: automation-queue-dispatcher
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Dispatch next eligible issue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/queue-dispatch.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}

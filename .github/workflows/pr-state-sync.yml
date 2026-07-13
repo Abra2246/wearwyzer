@@ -1,0 +1,34 @@
+name: Automation Queue PR State Sync
+
+on:
+  pull_request_target:
+    types: [opened, ready_for_review, converted_to_draft, edited, synchronize, closed]
+  workflow_dispatch:
+    inputs:
+      pr_number:
+        description: "PR number to sync"
+        required: true
+
+concurrency:
+  group: automation-queue-pr-state-${{ github.event.pull_request.number || inputs.pr_number }}
+  cancel-in-progress: true
+
+permissions:
+  issues: write
+  pull-requests: read
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - name: Sync issue state from PR
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/queue-pr-state.mjs sync --pr "${{ github.event.pull_request.number || inputs.pr_number }}"
