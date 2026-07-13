@@ -1,0 +1,33 @@
+name: Automation Completion Handoff Watchdog
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Report what would change without writing"
+        type: boolean
+        default: false
+  schedule:
+    - cron: '*/5 * * * *'
+
+concurrency:
+  group: automation-handoff-watchdog
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect and repair silent completion handoffs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/handoff-watchdog.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}

@@ -105,6 +105,43 @@ node scripts/simulate-guide-factory.mjs
    verified product/source facts exist for it — none ship in this change (see that
    directory's own `README.md` for why).
 
+## Completion handoff watchdog (issue #22)
+
+`docs/AUTOMATION_HANDOFF_WATCHDOG_V1.md` is the canonical spec for a repair/escalation loop
+closing the exact silent-handoff gap seen on issues #16 and #17: an implementation run
+finishes and pushes a branch, but nothing opens a PR, so the issue stays `in-progress`
+indefinitely. Summary of what's implemented:
+
+- `scripts/handoff-watchdog-rules.mjs`, `scripts/handoff-watchdog.mjs` — for every `in-progress`
+  + `automation-managed` issue, discover its `claude/issue-<N>-*` branch; once 15 minutes pass
+  with no PR opened, open one itself as a draft and move the issue to `review`; flag any staged
+  workflow file under `docs/automation/workflows/` with one precise maintainer comment
+  regardless of grace period or PR state; mark `automation-failed` + `needs-human` if a
+  completed run has neither a usable branch nor a PR. Every action is idempotent (HTML-comment
+  markers scanned from the issue's own comments) and logs a heartbeat/exception event to
+  `automation/status/events.jsonl` via the existing `scripts/record-status-event.mjs`.
+- `scripts/queue-github-client.mjs` gained the branch/PR/diff/create-PR calls the watchdog
+  needs — no new secret, same `GITHUB_TOKEN`.
+- `docs/automation/workflows/handoff-watchdog.yml` — staged, not active, same reason as every
+  other workflow in this section. Runs every 5 minutes (tighter than the hourly dispatch
+  cadence) because it only reads state and repairs/escalates — it never claims new work, so the
+  "no more frequent than hourly" guidance for `dispatch-queue.yml` doesn't apply.
+
+### Testing
+```
+node --test scripts/__tests__/handoff-watchdog-rules.test.mjs scripts/__tests__/handoff-watchdog.test.mjs
+```
+Deterministic, fixture-driven — includes regression fixtures reproducing #16 and #17's exact
+branch/staged-file shapes.
+
+### Activation checklist (in addition to issue #16/#17's)
+1. Copy `docs/automation/workflows/handoff-watchdog.yml` into `.github/workflows/`.
+2. Confirm `Settings → Actions → General → Workflow permissions` allows `issues: write` **and**
+   `pull-requests: write` for the default `GITHUB_TOKEN` — `pull-requests: write` is new,
+   needed to open the repair draft PR (every other staged workflow only needed
+   `pull-requests: read`).
+3. No new label required — reuses the existing label contract.
+
 ## One-time GitHub repository settings required
 
 - **Settings → Pages → Build and deployment → Source**: set to **GitHub Actions** (not "Deploy from a branch"). Without this, `.github/workflows/pages.yml` will fail at the `actions/deploy-pages` step with a permissions/configuration error.
