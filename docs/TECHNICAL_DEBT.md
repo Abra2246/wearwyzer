@@ -31,6 +31,11 @@ There is no `.gitignore` anywhere in the repository. Nothing sensitive has leake
 ### 7. Filename-with-space componentization pattern
 `Site Nav.dc.html` and `Site Footer.dc.html` (both containing a literal space) are fetched at runtime by `<dc-import name="Site Nav">`. This resolves correctly in local static serving (confirmed live), but has not been verified against every static host's URL-encoding behavior for filenames with spaces (some object-storage-backed static hosts are stricter about this than a plain file server). Worth a smoke test against the actual chosen host before launch, or renaming to avoid the class of risk entirely (e.g. `site-nav.dc.html`).
 
+### 8. Autonomous engineering queue v1 (`scripts/queue-*.mjs`) ships with its workflow triggers staged, not active
+The dispatcher, PR-state sync, label sync, and mark-failed logic (issue #16, `docs/AUTONOMOUS_ENGINEERING_V1.md`) are implemented and unit-tested, but their GitHub Actions workflow files live under `docs/automation/workflows/` rather than `.github/workflows/` — the Claude GitHub App used to build this is intentionally not granted `workflows` permission (see the epic's own exclusions), so those files could not be committed directly into the active workflows directory as part of this PR. A maintainer with workflow-edit access must copy them in before the queue actually runs on a schedule.
+- **Risk:** Low. Nothing executes until a human takes that step; this is a deployment gap, not a behavioral one.
+- Two related v1 simplifications worth tracking alongside this: `getCombinedChecksPassed()` (`scripts/queue-github-client.mjs`) checks that every discoverable commit status/check-run succeeded, not specifically the branch-protection "required checks" list (which needs admin-level API access this token doesn't have); and the guarded low-risk auto-merge gate is evaluated and reported on every non-draft automation-managed PR but never calls a merge API in this version, even when `AUTOMATION_AUTO_MERGE_ENABLED=true` — see `scripts/queue-pr-state.mjs`.
+
 ## Carried forward from the pre-existing `ENGINEERING_AUDIT.md` (still accurate, not re-litigated here)
 - Guide pages are hand-duplicated files rather than a template + router (`ARCHITECTURE.md` Recommendation 1).
 - No real search — client-side substring filter over a fully-downloaded array.

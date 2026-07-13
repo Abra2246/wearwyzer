@@ -1,0 +1,43 @@
+# STAGED WORKFLOW — not active. See dispatch-queue.yml in this directory
+# for why (Claude's GitHub App token cannot write to .github/workflows/).
+# Copy this file to .github/workflows/mark-failed.yml to activate it.
+#
+# Manual-trigger only for v1: this repo's implementation workflow
+# (.github/workflows/claude.yml) is itself off-limits to Claude to edit, so
+# automatically wiring "the implementation job failed" into this script
+# requires a maintainer to add a step to claude.yml that calls this
+# workflow (or invokes `node scripts/queue-pr-state.mjs mark-failed`
+# directly) on job failure. Until then, a human (or a future PR with
+# workflow-edit access) triggers this manually when an automation run
+# stalls or errors out without opening a PR.
+
+name: Automation Queue Mark Failed
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Issue number to mark automation-failed / needs-human"
+        required: true
+      reason:
+        description: "Why the run could not complete"
+        required: true
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  mark-failed:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Mark issue automation-failed
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/queue-pr-state.mjs mark-failed \
+            --issue "${{ inputs.issue_number }}" \
+            --reason "${{ inputs.reason }}"

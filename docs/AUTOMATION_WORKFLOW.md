@@ -34,6 +34,36 @@ This workflow does **not** yet install an AI GitHub Action (e.g. one that lets C
 
 Until that's set up, "Claude implementation" in the workflow above means: a human pastes the issue into a Claude Code session (as happened for this task) and drives it through the branch/PR steps manually.
 
+## Autonomous queue (v1)
+
+`docs/AUTONOMOUS_ENGINEERING_V1.md` is the canonical spec for a controlled queue that selects, dispatches, and tracks approved issues without a human relaying prompts through a terminal. As of issue #16, the queue's logic is implemented and tested; its scheduled triggers are staged but not yet active (see "Activation checklist" below).
+
+### What's implemented
+- `scripts/queue-rules.mjs` — pure, unit-tested rule functions: issue-spec validation, risk-tier/priority parsing, deterministic selection, PR↔issue linking, protected-path detection, and the low-risk auto-merge eligibility gate. No I/O; see `scripts/__tests__/`.
+- `scripts/queue-github-client.mjs` — a minimal, dependency-free GitHub REST/GraphQL client (Node's built-in `fetch`, no npm packages) reading `GITHUB_TOKEN`/`GITHUB_REPOSITORY` from the environment. No new secret.
+- `scripts/queue-labels.mjs` — idempotently creates/updates the label contract below without deleting anything it doesn't own. Run with `node scripts/queue-labels.mjs [--dry-run]`.
+- `scripts/queue-dispatch.mjs` — the dispatcher. Exits without changes if another issue is `in-progress` or an `automation-managed` PR is open; otherwise deterministically selects the highest-priority eligible `ready` issue (rejecting `risk-high` and malformed issues), removes `ready`, adds `in-progress` + `automation-managed`, and posts one `@claude` implementation comment recording the risk tier, selection reason, and next expected event. Run with `node scripts/queue-dispatch.mjs [--dry-run]`.
+- `scripts/queue-pr-state.mjs` — `sync --pr <N>` moves an `automation-managed` issue from `in-progress` to `review` once its linked (`Closes #N`) PR is open and not a draft, and reports (but never executes) the low-risk auto-merge gate on every non-draft `automation-managed` PR. `mark-failed --issue <N> --reason "..."` labels an issue `automation-failed` + `needs-human` with an explanatory comment when a run can't complete.
+
+### Label contract
+`ready`, `in-progress`, `review`, `blocked`, `needs-human`, `automation-failed`, `automation-managed`, `risk-low`, `risk-medium`, `risk-high`, `priority-p0`…`priority-p3` (unset defaults to `p2`). Full colors/descriptions in `scripts/queue-labels.mjs`.
+
+### Guarded low-risk auto-merge — disabled by default
+`evaluateAutoMergeEligibility()` requires *all* of: issue and PR both labeled `automation-managed` + `risk-low`, PR not draft, all discoverable status checks/check-runs successful, no protected path changed (`PROTECTED_PATH_PATTERNS` in `scripts/queue-rules.mjs` — workflow files, `support.js`, `image-slot.js`, legal pages, anything matching `secret`/`credential`/`.env`), zero unresolved review threads, **and** the `AUTOMATION_AUTO_MERGE_ENABLED` repository variable set to the literal string `"true"`. That variable does not exist in this repo today, so the gate always reports `blocked` regardless of the other conditions — and even when every condition is met, `scripts/queue-pr-state.mjs` only logs `ELIGIBLE`; it does not call a merge API. Wiring up an actual automatic merge is a deliberately separate, future decision.
+
+### Activation checklist
+The queue's logic ships in this PR; making it run on a schedule requires a maintainer with `.github/workflows/` edit access (Claude's GitHub App token intentionally does not have this — see this repo's automation permission model) to:
+1. Copy `docs/automation/workflows/sync-labels.yml`, `dispatch-queue.yml`, and `pr-state-sync.yml` into `.github/workflows/`, then run the label-sync workflow once (or `node scripts/queue-labels.mjs` locally) to create the label contract.
+2. Confirm `Settings → Actions → General → Workflow permissions` allows `issues: write` for the default `GITHUB_TOKEN` (same setting already required for `.github/workflows/claude.yml`).
+3. Leave `AUTOMATION_AUTO_MERGE_ENABLED` unset (or `"false"`) to keep the merge gate closed; only a maintainer decision changes that.
+4. Optionally copy `mark-failed.yml` and wire a step into `.github/workflows/claude.yml` (also outside Claude's edit permission) that calls it when the implementation job's conclusion is `failure`.
+
+### Testing
+```
+node --test scripts/__tests__/
+```
+Zero dependencies, deterministic, fixture-driven (`scripts/__tests__/fixtures.mjs`) — no network access, no mutation of the real repo. Covers: no eligible issue, active work blocking dispatch, malformed-issue rejection, risk-high rejection, deterministic priority ordering, exactly-one-issue-per-dispatch, dry-run-causes-no-mutation, protected-path detection, and the merge gate defaulting to `false`.
+
 ## One-time GitHub repository settings required
 
 - **Settings → Pages → Build and deployment → Source**: set to **GitHub Actions** (not "Deploy from a branch"). Without this, `.github/workflows/pages.yml` will fail at the `actions/deploy-pages` step with a permissions/configuration error.

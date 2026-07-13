@@ -23,6 +23,12 @@ node scripts/validate-hero-product-pages.mjs # js/hero-pages.js registry + recom
 ```
 The first four are plain Node, zero dependencies, and run in CI on every PR and push to `main` (`.github/workflows/content-validation.yml`). `validate-hero-product-pages.mjs` is the same style but **not yet wired into CI** — run it manually when touching `js/hero-pages.js` or a `product-*.dc.html` page (see `DEVELOPMENT.md`).
 
+## Autonomous engineering queue (v1)
+```
+node --test scripts/__tests__/
+```
+`scripts/queue-*.mjs` implement the controlled issue → dispatch → PR → review queue described in `docs/AUTONOMOUS_ENGINEERING_V1.md`; see `docs/AUTOMATION_WORKFLOW.md` "Autonomous queue (v1)" for what's implemented, the label contract, and the activation checklist (its scheduled GitHub Actions triggers are staged at `docs/automation/workflows/` pending a maintainer copying them into `.github/workflows/`).
+
 ## Knowledge Graph v1 (additive foundation, now used by one page)
 `data/*.js` is an additive, read-only projection of `js/products.js`/`js/guides.js` into a graph of typed entities (brands, retailers, offers, products, outfits, guides, collections) and relationships with confidence/verification metadata. It does not change what any *existing* page renders — see `docs/KNOWLEDGE_GRAPH_V1.md` for the entity/relationship model, `docs/KNOWLEDGE_GRAPH_MIGRATION.md` for the phased plan to eventually make it canonical, and `docs/CURRENT_DATA_TO_GRAPH_MAPPING.md` for the field-by-field audit of how it was derived. One new page, `product-nb-9060-breakfast-tea.dc.html`, reads exclusively from `data/*.js` as the first customer-facing use of the graph — see `docs/HERO_PRODUCT_V1.md`.
 

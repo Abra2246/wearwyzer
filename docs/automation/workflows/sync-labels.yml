@@ -1,0 +1,32 @@
+# STAGED WORKFLOW — not active. See dispatch-queue.yml in this directory
+# for why (Claude's GitHub App token cannot write to .github/workflows/).
+# Copy this file to .github/workflows/sync-labels.yml to activate it, or
+# just run `node scripts/queue-labels.mjs` locally/manually once — it's
+# idempotent either way.
+
+name: Automation Queue Label Sync
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Report what would change without writing"
+        type: boolean
+        default: false
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  sync-labels:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Sync label contract
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/queue-labels.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
