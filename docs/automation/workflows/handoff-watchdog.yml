@@ -1,0 +1,48 @@
+# STAGED WORKFLOW — not active. See dispatch-queue.yml in this directory
+# for why (Claude's GitHub App token cannot write to .github/workflows/).
+# Copy this file to .github/workflows/handoff-watchdog.yml to activate it.
+#
+# Runs every 5 minutes (not hourly like dispatch-queue.yml) because issue
+# #22's acceptance criteria require a completed-but-unopened PR to be
+# repaired or escalated within 15 minutes — a schedule any coarser than
+# this can't reliably hit that bar once GitHub's own scheduling jitter is
+# accounted for. This workflow only reads issue/PR/branch state and, when
+# due, opens a draft PR or posts one comment — it never claims new work, so
+# the "no more frequent than hourly" guidance for dispatch-queue.yml (which
+# exists to avoid claiming issues too eagerly) does not apply here.
+
+name: Automation Completion Handoff Watchdog
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Report what would change without writing"
+        type: boolean
+        default: false
+  schedule:
+    - cron: '*/5 * * * *'
+
+concurrency:
+  # Repo-wide (not per-ref) so two scheduled/manual runs can never race
+  # each other into opening duplicate draft PRs or comments.
+  group: automation-handoff-watchdog
+  cancel-in-progress: false
+
+permissions:
+  issues: write
+  pull-requests: write
+  contents: read
+
+jobs:
+  watchdog:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Detect and repair silent completion handoffs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/handoff-watchdog.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}

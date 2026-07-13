@@ -119,6 +119,70 @@ export class GitHubClient {
   }
 
   /**
+   * Branches whose ref path starts with `prefix` under `refs/heads/` — e.g.
+   * `claude/issue-22-`. Unlike a single-branch lookup, this endpoint
+   * returns `200` with an empty array when nothing matches rather than a
+   * 404, so no error handling is needed for the "no branch yet" case.
+   */
+  async listMatchingBranchRefs(prefix) {
+    const refs = await this.request(
+      'GET',
+      `/repos/${this.owner}/${this.repo}/git/matching-refs/heads/${encodeURIComponent(prefix)}`
+    );
+    return (refs || []).map((r) => ({ name: r.ref.replace(/^refs\/heads\//, ''), sha: r.object.sha }));
+  }
+
+  async getBranchLastCommitIso(branchName) {
+    const data = await this.request(
+      'GET',
+      `/repos/${this.owner}/${this.repo}/branches/${encodeURIComponent(branchName)}`
+    );
+    return data.commit.commit.committer.date;
+  }
+
+  listOpenPullRequestsForBranch(branchName) {
+    return this.paginate(
+      `/repos/${this.owner}/${this.repo}/pulls?state=open&head=${this.owner}:${encodeURIComponent(branchName)}`
+    );
+  }
+
+  async compareCommits(base, head) {
+    const data = await this.request(
+      'GET',
+      `/repos/${this.owner}/${this.repo}/compare/${encodeURIComponent(base)}...${encodeURIComponent(head)}`
+    );
+    return (data.files || []).map((f) => f.filename);
+  }
+
+  createPullRequest({ title, head, base, body, draft = true }) {
+    return this.request('POST', `/repos/${this.owner}/${this.repo}/pulls`, { title, head, base, body, draft });
+  }
+
+  listIssueComments(issueNumber) {
+    return this.paginate(`/repos/${this.owner}/${this.repo}/issues/${issueNumber}/comments`);
+  }
+
+  /**
+   * Best-effort only: enriches watchdog status output with the most recent
+   * workflow run for a branch, never gates a decision. Swallows any error
+   * (missing Actions permission, renamed workflow file, etc.) and returns
+   * `[]` rather than failing the whole watchdog pass over optional metadata.
+   */
+  async listWorkflowRunsForBranch(branchName, workflowFileName) {
+    try {
+      const data = await this.request(
+        'GET',
+        `/repos/${this.owner}/${this.repo}/actions/workflows/${encodeURIComponent(
+          workflowFileName
+        )}/runs?branch=${encodeURIComponent(branchName)}&per_page=1`
+      );
+      return data.workflow_runs || [];
+    } catch {
+      return [];
+    }
+  }
+
+  /**
    * "Required" here means every discoverable commit status + check-run has
    * succeeded — this repo has no admin-level access to the branch
    * protection API's explicit required-checks list, so this is a
