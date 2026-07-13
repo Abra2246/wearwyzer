@@ -2,6 +2,64 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-13) — Style Guides folder importer (issue #34)
+### Added
+- `scripts/style-guide-importer.mjs` — pure pipeline: classifies source files by extension
+  (`.json` structured; `.md`/`.markdown`/`.txt` freeform text; `.docx`/`.doc`/`.pdf`/`.pages`/`.rtf`
+  known-unsupported binary; anything else unknown), converts a structured source into a
+  `status: "draft"` issue #17 guide-manifest, runs an exact-duplicate check against canonical
+  `js/guides.js` (slug or title match), and validates every candidate through
+  `scripts/guide-manifest-schema.mjs`'s existing `validateGuideManifest()` unmodified. Every
+  source resolves to exactly one disposition: `draft-manifest-ready`, `duplicate-skipped`, or
+  `needs-human` (with specific reasons) — never a silent guess.
+- `scripts/style-guide-importer-cli.mjs` — the only file that touches the filesystem: scans a
+  `Style Guides/` source directory (configurable via `--source-dir`), reads the real
+  `js/guides.js`/`js/products.js` snapshot, writes `status: "draft"` manifests (never
+  `"approved"` — a human must verify real sources/prices and promote each one, same lifecycle
+  `automation/guide-jobs/README.md` already documents) and a provenance/disposition report to
+  `automation/status/style-guide-import-report.json`.
+- `scripts/simulate-style-guide-import.mjs` — end-to-end fixture proof that a converted draft
+  manifest composes with the existing `scripts/guide-factory.mjs` pipeline once promoted to
+  `approved` (mirrors `scripts/simulate-guide-factory.mjs`'s pattern).
+- `scripts/__fixtures__/style-guide-sources.mjs`, `scripts/__tests__/style-guide-importer.test.mjs`
+  — 13 new deterministic tests covering every format/disposition combination, disposition-report
+  aggregation, and a regression assertion that the real `Style Guides` directory is still absent.
+- `docs/STYLE_GUIDE_IMPORTER_V1.md` — canonical spec, including the inventory finding below.
+  `ARCHITECTURE.md` — updated with the issue #34 decision record.
+### Verified
+- **Inventory finding (issue #34's first ask): a directory named `Style Guides` (or any
+  case/spacing variant) does not exist anywhere in this repository** — confirmed against the
+  current working tree, `git log --all` across every commit, and all 19 branches. Exact count:
+  **0 files, 0 formats.** No guide content was fabricated to demonstrate this importer against;
+  it is proven instead against an isolated fixture universe, the same approach issue #17 used
+  for its own pipeline.
+- `node scripts/style-guide-importer-cli.mjs --dry-run`: run live against this repository —
+  `Style Guides source directory exists: false`, `Sources found: 0`, confirming the inventory
+  finding above and that the CLI fails safe (reports zero, does not error) on an absent source.
+- `node --test scripts/__tests__/*.test.mjs`: **183/184 passing** — 13 new tests for this issue,
+  all passing; every pre-existing test — including `guide-factory.test.mjs` and
+  `guide-manifest-schema.test.mjs` — still passes unmodified, confirming this change is additive
+  to the issue #17 pipeline. The one failure (`deploy-health-check.test.mjs`, "checkRoute fails
+  when an unresolved binding leaks into rendered HTML") is a **pre-existing failure**, confirmed
+  present on this branch before any file in this change was added and in a file this issue never
+  touched (`scripts/deploy-health-check.mjs`/its test) — reported here rather than silently
+  ignored, but not fixed as a drive-by per `CLAUDE.md`'s scope-discipline rule.
+- `node scripts/simulate-style-guide-import.mjs`: exit code 0 — fixture source reaches
+  `draft-manifest-ready`, and (after a simulated human `draft → approved` promotion) the
+  existing guide factory reaches `ready-for-pr`, proving the two pipelines compose.
+- `node scripts/validate-content-data.mjs`: exit code 0, no structural errors (unchanged: 4
+  guides, 33 products). `node scripts/validate-knowledge-graph.mjs`: exit code 0, no structural
+  errors (unchanged warning, pre-existing and unrelated). `node scripts/compare-legacy-adapter.mjs`:
+  unchanged, pre-existing report-only diff.
+### Not done in this change (explicitly out of scope, tracked in the doc above)
+- No guide content was actually imported — there was no `Style Guides` folder to import from.
+- No write path to `data/*.js` (the Knowledge Graph) — would jump
+  `docs/KNOWLEDGE_GRAPH_MIGRATION.md`'s Phase 0 → Phase 1 sequencing; see
+  `docs/STYLE_GUIDE_IMPORTER_V1.md` §6.
+- No existing carousel/product asset was read, regenerated, or deleted — the importer has no
+  code path that touches `assets/images/guides/` or `uploads/`.
+- No merge, publish, or `.github/workflows/` change.
+
 ## Unreleased (2026-07-13) — OpenAI Images API renderer, behind the Guide Factory adapter (issue #18)
 ### Added
 - `scripts/openai-image-provider.mjs` — fail-closed OpenAI Images API adapter (Node's built-in `fetch`, injectable `fetchImpl`, no npm package). Reads `OPENAI_API_KEY` from the environment only (`readApiKeyFromEnv()`), never through any other channel, and never logs it. Classifies every unhappy path into a structured, non-throwing result: missing key, invalid key (401/403), rate limit (429, retryable), moderation/content-policy refusal, server error (5xx, retryable), network failure (retryable), and malformed/missing response data.

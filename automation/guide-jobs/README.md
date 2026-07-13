@@ -13,7 +13,13 @@ for the full manifest contract and pipeline.
 - A human editor authors a manifest as `draft` and moves it to `approved`
   only once every source URL is real and verified, every product
   reference resolves, and every fact is honest (no invented price,
-  affiliate link, or availability claim — see `CLAUDE.md`).
+  affiliate link, or availability claim — see `CLAUDE.md`). A `draft`
+  manifest can also arrive here automatically via
+  `scripts/style-guide-importer-cli.mjs` (issue #34, see
+  `docs/STYLE_GUIDE_IMPORTER_V1.md`), which converts a source document from
+  a `Style Guides/` folder into this same contract — it never writes
+  `approved` itself, so the human-verification step above still applies
+  identically regardless of how the `draft` file was produced.
 - `scripts/guide-factory-cli.mjs` claims at most one `approved` job per
   run (single-flight, same rule as the engineering queue in
   `docs/AUTONOMOUS_ENGINEERING_V1.md`), sets it `in-progress`, and either
