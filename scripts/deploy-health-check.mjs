@@ -16,13 +16,18 @@
 // needing a real browser.
 const UNRESOLVED_BINDING_RE = /\{\{\s*[\w.]+\s*\}\}/;
 
+function normalizeBaseUrl(baseUrl) {
+  return baseUrl.endsWith('/') ? baseUrl : `${baseUrl}/`;
+}
+
 /**
  * Fetches one route and evaluates it against the deterministic checks
  * this repo can run without a browser: HTTP status, presence of a
  * `<title>`, and no leftover unresolved `{{ }}` binding text.
  */
 export async function checkRoute(baseUrl, route, { fetchImpl = fetch } = {}) {
-  const url = new URL(route, baseUrl).toString();
+  const normalizedRoute = String(route).replace(/^\/+/, '');
+  const url = new URL(normalizedRoute, normalizeBaseUrl(baseUrl)).toString();
   try {
     const res = await fetchImpl(url);
     const body = await res.text();
@@ -52,9 +57,8 @@ export function evaluateDeploymentHealth(routeResults) {
 }
 
 export const DEFAULT_CRITICAL_ROUTES = Object.freeze([
-  '/',
-  '/guides.html',
-  '/shop.html',
-  '/products.html',
-  '/about.html',
+  'index.dc.html',
+  'guides.dc.html',
+  'shop.dc.html',
+  'products.dc.html',
 ]);
