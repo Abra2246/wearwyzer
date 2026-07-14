@@ -1,25 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-13T23:50:27.845Z",
+  "generatedAtIso": "2026-07-14T17:39:22.760Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 19,
-    "title": "[Epic]: Build mobile-first WearWyzer Operations Dashboard v1",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/19",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-13T23:40:35Z"
-  },
+  "automationState": "queued",
+  "activeWork": null,
   "queue": {
-    "depth": 3,
-    "readyCount": 3,
+    "depth": 2,
+    "readyCount": 2,
     "blockedCount": 0
   },
   "ci": {
     "status": "passing",
-    "lastRunIso": "2026-07-13T23:35:17Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29293473643"
+    "lastRunIso": "2026-07-14T16:31:12Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29349959254"
   },
   "deployment": {
     "status": "unknown",
@@ -53,6 +46,6 @@
     "summary": null
   },
   "blockers": [],
-  "lastMeaningfulActivityIso": "2026-07-13T23:40:35.000Z",
+  "lastMeaningfulActivityIso": null,
   "staleAfterMinutes": 30
 }
