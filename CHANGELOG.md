@@ -2,6 +2,72 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-14) — Mission Control refresh feedback and stale snapshot UX (issue #40)
+### Added
+- `scripts/ops-refresh-state.mjs` — pure, tested helpers for the Mission Control
+  Refresh button: `computeRefreshOutcome()` classifies a manual refresh as
+  `updated` (a newer `generatedAtIso` came back), `unchanged` (same snapshot —
+  the backend generator just hasn't published anything newer yet, not a
+  failure), or `failed` (fetch/parse error); `refreshOutcomeLabel()` maps those
+  to the exact user-facing copy (`Updated` / `No newer snapshot available` /
+  `Refresh failed`); `relativeTimeFromNow()` (shared with `ops.dc.html`'s
+  inline copy) and `refreshButtonLabel()` back the new "last checked" line and
+  `Refreshing…` button state.
+- `fetchStatusWithFallback()` (same module, added on PR #41 review) — the data
+  fetch now prefers the current `main` branch's `ops/status.json` via a
+  cache-busted `raw.githubusercontent.com` request over the Pages-deployed
+  copy, since GitHub Pages can lag the committed snapshot by a further deploy
+  cycle (`ARCHITECTURE.md`'s Mission Control decision). It falls back to the
+  local `./ops/status.json` only if the `main` request fails or returns an
+  invalid payload, and reports which source actually served the data
+  (`main` / `pages-fallback`) so `ops.dc.html` can label a fallback read as a
+  cached copy rather than presenting it as equally fresh. `fetchImpl` is
+  injected so the retry/fallback control flow is deterministically testable
+  under `node:test` without real network I/O. Covered by
+  `scripts/__tests__/ops-refresh-state.test.mjs` (22 tests: the original 12
+  plus 10 new for `buildStatusUrls()`, `fetchStatusWithFallback()`, and
+  `statusSourceLabel()`).
+### Changed
+- `ops.dc.html` — the Refresh button now tracks explicit `isRefreshing` state
+  (label flips to `Refreshing…`, `disabled` while a request is in flight so
+  repeated taps are ignored), and after it resolves reports one of
+  `Updated` / `No newer snapshot available` / `Refresh failed` next to the
+  health card, comparing the new snapshot's `generatedAtIso` against the one
+  already on screen. A separate "Checked <relative time>" line now shows the
+  browser's last fetch attempt distinctly from the backend's "Snapshot
+  generated <relative time>" line (previously both were conflated under a
+  single "Updated ..." label); when a fetch actually falls back to the Pages
+  copy, that line grows a `(cached Pages copy — main was unreachable)` suffix
+  rather than silently presenting a possibly-stale read as current. The
+  stale-snapshot banner and the footer now explicitly say the button checks
+  for a newer *published* snapshot and cannot force the backend generator or
+  GitHub Actions to run. Both the manual click and the (still-silent)
+  automatic 60-second poll now go through the same `main`-first/Pages-fallback
+  fetch. Cache-busting (`?t=timestamp`) and `cache: 'no-store'` are unchanged
+  on both requests.
+### Verified
+- `node --test scripts/__tests__/*.test.mjs` — 302/302 passing (22 in
+  `ops-refresh-state.test.mjs`, up from the original 12).
+- `node scripts/qa-static-site.mjs` — no broken references.
+- `node scripts/validate-content-data.mjs` — no structural errors.
+- Exercised the actual `ops.dc.html` controller code (not just the extracted
+  helper module) in an isolated Node harness with a stubbed `fetch`: confirmed
+  a successful `main` read never calls the fallback URL and reports source
+  `main`; a `main` failure (network error, non-2xx, or a payload missing
+  `generatedAtIso`) falls back to `./ops/status.json` and reports source
+  `pages-fallback` with the "(cached Pages copy...)" label; both failing
+  surfaces `Refresh failed` / the existing error banner and resets
+  `lastFetchSource`.
+- **Not verified in this pass:** a real headless-browser load (Playwright was
+  available in the environment the original commit was verified in, but is
+  not installed in this follow-up environment, and this repo intentionally
+  has no package manager to install it with — see `CLAUDE.md`). No new
+  `{{ }}` template bindings were introduced (`lastFetchSource` is internal
+  state consumed by `buildRefreshVals()`, not a new template field), so the
+  `[dc-runtime] ... never resolved` failure mode CLAUDE.md warns about does
+  not apply here, but an actual browser load against
+  `python3 -m http.server` is still recommended before merge to be sure.
+
 ## Unreleased (2026-07-14) — Verified supporting-item link engine v1 (issue #24)
 ### Added
 - `scripts/link-engine-adapters.mjs` — provider-agnostic adapter contract
