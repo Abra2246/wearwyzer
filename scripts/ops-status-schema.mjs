@@ -31,6 +31,13 @@ export const DEPLOYMENT_STATUSES = Object.freeze(['healthy', 'failing', 'unknown
 export const GUIDE_FACTORY_STATES = Object.freeze(['idle', 'in-progress', 'needs-human']);
 export const IMAGE_RENDERER_STATES = Object.freeze(['idle', 'active', 'budget-exceeded', 'unavailable']);
 
+// Verified supporting-item link engine (issue #24). `unavailable` mirrors
+// imageRenderer's same-named state: no `automation/status/link-engine-report.json`
+// has ever been generated yet (e.g. a fresh checkout, or scripts/link-engine-cli.mjs
+// has never run) — distinct from `below-target`/`on-target`, which mean the
+// report exists and coverage was actually computed.
+export const LINK_ENGINE_STATES = Object.freeze(['unavailable', 'below-target', 'on-target']);
+
 // How old `generatedAtIso` may be before the dashboard must show "stale"
 // instead of trusting the snapshot as current. Conservative on purpose —
 // issue #19 section 4 asks to "clearly distinguish stale data from
@@ -50,6 +57,7 @@ const TOP_LEVEL_KEYS = Object.freeze([
   'deployment',
   'guideFactory',
   'imageRenderer',
+  'linkEngine',
   'incident',
   'blockers',
   'lastMeaningfulActivityIso',
@@ -62,6 +70,16 @@ const CI_KEYS = Object.freeze(['status', 'lastRunIso', 'lastRunUrl']);
 const DEPLOYMENT_KEYS = Object.freeze(['status', 'lastHealthyShaShort', 'lastCheckedIso']);
 const GUIDE_FACTORY_KEYS = Object.freeze(['state', 'activeJobId', 'queuedCount']);
 const IMAGE_RENDERER_KEYS = Object.freeze(['state', 'monthlySpendUsd', 'monthlyCapUsd', 'budgetPct']);
+const LINK_ENGINE_KEYS = Object.freeze([
+  'state',
+  'portfolioCoveragePct',
+  'targetMinPct',
+  'targetMaxPct',
+  'needsHumanCount',
+  'brokenCount',
+  'shortfallCount',
+  'lastRunIso',
+]);
 const INCIDENT_KEYS = Object.freeze(['active', 'issueNumber', 'summary']);
 const BLOCKER_KEYS = Object.freeze(['summary', 'issueNumber', 'type']);
 
@@ -144,6 +162,11 @@ export function validateStatusShape(status) {
   checkClosedShape(status.imageRenderer, IMAGE_RENDERER_KEYS, 'imageRenderer', errors);
   if (isPlainObject(status.imageRenderer) && !IMAGE_RENDERER_STATES.includes(status.imageRenderer.state)) {
     errors.push(`imageRenderer.state "${status.imageRenderer.state}" must be one of ${IMAGE_RENDERER_STATES.join(', ')}`);
+  }
+
+  checkClosedShape(status.linkEngine, LINK_ENGINE_KEYS, 'linkEngine', errors);
+  if (isPlainObject(status.linkEngine) && !LINK_ENGINE_STATES.includes(status.linkEngine.state)) {
+    errors.push(`linkEngine.state "${status.linkEngine.state}" must be one of ${LINK_ENGINE_STATES.join(', ')}`);
   }
 
   checkClosedShape(status.incident, INCIDENT_KEYS, 'incident', errors);

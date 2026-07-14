@@ -32,6 +32,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const JOBS_DIR = path.join(ROOT, 'automation', 'guide-jobs');
 const LAST_HEALTHY_DEPLOY_PATH = path.join(ROOT, 'automation', 'status', 'last-healthy-deploy.json');
+const LINK_ENGINE_REPORT_PATH = path.join(ROOT, 'automation', 'status', 'link-engine-report.json');
 const CI_WORKFLOW_FILE = 'content-validation.yml';
 const MAIN_BRANCH = 'main';
 export const STATUS_OUTPUT_PATH = path.join(ROOT, 'ops', 'status.json');
@@ -59,6 +60,12 @@ function loadGuideJobs() {
 function loadLastHealthyDeploy() {
   if (!existsSync(LAST_HEALTHY_DEPLOY_PATH)) return null;
   return JSON.parse(readFileSync(LAST_HEALTHY_DEPLOY_PATH, 'utf8'));
+}
+
+/** scripts/link-engine-cli.mjs (issue #24) writes this on every run; absent until then, same as every other automation/status/ artifact. */
+function loadLinkEngineReport() {
+  if (!existsSync(LINK_ENGINE_REPORT_PATH)) return null;
+  return JSON.parse(readFileSync(LINK_ENGINE_REPORT_PATH, 'utf8'));
 }
 
 function mapCheckRunToCiStatus(run) {
@@ -122,10 +129,11 @@ export async function generateStatus({ now } = {}) {
     imageRendererAvailable = false;
   }
   const lastHealthyDeploy = loadLastHealthyDeploy();
+  const linkEngineReport = loadLinkEngineReport();
   const { queue, ci } = await loadGitHubState();
 
   return buildOpsStatus(
-    { statusEvents, guideJobs, spendLedger, lastHealthyDeploy, queue, ci, imageRendererAvailable },
+    { statusEvents, guideJobs, spendLedger, lastHealthyDeploy, linkEngineReport, queue, ci, imageRendererAvailable },
     { now }
   );
 }

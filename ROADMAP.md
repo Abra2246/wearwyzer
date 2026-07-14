@@ -56,6 +56,13 @@ Status key: **Exists** · **Partial** · **Missing** · **Needs redesign**
 **Dependencies:** Milestone 3.
 **Deliverables:** `retailers`/`offers` schema, `/go/:offerId` redirect + logging, admin view of click/attribution data.
 **Acceptance criteria:** every affiliate click is attributable to a specific guide and product.
+**Note (issue #24):** a deterministic, fixture-driven verified-link matching/scoring/coverage
+engine (`scripts/link-engine*.mjs`) shipped ahead of this milestone as an explicitly scoped
+Knowledge Graph v1 exception — see `ARCHITECTURE.md` "Decision — Verified supporting-item
+link engine v1" and `docs/LINK_ENGINE_V1.md`. It does not satisfy this milestone's
+real-backend/click-tracking/revenue-attribution deliverables (no database, no redirect
+endpoint, no live retailer/affiliate credential) and should not be treated as evidence
+Milestone 5 can be skipped or is partially done outside its stated dependency on Milestone 3.
 
 ### Milestone 6 — Editorial CMS
 **Scope:** an actual admin UI for content ops (guides, products, offers), replacing direct file edits.

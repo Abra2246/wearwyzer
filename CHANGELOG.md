@@ -2,6 +2,85 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-14) — Verified supporting-item link engine v1 (issue #24)
+### Added
+- `scripts/link-engine-adapters.mjs` — provider-agnostic adapter contract
+  (`search`/`verify`) supporting brand-site, retailer, affiliate-network, and
+  product-feed sources without hard-coding one provider. `createFixtureAdapter()` is a
+  deterministic, network-free adapter; `createHttpProviderAdapter()` is the extension
+  point for a future real integration — permanently inert in this repository (no live
+  credential is ever committed; every call fails closed with a structured `blocked`
+  result), same pattern as `scripts/openai-image-provider.mjs`.
+- `scripts/link-engine-matcher.mjs` — weighted candidate scoring (canonical id, brand,
+  name-token overlap, category, color, material) with a hard gender/audience
+  disqualifier. Classifies every candidate set as `exact` (confidently disambiguated),
+  `ambiguous`, or `no-match` — an ambiguous or absent match always surfaces ranked
+  evidence rather than being auto-picked.
+- `scripts/link-engine-verifier.mjs` — turns one adapter listing snapshot into a
+  timestamped verified offer (`linkStatus`: live/dead/redirected/out-of-stock/mismatched/
+  unavailable), always keeping canonical/retailer/affiliate URLs as three distinct,
+  independently-nullable fields. `isCoverageEligibleOffer()`/`isStale()` are the shared
+  gates every coverage and revalidation calculation is built from.
+- `scripts/link-engine.mjs` — pure pipeline orchestration: exact-match-first resolution,
+  with a clearly-labeled, structurally-approved (same category/gender/price-tier)
+  alternative substitution only once the exact item is confirmed unavailable; duplicate-
+  offer detection across outfit items; and `revalidateOfferRecords()`, which
+  automatically removes (dead), flags (redirected/mismatched/out-of-stock/no-longer-
+  affiliate-eligible), replaces (a fresh alternative verifies live), or leaves unchanged
+  every stored offer on a scheduled recheck.
+- `scripts/link-engine-coverage.mjs` — the issue's 80–90% affiliate coverage operating
+  target, per-guide and portfolio coverage calculation (summed, not averaged, across
+  guides), explicit threshold-shortfall logging with concrete per-item reasons, and
+  recurrence tracking that flags a guide with ≥ 2 shortfalls as a sourcing-priority
+  signal.
+- `scripts/link-engine-cli.mjs` — the only I/O: reads the real Knowledge Graph
+  (`data/outfits.js`, `data/products.js`, `data/brands.js`) read-only and writes a
+  coverage/link-health report to `automation/status/link-engine-report.json`. Never
+  writes to `data/offers.js`, `js/products.js`, or any page — same "why the CLI doesn't
+  write site files yet" boundary as `scripts/guide-factory-cli.mjs`.
+- `scripts/simulate-link-engine.mjs` — end-to-end proof against an isolated fixture
+  universe (`scripts/__fixtures__/link-engine.mjs`), exercising exact match, ambiguity,
+  no-match, dead link + alternative substitution, out-of-stock with no alternative,
+  duplicate offer, brand-direct non-affiliate exact match, coverage/shortfall
+  calculation, and redirect/staleness/affiliate-loss/out-of-stock-replacement
+  revalidation in one pass.
+- `scripts/ops-status-schema.mjs`/`scripts/ops-status-builder.mjs`/`scripts/ops-status-cli.mjs`
+  gained a closed `linkEngine` section (`unavailable`/`below-target`/`on-target`) so
+  per-guide and portfolio affiliate coverage against the 80–90% target is visible on
+  Mission Control, with a `link-coverage-below-target` blocker and a yellow health
+  downgrade when coverage is below target. `ops.dc.html` renders a coverage card and
+  expandable detail section. `ops/status.json`'s committed snapshot gained the field
+  (state `unavailable` — no link engine report has been generated in this environment).
+- `docs/LINK_ENGINE_V1.md` — canonical spec. `ARCHITECTURE.md`/`ROADMAP.md` gained a
+  scoped-exception note under Recommendation 4 / Milestone 5, mirroring issue #14's Hero
+  Product page precedent: this is an additive Knowledge Graph v1 slice, not the full
+  backend Affiliate Engine, and does not change that milestone's Milestone-3 dependency.
+  `docs/automation/workflows/link-engine-revalidation.yml` (staged, not active) for
+  scheduled revalidation once a maintainer copies it into `.github/workflows/`.
+- 61 new deterministic tests across `scripts/__tests__/link-engine*.test.mjs` plus 5 new
+  Mission Control tests, covering every named scenario: exact match, ambiguity, redirect,
+  stale price, out of stock, dead link, duplicate offer, affiliate eligibility loss,
+  threshold calculation, and alternative substitution.
+
+### Verified
+- `node --test scripts/__tests__/*.test.mjs` — full suite passes (274 pre-existing +
+  61 new link-engine tests + 5 new ops-status tests, all green).
+- `node scripts/simulate-link-engine.mjs` — every fixture scenario resolves as expected,
+  exit code 0.
+- `node scripts/link-engine-cli.mjs --dry-run` — against this repository's real
+  Knowledge Graph, honestly reports 0% coverage / every item `needs-human` (no live
+  adapter credential exists in this repository) rather than fabricating a result.
+- `node scripts/qa-static-site.mjs` — no broken local asset/link references after the
+  `ops.dc.html` card/detail-section addition.
+- Committed `ops/status.json` re-validated against the updated closed schema
+  (`validateStatusShape`/`findSecretLikeValues`) — passes with no findings.
+- Headless-browser visual verification of `ops.dc.html` (per `CLAUDE.md` "Verifying a
+  change") could not be completed in this environment — the sandbox blocked launching a
+  headless Chromium instance. The embedded controller script was extracted and syntax-
+  checked (`node --check`) instead. **A human reviewer should load `/ops.dc.html` in a
+  browser before merging** to confirm the new "Affiliate link coverage" card and detail
+  section render with no `[dc-runtime]` console warnings.
+
 ## Unreleased (2026-07-13) — Mission Control ops dashboard v1 (issue #19)
 ### Added
 - `scripts/ops-status-schema.mjs` — pure, dependency-free closed-shape schema for the

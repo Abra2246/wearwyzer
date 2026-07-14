@@ -14,6 +14,16 @@ function validStatus(overrides = {}) {
     deployment: { status: 'unknown', lastHealthyShaShort: null, lastCheckedIso: null },
     guideFactory: { state: 'idle', activeJobId: null, queuedCount: 0 },
     imageRenderer: { state: 'idle', monthlySpendUsd: 0, monthlyCapUsd: 30, budgetPct: 0 },
+    linkEngine: {
+      state: 'unavailable',
+      portfolioCoveragePct: null,
+      targetMinPct: null,
+      targetMaxPct: null,
+      needsHumanCount: null,
+      brokenCount: null,
+      shortfallCount: null,
+      lastRunIso: null,
+    },
     incident: { active: false, issueNumber: null, summary: null },
     blockers: [],
     lastMeaningfulActivityIso: null,
@@ -73,6 +83,27 @@ test('each documented automation state is a valid enum value', () => {
   for (const state of ['working', 'queued', 'review', 'blocked', 'failed', 'idle']) {
     assert.equal(validateStatusShape(validStatus({ automationState: state })).valid, true);
   }
+});
+
+test('each documented link engine state is a valid enum value', () => {
+  for (const state of ['unavailable', 'below-target', 'on-target']) {
+    const status = validStatus({ linkEngine: { ...validStatus().linkEngine, state } });
+    assert.equal(validateStatusShape(status).valid, true);
+  }
+});
+
+test('invalid linkEngine.state enum value fails', () => {
+  const status = validStatus({ linkEngine: { ...validStatus().linkEngine, state: 'thriving' } });
+  const result = validateStatusShape(status);
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((e) => e.includes('linkEngine.state')));
+});
+
+test('unknown key inside linkEngine is rejected (closed schema)', () => {
+  const status = validStatus({ linkEngine: { ...validStatus().linkEngine, apiToken: 'nope' } });
+  const result = validateStatusShape(status);
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((e) => e.includes('apiToken')));
 });
 
 test('findSecretLikeValues flags a credential-shaped key name even with an innocuous value', () => {

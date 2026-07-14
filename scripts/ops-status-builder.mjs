@@ -18,6 +18,7 @@
 
 import { STATUS_SCHEMA_VERSION, DEFAULT_STALE_AFTER_MINUTES } from './ops-status-schema.mjs';
 import { sumSpend, DEFAULT_LIMITS as OPENAI_DEFAULT_LIMITS } from './openai-cost-controls.mjs';
+import { COVERAGE_TARGET } from './link-engine-coverage.mjs';
 
 const MAX_SUMMARY_LENGTH = 160;
 
@@ -133,6 +134,29 @@ function buildImageRenderer(spendLedger, { now, limits = OPENAI_DEFAULT_LIMITS, 
   return { state, monthlySpendUsd, monthlyCapUsd, budgetPct };
 }
 
+// Verified supporting-item link engine (issue #24). `linkEngineReport` is
+// the parsed contents of automation/status/link-engine-report.json (see
+// scripts/link-engine-cli.mjs / docs/LINK_ENGINE_V1.md), or null when the
+// CLI has never run — degrades to `unavailable` exactly like
+// buildImageRenderer() does for a missing spend ledger, never guesses a
+// coverage number that wasn't actually computed.
+function buildLinkEngine(linkEngineReport) {
+  if (!linkEngineReport) {
+    return { state: 'unavailable', portfolioCoveragePct: null, targetMinPct: null, targetMaxPct: null, needsHumanCount: null, brokenCount: null, shortfallCount: null, lastRunIso: null };
+  }
+  const coveragePct = linkEngineReport.portfolioCoverage?.coveragePct ?? 0;
+  return {
+    state: coveragePct >= COVERAGE_TARGET.minPct ? 'on-target' : 'below-target',
+    portfolioCoveragePct: coveragePct,
+    targetMinPct: COVERAGE_TARGET.minPct,
+    targetMaxPct: COVERAGE_TARGET.maxPct,
+    needsHumanCount: linkEngineReport.needsHumanCount ?? 0,
+    brokenCount: linkEngineReport.brokenCount ?? 0,
+    shortfallCount: linkEngineReport.shortfallCount ?? 0,
+    lastRunIso: linkEngineReport.generatedAtIso || null,
+  };
+}
+
 function buildIncident(queue) {
   const incidentIssues = (queue && queue.incidentIssues) || [];
   const active = incidentIssues[0] || null;
@@ -143,7 +167,7 @@ function buildIncident(queue) {
   };
 }
 
-function buildBlockers({ incident, guideFactory, automationState, activeWork }) {
+function buildBlockers({ incident, guideFactory, linkEngine, automationState, activeWork }) {
   const blockers = [];
   if (incident.active) {
     blockers.push({
@@ -159,6 +183,13 @@ function buildBlockers({ incident, guideFactory, automationState, activeWork }) 
       type: 'guide-job-needs-human',
     });
   }
+  if (linkEngine.state === 'below-target') {
+    blockers.push({
+      summary: `Affiliate link coverage is ${linkEngine.portfolioCoveragePct}% — below the ${linkEngine.targetMinPct}% target (${linkEngine.needsHumanCount} item(s) need a human).`,
+      issueNumber: null,
+      type: 'link-coverage-below-target',
+    });
+  }
   if ((automationState === 'blocked' || automationState === 'failed') && activeWork) {
     blockers.push({
       summary: `#${activeWork.issueNumber} "${activeWork.title}" is ${automationState} and needs attention.`,
@@ -169,13 +200,14 @@ function buildBlockers({ incident, guideFactory, automationState, activeWork }) 
   return blockers;
 }
 
-function computeOverallHealth({ incidentActive, deploymentStatus, ciStatus, automationState, guideFactoryState, imageRendererState }) {
+function computeOverallHealth({ incidentActive, deploymentStatus, ciStatus, automationState, guideFactoryState, imageRendererState, linkEngineState }) {
   if (incidentActive || deploymentStatus === 'failing' || ciStatus === 'failing') return 'red';
   if (
     automationState === 'failed' ||
     automationState === 'blocked' ||
     guideFactoryState === 'needs-human' ||
-    imageRendererState === 'budget-exceeded'
+    imageRendererState === 'budget-exceeded' ||
+    linkEngineState === 'below-target'
   ) {
     return 'yellow';
   }
@@ -204,6 +236,8 @@ function latestIso(...values) {
  *   - queue: { readyIssues, inProgressIssues, blockedIssues, incidentIssues, activePr }, or null
  *   - ci: { status, lastRunIso, lastRunUrl }, or null
  *   - imageRendererAvailable: false when spend-ledger data couldn't be read at all
+ *   - linkEngineReport: parsed automation/status/link-engine-report.json, or null
+ *     when scripts/link-engine-cli.mjs has never run (see that file / issue #24)
  */
 export function buildOpsStatus(sources = {}, { now } = {}) {
   const nowIso = now || new Date().toISOString();
@@ -216,6 +250,7 @@ export function buildOpsStatus(sources = {}, { now } = {}) {
     queue = null,
     ci = null,
     imageRendererAvailable = true,
+    linkEngineReport = null,
   } = sources;
 
   const activeIssue = selectActiveIssue(queue);
@@ -226,10 +261,12 @@ export function buildOpsStatus(sources = {}, { now } = {}) {
   const deploymentOut = buildDeployment(lastHealthyDeploy, liveDeployCheck);
   const guideFactoryOut = buildGuideFactory(guideJobs);
   const imageRendererOut = buildImageRenderer(spendLedger, { now: nowIso, available: imageRendererAvailable });
+  const linkEngineOut = buildLinkEngine(linkEngineReport);
   const incidentOut = buildIncident(queue);
   const blockers = buildBlockers({
     incident: incidentOut,
     guideFactory: guideFactoryOut,
+    linkEngine: linkEngineOut,
     automationState,
     activeWork,
   });
@@ -241,6 +278,7 @@ export function buildOpsStatus(sources = {}, { now } = {}) {
     automationState,
     guideFactoryState: guideFactoryOut.state,
     imageRendererState: imageRendererOut.state,
+    linkEngineState: linkEngineOut.state,
   });
 
   const lastEventIso = statusEvents.length ? statusEvents[statusEvents.length - 1].timestampIso : null;
@@ -261,6 +299,7 @@ export function buildOpsStatus(sources = {}, { now } = {}) {
     deployment: deploymentOut,
     guideFactory: guideFactoryOut,
     imageRenderer: imageRendererOut,
+    linkEngine: linkEngineOut,
     incident: incidentOut,
     blockers,
     lastMeaningfulActivityIso,

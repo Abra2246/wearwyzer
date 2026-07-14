@@ -197,3 +197,67 @@ test('image renderer budget-exceeded is reflected and downgrades health to yello
   assert.equal(status.overallHealth, 'yellow');
   assertSanitized(status);
 });
+
+test('link engine: no report generated yet degrades to unavailable without affecting health', () => {
+  const status = buildOpsStatus(
+    {
+      queue: { inProgressIssues: [], readyIssues: [], blockedIssues: [], incidentIssues: [] },
+      ci: { status: 'passing', lastRunIso: NOW, lastRunUrl: 'https://example.com/run' },
+      lastHealthyDeploy: { sha: 'a1b2c3d4e5f6', timestampIso: NOW },
+    },
+    { now: NOW }
+  );
+  assert.equal(status.linkEngine.state, 'unavailable');
+  assert.equal(status.linkEngine.portfolioCoveragePct, null);
+  assert.equal(status.overallHealth, 'green');
+  assertSanitized(status);
+});
+
+test('link engine: below-target coverage report downgrades health to yellow with a coverage blocker', () => {
+  const linkEngineReport = {
+    generatedAtIso: NOW,
+    portfolioCoverage: { coveragePct: 55, totalItems: 20, eligibleItems: 11 },
+    needsHumanCount: 9,
+    brokenCount: 2,
+    shortfallCount: 3,
+  };
+  const status = buildOpsStatus(
+    {
+      queue: { inProgressIssues: [], readyIssues: [], blockedIssues: [], incidentIssues: [] },
+      ci: { status: 'passing', lastRunIso: NOW, lastRunUrl: 'https://example.com/run' },
+      lastHealthyDeploy: { sha: 'a1b2c3d4e5f6', timestampIso: NOW },
+      linkEngineReport,
+    },
+    { now: NOW }
+  );
+  assert.equal(status.linkEngine.state, 'below-target');
+  assert.equal(status.linkEngine.portfolioCoveragePct, 55);
+  assert.equal(status.linkEngine.targetMinPct, 80);
+  assert.equal(status.linkEngine.needsHumanCount, 9);
+  assert.equal(status.overallHealth, 'yellow');
+  assert.ok(status.blockers.some((b) => b.type === 'link-coverage-below-target'));
+  assertSanitized(status);
+});
+
+test('link engine: on-target coverage report does not downgrade health', () => {
+  const linkEngineReport = {
+    generatedAtIso: NOW,
+    portfolioCoverage: { coveragePct: 88, totalItems: 20, eligibleItems: 18 },
+    needsHumanCount: 2,
+    brokenCount: 0,
+    shortfallCount: 0,
+  };
+  const status = buildOpsStatus(
+    {
+      queue: { inProgressIssues: [], readyIssues: [], blockedIssues: [], incidentIssues: [] },
+      ci: { status: 'passing', lastRunIso: NOW, lastRunUrl: 'https://example.com/run' },
+      lastHealthyDeploy: { sha: 'a1b2c3d4e5f6', timestampIso: NOW },
+      linkEngineReport,
+    },
+    { now: NOW }
+  );
+  assert.equal(status.linkEngine.state, 'on-target');
+  assert.equal(status.overallHealth, 'green');
+  assert.equal(status.blockers.some((b) => b.type === 'link-coverage-below-target'), false);
+  assertSanitized(status);
+});

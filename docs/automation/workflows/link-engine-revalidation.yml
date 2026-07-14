@@ -1,0 +1,54 @@
+# STAGED WORKFLOW — not active. See dispatch-queue.yml in this directory
+# for why (Claude's GitHub App token cannot write to .github/workflows/).
+# Copy this file to .github/workflows/link-engine-revalidation.yml to
+# activate it. See docs/LINK_ENGINE_V1.md for the full activation
+# checklist.
+#
+# Runs scripts/link-engine-cli.mjs on a schedule so affiliate coverage and
+# link health (dead/redirected/stale/mismatched/out-of-stock/no-longer-
+# affiliate-eligible offers) stay current on Mission Control
+# (scripts/ops-status-builder.mjs's `linkEngine` section) without a human
+# running it by hand. In this repository the CLI's adapters are always
+# inert (no live retailer/affiliate-network credential is ever committed —
+# see CLAUDE.md and docs/LINK_ENGINE_V1.md), so activating this workflow
+# today only refreshes the "0% coverage, N items need a human" report —
+# it does not, and cannot, fabricate real offer data. Its value increases
+# once a real provider adapter is wired up under
+# scripts/link-engine-adapters.mjs createHttpProviderAdapter with a real
+# credential added as a repository secret (never in this file).
+
+name: Link Engine Revalidation
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Run without writing automation/status/link-engine-report.json"
+        type: boolean
+        default: false
+  schedule:
+    # Daily — link/price/stock facts don't need sub-daily rechecking, and
+    # every adapter in this repository is inert (no live API to rate-limit).
+    - cron: '20 6 * * *'
+
+concurrency:
+  group: link-engine-revalidation
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  revalidate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Run the link engine against the live Knowledge Graph
+        run: |
+          node scripts/link-engine-cli.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
