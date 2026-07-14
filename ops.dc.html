@@ -28,7 +28,7 @@
         <p style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:18px;letter-spacing:1px;text-transform:uppercase;margin:0">Mission Control</p>
         <p style="font-size:11px;color:#A8A39A;margin:2px 0 0">WearWyzer · read-only automation status</p>
       </div>
-      <button type="button" onClick="{{ onRefresh }}" style="background:transparent;border:1px solid #4A473F;color:#F6F1E8;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:9px 14px;cursor:pointer;font-family:inherit" style-hover="border-color:#C8941E;color:#C8941E">Refresh</button>
+      <button type="button" onClick="{{ onRefresh }}" disabled="{{ isRefreshing }}" aria-live="polite" style="{{ refreshButtonStyle }}" style-hover="border-color:#C8941E;color:#C8941E">{{ refreshButtonLabel }}</button>
     </div>
   </header>
 
@@ -42,7 +42,7 @@
 
     <sc-if value="{{ showStaleBanner }}" hint-placeholder-val="{{ false }}">
       <div role="status" style="background:#FBF3E1;border:1px solid #C8941E;color:#6B4E0E;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.5">
-        <strong>Data may be stale.</strong> Last refreshed {{ staleMinutesLabel }} — the status generator may not have run recently.
+        <strong>Data may be stale.</strong> Last published snapshot was generated {{ staleMinutesLabel }} — the status generator may not have run recently. The Refresh button checks for a newer <em>published</em> snapshot; it cannot force the backend generator to run.
       </div>
     </sc-if>
 
@@ -53,6 +53,10 @@
       </div>
       <p style="font-size:15px;line-height:1.5;margin:0 0 4px;color:{{ healthTextColor }}">{{ headlineText }}</p>
       <p style="font-size:12px;color:{{ healthMutedColor }};margin:0">{{ lastUpdatedText }}</p>
+      <p style="font-size:12px;color:{{ healthMutedColor }};margin:2px 0 0">{{ lastCheckedText }}</p>
+      <sc-if value="{{ hasRefreshMessage }}" hint-placeholder-val="{{ false }}">
+        <p style="font-size:12px;font-weight:700;color:{{ refreshMessageColor }};margin:6px 0 0">{{ refreshMessage }}</p>
+      </sc-if>
     </section>
 
     <sc-if value="{{ hasBlockers }}" hint-placeholder-val="{{ false }}">
@@ -100,7 +104,8 @@
 
     <p style="font-size:11px;color:#68645D;text-align:center;line-height:1.6;margin:0 0 24px">
       Read-only view of automation state — cannot merge, deploy, publish, or control anything from here.<br>
-      Auto-refreshes every 60 seconds. Unlisted, unlinked, <code>noindex</code> — not a substitute for real access control.
+      Auto-refreshes every 60 seconds. Refresh re-checks the published snapshot; it cannot start or control a GitHub Actions run.<br>
+      Unlisted, unlinked, <code>noindex</code> — not a substitute for real access control.
     </p>
 
   </main>
@@ -145,10 +150,14 @@ class Component extends DCLogic {
     error: null,
     nowMs: null,
     expanded: { engineering: false, content: false, deployment: false, links: false, incidents: false },
+    isRefreshing: false,
+    lastFetchedAtMs: null,
+    lastRefreshOutcome: null,
   };
 
   async componentDidMount() {
     this.setState({ nowMs: Date.now() });
+    this._refreshLib = await import('./scripts/ops-refresh-state.mjs');
     await this.fetchStatus();
     this._pollTimer = setInterval(() => this.fetchStatus(), 60000);
     this._tickTimer = setInterval(() => this.setState({ nowMs: Date.now() }), 15000);
@@ -159,14 +168,41 @@ class Component extends DCLogic {
     clearInterval(this._tickTimer);
   }
 
-  fetchStatus = async () => {
+  // Automatic 60s polling calls this with no args (silent — matches the
+  // existing background-refresh UX). Only the manual Refresh button passes
+  // { manual: true }, which is what turns on the isRefreshing/outcome
+  // feedback issue #40 asks for.
+  fetchStatus = async ({ manual = false } = {}) => {
+    if (manual && this.state.isRefreshing) return;
+    const previousGeneratedAtIso = this.state.status ? this.state.status.generatedAtIso : null;
+    if (manual) this.setState({ isRefreshing: true, lastRefreshOutcome: null });
     try {
       const res = await fetch('./ops/status.json?t=' + Date.now(), { cache: 'no-store' });
       if (!res.ok) throw new Error('HTTP ' + res.status);
       const data = await res.json();
-      this.setState({ status: data, error: null, nowMs: Date.now() });
+      const nowMs = Date.now();
+      const update = { status: data, error: null, nowMs, lastFetchedAtMs: nowMs };
+      if (manual) {
+        update.isRefreshing = false;
+        update.lastRefreshOutcome = this._refreshLib.computeRefreshOutcome({
+          ok: true,
+          previousGeneratedAtIso,
+          nextGeneratedAtIso: data.generatedAtIso,
+        });
+      }
+      this.setState(update);
     } catch (err) {
-      this.setState({ error: err.message || 'network error', nowMs: Date.now() });
+      const nowMs = Date.now();
+      const update = { error: err.message || 'network error', nowMs, lastFetchedAtMs: nowMs };
+      if (manual) {
+        update.isRefreshing = false;
+        update.lastRefreshOutcome = this._refreshLib.computeRefreshOutcome({
+          ok: false,
+          previousGeneratedAtIso,
+          nextGeneratedAtIso: null,
+        });
+      }
+      this.setState(update);
     }
   };
 
@@ -195,7 +231,7 @@ class Component extends DCLogic {
         blockers: [],
         cards: [],
         detailSections: [],
-        onRefresh: () => this.fetchStatus(),
+        ...this.buildRefreshVals(now),
       };
     }
 
@@ -340,12 +376,29 @@ class Component extends DCLogic {
       healthCardBg: health.bg,
       healthCardBorder: health.border,
       headlineText,
-      lastUpdatedText: 'Updated ' + relativeTimeFromNow(status.generatedAtIso, now),
+      lastUpdatedText: 'Snapshot generated ' + relativeTimeFromNow(status.generatedAtIso, now),
       hasBlockers: status.blockers.length > 0,
       blockers: status.blockers,
       cards,
       detailSections,
-      onRefresh: () => this.fetchStatus(),
+      ...this.buildRefreshVals(now),
+    };
+  }
+
+  buildRefreshVals(now) {
+    const { isRefreshing, lastFetchedAtMs, lastRefreshOutcome } = this.state;
+    const lib = this._refreshLib;
+    const outcomeColor = { updated: '#2E7D46', unchanged: '#8A6A26', failed: '#B3261E' };
+    const baseButtonStyle = 'background:transparent;border:1px solid #4A473F;color:#F6F1E8;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:9px 14px;font-family:inherit;';
+    return {
+      isRefreshing,
+      refreshButtonLabel: lib ? lib.refreshButtonLabel(isRefreshing) : (isRefreshing ? 'Refreshing…' : 'Refresh'),
+      refreshButtonStyle: baseButtonStyle + (isRefreshing ? 'cursor:not-allowed;opacity:0.6' : 'cursor:pointer'),
+      lastCheckedText: lastFetchedAtMs && lib ? 'Checked ' + lib.relativeTimeFromNow(lastFetchedAtMs, now) : '',
+      hasRefreshMessage: !!lastRefreshOutcome,
+      refreshMessage: lastRefreshOutcome && lib ? lib.refreshOutcomeLabel(lastRefreshOutcome) : '',
+      refreshMessageColor: outcomeColor[lastRefreshOutcome] || '#68645D',
+      onRefresh: () => this.fetchStatus({ manual: true }),
     };
   }
 }

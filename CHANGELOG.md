@@ -2,6 +2,46 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-14) — Mission Control refresh feedback and stale snapshot UX (issue #40)
+### Added
+- `scripts/ops-refresh-state.mjs` — pure, tested helpers for the Mission Control
+  Refresh button: `computeRefreshOutcome()` classifies a manual refresh as
+  `updated` (a newer `generatedAtIso` came back), `unchanged` (same snapshot —
+  the backend generator just hasn't published anything newer yet, not a
+  failure), or `failed` (fetch/parse error); `refreshOutcomeLabel()` maps those
+  to the exact user-facing copy (`Updated` / `No newer snapshot available` /
+  `Refresh failed`); `relativeTimeFromNow()` (shared with `ops.dc.html`'s
+  inline copy) and `refreshButtonLabel()` back the new "last checked" line and
+  `Refreshing…` button state. Covered by
+  `scripts/__tests__/ops-refresh-state.test.mjs` (12 tests).
+### Changed
+- `ops.dc.html` — the Refresh button now tracks explicit `isRefreshing` state
+  (label flips to `Refreshing…`, `disabled` while a request is in flight so
+  repeated taps are ignored), and after it resolves reports one of
+  `Updated` / `No newer snapshot available` / `Refresh failed` next to the
+  health card, comparing the new snapshot's `generatedAtIso` against the one
+  already on screen. A separate "Checked <relative time>" line now shows the
+  browser's last fetch attempt distinctly from the backend's "Snapshot
+  generated <relative time>" line (previously both were conflated under a
+  single "Updated ..." label). The stale-snapshot banner and the footer now
+  explicitly say the button checks for a newer *published* snapshot and
+  cannot force the backend generator or GitHub Actions to run. Automatic
+  60-second polling is unchanged (still silent, no button-state feedback) —
+  only the manual click path gained the new feedback. Cache-busting
+  (`?t=timestamp`) and `cache: 'no-store'` are unchanged.
+### Verified
+- `node --test scripts/__tests__/*.test.mjs` — 292/292 passing (12 new).
+- `node scripts/qa-static-site.mjs` — no broken references.
+- `node scripts/validate-content-data.mjs` — no structural errors.
+- Loaded `ops.dc.html` in a real headless browser (Playwright/Chromium) against
+  a local static server, per `CLAUDE.md`'s "verifying a change" rule: no
+  `[dc-runtime] ... never resolved` warnings or console/page errors; "Snapshot
+  generated ..." and "Checked ..." render as two distinct lines; clicking
+  Refresh against a same-snapshot response shows `REFRESHING…` + a disabled
+  button while in flight, ignores a second click during that window, then
+  resolves to `Refresh` (enabled) with `No newer snapshot available`
+  displayed.
+
 ## Unreleased (2026-07-14) — Verified supporting-item link engine v1 (issue #24)
 ### Added
 - `scripts/link-engine-adapters.mjs` — provider-agnostic adapter contract
