@@ -200,6 +200,95 @@ export class GitHubClient {
   }
 
   /**
+   * Merge state for Mission Control v2's engineering source (issue #42):
+   * draft/mergeable/review-decision aren't on the list-PRs response, only
+   * the single-PR GET — same reason scripts/handoff-watchdog.mjs already
+   * calls getPullRequest for one PR at a time instead of trusting the list.
+   */
+  async getPullRequestReviewDecision(prNumber) {
+    const query = `query($owner:String!,$repo:String!,$number:Int!){
+      repository(owner:$owner,name:$repo){
+        pullRequest(number:$number){ reviewDecision }
+      }
+    }`;
+    const res = await this.fetch(`${API_ROOT}/graphql`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${this.token}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ query, variables: { owner: this.owner, repo: this.repo, number: prNumber } }),
+    });
+    const json = await res.json();
+    if (json.errors) throw new Error(`GraphQL error: ${JSON.stringify(json.errors)}`);
+    return json.data.repository.pullRequest.reviewDecision || null;
+  }
+
+  /**
+   * Recently merged PRs (any label) — feeds Mission Control v2's automation
+   * feed "merged" events. Bounded to the most recent 20 closed PRs sorted by
+   * update time, filtered to ones that actually merged (a closed-without-merge
+   * PR is a different, less interesting event and is left out of the feed).
+   */
+  async listRecentlyMergedPullRequests({ limit = 20 } = {}) {
+    const prs = await this.request(
+      'GET',
+      `/repos/${this.owner}/${this.repo}/pulls?state=closed&sort=updated&direction=desc&per_page=${limit}`
+    );
+    return prs.filter((pr) => pr.merged_at);
+  }
+
+  /**
+   * Most recent workflow runs across the whole repo (not scoped to one
+   * workflow file or branch) — Mission Control v2's broader CI picture and
+   * the ops-live-feed-refresh.yml generator's own heartbeat (issue #42 asks
+   * for both). Best-effort: swallows failures the same way
+   * listWorkflowRunsForBranch does, since this only ever enriches the
+   * dashboard and never gates a decision.
+   */
+  async listRecentWorkflowRuns({ limit = 15 } = {}) {
+    try {
+      const data = await this.request('GET', `/repos/${this.owner}/${this.repo}/actions/runs?per_page=${limit}`);
+      return data.workflow_runs || [];
+    } catch {
+      return [];
+    }
+  }
+
+  /**
+   * Latest GitHub Pages deployment status via the generic Deployments API
+   * (`environment=github-pages`), which every repo with Pages enabled
+   * exposes under the same `contents: read`-level access this token already
+   * has — no new permission beyond `deployments: read`. Returns `null` on
+   * any failure (Pages not enabled, no deploy yet) rather than throwing, so
+   * the deployment source degrades to "offline" instead of crashing the CLI.
+   */
+  async getLatestPagesDeployment() {
+    try {
+      const deployments = await this.request(
+        'GET',
+        `/repos/${this.owner}/${this.repo}/deployments?environment=github-pages&per_page=1`
+      );
+      const latest = deployments[0];
+      if (!latest) return null;
+      const statuses = await this.request(
+        'GET',
+        `/repos/${this.owner}/${this.repo}/deployments/${latest.id}/statuses?per_page=1`
+      );
+      const latestStatus = statuses[0] || null;
+      return {
+        sha: latest.sha,
+        createdIso: latest.created_at,
+        state: latestStatus ? latestStatus.state : null,
+        updatedIso: latestStatus ? latestStatus.updated_at : latest.created_at,
+        environmentUrl: latestStatus ? latestStatus.environment_url : null,
+      };
+    } catch {
+      return null;
+    }
+  }
+
+  /**
    * REST has no "resolved" field for review threads; GraphQL does. Same
    * token, same repo — no new secret or permission beyond what
    * pull-requests: read already grants.

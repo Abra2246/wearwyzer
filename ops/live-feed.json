@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "generatedAtIso": "2026-07-14T20:29:58.327Z",
+  "overallState": "live",
+  "ceo": {
+    "headline": "Everything is healthy — no action needed.",
+    "requiredAction": null,
+    "activeWorkSummary": "2 issue(s) queued, none active."
+  },
+  "sources": {
+    "engineering": {
+      "wired": true,
+      "state": "live",
+      "lastUpdatedIso": "2026-07-14T20:29:58.327Z",
+      "fetchOk": true,
+      "data": {
+        "automationState": "queued",
+        "activeIssue": null,
+        "queue": {
+          "depth": 2,
+          "readyCount": 2,
+          "blockedCount": 0
+        },
+        "pr": null,
+        "ci": {
+          "status": "passing",
+          "latestRunIso": "2026-07-14T20:12:51Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29364811458",
+          "recentFailureCount": 0
+        },
+        "handoff": {
+          "stalled": false,
+          "reason": null
+        }
+      },
+      "note": null
+    },
+    "deployment": {
+      "wired": true,
+      "state": "live",
+      "lastUpdatedIso": "2026-07-14T20:29:58.327Z",
+      "fetchOk": true,
+      "data": {
+        "status": "healthy",
+        "lastHealthyShaShort": "78cd5c6",
+        "lastDeployIso": "2026-07-14T20:13:19Z",
+        "ageMinutes": 17,
+        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
+      },
+      "note": null
+    },
+    "content": {
+      "wired": false,
+      "state": "not-wired",
+      "lastUpdatedIso": null,
+      "fetchOk": false,
+      "data": null,
+      "note": "Guide Factory stage/queue integration ships in Phase 3 (issue #42)."
+    },
+    "image": {
+      "wired": false,
+      "state": "not-wired",
+      "lastUpdatedIso": null,
+      "fetchOk": false,
+      "data": null,
+      "note": "Image renderer spend/render integration ships in Phase 3 (issue #42)."
+    },
+    "affiliate": {
+      "wired": false,
+      "state": "not-wired",
+      "lastUpdatedIso": null,
+      "fetchOk": false,
+      "data": null,
+      "note": "Link-engine coverage integration ships in Phase 3 (issue #42)."
+    }
+  },
+  "automationFeed": [
+    {
+      "key": "deploy:78cd5c6",
+      "timestampIso": "2026-07-14T20:13:19Z",
+      "type": "deployed",
+      "summary": "Deployed build 78cd5c6 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:29364811458",
+      "timestampIso": "2026-07-14T20:12:51Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/29364811458"
+    },
+    {
+      "key": "pr-merged:41",
+      "timestampIso": "2026-07-14T20:12:29Z",
+      "type": "pr-merged",
+      "summary": "PR #41 \"fix(ops): honest Mission Control refresh feedback and stale-snapshot UX\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/41"
+    },
+    {
+      "key": "pr-merged:39",
+      "timestampIso": "2026-07-14T19:16:59Z",
+      "type": "pr-merged",
+      "summary": "PR #39 \"Bootstrap Mission Control refresh on main changes\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/39"
+    },
+    {
+      "key": "pr-merged:38",
+      "timestampIso": "2026-07-14T16:30:51Z",
+      "type": "pr-merged",
+      "summary": "PR #38 \"Add verified supporting-item link engine v1\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/38"
+    },
+    {
+      "key": "pr-merged:37",
+      "timestampIso": "2026-07-14T16:27:03Z",
+      "type": "pr-merged",
+      "summary": "PR #37 \"Activate Mission Control status refresh\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/37"
+    },
+    {
+      "key": "pr-merged:36",
+      "timestampIso": "2026-07-14T00:01:13Z",
+      "type": "pr-merged",
+      "summary": "PR #36 \"Add Mission Control ops dashboard v1\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/36"
+    },
+    {
+      "key": "pr-merged:35",
+      "timestampIso": "2026-07-13T23:35:01Z",
+      "type": "pr-merged",
+      "summary": "PR #35 \"Add Style Guides folder importer v1\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/35"
+    },
+    {
+      "key": "pr-merged:32",
+      "timestampIso": "2026-07-13T22:46:25Z",
+      "type": "pr-merged",
+      "summary": "PR #32 \"Add OpenAI Images API renderer behind Guide Factory\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/32"
+    },
+    {
+      "key": "pr-merged:30",
+      "timestampIso": "2026-07-13T18:11:48Z",
+      "type": "pr-merged",
+      "summary": "PR #30 \"Fix Deploy Health Check runtime-binding false positives\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/30"
+    },
+    {
+      "key": "pr-merged:28",
+      "timestampIso": "2026-07-13T18:03:27Z",
+      "type": "pr-merged",
+      "summary": "PR #28 \"Fix Deploy Health Check routes for GitHub Pages\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/28"
+    },
+    {
+      "key": "pr-merged:26",
+      "timestampIso": "2026-07-13T17:52:43Z",
+      "type": "pr-merged",
+      "summary": "PR #26 \"Add automation completion handoff watchdog\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/26"
+    },
+    {
+      "key": "pr-merged:21",
+      "timestampIso": "2026-07-13T14:28:54Z",
+      "type": "pr-merged",
+      "summary": "PR #21 \"Add Autonomous Site and Guide Factory v1\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/21"
+    },
+    {
+      "key": "pr-merged:20",
+      "timestampIso": "2026-07-13T03:27:07Z",
+      "type": "pr-merged",
+      "summary": "PR #20 \"Add autonomous engineering queue v1\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/20"
+    },
+    {
+      "key": "pr-merged:15",
+      "timestampIso": "2026-07-13T01:54:34Z",
+      "type": "pr-merged",
+      "summary": "PR #15 \"feat: Hero Product v1 — first page driven by the Knowledge Graph\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/15"
+    },
+    {
+      "key": "pr-merged:13",
+      "timestampIso": "2026-07-12T20:54:20Z",
+      "type": "pr-merged",
+      "summary": "PR #13 \"feat: add Knowledge Graph v1 additive foundation\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/13"
+    },
+    {
+      "key": "pr-merged:9",
+      "timestampIso": "2026-07-12T05:11:48Z",
+      "type": "pr-merged",
+      "summary": "PR #9 \"Add Claude Code GitHub Workflow\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/9"
+    },
+    {
+      "key": "pr-merged:8",
+      "timestampIso": "2026-07-12T04:59:25Z",
+      "type": "pr-merged",
+      "summary": "PR #8 \"fix: eliminate preview 404s and add static-site QA\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/8"
+    },
+    {
+      "key": "pr-merged:6",
+      "timestampIso": "2026-07-12T04:08:44Z",
+      "type": "pr-merged",
+      "summary": "PR #6 \"chore: preview and automation foundation\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/6"
+    },
+    {
+      "key": "pr-merged:5",
+      "timestampIso": "2026-07-12T03:52:50Z",
+      "type": "pr-merged",
+      "summary": "PR #5 \"fix: close Guide #1 relationship gaps, add CI content validation\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/5"
+    },
+    {
+      "key": "pr-merged:4",
+      "timestampIso": "2026-07-12T03:36:23Z",
+      "type": "pr-merged",
+      "summary": "PR #4 \"fix: resolve remaining product mismatches, add automated content validation\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/4"
+    },
+    {
+      "key": "pr-merged:3",
+      "timestampIso": "2026-07-12T03:14:48Z",
+      "type": "pr-merged",
+      "summary": "PR #3 \"fix: correct one mismatched guide-item product mapping and derive guide links from real data\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/3"
+    }
+  ]
+}
