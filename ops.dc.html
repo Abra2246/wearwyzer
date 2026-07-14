@@ -144,7 +144,7 @@ class Component extends DCLogic {
     status: null,
     error: null,
     nowMs: null,
-    expanded: { engineering: false, content: false, deployment: false, incidents: false },
+    expanded: { engineering: false, content: false, deployment: false, links: false, incidents: false },
   };
 
   async componentDidMount() {
@@ -256,6 +256,16 @@ class Component extends DCLogic {
         hasBar: status.imageRenderer.state !== 'unavailable',
         barPct: Math.min(100, status.imageRenderer.budgetPct ?? 0) + '%',
       },
+      {
+        label: 'Affiliate link coverage',
+        value: status.linkEngine.state === 'unavailable' ? 'Unavailable' : status.linkEngine.portfolioCoveragePct + '%',
+        detail: status.linkEngine.state === 'unavailable'
+          ? 'No link engine report available yet.'
+          : 'Target ' + status.linkEngine.targetMinPct + '–' + status.linkEngine.targetMaxPct + '% · ' + status.linkEngine.needsHumanCount + ' item(s) need a human.',
+        dotColor: status.linkEngine.state === 'below-target' ? DOT_COLORS.yellow : status.linkEngine.state === 'on-target' ? DOT_COLORS.green : DOT_COLORS.gray,
+        hasBar: status.linkEngine.state !== 'unavailable',
+        barPct: Math.min(100, status.linkEngine.portfolioCoveragePct ?? 0) + '%',
+      },
     ];
 
     const detailSections = [
@@ -289,6 +299,18 @@ class Component extends DCLogic {
           status.deployment.lastHealthyShaShort ? 'Last known-healthy build: ' + status.deployment.lastHealthyShaShort : 'No recorded healthy build yet.',
           status.deployment.lastCheckedIso ? 'Last checked ' + relativeTimeFromNow(status.deployment.lastCheckedIso, now) : 'No health check has run yet.',
         ].join('\n'),
+      },
+      {
+        key: 'links',
+        title: 'Affiliate link coverage',
+        body: [
+          'State: ' + status.linkEngine.state,
+          status.linkEngine.state === 'unavailable'
+            ? 'No link engine report available yet.'
+            : 'Portfolio coverage: ' + status.linkEngine.portfolioCoveragePct + '% (target ' + status.linkEngine.targetMinPct + '–' + status.linkEngine.targetMaxPct + '%)',
+          status.linkEngine.state === 'unavailable' ? '' : 'Needs human: ' + status.linkEngine.needsHumanCount + ' · Broken links: ' + status.linkEngine.brokenCount + ' · Logged shortfalls: ' + status.linkEngine.shortfallCount,
+          status.linkEngine.lastRunIso ? 'Last run ' + relativeTimeFromNow(status.linkEngine.lastRunIso, now) : '',
+        ].filter(Boolean).join('\n'),
       },
       {
         key: 'incidents',

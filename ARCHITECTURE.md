@@ -198,6 +198,54 @@ not activate the new scheduled workflow (`.github/workflows/` is outside this ch
 permitted scope — see `docs/AUTOMATION_WORKFLOW.md` activation checklist, which also flags
 the `contents: write` exception above for explicit maintainer sign-off).
 
+## Decision — Verified supporting-item link engine v1 (issue #24)
+**Current state:** Recommendation 4 above (a real `retailers`/`offers` backend, click
+tracking, revenue attribution) remains unbuilt and correctly sequenced behind `ROADMAP.md`
+Milestone 3. Affiliate coverage reporting existed only as `content-quality-policy.mjs`'s
+`reportAffiliateCoverage()` — a simple "has *a* link, yes/no" count with no verification
+that the link is still live, still the right product, or still affiliate-eligible.
+**Problem / scope note:** issue #24 asks for a system that discovers, verifies, scores,
+and publishes supporting-item product links without fabricating availability, price,
+retailer, or affiliate status, and measures affiliate coverage against an explicit 80–90%
+operating target. Same deliberate, narrowly-scoped-exception shape as issue #14's Hero
+Product page: built entirely on the additive Knowledge Graph (`data/*.js`) and
+deterministic in-memory fixtures, with no backend, no database, no live retailer/affiliate
+credential, and no wiring into `data/offers.js` or any `.dc.html` page. See
+`docs/LINK_ENGINE_V1.md` "Scope note" for the full reasoning.
+**Proposed solution (what shipped):** `scripts/link-engine-adapters.mjs` (provider-agnostic
+adapter contract — deterministic fixture adapters plus a permanently-inert
+credential-gated `http-provider` stub, same inert-until-configured pattern as
+`scripts/openai-image-provider.mjs`), `scripts/link-engine-matcher.mjs` (weighted
+candidate scoring — exact/ambiguous/no-match classification, never an auto-picked weak
+match), `scripts/link-engine-verifier.mjs` (turns one adapter snapshot into a timestamped,
+`linkStatus`-classified verified offer, with canonical/retailer/affiliate URLs always kept
+as three distinct fields), `scripts/link-engine.mjs` (pure pipeline orchestration —
+exact-match-first with clearly-labeled, structurally-approved alternative substitution
+only once the exact item is confirmed unavailable, plus scheduled-revalidation
+remove/replace/flag logic), and `scripts/link-engine-coverage.mjs` (the 80–90%
+target, per-guide/portfolio coverage math, and explicit threshold-shortfall logging with
+sourcing-priority recurrence tracking). `scripts/link-engine-cli.mjs` is the only I/O —
+same "why the CLI doesn't write site files yet" boundary as the guide factory.
+`scripts/ops-status-schema.mjs`/`ops-status-builder.mjs` gained a closed `linkEngine`
+section so per-guide/portfolio coverage and the 80–90% target are visible on Mission
+Control (issue #19), downgrading `overallHealth` to yellow when coverage is below target.
+See `docs/LINK_ENGINE_V1.md` for the full spec.
+**Benefit:** a tested, deterministic matching/verification/coverage algorithm exists and is
+proven correct against every named failure mode (ambiguous match, dead link, redirect,
+stale price, out-of-stock, mismatched identity, affiliate-eligibility loss, duplicate
+offer) before any backend investment — so Milestone 5's eventual real Affiliate Engine has
+an algorithm to sit behind rather than being designed from scratch once a database exists,
+exactly the role issue #14's Hero Product page played for Milestone 4.
+**Migration effort:** additive; does not touch `data/offers.js`, `js/products.js`, or any
+existing page. Wiring a real provider adapter (once a live retailer/affiliate-network
+credential is available) and pointing `scripts/link-engine-cli.mjs` at real product data
+instead of read-only Knowledge Graph projections is expected to be small specifically
+because the matching/verification/coverage algorithm itself needs no changes.
+**Priority:** N/A — shipped as scoped by issue #24 (high risk — external commerce data and
+customer-facing claims). Stops before merge; does not activate the staged revalidation
+workflow (`.github/workflows/` is outside this change's permitted scope — see
+`docs/AUTOMATION_WORKFLOW.md` activation checklist).
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

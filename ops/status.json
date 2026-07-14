@@ -37,6 +37,16 @@
     "monthlyCapUsd": 30,
     "budgetPct": 0
   },
+  "linkEngine": {
+    "state": "unavailable",
+    "portfolioCoveragePct": null,
+    "targetMinPct": null,
+    "targetMaxPct": null,
+    "needsHumanCount": null,
+    "brokenCount": null,
+    "shortfallCount": null,
+    "lastRunIso": null
+  },
   "incident": {
     "active": false,
     "issueNumber": null,
