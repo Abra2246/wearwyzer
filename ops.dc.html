@@ -153,6 +153,7 @@ class Component extends DCLogic {
     isRefreshing: false,
     lastFetchedAtMs: null,
     lastRefreshOutcome: null,
+    lastFetchSource: null,
   };
 
   async componentDidMount() {
@@ -172,16 +173,19 @@ class Component extends DCLogic {
   // existing background-refresh UX). Only the manual Refresh button passes
   // { manual: true }, which is what turns on the isRefreshing/outcome
   // feedback issue #40 asks for.
+  //
+  // The actual fetch prefers the current `main` branch snapshot over the
+  // Pages-deployed copy (PR #41 review) so a click can surface a snapshot
+  // that hasn't reached the Pages deploy yet, not just a re-fetch of the
+  // same stale artifact this page was loaded with.
   fetchStatus = async ({ manual = false } = {}) => {
     if (manual && this.state.isRefreshing) return;
     const previousGeneratedAtIso = this.state.status ? this.state.status.generatedAtIso : null;
     if (manual) this.setState({ isRefreshing: true, lastRefreshOutcome: null });
     try {
-      const res = await fetch('./ops/status.json?t=' + Date.now(), { cache: 'no-store' });
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      const data = await res.json();
+      const { data, source } = await this._refreshLib.fetchStatusWithFallback(fetch, Date.now());
       const nowMs = Date.now();
-      const update = { status: data, error: null, nowMs, lastFetchedAtMs: nowMs };
+      const update = { status: data, error: null, nowMs, lastFetchedAtMs: nowMs, lastFetchSource: source };
       if (manual) {
         update.isRefreshing = false;
         update.lastRefreshOutcome = this._refreshLib.computeRefreshOutcome({
@@ -193,7 +197,7 @@ class Component extends DCLogic {
       this.setState(update);
     } catch (err) {
       const nowMs = Date.now();
-      const update = { error: err.message || 'network error', nowMs, lastFetchedAtMs: nowMs };
+      const update = { error: err.message || 'network error', nowMs, lastFetchedAtMs: nowMs, lastFetchSource: null };
       if (manual) {
         update.isRefreshing = false;
         update.lastRefreshOutcome = this._refreshLib.computeRefreshOutcome({
@@ -386,15 +390,16 @@ class Component extends DCLogic {
   }
 
   buildRefreshVals(now) {
-    const { isRefreshing, lastFetchedAtMs, lastRefreshOutcome } = this.state;
+    const { isRefreshing, lastFetchedAtMs, lastRefreshOutcome, lastFetchSource } = this.state;
     const lib = this._refreshLib;
     const outcomeColor = { updated: '#2E7D46', unchanged: '#8A6A26', failed: '#B3261E' };
     const baseButtonStyle = 'background:transparent;border:1px solid #4A473F;color:#F6F1E8;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:9px 14px;font-family:inherit;';
+    const sourceLabel = lastFetchSource && lib ? lib.statusSourceLabel(lastFetchSource) : '';
     return {
       isRefreshing,
       refreshButtonLabel: lib ? lib.refreshButtonLabel(isRefreshing) : (isRefreshing ? 'Refreshing…' : 'Refresh'),
       refreshButtonStyle: baseButtonStyle + (isRefreshing ? 'cursor:not-allowed;opacity:0.6' : 'cursor:pointer'),
-      lastCheckedText: lastFetchedAtMs && lib ? 'Checked ' + lib.relativeTimeFromNow(lastFetchedAtMs, now) : '',
+      lastCheckedText: lastFetchedAtMs && lib ? 'Checked ' + lib.relativeTimeFromNow(lastFetchedAtMs, now) + sourceLabel : '',
       hasRefreshMessage: !!lastRefreshOutcome,
       refreshMessage: lastRefreshOutcome && lib ? lib.refreshOutcomeLabel(lastRefreshOutcome) : '',
       refreshMessageColor: outcomeColor[lastRefreshOutcome] || '#68645D',

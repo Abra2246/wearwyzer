@@ -1,16 +1,21 @@
-// Pure helpers for Mission Control's manual "Refresh" button (issue #40).
+// Helpers for Mission Control's data fetch and manual "Refresh" button
+// (issue #40, and the raw-branch/Pages-fallback fetch requested on PR #41).
 //
 // The dashboard's Refresh button cache-busts and re-fetches ops/status.json,
 // but the backend generator only publishes a new snapshot on a schedule/push
-// trigger (see .github/workflows/ops-status-refresh.yml). A click can
-// legitimately re-fetch the *same* snapshot. This module is the deterministic,
+// trigger (see .github/workflows/ops-status-refresh.yml), and the Pages-hosted
+// copy can itself lag main by a further deploy cycle. A click can legitimately
+// re-fetch the *same* snapshot. This module is the deterministic,
 // browser-and-Node-importable piece that decides what the button should say
 // afterwards, so ops.dc.html's inline controller stays a thin caller and the
 // logic itself is unit-testable (dc.html controllers can't be imported by
 // node:test directly).
 //
-// No I/O, no DOM, no fetch — same pure-logic/thin-IO split as
-// scripts/ops-status-builder.mjs and scripts/queue-rules.mjs.
+// Everything is pure except `fetchStatusWithFallback`, which takes its
+// `fetchImpl` as a parameter instead of calling the global `fetch` directly
+// — same pure-logic/thin-IO split as scripts/ops-status-builder.mjs and
+// scripts/queue-rules.mjs, just with the I/O boundary made swappable rather
+// than pushed out of the module entirely.
 
 export const REFRESH_OUTCOME = {
   UPDATED: 'updated',
@@ -64,4 +69,63 @@ export function relativeTimeFromNow(isoOrMs, nowMs) {
 
 export function refreshButtonLabel(isRefreshing) {
   return isRefreshing ? 'Refreshing…' : 'Refresh';
+}
+
+// GitHub Pages only serves whatever the last `pages.yml` deploy published,
+// which can lag the committed ops/status.json snapshot by minutes (see
+// ARCHITECTURE.md's "Decision — Mission Control ops dashboard v1"). Reading
+// the file straight off `main` via raw.githubusercontent.com is fresher than
+// the Pages copy; the Pages copy is kept as a fallback for when
+// raw.githubusercontent.com itself is unreachable (rate-limited, offline,
+// CDN hiccup) since this dashboard has no backend to proxy through.
+const STATUS_OWNER = 'Abra2246';
+const STATUS_REPO = 'wearwyzer';
+const STATUS_BRANCH = 'main';
+
+export const STATUS_SOURCE = {
+  MAIN: 'main',
+  PAGES_FALLBACK: 'pages-fallback',
+};
+
+export const STATUS_SOURCE_LABEL = {
+  [STATUS_SOURCE.MAIN]: '',
+  [STATUS_SOURCE.PAGES_FALLBACK]: ' (cached Pages copy — main was unreachable)',
+};
+
+export function buildStatusUrls(nowMs) {
+  return {
+    primaryUrl: `https://raw.githubusercontent.com/${STATUS_OWNER}/${STATUS_REPO}/${STATUS_BRANCH}/ops/status.json?t=${nowMs}`,
+    fallbackUrl: `./ops/status.json?t=${nowMs}`,
+  };
+}
+
+async function fetchStatusJson(fetchImpl, url) {
+  const res = await fetchImpl(url, { cache: 'no-store' });
+  if (!res.ok) throw new Error('HTTP ' + res.status);
+  const data = await res.json();
+  if (!data || typeof data !== 'object' || !data.generatedAtIso) {
+    throw new Error('invalid status payload');
+  }
+  return data;
+}
+
+// Fetch ops/status.json, preferring the current `main` snapshot over the
+// (potentially stale) Pages-deployed copy. `fetchImpl` is injected — same
+// signature as the global `fetch` — so this stays deterministically
+// testable under node:test without real network I/O, same pure-logic/thin-IO
+// split as the rest of this module. Throws only if both the primary and
+// fallback requests fail.
+export async function fetchStatusWithFallback(fetchImpl, nowMs) {
+  const { primaryUrl, fallbackUrl } = buildStatusUrls(nowMs);
+  try {
+    const data = await fetchStatusJson(fetchImpl, primaryUrl);
+    return { data, source: STATUS_SOURCE.MAIN };
+  } catch (primaryErr) {
+    const data = await fetchStatusJson(fetchImpl, fallbackUrl);
+    return { data, source: STATUS_SOURCE.PAGES_FALLBACK };
+  }
+}
+
+export function statusSourceLabel(source) {
+  return STATUS_SOURCE_LABEL[source] || '';
 }

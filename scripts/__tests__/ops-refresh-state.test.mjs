@@ -2,11 +2,23 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {
   REFRESH_OUTCOME,
+  STATUS_SOURCE,
   computeRefreshOutcome,
   refreshOutcomeLabel,
   relativeTimeFromNow,
   refreshButtonLabel,
+  buildStatusUrls,
+  fetchStatusWithFallback,
+  statusSourceLabel,
 } from '../ops-refresh-state.mjs';
+
+function jsonResponse(body) {
+  return { ok: true, status: 200, json: async () => body };
+}
+
+function errorResponse(status) {
+  return { ok: false, status, json: async () => { throw new Error('should not parse body of a non-ok response'); } };
+}
 
 test('computeRefreshOutcome: failed fetch is always "failed", even with a prior snapshot', () => {
   assert.equal(
@@ -81,4 +93,81 @@ test('relativeTimeFromNow: null/undefined input is "unknown", not a thrown error
 
 test('relativeTimeFromNow: unparseable value is "unknown"', () => {
   assert.equal(relativeTimeFromNow('not-a-date', Date.now()), 'unknown');
+});
+
+test('buildStatusUrls: primary is a cache-busted raw.githubusercontent.com main-branch URL', () => {
+  const { primaryUrl } = buildStatusUrls(1234567890);
+  assert.equal(
+    primaryUrl,
+    'https://raw.githubusercontent.com/Abra2246/wearwyzer/main/ops/status.json?t=1234567890'
+  );
+});
+
+test('buildStatusUrls: fallback is the cache-busted Pages-relative path', () => {
+  const { fallbackUrl } = buildStatusUrls(1234567890);
+  assert.equal(fallbackUrl, './ops/status.json?t=1234567890');
+});
+
+test('fetchStatusWithFallback: primary success returns its data with source "main" and never calls the fallback URL', async () => {
+  const calls = [];
+  const data = { generatedAtIso: '2026-07-14T12:00:00.000Z' };
+  const fetchImpl = async (url) => {
+    calls.push(url);
+    return jsonResponse(data);
+  };
+  const result = await fetchStatusWithFallback(fetchImpl, 111);
+  assert.deepEqual(result, { data, source: STATUS_SOURCE.MAIN });
+  assert.equal(calls.length, 1);
+  assert.match(calls[0], /^https:\/\/raw\.githubusercontent\.com\//);
+});
+
+test('fetchStatusWithFallback: primary network error falls back to the Pages copy with source "pages-fallback"', async () => {
+  const calls = [];
+  const data = { generatedAtIso: '2026-07-14T12:00:00.000Z' };
+  const fetchImpl = async (url) => {
+    calls.push(url);
+    if (url.startsWith('https://raw.githubusercontent.com/')) throw new Error('network error');
+    return jsonResponse(data);
+  };
+  const result = await fetchStatusWithFallback(fetchImpl, 222);
+  assert.deepEqual(result, { data, source: STATUS_SOURCE.PAGES_FALLBACK });
+  assert.equal(calls.length, 2);
+  assert.equal(calls[1], './ops/status.json?t=222');
+});
+
+test('fetchStatusWithFallback: primary non-2xx response falls back to the Pages copy', async () => {
+  const data = { generatedAtIso: '2026-07-14T12:00:00.000Z' };
+  const fetchImpl = async (url) => {
+    if (url.startsWith('https://raw.githubusercontent.com/')) return errorResponse(404);
+    return jsonResponse(data);
+  };
+  const result = await fetchStatusWithFallback(fetchImpl, 333);
+  assert.deepEqual(result, { data, source: STATUS_SOURCE.PAGES_FALLBACK });
+});
+
+test('fetchStatusWithFallback: primary payload missing generatedAtIso is treated as invalid and falls back', async () => {
+  const data = { generatedAtIso: '2026-07-14T12:00:00.000Z' };
+  const fetchImpl = async (url) => {
+    if (url.startsWith('https://raw.githubusercontent.com/')) return jsonResponse({ schemaVersion: 1 });
+    return jsonResponse(data);
+  };
+  const result = await fetchStatusWithFallback(fetchImpl, 444);
+  assert.deepEqual(result, { data, source: STATUS_SOURCE.PAGES_FALLBACK });
+});
+
+test('fetchStatusWithFallback: both primary and fallback failing rejects', async () => {
+  const fetchImpl = async () => errorResponse(500);
+  await assert.rejects(() => fetchStatusWithFallback(fetchImpl, 555));
+});
+
+test('statusSourceLabel: "main" source has no suffix (the common case is unremarkable)', () => {
+  assert.equal(statusSourceLabel(STATUS_SOURCE.MAIN), '');
+});
+
+test('statusSourceLabel: "pages-fallback" source calls out that a cached copy was used', () => {
+  assert.match(statusSourceLabel(STATUS_SOURCE.PAGES_FALLBACK), /cached/i);
+});
+
+test('statusSourceLabel: unknown source returns empty string rather than throwing', () => {
+  assert.equal(statusSourceLabel('bogus'), '');
 });
