@@ -1,0 +1,83 @@
+# STAGED WORKFLOW — not active.
+#
+# This file must be copied to .github/workflows/ops-status-refresh.yml by a
+# maintainer with workflow-edit permissions, for the same reason every other
+# file in this directory is staged rather than active (see
+# docs/AUTOMATION_WORKFLOW.md "What's deferred" / the Claude GitHub App's
+# permission model) — Claude's token cannot write to .github/workflows/.
+#
+# Unlike every other staged workflow in this repo, this one needs
+# `contents: write` — it regenerates `ops/status.json` (a generated data
+# artifact the dashboard fetches, issue #19 section 3) and commits it
+# directly to `main` if it changed, bypassing the issue -> PR -> review
+# flow every other automated change in this repo goes through. That is a
+# deliberate, narrow exception: this workflow can only ever change one
+# generated JSON file, and `scripts/ops-status-cli.mjs` refuses to write
+# anything that fails its own schema/secret-scan gate first (see
+# docs/OPS_DASHBOARD_V1.md "Why the status artifact is committed, not
+# published some other way"). A maintainer should read and agree with that
+# tradeoff before copying this file in — it is called out explicitly here
+# rather than silently bundled with the other staged workflows.
+#
+# See docs/OPS_DASHBOARD_V1.md for the full contract and activation
+# checklist.
+
+name: Ops Status Refresh
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate and print status without committing"
+        type: boolean
+        default: false
+  schedule:
+    # Every 15 minutes — conservative relative to the dashboard's 60s
+    # client-side poll; the dashboard's own staleness banner (issue #19
+    # section 4) covers the gap if a run is skipped or delayed.
+    - cron: '*/15 * * * *'
+
+concurrency:
+  group: ops-status-refresh
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+  actions: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Generate ops/status.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/ops-status-cli.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
+
+      - name: Commit and push if changed
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          if git diff --quiet -- ops/status.json; then
+            echo "No change to ops/status.json — nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Deliberately NOT using a "[skip ci]" marker: this push must
+          # trigger .github/workflows/pages.yml so the refreshed
+          # ops/status.json actually redeploys to GitHub Pages, which is
+          # the entire point of this workflow.
+          git add ops/status.json
+          git commit -m "chore(ops): refresh status.json"
+          git push

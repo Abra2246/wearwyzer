@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Mission Control — WearWyzer Ops</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Mission Control">
+  <meta name="theme-color" content="#0B0B0B">
+  <link rel="icon" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
+  <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
+</helmet>
+
+<div style="font-family:ui-sans-serif,system-ui,-apple-system,'Helvetica Neue',Arial,sans-serif;background:#F6F1E8;color:#0B0B0B;min-height:100vh;padding-bottom:40px">
+
+  <header style="background:#0B0B0B;color:#F6F1E8;padding:16px 20px;position:sticky;top:0;z-index:10">
+    <div style="max-width:720px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:12px">
+      <div>
+        <p style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:18px;letter-spacing:1px;text-transform:uppercase;margin:0">Mission Control</p>
+        <p style="font-size:11px;color:#A8A39A;margin:2px 0 0">WearWyzer · read-only automation status</p>
+      </div>
+      <button type="button" onClick="{{ onRefresh }}" style="background:transparent;border:1px solid #4A473F;color:#F6F1E8;font-size:12px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;padding:9px 14px;cursor:pointer;font-family:inherit" style-hover="border-color:#C8941E;color:#C8941E">Refresh</button>
+    </div>
+  </header>
+
+  <main style="max-width:720px;margin:0 auto;padding:20px 16px 0">
+
+    <sc-if value="{{ hasError }}" hint-placeholder-val="{{ false }}">
+      <div role="alert" style="background:#FBEAE8;border:1px solid #B3261E;color:#7A1B15;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.5">
+        <strong>Couldn't load status data.</strong> {{ errorText }}
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ showStaleBanner }}" hint-placeholder-val="{{ false }}">
+      <div role="status" style="background:#FBF3E1;border:1px solid #C8941E;color:#6B4E0E;padding:14px 16px;margin-bottom:16px;font-size:14px;line-height:1.5">
+        <strong>Data may be stale.</strong> Last refreshed {{ staleMinutesLabel }} — the status generator may not have run recently.
+      </div>
+    </sc-if>
+
+    <section aria-label="Overall health" style="background:{{ healthCardBg }};border:1px solid {{ healthCardBorder }};padding:24px 20px;margin-bottom:16px">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+        <span aria-hidden="true" style="width:16px;height:16px;border-radius:50%;background:{{ healthColor }};flex-shrink:0;display:inline-block"></span>
+        <p style="font-family:'Oswald',Impact,sans-serif;font-weight:700;font-size:22px;text-transform:uppercase;letter-spacing:0.5px;margin:0;color:{{ healthTextColor }}">{{ healthLabel }}</p>
+      </div>
+      <p style="font-size:15px;line-height:1.5;margin:0 0 4px;color:{{ healthTextColor }}">{{ headlineText }}</p>
+      <p style="font-size:12px;color:{{ healthMutedColor }};margin:0">{{ lastUpdatedText }}</p>
+    </section>
+
+    <sc-if value="{{ hasBlockers }}" hint-placeholder-val="{{ false }}">
+      <section aria-label="Blockers requiring human attention" style="margin-bottom:16px">
+        <p style="font-size:12px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#B3261E;margin:0 0 8px">Needs human attention</p>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <sc-for list="{{ blockers }}" as="b" hint-placeholder-count="1">
+            <div style="background:#FFFDF8;border-left:4px solid #B3261E;border-top:1px solid #DDD3C3;border-right:1px solid #DDD3C3;border-bottom:1px solid #DDD3C3;padding:12px 14px;font-size:13px;line-height:1.5">{{ b.summary }}</div>
+          </sc-for>
+        </div>
+      </section>
+    </sc-if>
+
+    <section aria-label="Status summary" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-bottom:16px">
+      <sc-for list="{{ cards }}" as="c" hint-placeholder-count="6">
+        <div style="background:#FFFDF8;border:1px solid #DDD3C3;padding:16px">
+          <p style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#68645D;margin:0 0 8px">{{ c.label }}</p>
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <span aria-hidden="true" style="width:9px;height:9px;border-radius:50%;background:{{ c.dotColor }};flex-shrink:0;display:inline-block"></span>
+            <p style="font-size:16px;font-weight:600;margin:0;color:#0B0B0B">{{ c.value }}</p>
+          </div>
+          <p style="font-size:12px;color:#68645D;margin:0">{{ c.detail }}</p>
+          <sc-if value="{{ c.hasBar }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#EFE9DC;height:6px;margin-top:10px;overflow:hidden">
+              <div style="background:{{ c.dotColor }};height:100%;width:{{ c.barPct }}"></div>
+            </div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </section>
+
+    <section aria-label="Expandable detail" style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px">
+      <sc-for list="{{ detailSections }}" as="d" hint-placeholder-count="4">
+        <div style="background:#FFFDF8;border:1px solid #DDD3C3">
+          <button type="button" onClick="{{ d.onToggle }}" aria-expanded="{{ d.expandedAria }}" style="width:100%;box-sizing:border-box;text-align:left;background:none;border:none;cursor:pointer;padding:14px 16px;display:flex;justify-content:space-between;align-items:center;font-family:inherit" style-hover="background:#F6F1E8">
+            <span style="font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#0B0B0B">{{ d.title }}</span>
+            <span aria-hidden="true" style="font-size:13px;color:#68645D">{{ d.toggleSymbol }}</span>
+          </button>
+          <sc-if value="{{ d.expanded }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:0 16px 16px;font-size:13px;color:#68645D;line-height:1.7;white-space:pre-line">{{ d.body }}</div>
+          </sc-if>
+        </div>
+      </sc-for>
+    </section>
+
+    <p style="font-size:11px;color:#68645D;text-align:center;line-height:1.6;margin:0 0 24px">
+      Read-only view of automation state — cannot merge, deploy, publish, or control anything from here.<br>
+      Auto-refreshes every 60 seconds. Unlisted, unlinked, <code>noindex</code> — not a substitute for real access control.
+    </p>
+
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const HEALTH_META = {
+  green:  { label: 'All clear',        color: '#2E7D46', textColor: '#1E5C33', mutedColor: '#4C7A5B', bg: '#EEF6F0', border: '#BFE0CB' },
+  yellow: { label: 'Needs attention',  color: '#C8941E', textColor: '#6B4E0E', mutedColor: '#8A6A26', bg: '#FBF3E1', border: '#EAD3A0' },
+  red:    { label: 'Action required',  color: '#B3261E', textColor: '#7A1B15', mutedColor: '#96453D', bg: '#FBEAE8', border: '#EBB5AF' },
+};
+
+const AUTOMATION_STATE_COPY = {
+  working: 'Claude is actively implementing the current issue.',
+  queued: 'Work is queued and waiting for the next dispatch cycle.',
+  review: 'Implementation is done and waiting on human PR review.',
+  blocked: 'The current issue is blocked on an unresolved dependency.',
+  failed: 'The last automation run failed and needs a human.',
+  idle: 'No active automation work. Everything is quiet.',
+};
+
+const DOT_COLORS = { green: '#2E7D46', yellow: '#C8941E', red: '#B3261E', gray: '#B7B0A2' };
+
+function relativeTimeFromNow(iso, nowMs) {
+  if (!iso) return 'unknown';
+  const diffMs = nowMs - new Date(iso).getTime();
+  if (Number.isNaN(diffMs)) return 'unknown';
+  const minutes = Math.max(0, Math.round(diffMs / 60000));
+  if (minutes < 1) return 'just now';
+  if (minutes === 1) return '1 minute ago';
+  if (minutes < 60) return minutes + ' minutes ago';
+  const hours = Math.round(minutes / 60);
+  if (hours === 1) return '1 hour ago';
+  if (hours < 24) return hours + ' hours ago';
+  const days = Math.round(hours / 24);
+  return days === 1 ? '1 day ago' : days + ' days ago';
+}
+
+class Component extends DCLogic {
+  state = {
+    status: null,
+    error: null,
+    nowMs: null,
+    expanded: { engineering: false, content: false, deployment: false, incidents: false },
+  };
+
+  async componentDidMount() {
+    this.setState({ nowMs: Date.now() });
+    await this.fetchStatus();
+    this._pollTimer = setInterval(() => this.fetchStatus(), 60000);
+    this._tickTimer = setInterval(() => this.setState({ nowMs: Date.now() }), 15000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this._pollTimer);
+    clearInterval(this._tickTimer);
+  }
+
+  fetchStatus = async () => {
+    try {
+      const res = await fetch('./ops/status.json?t=' + Date.now(), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      this.setState({ status: data, error: null, nowMs: Date.now() });
+    } catch (err) {
+      this.setState({ error: err.message || 'network error', nowMs: Date.now() });
+    }
+  };
+
+  toggleSection(key) {
+    this.setState((s) => ({ expanded: { ...s.expanded, [key]: !s.expanded[key] } }));
+  }
+
+  renderVals() {
+    const { status, error, nowMs, expanded } = this.state;
+    const now = nowMs || Date.now();
+
+    if (!status) {
+      return {
+        hasError: !!error,
+        errorText: error || '',
+        showStaleBanner: false,
+        healthLabel: 'Loading…',
+        healthColor: DOT_COLORS.gray,
+        healthTextColor: '#0B0B0B',
+        healthMutedColor: '#68645D',
+        healthCardBg: '#FFFDF8',
+        healthCardBorder: '#DDD3C3',
+        headlineText: 'Fetching the latest automation status…',
+        lastUpdatedText: '',
+        hasBlockers: false,
+        blockers: [],
+        cards: [],
+        detailSections: [],
+        onRefresh: () => this.fetchStatus(),
+      };
+    }
+
+    const health = HEALTH_META[status.overallHealth] || HEALTH_META.yellow;
+    const staleAfterMs = (status.staleAfterMinutes || 30) * 60000;
+    const ageMs = now - new Date(status.generatedAtIso).getTime();
+    const isStale = Number.isNaN(ageMs) || ageMs > staleAfterMs;
+
+    const headlineText = isStale
+      ? 'Status data has not refreshed recently — treat this snapshot as informational only.'
+      : AUTOMATION_STATE_COPY[status.automationState] || 'Automation state unknown.';
+
+    const cards = [
+      {
+        label: 'Active work',
+        value: status.activeWork ? '#' + status.activeWork.issueNumber : 'None',
+        detail: status.activeWork ? status.activeWork.title : 'No issue currently in progress.',
+        dotColor: status.activeWork ? DOT_COLORS.green : DOT_COLORS.gray,
+        hasBar: false,
+      },
+      {
+        label: 'Queue depth',
+        value: String(status.queue.depth),
+        detail: status.queue.depth === 0 ? 'Nothing waiting.' : status.queue.depth + ' issue(s) ready for dispatch.',
+        dotColor: status.queue.depth > 0 ? DOT_COLORS.yellow : DOT_COLORS.gray,
+        hasBar: false,
+      },
+      {
+        label: 'CI',
+        value: status.ci.status === 'passing' ? 'Passing' : status.ci.status === 'failing' ? 'Failing' : 'Unknown',
+        detail: status.ci.lastRunIso ? 'Last run ' + relativeTimeFromNow(status.ci.lastRunIso, now) : 'No recent run data.',
+        dotColor: status.ci.status === 'passing' ? DOT_COLORS.green : status.ci.status === 'failing' ? DOT_COLORS.red : DOT_COLORS.gray,
+        hasBar: false,
+      },
+      {
+        label: 'Deployment',
+        value: status.deployment.status === 'healthy' ? 'Healthy' : status.deployment.status === 'failing' ? 'Failing' : 'Unknown',
+        detail: status.deployment.lastHealthyShaShort
+          ? 'Last healthy build ' + status.deployment.lastHealthyShaShort
+          : 'No health-check data yet.',
+        dotColor: status.deployment.status === 'healthy' ? DOT_COLORS.green : status.deployment.status === 'failing' ? DOT_COLORS.red : DOT_COLORS.gray,
+        hasBar: false,
+      },
+      {
+        label: 'Guide factory',
+        value: status.guideFactory.state === 'in-progress' ? 'Running' : status.guideFactory.state === 'needs-human' ? 'Stuck' : 'Idle',
+        detail: status.guideFactory.activeJobId
+          ? 'Job: ' + status.guideFactory.activeJobId
+          : status.guideFactory.queuedCount + ' job(s) queued.',
+        dotColor: status.guideFactory.state === 'in-progress' ? DOT_COLORS.green : status.guideFactory.state === 'needs-human' ? DOT_COLORS.red : DOT_COLORS.gray,
+        hasBar: false,
+      },
+      {
+        label: 'Image renderer budget',
+        value: status.imageRenderer.state === 'unavailable' ? 'Unavailable' : '$' + (status.imageRenderer.monthlySpendUsd ?? 0).toFixed(2) + ' / $' + (status.imageRenderer.monthlyCapUsd ?? 0),
+        detail: status.imageRenderer.state === 'unavailable' ? 'No spend-ledger data available.' : (status.imageRenderer.budgetPct ?? 0) + '% of monthly cap used.',
+        dotColor: status.imageRenderer.state === 'budget-exceeded' ? DOT_COLORS.red : status.imageRenderer.state === 'active' ? DOT_COLORS.green : DOT_COLORS.gray,
+        hasBar: status.imageRenderer.state !== 'unavailable',
+        barPct: Math.min(100, status.imageRenderer.budgetPct ?? 0) + '%',
+      },
+    ];
+
+    const detailSections = [
+      {
+        key: 'engineering',
+        title: 'Engineering queue',
+        body: [
+          'Automation state: ' + status.automationState,
+          'Queue depth: ' + status.queue.depth + ' ready, ' + status.queue.blockedCount + ' blocked',
+          status.activeWork
+            ? 'Active: #' + status.activeWork.issueNumber + ' — ' + status.activeWork.title + (status.activeWork.prNumber ? ' (PR #' + status.activeWork.prNumber + ')' : ' (no PR yet)')
+            : 'No active issue.',
+          'CI: ' + status.ci.status + (status.ci.lastRunIso ? ' — last run ' + relativeTimeFromNow(status.ci.lastRunIso, now) : ''),
+        ].join('\n'),
+      },
+      {
+        key: 'content',
+        title: 'Content — Guide Factory',
+        body: [
+          'State: ' + status.guideFactory.state,
+          status.guideFactory.activeJobId ? 'Active job: ' + status.guideFactory.activeJobId : 'No job currently in progress.',
+          'Queued approved jobs: ' + status.guideFactory.queuedCount,
+          'Image renderer: ' + status.imageRenderer.state + ' — $' + (status.imageRenderer.monthlySpendUsd ?? 0).toFixed(2) + ' of $' + (status.imageRenderer.monthlyCapUsd ?? 0) + ' monthly cap used',
+        ].join('\n'),
+      },
+      {
+        key: 'deployment',
+        title: 'Deployment',
+        body: [
+          'Status: ' + status.deployment.status,
+          status.deployment.lastHealthyShaShort ? 'Last known-healthy build: ' + status.deployment.lastHealthyShaShort : 'No recorded healthy build yet.',
+          status.deployment.lastCheckedIso ? 'Last checked ' + relativeTimeFromNow(status.deployment.lastCheckedIso, now) : 'No health check has run yet.',
+        ].join('\n'),
+      },
+      {
+        key: 'incidents',
+        title: 'Incidents',
+        body: status.incident.active
+          ? 'Active incident: #' + status.incident.issueNumber + ' — ' + status.incident.summary + '\nThe automation queue is suspended until this is resolved and closed.'
+          : 'No active incident. The automation queue is not suspended.',
+      },
+    ].map((d) => ({
+      title: d.title,
+      body: d.body,
+      expanded: expanded[d.key],
+      expandedAria: expanded[d.key] ? 'true' : 'false',
+      toggleSymbol: expanded[d.key] ? '−' : '+',
+      onToggle: () => this.toggleSection(d.key),
+    }));
+
+    return {
+      hasError: !!error,
+      errorText: error || '',
+      showStaleBanner: isStale,
+      staleMinutesLabel: relativeTimeFromNow(status.generatedAtIso, now),
+      healthLabel: health.label,
+      healthColor: health.color,
+      healthTextColor: health.textColor,
+      healthMutedColor: health.mutedColor,
+      healthCardBg: health.bg,
+      healthCardBorder: health.border,
+      headlineText,
+      lastUpdatedText: 'Updated ' + relativeTimeFromNow(status.generatedAtIso, now),
+      hasBlockers: status.blockers.length > 0,
+      blockers: status.blockers,
+      cards,
+      detailSections,
+      onRefresh: () => this.fetchStatus(),
+    };
+  }
+}
+</script>
+</body>
+</html>

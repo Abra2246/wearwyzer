@@ -158,6 +158,46 @@ actually written to `automation/guide-jobs/` in this repository as of this chang
 running the CLI live — see `docs/STYLE_GUIDE_IMPORTER_V1.md` §8); does not activate any new
 scheduled workflow.
 
+## Decision — Mission Control ops dashboard v1 (issue #19)
+**Current state:** issues #16/#17/#18/#22 built a substantial automation stack (engineering
+queue, guide factory, deploy health/rollback, OpenAI renderer + spend ledger, completion
+handoff watchdog), but the only way to see its current state is reading GitHub issues, PRs,
+and workflow logs directly — there is no single, fast, mobile-usable view of "is everything
+okay right now?"
+**Problem / scope note:** the issue asks for a **read-only** dashboard — it must never
+expose secrets, private logs, or raw issue/PR content, and must never merge, deploy,
+publish, or otherwise control anything. It also has no real access control (unauthenticated
+static hosting), so what's safe to put in the status artifact is itself a security decision,
+not just a UI one.
+**Proposed solution (what shipped):** `scripts/ops-status-schema.mjs` (a *closed*-shape
+schema — every nested object rejects unknown keys — plus a secret-like-value scanner) and
+`scripts/ops-status-builder.mjs` (pure assembly from already-sanitized inputs) are the
+security boundary; `scripts/ops-status-cli.mjs` (the only I/O) refuses to write
+`ops/status.json` if either check fails. `ops.dc.html` is the dashboard: mobile-first cards,
+a green/amber/red health hero, 60-second polling with client-side staleness detection,
+`noindex, nofollow` plus a `robots.txt` disallow, and no link from public navigation. See
+`docs/OPS_DASHBOARD_V1.md` for the full contract.
+**A deliberate architectural exception:** `docs/automation/workflows/ops-status-refresh.yml`
+(staged) is the one workflow in this repo's automation stack with `contents: write` that
+commits directly to `main`, bypassing the issue → PR → review flow every other automated
+change here goes through. This repo has no backend and no build step (`CLAUDE.md`), so a
+statically-hosted page can only read fresh data from a committed file — there was no way to
+satisfy "the dashboard renders real data" without either this exception or a backend, and a
+backend is explicitly out of scope for a v1 observability page. The exception is scoped as
+narrowly as possible: one generated JSON file, gated by the schema/secret-scan check above,
+called out explicitly in the workflow's own header for a maintainer to review before
+activating.
+**Benefit:** the CEO (or any maintainer) can check automation health from a phone in under
+10 seconds without opening GitHub, while every fact this dashboard surfaces is provably
+sanitized by the same schema that would refuse to let a secret or raw log line reach the
+committed artifact in the first place.
+**Migration effort:** additive; does not touch any existing page, `js/guides.js`,
+`js/products.js`, or `data/*.js`. `robots.txt` gained two `Disallow` lines.
+**Priority:** N/A — shipped as scoped by issue #19 (medium risk). Stops before merge; does
+not activate the new scheduled workflow (`.github/workflows/` is outside this change's
+permitted scope — see `docs/AUTOMATION_WORKFLOW.md` activation checklist, which also flags
+the `contents: write` exception above for explicit maintainer sign-off).
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
