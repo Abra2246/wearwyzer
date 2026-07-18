@@ -22,7 +22,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { readEvents } from './record-status-event.mjs';
-import { buildLiveFeed, detectStalledHandoff, feedEventsFromGitHubState } from './ops-live-builder.mjs';
+import { buildLiveFeed, computeDispatchStalledSince, detectStalledHandoff, detectStalledDispatch, feedEventsFromGitHubState } from './ops-live-builder.mjs';
 import { validateLiveFeedShape, findSecretLikeValues } from './ops-live-schema.mjs';
 import { deriveAutomationState, truncateSummary } from './ops-status-builder.mjs';
 import { clientFromEnv, repoFromEnv } from './queue-github-client.mjs';
@@ -80,7 +80,7 @@ function mapPr(pr, reviewDecision) {
  * Returns `{ fetchOk: false }` (never throws) on any failure so the caller
  * degrades to last-known-good rather than crashing the whole run.
  */
-async function loadEngineeringState(client, nowIso) {
+async function loadEngineeringState(client, nowIso, previousDispatchStalledSinceIso) {
   try {
     const [inProgressIssues, readyIssues, blockedIssues, automationManagedPrs, ciRuns] = await Promise.all([
       client.listOpenIssuesWithLabel('in-progress'),
@@ -117,12 +117,20 @@ async function loadEngineeringState(client, nowIso) {
     };
 
     const automationState = deriveAutomationState(activeIssueRaw, { readyCount: readyIssues.length });
-    const handoff = detectStalledHandoff({ automationState, activeIssue, pr, now: nowIso });
+    const dispatchStalledSinceIso = computeDispatchStalledSince({
+      automationState,
+      readyCount: readyIssues.length,
+      previousSinceIso: previousDispatchStalledSinceIso,
+      now: nowIso,
+    });
+    const handoffResult = detectStalledHandoff({ automationState, activeIssue, pr, now: nowIso });
+    const dispatchResult = detectStalledDispatch({ automationState, readyCount: readyIssues.length, dispatchStalledSinceIso, now: nowIso });
+    const handoff = handoffResult.stalled ? handoffResult : dispatchResult;
 
     const data = {
       automationState,
       activeIssue,
-      queue: { depth: readyIssues.length, readyCount: readyIssues.length, blockedCount: blockedIssues.length },
+      queue: { depth: readyIssues.length, readyCount: readyIssues.length, blockedCount: blockedIssues.length, stalledSinceIso: dispatchStalledSinceIso },
       pr,
       ci,
       handoff,
@@ -166,8 +174,13 @@ export async function generateLiveFeed({ now } = {}) {
     return buildLiveFeed({ engineering: null, deployment: null, previousDoc, statusEvents, feedCandidates: [] }, { now: nowIso });
   }
 
+  const previousDispatchStalledSinceIso =
+    (previousDoc && previousDoc.sources && previousDoc.sources.engineering
+      && previousDoc.sources.engineering.data && previousDoc.sources.engineering.data.queue
+      && previousDoc.sources.engineering.data.queue.stalledSinceIso) || null;
+
   const [engineering, deployment] = await Promise.all([
-    loadEngineeringState(client, nowIso),
+    loadEngineeringState(client, nowIso, previousDispatchStalledSinceIso),
     loadDeploymentState(client, nowIso),
   ]);
 

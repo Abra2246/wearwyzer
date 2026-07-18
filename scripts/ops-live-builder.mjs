@@ -93,6 +93,49 @@ export function detectStalledHandoff({ automationState, activeIssue, pr, now }) 
   };
 }
 
+// dispatch-queue.yml runs hourly (cron '17 * * * *'); allow one missed
+// cycle before treating a non-empty, undispatched queue as stalled rather
+// than a normal gap between runs.
+export const DISPATCH_SLA_MINUTES = 90;
+
+/**
+ * The queue has no GitHub timestamp for "when did dispatch last look at
+ * this" — unlike an issue's own `updatedIso`, readiness is a derived
+ * condition (readyCount > 0, nothing active), not an event. So this clock
+ * is carried forward across committed `ops/live-feed.json` runs the same
+ * way last-known-good source data is (see buildSource): it starts the
+ * moment `queued && readyCount > 0` first becomes true and keeps running
+ * as long as it stays true, resetting to null the instant it stops being
+ * true (an issue gets dispatched, or the queue empties).
+ */
+export function computeDispatchStalledSince({ automationState, readyCount, previousSinceIso, now }) {
+  const isStalledCondition = automationState === 'queued' && readyCount > 0;
+  if (!isStalledCondition) return null;
+  return previousSinceIso || now;
+}
+
+/**
+ * Surfaces "queue depth > 0 with no active issue, beyond the dispatch SLA"
+ * (issue #42's "stalled dispatch" requirement) — same {stalled, reason}
+ * shape as detectStalledHandoff so the dashboard's single handoff/dispatch
+ * slot can show either. automationState is never simultaneously `working`
+ * and `queued`, so callers can safely prefer whichever of the two reports
+ * stalled.
+ */
+export function detectStalledDispatch({ automationState, readyCount, dispatchStalledSinceIso, now }) {
+  if (automationState !== 'queued' || readyCount <= 0 || !dispatchStalledSinceIso) {
+    return { stalled: false, reason: null };
+  }
+  const elapsedMinutes = minutesBetween(dispatchStalledSinceIso, now);
+  if (elapsedMinutes < DISPATCH_SLA_MINUTES) {
+    return { stalled: false, reason: null };
+  }
+  return {
+    stalled: true,
+    reason: `${readyCount} issue(s) ready and undispatched for ${Math.round(elapsedMinutes)}m (SLA is ${DISPATCH_SLA_MINUTES}m) — check the dispatch-queue workflow.`,
+  };
+}
+
 /**
  * CEO summary card content (issue #42's "system health, required action,
  * active work, blockers" in one glance). Precedence: a source being offline
@@ -119,7 +162,7 @@ export function buildCeoSummary({ overallState, engineering, deployment }) {
   }
   if (eng && eng.handoff.stalled) {
     return {
-      headline: 'A completed run looks stalled.',
+      headline: eng.automationState === 'queued' ? 'Queued work is not being dispatched.' : 'A completed run looks stalled.',
       requiredAction: eng.handoff.reason,
       activeWorkSummary: activeWorkSummaryText(eng),
     };

@@ -5,10 +5,35 @@ import {
   computeConnectionState,
   fetchLiveFeed,
   buildLiveFeedUrls,
+  applyClientFreshness,
   POLL_INTERVAL_MS,
   BACKOFF_MAX_MS,
   MAX_CONSECUTIVE_FAILURES_BEFORE_OFFLINE,
 } from '../ops-live-refresh-state.mjs';
+import { DEFAULT_THRESHOLDS } from '../ops-live-schema.mjs';
+
+const NOW = '2026-07-18T16:00:00.000Z';
+
+function minutesAgo(iso, minutes) {
+  return new Date(new Date(iso).getTime() - minutes * 60000).toISOString();
+}
+
+function liveDoc({ engineeringUpdatedIso, deploymentUpdatedIso, bakedOverallState = 'live' }) {
+  return {
+    schemaVersion: 1,
+    generatedAtIso: engineeringUpdatedIso,
+    overallState: bakedOverallState,
+    ceo: { headline: 'Everything is healthy — no action needed.', requiredAction: null, activeWorkSummary: null },
+    sources: {
+      engineering: { wired: true, state: 'live', lastUpdatedIso: engineeringUpdatedIso, fetchOk: true, data: {}, note: null },
+      deployment: { wired: true, state: 'live', lastUpdatedIso: deploymentUpdatedIso, fetchOk: true, data: {}, note: null },
+      content: { wired: false, state: 'not-wired', lastUpdatedIso: null, fetchOk: false, data: null, note: 'Phase 3.' },
+      image: { wired: false, state: 'not-wired', lastUpdatedIso: null, fetchOk: false, data: null, note: 'Phase 3.' },
+      affiliate: { wired: false, state: 'not-wired', lastUpdatedIso: null, fetchOk: false, data: null, note: 'Phase 3.' },
+    },
+    automationFeed: [],
+  };
+}
 
 test('computeBackoffDelayMs: no failures polls at the normal interval', () => {
   assert.equal(computeBackoffDelayMs(0), POLL_INTERVAL_MS);
@@ -74,4 +99,51 @@ test('fetchLiveFeed: falls back to the Pages copy when the primary fetch throws'
 
 test('fetchLiveFeed: throws when both primary and fallback fail (fully offline)', async () => {
   await assert.rejects(() => fetchLiveFeed(fakeFetch(['fail', 'http-error']), 1));
+});
+
+// issue #42 P0: a multi-day-old ops/live-feed.json that a browser fetches
+// successfully must never render as "Live" just because that string was
+// what the generator wrote days ago.
+test('applyClientFreshness: a multi-day-old feed reports offline even though every baked-in state says live', () => {
+  const fourDaysAgo = minutesAgo(NOW, 4 * 24 * 60);
+  const doc = liveDoc({ engineeringUpdatedIso: fourDaysAgo, deploymentUpdatedIso: fourDaysAgo });
+  const fresh = applyClientFreshness(doc, new Date(NOW).getTime());
+  assert.equal(fresh.sources.engineering.state, 'offline');
+  assert.equal(fresh.sources.deployment.state, 'offline');
+  assert.equal(fresh.overallState, 'offline');
+});
+
+test('applyClientFreshness: a successful fetch of stale (but not ancient) JSON reads delayed, not live', () => {
+  const staleButRecent = minutesAgo(NOW, DEFAULT_THRESHOLDS.engineering.staleAfterMinutes + 5);
+  const doc = liveDoc({ engineeringUpdatedIso: staleButRecent, deploymentUpdatedIso: NOW });
+  const fresh = applyClientFreshness(doc, new Date(NOW).getTime());
+  assert.equal(fresh.sources.engineering.state, 'delayed');
+  assert.equal(fresh.sources.deployment.state, 'live');
+  assert.equal(fresh.overallState, 'delayed', 'the worse of the two critical sources must win, even though the doc itself said live');
+});
+
+test('applyClientFreshness: a genuinely fresh feed still reports live (no false negative)', () => {
+  const doc = liveDoc({ engineeringUpdatedIso: NOW, deploymentUpdatedIso: NOW });
+  const fresh = applyClientFreshness(doc, new Date(NOW).getTime());
+  assert.equal(fresh.overallState, 'live');
+});
+
+test('applyClientFreshness: a failed generator (no lastUpdatedIso at all) reads offline', () => {
+  const doc = liveDoc({ engineeringUpdatedIso: NOW, deploymentUpdatedIso: NOW });
+  doc.sources.engineering.lastUpdatedIso = null;
+  const fresh = applyClientFreshness(doc, new Date(NOW).getTime());
+  assert.equal(fresh.sources.engineering.state, 'offline');
+  assert.equal(fresh.overallState, 'offline');
+});
+
+test('applyClientFreshness: not-wired and missing sources pass through untouched', () => {
+  const doc = liveDoc({ engineeringUpdatedIso: NOW, deploymentUpdatedIso: NOW });
+  const fresh = applyClientFreshness(doc, new Date(NOW).getTime());
+  assert.equal(fresh.sources.content.state, 'not-wired');
+  assert.equal(fresh.sources.image.state, 'not-wired');
+  assert.equal(fresh.sources.affiliate.state, 'not-wired');
+});
+
+test('applyClientFreshness: passing a null doc is a no-op', () => {
+  assert.equal(applyClientFreshness(null, new Date(NOW).getTime()), null);
 });

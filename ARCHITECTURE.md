@@ -296,6 +296,47 @@ permission note for this workflow specifically). Phase 3 (Guide Factory/renderer
 live wiring) and Phase 4 (CEO summary polish, dedicated mobile QA pass) are explicitly not
 part of this change — see `docs/OPS_DASHBOARD_V2.md` "What's deliberately deferred."
 
+## Decision — Mission Control v2 P0 reliability repair (issue #42)
+**Current state:** after the Phase 1+2 decision above shipped and `ops-live-feed-refresh.yml`
+was activated, its first-ever run (a `push` trigger) failed: it committed a regenerated
+`ops/live-feed.json` locally, then `git push` was rejected as non-fast-forward because
+`ops-status-refresh.yml` — triggered by that same push event, also committing straight to
+`main` — landed first. The workflow had no retry, so `ops/live-feed.json` stayed frozen at
+`2026-07-14T20:29:58Z` for 4 days while still reading `overallState: "live"`, since
+`mission-control.dc.html` read that embedded state string verbatim rather than checking how old
+it actually was. Two independent problems, not one: a workflow bug (no retry on a foreseeable
+git race) and a client bug (trusting a static snapshot's baked-in freshness claim instead of
+recomputing it against real elapsed time).
+**Problem / scope note:** the workflow race isn't unique to this file — `ops-status-refresh.yml`
+shares the identical blind-commit-and-push pattern — but issue #42 scopes this repair to
+Mission Control v2 specifically; fixing `ops-status-refresh.yml`'s latent copy of the same bug
+is out of scope here (flagged, not fixed, per `CLAUDE.md`'s "don't fix unrelated debt as a side
+effect").
+**Proposed solution (what shipped):** the staged workflow copy
+(`docs/automation/workflows/ops-live-feed-refresh.yml`) now retries its commit-and-push step up
+to 5 times, re-syncing to the new `origin/main` tip and **regenerating** the feed fresh on each
+rejection rather than rebasing the stale commit — appropriate specifically because this file is
+"current state," so a retry should reflect whatever landed in the meantime. On the client side,
+`scripts/ops-live-refresh-state.mjs` gained `applyClientFreshness()`: every render recomputes
+each critical source's state (and the overall state) from `lastUpdatedIso` against the browser's
+actual current time, reusing the generator's own `computeSourceState` thresholds — the identical
+"no fake green" rule Phase 1+2 already applied at generation time, now also enforced at render
+time. Also added: an explicit generator-heartbeat line (`doc.generatedAtIso`'s age, distinct
+from the client's own last-poll indicator) and stalled-dispatch detection
+(`computeDispatchStalledSince()` / `detectStalledDispatch()` — queue depth > 0 with no active
+issue past a 90-minute SLA, tracked via a carried-forward `stalledSinceIso` the same way
+last-known-good source data already is). See `docs/OPS_DASHBOARD_V2.md` "P0 repair" for detail.
+**Benefit:** the dashboard can no longer show green for a generator that stopped running days
+ago — the exact failure mode the P0 report was filed for — and a silently-stuck dispatch queue
+now surfaces the same way a stuck handoff already did.
+**Migration effort:** additive; one new schema field (`EngineeringData.queue.stalledSinceIso`),
+backward-compatible with the older committed `ops/live-feed.json` shape (reads as `null`, not a
+crash). `ops.dc.html`/v1 untouched.
+**Priority:** P0 — shipped per issue #42's reopened repair request. A maintainer must still copy
+the fixed `docs/automation/workflows/ops-live-feed-refresh.yml` over
+`.github/workflows/ops-live-feed-refresh.yml` to activate the workflow fix (Claude's GitHub App
+token cannot write to `.github/workflows/`).
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

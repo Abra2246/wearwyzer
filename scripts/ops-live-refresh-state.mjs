@@ -7,6 +7,8 @@
 //
 // Canonical spec: docs/OPS_DASHBOARD_V2.md
 
+import { computeSourceState, DEFAULT_THRESHOLDS } from './ops-live-schema.mjs';
+
 export const POLL_INTERVAL_MS = 45000; // issue #42 asks for "every 30-60 seconds"
 
 // Exponential backoff on repeated fetch failures (issue #42's reliability
@@ -70,6 +72,56 @@ export async function fetchLiveFeed(fetchImpl, nowMs) {
   } catch {
     return await fetchLiveFeedJson(fetchImpl, fallbackUrl);
   }
+}
+
+const CRITICAL_SOURCE_NAMES = Object.freeze(['engineering', 'deployment']);
+
+/**
+ * A committed `ops/live-feed.json` is a static snapshot: every `state`
+ * field inside it was computed once, at generator-run time, relative to
+ * that run's clock. A browser can fetch that exact same file successfully
+ * — a real HTTP 200 — hours or days after the generator last ran and still
+ * read those same baked-in `"live"` strings (issue #42's false-green P0:
+ * `ops/live-feed.json` stayed stamped `"live"` for 4 days after the
+ * generator workflow stopped landing commits). A successful fetch must
+ * never be conflated with fresh data, so every render recomputes each
+ * critical source's state — and the overall state — from `lastUpdatedIso`
+ * against the caller's actual current time, using the exact same
+ * thresholds and worst-of-critical-sources rule as the generator itself
+ * (`computeSourceState` / `aggregateOverallState` in
+ * scripts/ops-live-schema.mjs / scripts/ops-live-builder.mjs). The
+ * worst-of rule is intentionally re-implemented here (4 lines) rather than
+ * imported from ops-live-builder.mjs, which pulls in the handoff-watchdog
+ * rule chain — unnecessary weight for browser code that only needs this
+ * one aggregation.
+ */
+export function applyClientFreshness(doc, nowMs) {
+  if (!doc || !doc.sources) return doc;
+
+  const sources = {};
+  for (const name of Object.keys(doc.sources)) {
+    const source = doc.sources[name];
+    if (!CRITICAL_SOURCE_NAMES.includes(name) || !source || !source.wired) {
+      sources[name] = source;
+      continue;
+    }
+    const thresholds = DEFAULT_THRESHOLDS[name];
+    const state = computeSourceState(source.lastUpdatedIso, {
+      now: nowMs,
+      staleAfterMinutes: thresholds.staleAfterMinutes,
+      offlineAfterMinutes: thresholds.offlineAfterMinutes,
+    });
+    sources[name] = { ...source, state };
+  }
+
+  const criticalStates = CRITICAL_SOURCE_NAMES.map((name) => sources[name].state);
+  const overallState = criticalStates.includes('offline')
+    ? 'offline'
+    : criticalStates.includes('delayed')
+      ? 'delayed'
+      : 'live';
+
+  return { ...doc, sources, overallState };
 }
 
 export function relativeTimeFromNow(isoOrMs, nowMs) {

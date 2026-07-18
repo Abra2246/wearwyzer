@@ -80,17 +80,48 @@ jobs:
 
       - name: Commit and push if changed
         if: ${{ inputs.dry_run != true }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          if git diff --quiet -- ops/live-feed.json; then
-            echo "No change to ops/live-feed.json — nothing to commit."
-            exit 0
-          fi
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
           # Deliberately NOT using a "[skip ci]" marker — same reasoning as
           # ops-status-refresh.yml: this push must trigger
           # .github/workflows/pages.yml so the refreshed live feed actually
           # redeploys to GitHub Pages.
-          git add ops/live-feed.json
-          git commit -m "chore(ops): refresh live-feed.json"
-          git push
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # This runs on both a 5-minute schedule and every push to main, so
+          # a same-second collision with another workflow that also commits
+          # straight to main (ops-status-refresh.yml, on the same push
+          # trigger) is expected, not exceptional — `git push` alone rejects
+          # as non-fast-forward the instant anything else lands first. This
+          # is exactly the failure that left ops/live-feed.json stuck 4 days
+          # stale after the workflow's first real run (issue #42 P0). Retry
+          # by re-syncing to the new tip and regenerating — not by rebasing
+          # the stale commit — since the point of this file is "current
+          # state", so a retry should reflect whatever landed in the
+          # meantime, not blindly replay a now-outdated snapshot.
+          for attempt in 1 2 3 4 5; do
+            if git diff --quiet -- ops/live-feed.json; then
+              echo "No change to ops/live-feed.json — nothing to commit."
+              exit 0
+            fi
+
+            git add ops/live-feed.json
+            git commit -m "chore(ops): refresh live-feed.json"
+
+            if git push; then
+              echo "Pushed on attempt $attempt."
+              exit 0
+            fi
+
+            echo "Push rejected on attempt $attempt — another commit landed on main first. Re-syncing and regenerating against the new tip..."
+            git reset --hard HEAD~1
+            git fetch origin main
+            git reset --hard origin/main
+            node scripts/ops-live-cli.mjs
+          done
+
+          echo "::error::Failed to push ops/live-feed.json after 5 attempts — main is receiving direct commits faster than this workflow can land one."
+          exit 1

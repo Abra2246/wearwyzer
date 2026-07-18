@@ -19,7 +19,7 @@ function validEngineeringSource(overrides = {}) {
     data: {
       automationState: 'idle',
       activeIssue: null,
-      queue: { depth: 0, readyCount: 0, blockedCount: 0 },
+      queue: { depth: 0, readyCount: 0, blockedCount: 0, stalledSinceIso: null },
       pr: null,
       ci: { status: 'unknown', latestRunIso: null, latestRunUrl: null, recentFailureCount: 0 },
       handoff: { stalled: false, reason: null },
@@ -103,6 +103,20 @@ test('a wired source with an out-of-enum state is rejected', () => {
   const result = validateLiveFeedShape(doc);
   assert.equal(result.valid, false);
   assert.ok(result.errors.some((e) => e.includes('sources.engineering.state')));
+});
+
+test('engineering queue.stalledSinceIso must be a valid ISO timestamp or null', () => {
+  const doc = validDoc();
+  doc.sources.engineering.data.queue.stalledSinceIso = 'not-a-timestamp';
+  const result = validateLiveFeedShape(doc);
+  assert.equal(result.valid, false);
+  assert.ok(result.errors.some((e) => e.includes('queue.stalledSinceIso')));
+});
+
+test('engineering queue.stalledSinceIso accepts a real ISO timestamp', () => {
+  const doc = validDoc();
+  doc.sources.engineering.data.queue.stalledSinceIso = NOW;
+  assert.deepEqual(validateLiveFeedShape(doc).errors, []);
 });
 
 test('engineering data rejects an unknown nested key (closed shape)', () => {

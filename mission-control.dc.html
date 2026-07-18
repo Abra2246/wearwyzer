@@ -55,7 +55,7 @@
         </p>
       </sc-if>
       <p style="font-size:12px;color:{{ ceoMutedColor }};margin:0">{{ ceoActiveWork }}</p>
-      <p style="font-size:11px;color:{{ ceoMutedColor }};margin:4px 0 0">Last successful update: {{ lastSuccessText }}</p>
+      <p style="font-size:11px;color:{{ ceoMutedColor }};margin:4px 0 0">Generator last ran: {{ generatorHeartbeatText }} · This device last checked: {{ lastSuccessText }}</p>
     </section>
 
     <section aria-label="Engineering, deployment, and content sources" style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
@@ -205,9 +205,16 @@ class Component extends DCLogic {
   };
 
   renderVals() {
-    const { doc, error, nowMs, isFetching, consecutiveFailures, lastSuccessMs } = this.state;
+    const { doc: rawDoc, error, nowMs, isFetching, consecutiveFailures, lastSuccessMs } = this.state;
     const now = nowMs || Date.now();
     const lib = this._lib;
+    // A successful fetch only means the HTTP request worked — it says
+    // nothing about whether the generator itself has run recently. Every
+    // render recomputes freshness against wall-clock `now` rather than
+    // trusting the state strings baked into the fetched JSON (see
+    // applyClientFreshness's own comment) so a stale file never reads live
+    // just because fetching it succeeded.
+    const doc = rawDoc && lib ? lib.applyClientFreshness(rawDoc, now) : rawDoc;
 
     const overallState = doc ? doc.overallState : null;
     const indicatorKey = isFetching
@@ -245,6 +252,7 @@ class Component extends DCLogic {
         ceoRequiredAction: '',
         requiredActionBg: 'transparent',
         ceoActiveWork: '',
+        generatorHeartbeatText: 'never',
         engDotColor: DOT_COLORS['not-wired'],
         engStateLabel: 'unknown',
         engHeadline: 'No data yet.',
@@ -310,6 +318,7 @@ class Component extends DCLogic {
       ceoRequiredAction: doc.ceo.requiredAction || '',
       requiredActionBg: 'rgba(255,255,255,0.5)',
       ceoActiveWork: doc.ceo.activeWorkSummary || '',
+      generatorHeartbeatText: lib ? lib.relativeTimeFromNow(doc.generatedAtIso, now) : 'unknown',
 
       engDotColor: DOT_COLORS[eng.state] || DOT_COLORS['not-wired'],
       engStateLabel: eng.state,

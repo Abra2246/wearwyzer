@@ -240,10 +240,12 @@ above stays active and unmodified; summary of what's implemented:
   `Site Nav.dc.html`/`Site Footer.dc.html`, `robots.txt`-disallowed. Polls
   `ops/live-feed.json` every 45 seconds with exponential backoff on failure and a
   Live/Updating/Delayed/Offline header indicator.
-- `docs/automation/workflows/ops-live-feed-refresh.yml` — staged, not active. Same
-  `contents: write` trust shape as `ops-status-refresh.yml`, plus a new `deployments: read`
-  permission for GitHub Pages deployment status — see `docs/OPS_DASHBOARD_V2.md` before
-  activating it.
+- `docs/automation/workflows/ops-live-feed-refresh.yml` — active in `.github/workflows/`, but its
+  first real run failed on a git push race (see `docs/OPS_DASHBOARD_V2.md` "P0 repair") and this
+  staged copy now carries the fix; **a maintainer must re-copy it into `.github/workflows/`** to
+  actually apply the retry logic (Claude's GitHub App token cannot write there). Same
+  `contents: write` trust shape as `ops-status-refresh.yml`, plus a `deployments: read`
+  permission for GitHub Pages deployment status.
 
 ### Testing
 ```

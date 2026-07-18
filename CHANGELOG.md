@@ -2,6 +2,56 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-18) — Mission Control v2 P0 reliability repair (issue #42)
+### Fixed
+- **Root cause of the stale-feed P0**: `Ops Live Feed Refresh` (activated in `.github/workflows/`
+  after Phase 1+2 shipped) had run exactly once — a `push` trigger — and failed: it committed a
+  regenerated `ops/live-feed.json` locally, then `git push` was rejected as non-fast-forward
+  because another commit (the same push event's `Ops Status Refresh` run) landed on `main`
+  first. The workflow had no fetch/retry step, so this was a guaranteed eventual failure any time
+  another commit landed between checkout and push, and it left `ops/live-feed.json` stamped
+  `2026-07-14T20:29:58Z` — 4 days stale, still reading `overallState: "live"`. Fixed the staged
+  copy at `docs/automation/workflows/ops-live-feed-refresh.yml`: the commit-and-push step now
+  retries up to 5 times, re-syncing to the new `origin/main` tip and regenerating the feed fresh
+  (not replaying the stale commit) on each rejection. A maintainer must re-copy this file over
+  `.github/workflows/ops-live-feed-refresh.yml` to activate the fix (Claude's GitHub App token
+  cannot write to `.github/workflows/`).
+- **False-green client bug**: `mission-control.dc.html` trusted the `state`/`overallState` strings
+  baked into `ops/live-feed.json` at generation time verbatim. Since the committed file is a
+  static snapshot, a successful browser fetch of a multi-day-old file rendered whatever state was
+  true when the generator last ran — "Live" — no matter how long ago that actually was. Added
+  `applyClientFreshness()` to `scripts/ops-live-refresh-state.mjs`: every render now recomputes
+  each critical source's state (and the overall state) from `lastUpdatedIso` against the
+  browser's actual current time, using the same `computeSourceState` thresholds the generator
+  itself uses. A successful HTTP fetch of stale JSON now reads `Delayed`/`Offline`, never `Live`.
+### Added
+- An explicit generator heartbeat on the dashboard: "Generator last ran: {age}", derived from
+  `doc.generatedAtIso`, shown alongside (and distinct from) the existing "this device last
+  checked" client-poll indicator — issue #42's "last successful generator timestamp and age."
+- Stalled-dispatch detection: `computeDispatchStalledSince()` / `detectStalledDispatch()` in
+  `scripts/ops-live-builder.mjs` track how long the queue has continuously had ready work with no
+  active issue (`automationState: 'queued'`, `readyCount > 0`), carrying the start time forward
+  across generator runs the same way last-known-good data is. Past `DISPATCH_SLA_MINUTES` (90 —
+  one missed cycle of `dispatch-queue.yml`'s hourly cron), it surfaces the same way a stalled
+  handoff already did, with its own CEO headline ("Queued work is not being dispatched."). New
+  `queue.stalledSinceIso` field in the `EngineeringData` schema.
+- 17 new deterministic tests covering all four scenarios this repair targets: a multi-day-old
+  feed (`applyClientFreshness`), a successful fetch of stale-but-not-ancient data, a failed
+  generator (`lastUpdatedIso: null`), and queued-without-active-work past the SLA
+  (`detectStalledDispatch`).
+### Verified
+- `node --test scripts/__tests__/*.test.mjs`: 369/369 passing, no regressions.
+- `node scripts/ops-live-cli.mjs` (live, against this repo's real GitHub state): produced a
+  fresh, schema-valid, secret-free `ops/live-feed.json` capturing PR #43 and current deployment
+  state; seeded into this change.
+- `node scripts/qa-static-site.mjs`, `node scripts/validate-content-data.mjs`: 0 broken
+  references, 0 structural errors.
+- Same headless-browser limitation as the Phase 1+2 change: this sandboxed session could not
+  drive Chromium/Playwright against the served page (network calls to `localhost` and process
+  spawns both require approval this session couldn't grant). `{{ }}` bindings were hand-verified
+  against `renderVals()`'s return keys in both branches instead. A maintainer should still do the
+  real-browser pass `CLAUDE.md` calls for before fully trusting the UI.
+
 ## Unreleased (2026-07-14) — Mission Control v2 live operations dashboard, Phase 1 + 2 (issue #42)
 ### Added
 - `docs/OPS_DASHBOARD_V2.md` — Phase 1 architecture doc and data contract for a live,

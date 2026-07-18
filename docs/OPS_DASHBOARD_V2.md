@@ -133,7 +133,7 @@ NotWiredSource {
 EngineeringData {
   automationState: 'working' | 'queued' | 'review' | 'blocked' | 'failed' | 'idle'  // same enum as v1
   activeIssue: { number, title, url, updatedIso } | null
-  queue: { depth, readyCount, blockedCount }
+  queue: { depth, readyCount, blockedCount, stalledSinceIso }
   pr: { number, title, url, isDraft, reviewDecision, mergeableState, createdIso, updatedIso } | null
   ci: { status: 'passing'|'failing'|'unknown', latestRunIso, latestRunUrl, recentFailureCount }
   handoff: { stalled: boolean, reason: string | null }
@@ -202,6 +202,49 @@ rather than resetting — the previous committed document is always an input.
   otherwise report; then a stalled handoff; then blocked/failed automation;
   then a failing deployment; then failing CI; then "delayed but otherwise
   fine"; otherwise a plain healthy headline with `requiredAction: null`.
+
+## P0 repair (2026-07-18): false-green client bug, generator heartbeat, stalled dispatch
+
+The first activation of `ops-live-feed-refresh.yml` exposed two problems Phase 1+2 hadn't hit
+yet, since no run had ever succeeded or gone stale in production before:
+
+1. **The workflow's commit-and-push step had no retry.** It ran on both a 5-minute schedule and
+   every push to `main`, so a same-second collision with another workflow that also commits
+   straight to `main` (`ops-status-refresh.yml`, triggered by the same push) was inevitable, not
+   exceptional — and a bare `git push` rejects outright the instant anything else lands first.
+   Its first-ever run hit exactly this and failed, leaving `ops/live-feed.json` frozen at
+   `2026-07-14T20:29:58Z`. Fixed by retrying (up to 5 times) on push rejection — re-syncing to the
+   new `origin/main` tip and **regenerating** the feed fresh each time, not rebasing the stale
+   commit, since the whole point of this file is "current state."
+2. **The dashboard trusted embedded state strings, not elapsed time.** `mission-control.dc.html`
+   read `doc.overallState` / `source.state` directly from the fetched JSON. Those strings are
+   computed once, at generator-run time — a committed file is a static snapshot. A browser
+   fetching that same file successfully days after the generator stopped running got a real HTTP
+   200 and the same baked-in `"live"`, which is exactly the false-green bug: `ops/live-feed.json`
+   read `overallState: "live"` for 4 days straight while stamped 4 days stale. Fixed by
+   `applyClientFreshness()` in `scripts/ops-live-refresh-state.mjs`, which every render
+   recomputes each critical source's state (and the overall state) from `lastUpdatedIso` against
+   the *browser's* current time, using the same `computeSourceState` thresholds and worst-of rule
+   the generator itself uses. A successful fetch of stale data now reads `Delayed`/`Offline`,
+   never `Live` — "no fake green" enforced at the transport layer, not just at generation time.
+
+This also adds two requirements issue #42 called out that Phase 1+2 hadn't implemented yet:
+
+- **Generator heartbeat.** The CEO card now shows "Generator last ran: {relative age}" from
+  `doc.generatedAtIso`, distinct from the pre-existing "this device last checked" line (which is
+  this browser's own last successful *poll*, not the generator's last successful *run* — those
+  are different clocks and were previously conflated under one "Last successful update" label).
+- **Stalled dispatch.** `computeDispatchStalledSince()` / `detectStalledDispatch()` in
+  `scripts/ops-live-builder.mjs` detect "queue depth > 0 with no active issue, beyond an SLA"
+  (`DISPATCH_SLA_MINUTES = 90`, one missed cycle of `dispatch-queue.yml`'s hourly cron). Since
+  queue depth has no natural "since when" timestamp the way an issue does, the start of the
+  stalled condition (`EngineeringData.queue.stalledSinceIso`) is carried forward across committed
+  `ops/live-feed.json` runs the same way last-known-good source data already is, and reset to
+  `null` the instant the condition stops being true. Surfaced through the same `handoff`
+  `{stalled, reason}` slot a stuck working-issue-with-no-PR handoff already used — the two never
+  fire simultaneously, since `automationState` can't be both `working` and `queued` — with its
+  own CEO headline ("Queued work is not being dispatched.") so it isn't mistaken for the other
+  case.
 
 ## Client: polling, Live/Updating/Delayed/Offline, and backoff
 
