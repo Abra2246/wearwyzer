@@ -246,6 +246,56 @@ customer-facing claims). Stops before merge; does not activate the staged revali
 workflow (`.github/workflows/` is outside this change's permitted scope — see
 `docs/AUTOMATION_WORKFLOW.md` activation checklist).
 
+## Decision — Mission Control v2 live-data layer (issue #42, Phase 1 + 2)
+**Current state:** Mission Control v1 (issue #19) is a real, working snapshot dashboard, but
+it is snapshot-first: one blended `overallHealth` computed from a single `generatedAtIso` on
+a 15-minute schedule. That conflates "is the system healthy" with "is this specific field's
+data still trustworthy right now" into one number — a stale generator can still read as
+green. Issue #42 asks for a dashboard that queries current state wherever safely possible,
+makes unknown/delayed/offline states explicit per source ("no fake green"), and adds a
+business-readable automation event timeline.
+**Problem / scope note:** this repo remains front-end-only with no backend (`CLAUDE.md`), and
+a browser cannot safely hold a GitHub token or survive unauthenticated GitHub API rate limits
+at a 30-60s poll cadence. The issue names two acceptable secure-aggregation shapes: a GitHub
+Actions-generated compact live feed, or a least-privilege serverless endpoint with caching.
+**Proposed solution (what shipped):** extended v1's already-proven "generated JSON committed
+by a scheduled workflow" pattern rather than introducing a new serverless deployment target —
+same closed-shape-schema-plus-secret-scanner security boundary, applied to a new, additive
+document. `scripts/ops-live-schema.mjs`/`scripts/ops-live-builder.mjs` model each wired source
+(`engineering`, `deployment`) with its own `live`/`delayed`/`offline` state derived from how
+long ago that source was *last successfully queried* — decoupled from how long ago the
+underlying event happened, so a quiet deployment reads as healthy while a generator that's
+actually lost GitHub API access reads as offline, never the reverse. A failed fetch preserves
+the previous run's data as last-known-good while `lastUpdatedIso` stops advancing, so staleness
+is a pure function of time rather than a binary has-data/no-data flag. `overallState` is the
+worst of the two critical sources only; not-yet-wired `content`/`image`/`affiliate` (Phase 3)
+report an honest `not-wired` state that never drags the aggregate down or fakes a default.
+The automation feed merges `automation/status/events.jsonl` with freshly observed GitHub state
+(active issue, PR, CI runs, merged PRs, deployments) by a stable per-resource key, making it
+idempotent across repeated 5-minute generator runs without needing to diff old vs. new state.
+`scripts/ops-live-cli.mjs` is the only I/O, reusing `scripts/queue-github-client.mjs` (extended
+with `getPullRequestReviewDecision`, `listRecentlyMergedPullRequests`,
+`listRecentWorkflowRuns`, `getLatestPagesDeployment` — no new secret). `mission-control.dc.html`
+is the v2 page: a header Live/Updating/Delayed/Offline indicator that combines client-side poll
+connectivity with the fetched document's own `overallState` (so a successful poll of stale data
+still shows Delayed, not Live), a CEO summary card, Engineering/Deployment source cards with
+click-through links, honest "Not wired" Phase 3 placeholders, and the automation feed. See
+`docs/OPS_DASHBOARD_V2.md` for the full contract.
+**Benefit:** the CEO (or any maintainer) gets an honest, per-source-accurate live view instead
+of one blended number that can mask a specific stale/failing source, plus a real timeline of
+what automation did — while v1 keeps running unchanged as the fallback until v2 proves
+reliable, per the issue's own product principle.
+**Migration effort:** additive; `ops.dc.html`, `ops/status.json`, `ops-status-refresh.yml`, and
+every `scripts/ops-status-*.mjs` file are unmodified. `robots.txt` gained one more `Disallow`
+line for the new page.
+**Priority:** N/A — shipped as scoped by issue #42 Phase 1 + Phase 2 (high risk, per the
+issue's own risk tier). Stops before merge; does not activate the new staged workflow
+(`.github/workflows/` is outside this change's permitted scope — see
+`docs/AUTOMATION_WORKFLOW.md` activation checklist, which gained a `deployments: read`
+permission note for this workflow specifically). Phase 3 (Guide Factory/renderer/link-engine
+live wiring) and Phase 4 (CEO summary polish, dedicated mobile QA pass) are explicitly not
+part of this change — see `docs/OPS_DASHBOARD_V2.md` "What's deliberately deferred."
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

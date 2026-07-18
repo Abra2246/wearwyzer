@@ -220,6 +220,46 @@ node scripts/ops-status-cli.mjs --dry-run
 2. Copy `docs/automation/workflows/ops-status-refresh.yml` into `.github/workflows/`.
 3. No new label required.
 
+## Mission Control v2 — live operations dashboard (issue #42, Phase 1 + 2)
+
+`docs/OPS_DASHBOARD_V2.md` is the canonical spec. Extends the pattern above with a
+multi-source, independently-stale-tracked live feed rather than one blended snapshot. v1
+above stays active and unmodified; summary of what's implemented:
+
+- `scripts/ops-live-schema.mjs`, `scripts/ops-live-builder.mjs` — pure, unit-tested schema
+  and live-feed-document assembly, including per-source `live`/`delayed`/`offline` staleness,
+  last-known-good fallback, and automation-feed merge-by-key. See
+  `scripts/__tests__/ops-live-schema.test.mjs` / `ops-live-builder.test.mjs`.
+- `scripts/ops-live-cli.mjs` — reads the previous `ops/live-feed.json` plus (when
+  `GITHUB_TOKEN` is available) live engineering/deployment state via
+  `scripts/queue-github-client.mjs`, and writes `ops/live-feed.json` — same
+  refuse-on-failed-validation gate as `ops-status-cli.mjs`.
+- `scripts/ops-live-refresh-state.mjs` — client polling/backoff/fallback-fetch helpers. See
+  `scripts/__tests__/ops-live-refresh-state.test.mjs`.
+- `mission-control.dc.html` — the v2 dashboard. `noindex, nofollow`, not linked from
+  `Site Nav.dc.html`/`Site Footer.dc.html`, `robots.txt`-disallowed. Polls
+  `ops/live-feed.json` every 45 seconds with exponential backoff on failure and a
+  Live/Updating/Delayed/Offline header indicator.
+- `docs/automation/workflows/ops-live-feed-refresh.yml` — staged, not active. Same
+  `contents: write` trust shape as `ops-status-refresh.yml`, plus a new `deployments: read`
+  permission for GitHub Pages deployment status — see `docs/OPS_DASHBOARD_V2.md` before
+  activating it.
+
+### Testing
+```
+node --test scripts/__tests__/*.test.mjs
+node scripts/ops-live-cli.mjs --dry-run
+```
+
+### Activation checklist (in addition to issue #16/#17/#18/#19/#22's)
+1. Read `docs/automation/workflows/ops-live-feed-refresh.yml`'s header comment — same
+   `contents: write`, direct-to-`main` commit trust shape as `ops-status-refresh.yml`, running
+   on its own 5-minute schedule alongside it.
+2. Copy `docs/automation/workflows/ops-live-feed-refresh.yml` into `.github/workflows/`.
+3. Confirm `Settings → Actions → General → Workflow permissions` allows `deployments: read`
+   for the default `GITHUB_TOKEN` — new relative to issue #19's checklist.
+4. No new label required.
+
 ## One-time GitHub repository settings required
 
 - **Settings → Pages → Build and deployment → Source**: set to **GitHub Actions** (not "Deploy from a branch"). Without this, `.github/workflows/pages.yml` will fail at the `actions/deploy-pages` step with a permissions/configuration error.

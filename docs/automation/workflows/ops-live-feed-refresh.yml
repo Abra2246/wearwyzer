@@ -1,0 +1,96 @@
+# STAGED WORKFLOW — not active.
+#
+# This file must be copied to .github/workflows/ops-live-feed-refresh.yml by
+# a maintainer with workflow-edit permissions — Claude's GitHub App token
+# cannot write to .github/workflows/ (same constraint as every other staged
+# workflow; see docs/AUTOMATION_WORKFLOW.md).
+#
+# Same deliberate, narrow `contents: write` exception as
+# docs/automation/workflows/ops-status-refresh.yml (issue #19): this
+# workflow can only ever change one generated JSON file
+# (`ops/live-feed.json`), and `scripts/ops-live-cli.mjs` refuses to write
+# anything that fails schema validation or the shared secret scanner first.
+# A maintainer should read and agree with that tradeoff — and with running
+# this side-by-side with ops-status-refresh.yml, since Mission Control v1
+# (`ops.dc.html`) stays active until v2 proves reliable (issue #42's own
+# product principle) — before copying this file in.
+#
+# `deployments: read` is new relative to every other staged workflow: it's
+# what scripts/queue-github-client.mjs's getLatestPagesDeployment() needs to
+# read GitHub Pages deployment status. No write permission of any kind is
+# added beyond the existing `contents: write` needed to commit the generated
+# JSON file itself.
+#
+# See docs/OPS_DASHBOARD_V2.md for the full contract and activation
+# checklist.
+
+name: Ops Live Feed Refresh
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Generate and print the live feed without committing"
+        type: boolean
+        default: false
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'ops/live-feed.json'
+  schedule:
+    # Every 5 minutes — the tightest interval GitHub Actions' schedule
+    # trigger supports, and deliberately tighter than
+    # ops-status-refresh.yml's 15 minutes: issue #42 asks this dashboard to
+    # reflect "current system state" rather than a periodic snapshot. The
+    # dashboard's own per-source Live/Delayed/Offline staleness detection
+    # (docs/OPS_DASHBOARD_V2.md) covers the gap if a run is skipped, delayed,
+    # or GitHub Actions' scheduler runs late (a documented platform
+    # behavior, not a bug in this workflow).
+    - cron: '*/5 * * * *'
+
+concurrency:
+  group: ops-live-feed-refresh
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  issues: read
+  pull-requests: read
+  actions: read
+  deployments: read
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js (current LTS)
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+
+      - name: Generate ops/live-feed.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/ops-live-cli.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
+
+      - name: Commit and push if changed
+        if: ${{ inputs.dry_run != true }}
+        run: |
+          if git diff --quiet -- ops/live-feed.json; then
+            echo "No change to ops/live-feed.json — nothing to commit."
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # Deliberately NOT using a "[skip ci]" marker — same reasoning as
+          # ops-status-refresh.yml: this push must trigger
+          # .github/workflows/pages.yml so the refreshed live feed actually
+          # redeploys to GitHub Pages.
+          git add ops/live-feed.json
+          git commit -m "chore(ops): refresh live-feed.json"
+          git push

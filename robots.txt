@@ -1,9 +1,10 @@
 User-agent: *
 Allow: /
-# Internal ops dashboard (issue #19) — unlinked from public nav, also
-# carries its own <meta name="robots" content="noindex, nofollow">.
+# Internal ops dashboards (issues #19, #42) — unlinked from public nav, both
+# carry their own <meta name="robots" content="noindex, nofollow">.
 # Disallow here is defense in depth, not the access control itself.
 Disallow: /ops.dc.html
+Disallow: /mission-control.dc.html
 Disallow: /ops/
 
 # TODO: replace with your real domain before launch
