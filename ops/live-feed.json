@@ -1,31 +1,31 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-14T20:29:58.327Z",
+  "generatedAtIso": "2026-07-18T17:07:31.777Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "2 issue(s) queued, none active."
+    "activeWorkSummary": "3 issue(s) queued, none active."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-14T20:29:58.327Z",
+      "lastUpdatedIso": "2026-07-18T17:07:31.777Z",
       "fetchOk": true,
       "data": {
         "automationState": "queued",
         "activeIssue": null,
         "queue": {
-          "depth": 2,
-          "readyCount": 2,
+          "depth": 3,
+          "readyCount": 3,
           "blockedCount": 0
         },
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-14T20:12:51Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29364811458",
+          "latestRunIso": "2026-07-18T15:56:59Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29650977696",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -38,13 +38,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-14T20:29:58.327Z",
+      "lastUpdatedIso": "2026-07-18T17:07:31.777Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "78cd5c6",
-        "lastDeployIso": "2026-07-14T20:13:19Z",
-        "ageMinutes": 17,
+        "lastHealthyShaShort": "2768576",
+        "lastDeployIso": "2026-07-18T15:57:33Z",
+        "ageMinutes": 70,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -75,6 +75,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:2768576",
+      "timestampIso": "2026-07-18T15:57:33Z",
+      "type": "deployed",
+      "summary": "Deployed build 2768576 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:29650977696",
+      "timestampIso": "2026-07-18T15:56:59Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/29650977696"
+    },
+    {
+      "key": "pr-merged:43",
+      "timestampIso": "2026-07-18T15:56:05Z",
+      "type": "pr-merged",
+      "summary": "PR #43 \"feat(ops): Mission Control v2 live operations dashboard — Phase 1 + 2\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/43"
+    },
     {
       "key": "deploy:78cd5c6",
       "timestampIso": "2026-07-14T20:13:19Z",
