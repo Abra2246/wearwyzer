@@ -1,18 +1,25 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-21T04:10:30.188Z",
+  "generatedAtIso": "2026-07-21T04:19:06.721Z",
   "overallHealth": "yellow",
-  "automationState": "queued",
-  "activeWork": null,
+  "automationState": "working",
+  "activeWork": {
+    "issueNumber": 51,
+    "title": "Close Guide Factory asset persistence gap before first live pilot",
+    "url": "https://github.com/Abra2246/wearwyzer/issues/51",
+    "prNumber": null,
+    "prUrl": null,
+    "lastActivityIso": "2026-07-21T04:14:07Z"
+  },
   "queue": {
     "depth": 1,
     "readyCount": 1,
     "blockedCount": 0
   },
   "ci": {
-    "status": "passing",
-    "lastRunIso": "2026-07-21T04:10:21Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29800496137"
+    "status": "unknown",
+    "lastRunIso": "2026-07-21T04:18:57Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29800914465"
   },
   "deployment": {
     "status": "unknown",
@@ -46,6 +53,6 @@
     "summary": null
   },
   "blockers": [],
-  "lastMeaningfulActivityIso": null,
+  "lastMeaningfulActivityIso": "2026-07-21T04:14:07.000Z",
   "staleAfterMinutes": 30
 }
