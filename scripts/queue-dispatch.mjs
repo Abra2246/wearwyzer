@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // Autonomous engineering queue dispatcher (v1). Dependency-free Node ESM.
 // Claims at most one `ready` issue per invocation and hands it to Claude
-// via an `@claude` implementation comment. See
+// through the existing Claude Code workflow's explicit workflow_dispatch
+// entry point. See
 // docs/AUTONOMOUS_ENGINEERING_V1.md for the full contract and
 // docs/AUTOMATION_WORKFLOW.md for how this is wired into a scheduled
 // workflow.
@@ -17,7 +18,7 @@ import { planDispatch, INCIDENT_LABEL } from './queue-rules.mjs';
 
 export function buildDispatchComment({ issue, riskTier, reason }) {
   return [
-    '@claude Implement this issue exactly as scoped by the autonomous engineering queue.',
+    'Implementation dispatched to the Claude Code workflow.',
     '',
     '**Automation dispatch record**',
     `- Risk tier: \`${riskTier}\``,
@@ -62,11 +63,40 @@ export async function dispatch(client, { dryRun = false } = {}) {
   if (!dryRun) {
     await client.removeLabel(plan.issue.number, 'ready');
     await client.addLabels(plan.issue.number, ['in-progress', 'automation-managed']);
-    await client.createComment(plan.issue.number, comment);
+    try {
+      await client.createComment(plan.issue.number, comment);
+      await client.dispatchWorkflow('claude.yml', {
+        ref: 'main',
+        inputs: { issue_number: String(plan.issue.number) },
+      });
+    } catch (err) {
+      // Fail closed: a claimed issue must not remain falsely in-progress when
+      // the downstream implementation workflow never started.
+      await client.removeLabel(plan.issue.number, 'in-progress');
+      await client.removeLabel(plan.issue.number, 'automation-managed');
+      await client.addLabels(plan.issue.number, ['ready', 'automation-failed', 'needs-human']);
+      try {
+        await client.createComment(
+          plan.issue.number,
+          [
+            '<!-- automation-direct-dispatch-failed -->',
+            '**Automation dispatch failed before implementation started.**',
+            '',
+            'The issue was returned to `ready` and marked `automation-failed` + `needs-human`.',
+            'Next action: inspect the Automation Queue Dispatcher run, repair the direct workflow dispatch, and retry.',
+          ].join('\n')
+        );
+      } catch {
+        // Preserve the original error; the workflow log is still the source
+        // of truth if even the failure comment cannot be created.
+      }
+      throw new Error(`Failed to start Claude workflow for issue #${plan.issue.number}: ${err.message}`);
+    }
   } else {
     console.log('[dry-run] would remove label: ready');
     console.log('[dry-run] would add labels: in-progress, automation-managed');
     console.log(`[dry-run] would post comment:\n${comment}`);
+    console.log(`[dry-run] would dispatch claude.yml for issue #${plan.issue.number}`);
   }
 
   return plan;

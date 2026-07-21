@@ -1,6 +1,12 @@
 name: Claude Code
 
 on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Issue number claimed by the autonomous queue"
+        required: true
+        type: string
   issue_comment:
     types: [created]
   pull_request_review_comment:
@@ -13,6 +19,7 @@ on:
 jobs:
   claude:
     if: |
+      github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
@@ -36,6 +43,8 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          prompt: ${{ github.event_name == 'workflow_dispatch' && format('Implement GitHub issue #{0} exactly as scoped. Read the issue body and repository instructions, create a dedicated branch, run all required validation, open a pull request into main that includes Closes #{0}, and stop for human review. Do not merge or publish externally.', inputs.issue_number) || '' }}
 
           additional_permissions: |
             actions: read
