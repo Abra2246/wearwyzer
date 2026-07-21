@@ -1,36 +1,42 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-21T01:12:15.369Z",
+  "generatedAtIso": "2026-07-21T04:36:06.771Z",
   "overallState": "live",
   "ceo": {
-    "headline": "Everything is healthy — no action needed.",
-    "requiredAction": null,
-    "activeWorkSummary": "3 issue(s) queued, none active."
+    "headline": "A completed run looks stalled.",
+    "requiredAction": "#51 has been \"in-progress\" for 22m with no linked PR (grace period is 15m).",
+    "activeWorkSummary": "#51 \"Close Guide Factory asset persistence gap before first live pilot\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-21T01:12:15.369Z",
+      "lastUpdatedIso": "2026-07-21T04:36:06.771Z",
       "fetchOk": true,
       "data": {
-        "automationState": "queued",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 51,
+          "title": "Close Guide Factory asset persistence gap before first live pilot",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/51",
+          "updatedIso": "2026-07-21T04:14:07Z"
+        },
         "queue": {
-          "depth": 3,
-          "readyCount": 3,
-          "blockedCount": 0
+          "depth": 1,
+          "readyCount": 1,
+          "blockedCount": 0,
+          "stalledSinceIso": null
         },
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-18T15:56:59Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29650977696",
+          "latestRunIso": "2026-07-21T04:19:08Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29800914465",
           "recentFailureCount": 0
         },
         "handoff": {
-          "stalled": false,
-          "reason": null
+          "stalled": true,
+          "reason": "#51 has been \"in-progress\" for 22m with no linked PR (grace period is 15m)."
         }
       },
       "note": null
@@ -38,13 +44,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-21T01:12:15.369Z",
+      "lastUpdatedIso": "2026-07-21T04:36:06.771Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "2768576",
-        "lastDeployIso": "2026-07-18T15:57:33Z",
-        "ageMinutes": 3435,
+        "lastHealthyShaShort": "17e7f3b",
+        "lastDeployIso": "2026-07-21T04:19:41Z",
+        "ageMinutes": 16,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -75,6 +81,69 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:17e7f3b",
+      "timestampIso": "2026-07-21T04:19:41Z",
+      "type": "deployed",
+      "summary": "Deployed build 17e7f3b — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:29800914465",
+      "timestampIso": "2026-07-21T04:19:08Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/29800914465"
+    },
+    {
+      "key": "pr-merged:52",
+      "timestampIso": "2026-07-21T04:18:54Z",
+      "type": "pr-merged",
+      "summary": "PR #52 \"Allow queue-dispatched Claude workflow actor\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/52"
+    },
+    {
+      "key": "issue-started:51",
+      "timestampIso": "2026-07-21T04:14:07Z",
+      "type": "issue-started",
+      "summary": "Issue #51 \"Close Guide Factory asset persistence gap before first live pilot\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/51"
+    },
+    {
+      "key": "pr-merged:50",
+      "timestampIso": "2026-07-21T04:10:05Z",
+      "type": "pr-merged",
+      "summary": "PR #50 \"Establish the WearWyzer Book of Truth\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/50"
+    },
+    {
+      "key": "pr-merged:49",
+      "timestampIso": "2026-07-21T04:04:42Z",
+      "type": "pr-merged",
+      "summary": "PR #49 \"Automate Guide Factory production and review handoff\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/49"
+    },
+    {
+      "key": "pr-merged:48",
+      "timestampIso": "2026-07-21T03:54:07Z",
+      "type": "pr-merged",
+      "summary": "PR #48 \"Fix direct Claude queue dispatch\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/48"
+    },
+    {
+      "key": "pr-merged:45",
+      "timestampIso": "2026-07-21T03:20:21Z",
+      "type": "pr-merged",
+      "summary": "PR #45 \"Add secure affiliate connector framework\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/45"
+    },
+    {
+      "key": "pr-merged:44",
+      "timestampIso": "2026-07-21T03:16:47Z",
+      "type": "pr-merged",
+      "summary": "PR #44 \"Fix Mission Control truthfulness and stalled dispatch\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/44"
+    },
     {
       "key": "deploy:2768576",
       "timestampIso": "2026-07-18T15:57:33Z",
