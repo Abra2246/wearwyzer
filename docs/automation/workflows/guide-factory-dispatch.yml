@@ -2,7 +2,14 @@
 # for why (Claude's GitHub App token cannot write to .github/workflows/).
 # Copy this file to .github/workflows/guide-factory-dispatch.yml to
 # activate it. See docs/AUTONOMOUS_GUIDE_FACTORY_V1.md for the full
-# activation checklist and what this dispatches.
+# activation checklist and docs/PRODUCTION_WRITER_V1.md (issue #46) for
+# what changed: this now calls the production writer CLI, a strict
+# superset of the old validate-and-print-only CLI that also writes
+# js/guides.js / js/products.js / the new page / sitemap.xml to the
+# runner's working tree once a manifest reaches ready-for-pr. It still
+# never commits, pushes, or opens a PR itself — a human (or the existing
+# handoff watchdog, docs/AUTOMATION_HANDOFF_WATCHDOG_V1.md) does that from
+# the resulting working-tree diff on a dedicated branch.
 
 name: Guide Factory Dispatcher
 
@@ -37,9 +44,9 @@ jobs:
         with:
           node-version: 'lts/*'
 
-      - name: Run the next approved guide job
+      - name: Run the next approved guide job and write its production output
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          node scripts/guide-factory-cli.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
+          node scripts/guide-production-writer-cli.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
