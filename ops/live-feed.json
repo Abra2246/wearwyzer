@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-21T07:19:21.082Z",
+  "generatedAtIso": "2026-07-21T09:58:23.785Z",
   "overallState": "live",
   "ceo": {
-    "headline": "Everything is healthy — no action needed.",
-    "requiredAction": null,
+    "headline": "Queued work is not being dispatched.",
+    "requiredAction": "1 issue(s) ready and undispatched for 159m (SLA is 90m) — check the Automation Queue Dispatcher workflow.",
     "activeWorkSummary": "1 issue(s) queued, none active."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-21T07:19:21.082Z",
+      "lastUpdatedIso": "2026-07-21T09:58:23.785Z",
       "fetchOk": true,
       "data": {
         "automationState": "queued",
@@ -30,8 +30,8 @@
           "recentFailureCount": 0
         },
         "handoff": {
-          "stalled": false,
-          "reason": null
+          "stalled": true,
+          "reason": "1 issue(s) ready and undispatched for 159m (SLA is 90m) — check the Automation Queue Dispatcher workflow."
         }
       },
       "note": null
@@ -39,13 +39,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-21T07:19:21.082Z",
+      "lastUpdatedIso": "2026-07-21T09:58:23.785Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "17e7f3b",
         "lastDeployIso": "2026-07-21T04:19:41Z",
-        "ageMinutes": 180,
+        "ageMinutes": 339,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
