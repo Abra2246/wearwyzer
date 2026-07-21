@@ -44,6 +44,10 @@ jobs:
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
+          # Queue dispatch is intentionally initiated by GitHub Actions.
+          # Trust only that specific bot actor; never use the wildcard.
+          allowed_bots: "github-actions"
+
           prompt: >-
             ${{ github.event_name == 'workflow_dispatch' &&
             format('Implement GitHub issue #{0} exactly as scoped. Read the issue body and repository instructions, create a dedicated branch, run all required validation, open a pull request into main that includes Closes #{0}, and stop for human review. Do not merge or publish externally.', inputs.issue_number) || '' }}
