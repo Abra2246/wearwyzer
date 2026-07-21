@@ -1,5 +1,10 @@
 # WearWyzer — Technical Roadmap
 
+> **Scope note:** this is the original technical sequencing document for evolving the static
+> prototype. [`docs/WEARWYZER_BOOK_OF_TRUTH.md`](docs/WEARWYZER_BOOK_OF_TRUTH.md) is the
+> canonical product roadmap and governs Now/Next/Future priorities. Where status or sequencing
+> differs, the Book of Truth and current implementation records take precedence.
+
 Status key: **Exists** · **Partial** · **Missing** · **Needs redesign**
 
 ## Feature gap analysis

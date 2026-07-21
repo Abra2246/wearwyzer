@@ -4,6 +4,8 @@
 
 **What this is today:** a static, front-end content site and affiliate storefront prototype — no backend, no database, no accounts. See `ENGINEERING_AUDIT.md` for a full audit, `ARCHITECTURE.md` for the incremental plan toward a real platform, and `ROADMAP.md` for milestone sequencing. This file stays focused on day-to-day content editing and deployment.
 
+**Canonical product direction:** read [`docs/WEARWYZER_BOOK_OF_TRUTH.md`](docs/WEARWYZER_BOOK_OF_TRUTH.md) before making roadmap or platform decisions. It mirrors the canonical Notion Product Vision & Master PRD and governs the website, app, Chrome extension, digital wardrobe, personalization, commerce, and operations vision.
+
 ## Local preview
 ```
 ./scripts/preview.sh
@@ -49,13 +51,18 @@ node --test scripts/__tests__/
 - `robots.txt`, `sitemap.xml`
 - `assets/images/…` — placeholder images (labeled "PLACEHOLDER — REPLACE")
 
-## Adding a new Instagram post / style guide
-1. Duplicate the first object in `js/guides.js`; update every field (id, title, slug, outfits, tags…).
-2. Drop slide images in `assets/images/guides/<id>/` and a cover image.
-3. Duplicate `guide-on-cloud-x4.dc.html`, rename to match `slug`, change the
-   `GUIDE_ID` constant at the top of its logic, and update the `<helmet>` title/meta.
-4. Add the page to `sitemap.xml`.
-The library, home "latest" section, and related-guides cards read from `js/guides.js`.
+## Producing a new Instagram post / style guide
+
+The preferred path is the Guide Factory, not manual file duplication:
+
+1. Verify the hero product and its source facts.
+2. Create and approve a manifest under `automation/guide-jobs/`.
+3. The active Guide Factory dispatcher validates the manifest, writes the site records/page,
+   runs structural QA, and opens a dedicated review PR.
+4. Review generated content and imagery; nothing is merged automatically.
+
+See `docs/AUTONOMOUS_GUIDE_FACTORY_V1.md` and `docs/PRODUCTION_WRITER_V1.md`. Manual edits to
+`js/guides.js`, `js/products.js`, a guide page, and `sitemap.xml` are a recovery path only.
 
 ## Adding affiliate links
 In `js/products.js`, set `affiliateUrl` (and `retailer`) on the product.
