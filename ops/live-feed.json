@@ -1,31 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-21T04:36:06.771Z",
+  "generatedAtIso": "2026-07-21T07:19:21.082Z",
   "overallState": "live",
   "ceo": {
-    "headline": "A completed run looks stalled.",
-    "requiredAction": "#51 has been \"in-progress\" for 22m with no linked PR (grace period is 15m).",
-    "activeWorkSummary": "#51 \"Close Guide Factory asset persistence gap before first live pilot\" (no PR yet)"
+    "headline": "Everything is healthy — no action needed.",
+    "requiredAction": null,
+    "activeWorkSummary": "1 issue(s) queued, none active."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-21T04:36:06.771Z",
+      "lastUpdatedIso": "2026-07-21T07:19:21.082Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 51,
-          "title": "Close Guide Factory asset persistence gap before first live pilot",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/51",
-          "updatedIso": "2026-07-21T04:14:07Z"
-        },
+        "automationState": "queued",
+        "activeIssue": null,
         "queue": {
           "depth": 1,
           "readyCount": 1,
           "blockedCount": 0,
-          "stalledSinceIso": null
+          "stalledSinceIso": "2026-07-21T07:19:21.082Z"
         },
         "pr": null,
         "ci": {
@@ -35,8 +30,8 @@
           "recentFailureCount": 0
         },
         "handoff": {
-          "stalled": true,
-          "reason": "#51 has been \"in-progress\" for 22m with no linked PR (grace period is 15m)."
+          "stalled": false,
+          "reason": null
         }
       },
       "note": null
@@ -44,13 +39,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-21T04:36:06.771Z",
+      "lastUpdatedIso": "2026-07-21T07:19:21.082Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "17e7f3b",
         "lastDeployIso": "2026-07-21T04:19:41Z",
-        "ageMinutes": 16,
+        "ageMinutes": 180,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
