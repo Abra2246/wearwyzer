@@ -16,6 +16,29 @@ All notable changes to this project are recorded here.
   scopes, expiration, pending approval, refresh failure, environment isolation,
   and safe registry/status/audit output.
 
+## Unreleased (2026-07-20) — Mission Control truthfulness and stalled-dispatch repair (issue #42)
+### Fixed
+- Mission Control now independently recomputes feed and source freshness from
+  `generatedAtIso`/`lastUpdatedIso` on every browser render. A successful HTTP
+  fetch can no longer turn a stale document green: feeds at least 15 minutes
+  old are `delayed`, feeds at least 60 minutes old (or with an invalid
+  timestamp) are `offline`, and the worst critical-source state still wins.
+- The header now separates the generator heartbeat from the browser's latest
+  fetch time, so “checked just now” cannot be mistaken for freshly generated
+  operational data. Stale feeds also replace any stored healthy CEO summary
+  with an explicit delayed/offline action.
+- The live-feed generator now persists when a ready queue first becomes idle.
+  If ready work remains undispatched with no active issue or PR for 90 minutes,
+  Engineering reports a stalled dispatch and the CEO summary calls for queue
+  investigation. The clock clears as soon as work starts or the queue empties.
+- Older schema-v1 snapshots are upgraded in memory with a null dispatch clock,
+  allowing the first post-merge workflow run to migrate safely.
+### Verified
+- `node --test scripts/__tests__/*.test.mjs`: 364/364 passing.
+- Content data, static-site, Knowledge Graph, legacy-adapter comparison, and
+  Hero Product validators all completed successfully. The existing documented
+  adapter-only product-name difference remains report-only.
+
 ## Unreleased (2026-07-14) — Mission Control v2 live operations dashboard, Phase 1 + 2 (issue #42)
 ### Added
 - `docs/OPS_DASHBOARD_V2.md` — Phase 1 architecture doc and data contract for a live,

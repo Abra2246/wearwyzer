@@ -22,7 +22,13 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { readEvents } from './record-status-event.mjs';
-import { buildLiveFeed, detectStalledHandoff, feedEventsFromGitHubState } from './ops-live-builder.mjs';
+import {
+  buildLiveFeed,
+  computeDispatchStalledSince,
+  detectStalledDispatch,
+  detectStalledHandoff,
+  feedEventsFromGitHubState,
+} from './ops-live-builder.mjs';
 import { validateLiveFeedShape, findSecretLikeValues } from './ops-live-schema.mjs';
 import { deriveAutomationState, truncateSummary } from './ops-status-builder.mjs';
 import { clientFromEnv, repoFromEnv } from './queue-github-client.mjs';
@@ -50,7 +56,15 @@ function parseArgs(argv) {
 function loadPreviousDoc() {
   if (!existsSync(LIVE_FEED_OUTPUT_PATH)) return null;
   try {
-    return JSON.parse(readFileSync(LIVE_FEED_OUTPUT_PATH, 'utf8'));
+    const doc = JSON.parse(readFileSync(LIVE_FEED_OUTPUT_PATH, 'utf8'));
+    const queue = doc?.sources?.engineering?.data?.queue;
+    // Schema v1 feeds written before the dispatch watchdog shipped do not
+    // have this clock. Normalize them in memory so the first new generator
+    // run can carry the last-known-good payload forward and upgrade it.
+    if (queue && !Object.hasOwn(queue, 'stalledSinceIso')) {
+      queue.stalledSinceIso = null;
+    }
+    return doc;
   } catch {
     return null; // corrupt/partial file — treat as a first-ever run rather than crash
   }
@@ -80,7 +94,7 @@ function mapPr(pr, reviewDecision) {
  * Returns `{ fetchOk: false }` (never throws) on any failure so the caller
  * degrades to last-known-good rather than crashing the whole run.
  */
-async function loadEngineeringState(client, nowIso) {
+async function loadEngineeringState(client, nowIso, previousDispatchStalledSinceIso) {
   try {
     const [inProgressIssues, readyIssues, blockedIssues, automationManagedPrs, ciRuns] = await Promise.all([
       client.listOpenIssuesWithLabel('in-progress'),
@@ -97,7 +111,7 @@ async function loadEngineeringState(client, nowIso) {
 
     const prRaw = activeIssueRaw
       ? automationManagedPrs.find((p) => new RegExp(`[Cc]loses #${activeIssueRaw.number}\\b`).test(p.body || '')) || null
-      : null;
+      : automationManagedPrs[0] || null;
     let reviewDecision = null;
     if (prRaw) {
       try {
@@ -116,13 +130,26 @@ async function loadEngineeringState(client, nowIso) {
       recentFailureCount: ciRuns.filter((r) => r.conclusion && r.conclusion !== 'success').length,
     };
 
-    const automationState = deriveAutomationState(activeIssueRaw, { readyCount: readyIssues.length });
-    const handoff = detectStalledHandoff({ automationState, activeIssue, pr, now: nowIso });
+    const automationState = prRaw ? 'review' : deriveAutomationState(activeIssueRaw, { readyCount: readyIssues.length });
+    const stalledSinceIso = computeDispatchStalledSince({
+      automationState,
+      readyCount: readyIssues.length,
+      previousSinceIso: previousDispatchStalledSinceIso,
+      now: nowIso,
+    });
+    const handoffResult = detectStalledHandoff({ automationState, activeIssue, pr, now: nowIso });
+    const dispatchResult = detectStalledDispatch({
+      automationState,
+      readyCount: readyIssues.length,
+      dispatchStalledSinceIso: stalledSinceIso,
+      now: nowIso,
+    });
+    const handoff = handoffResult.stalled ? handoffResult : dispatchResult;
 
     const data = {
       automationState,
       activeIssue,
-      queue: { depth: readyIssues.length, readyCount: readyIssues.length, blockedCount: blockedIssues.length },
+      queue: { depth: readyIssues.length, readyCount: readyIssues.length, blockedCount: blockedIssues.length, stalledSinceIso },
       pr,
       ci,
       handoff,
@@ -166,8 +193,10 @@ export async function generateLiveFeed({ now } = {}) {
     return buildLiveFeed({ engineering: null, deployment: null, previousDoc, statusEvents, feedCandidates: [] }, { now: nowIso });
   }
 
+  const previousDispatchStalledSinceIso = previousDoc?.sources?.engineering?.data?.queue?.stalledSinceIso || null;
+
   const [engineering, deployment] = await Promise.all([
-    loadEngineeringState(client, nowIso),
+    loadEngineeringState(client, nowIso, previousDispatchStalledSinceIso),
     loadDeploymentState(client, nowIso),
   ]);
 

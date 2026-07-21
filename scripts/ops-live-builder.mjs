@@ -93,6 +93,29 @@ export function detectStalledHandoff({ automationState, activeIssue, pr, now }) 
   };
 }
 
+// The queue dispatcher runs hourly. Allow one missed cycle plus scheduling
+// jitter before an undispatched ready queue becomes an operational alert.
+export const DISPATCH_SLA_MINUTES = 90;
+
+export function computeDispatchStalledSince({ automationState, readyCount, previousSinceIso, now }) {
+  if (automationState !== 'queued' || readyCount <= 0) return null;
+  return previousSinceIso || now;
+}
+
+export function detectStalledDispatch({ automationState, readyCount, dispatchStalledSinceIso, now }) {
+  if (automationState !== 'queued' || readyCount <= 0 || !dispatchStalledSinceIso) {
+    return { stalled: false, reason: null };
+  }
+  const elapsedMinutes = minutesBetween(dispatchStalledSinceIso, now);
+  if (!Number.isFinite(elapsedMinutes) || elapsedMinutes < DISPATCH_SLA_MINUTES) {
+    return { stalled: false, reason: null };
+  }
+  return {
+    stalled: true,
+    reason: `${readyCount} issue(s) ready and undispatched for ${Math.round(elapsedMinutes)}m (SLA is ${DISPATCH_SLA_MINUTES}m) — check the Automation Queue Dispatcher workflow.`,
+  };
+}
+
 /**
  * CEO summary card content (issue #42's "system health, required action,
  * active work, blockers" in one glance). Precedence: a source being offline
@@ -119,7 +142,7 @@ export function buildCeoSummary({ overallState, engineering, deployment }) {
   }
   if (eng && eng.handoff.stalled) {
     return {
-      headline: 'A completed run looks stalled.',
+      headline: eng.automationState === 'queued' ? 'Queued work is not being dispatched.' : 'A completed run looks stalled.',
       requiredAction: eng.handoff.reason,
       activeWorkSummary: activeWorkSummaryText(eng),
     };

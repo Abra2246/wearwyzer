@@ -182,6 +182,28 @@ rather than resetting — the previous committed document is always an input.
 
 ## Health aggregation, staleness, and handoff detection
 
+### Browser-enforced feed freshness
+
+The browser treats the generated document as untrusted cached state. On every
+render it recomputes the feed age from `generatedAtIso`: 15 minutes is
+`delayed`, 60 minutes is `offline`, and a missing or invalid timestamp is
+`offline`. It also recomputes each source from `lastUpdatedIso` and that
+source's configured thresholds. The displayed state is the worst of the feed
+age, the stored aggregate, and the recomputed critical sources. Consequently,
+a successful fetch only proves connectivity; it never proves freshness.
+
+The dashboard displays two separate clocks: the generator heartbeat and the
+time this browser last checked. Delayed/offline data replaces any stored
+healthy CEO summary with a direct freshness warning and recovery action.
+
+### Stalled dispatch
+
+Engineering persists `queue.stalledSinceIso` while ready work exists with no
+active issue or PR. The clock starts on the first observed idle refresh and is
+preserved across subsequent runs. After 90 minutes the feed reports a stalled
+dispatch, distinct from the existing completed-branch/missing-PR handoff
+failure. Starting work or emptying the ready queue clears the clock.
+
 - `computeSourceState(lastUpdatedIso, { now, staleAfterMinutes,
   offlineAfterMinutes })` — pure function, per-source thresholds
   (`DEFAULT_THRESHOLDS` in `scripts/ops-live-schema.mjs`): engineering
