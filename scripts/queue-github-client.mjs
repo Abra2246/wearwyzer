@@ -113,6 +113,14 @@ export class GitHubClient {
     return this.request('POST', `/repos/${this.owner}/${this.repo}/issues/${issueNumber}/comments`, { body });
   }
 
+  dispatchWorkflow(workflowFile, { ref = 'main', inputs = {} } = {}) {
+    return this.request(
+      'POST',
+      `/repos/${this.owner}/${this.repo}/actions/workflows/${encodeURIComponent(workflowFile)}/dispatches`,
+      { ref, inputs }
+    );
+  }
+
   async listChangedFiles(prNumber) {
     const files = await this.paginate(`/repos/${this.owner}/${this.repo}/pulls/${prNumber}/files`);
     return files.map((f) => f.filename);

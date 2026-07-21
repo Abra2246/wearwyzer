@@ -31,11 +31,9 @@
 //      Control lifecycle event (started, blocked/needs-human,
 //      ready-for-review, completed).
 //
-// Never opens a PR and never merges — this repository's GitHub App token
-// has no case for that here either; a human (or a follow-up CI step)
-// commits the resulting working-tree diff and opens a reviewable PR, per
-// the issue's own "a dedicated branch and reviewable PR are opened;
-// nothing is merged automatically" requirement.
+// This script deliberately owns only production-file writes. The active
+// Guide Factory workflow validates those files, commits them on a dedicated
+// automation branch, and opens a review PR. It never merges automatically.
 //
 // Usage:
 //   node scripts/guide-production-writer-cli.mjs [--dry-run]

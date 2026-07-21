@@ -57,9 +57,18 @@ Failure states:
 1. Run on a conservative schedule and manual dispatch.
 2. Exit without changes if active automated work exists.
 3. Select the highest-priority eligible `ready` issue.
-4. Add `in-progress`, remove `ready`, and post an `@claude` implementation instruction.
+4. Add `in-progress`, remove `ready`, record the dispatch on the issue, and invoke
+   the existing Claude Code workflow through its explicit `workflow_dispatch`
+   entry point.
 5. Record the dispatch time and selected risk tier.
 6. Never trigger more than one issue per run.
+
+An `@claude` comment created with a workflow's built-in `GITHUB_TOKEN` cannot
+start another GitHub Actions workflow; GitHub suppresses that recursive trigger
+by design. The dispatcher therefore uses `actions: write` only to invoke the
+existing `claude.yml` workflow directly. It introduces no PAT or additional
+secret. If that invocation fails, the issue is returned to `ready`, labeled
+`automation-failed` and `needs-human`, and the dispatcher run fails visibly.
 
 ## Merge behavior
 - `risk-low`: auto-merge only when the PR is labeled `automation-managed` and `risk-low`, every required check succeeds, the PR is not draft, and protected paths are untouched.

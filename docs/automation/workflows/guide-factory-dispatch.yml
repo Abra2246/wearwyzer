@@ -1,15 +1,8 @@
-# STAGED WORKFLOW — not active. See dispatch-queue.yml in this directory
-# for why (Claude's GitHub App token cannot write to .github/workflows/).
-# Copy this file to .github/workflows/guide-factory-dispatch.yml to
-# activate it. See docs/AUTONOMOUS_GUIDE_FACTORY_V1.md for the full
-# activation checklist and docs/PRODUCTION_WRITER_V1.md (issue #46) for
-# what changed: this now calls the production writer CLI, a strict
-# superset of the old validate-and-print-only CLI that also writes
-# js/guides.js / js/products.js / the new page / sitemap.xml to the
-# runner's working tree once a manifest reaches ready-for-pr. It still
-# never commits, pushes, or opens a PR itself — a human (or the existing
-# handoff watchdog, docs/AUTOMATION_HANDOFF_WATCHDOG_V1.md) does that from
-# the resulting working-tree diff on a dedicated branch.
+# Reference copy of the active Guide Factory workflow. Keep this file in
+# sync with .github/workflows/guide-factory-dispatch.yml. The workflow
+# validates an approved job, writes the generated site content, runs the
+# structural quality gates, and persists the result on a dedicated branch
+# with a review PR. It never merges generated content automatically.
 
 name: Guide Factory Dispatcher
 
@@ -31,7 +24,8 @@ concurrency:
 
 permissions:
   issues: write
-  contents: read
+  contents: write
+  pull-requests: write
 
 jobs:
   dispatch:
@@ -50,3 +44,34 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           node scripts/guide-production-writer-cli.mjs ${{ inputs.dry_run == true && '--dry-run' || '' }}
+
+      - name: Validate generated site content
+        if: inputs.dry_run != true
+        run: |
+          node scripts/validate-content-data.mjs
+          node scripts/qa-static-site.mjs
+          node scripts/validate-knowledge-graph.mjs
+          node scripts/validate-hero-product-pages.mjs
+
+      - name: Open a review PR for generated guide content
+        if: inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          new_pages="$(git ls-files --others --exclude-standard -- 'guide-*.dc.html')"
+          if git diff --quiet -- js/guides.js js/products.js sitemap.xml && [ -z "$new_pages" ]; then
+            echo "No publishable guide changes were produced; no branch or PR is needed."
+            exit 0
+          fi
+
+          branch="automation/guide-production-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$branch"
+          git config user.name "wearwyzer-automation[bot]"
+          git config user.email "wearwyzer-automation[bot]@users.noreply.github.com"
+          git add -- js/guides.js js/products.js sitemap.xml automation/guide-jobs automation/status 'guide-*.dc.html'
+          git commit -m "feat(content): publish approved Guide Factory output"
+          git push --set-upstream origin "$branch"
+
+          pr_url="$(gh pr create --base main --head "$branch" --title "Guide Factory: publish approved guide" --body "Automated Guide Factory production output. Content and structural checks passed before this review PR was opened. Nothing is merged automatically.")"
+          gh pr edit "$pr_url" --add-label automation-managed --add-label risk-medium
+          echo "Opened review PR: $pr_url"

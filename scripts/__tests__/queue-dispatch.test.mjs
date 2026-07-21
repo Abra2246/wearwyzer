@@ -7,8 +7,9 @@ import { READY_LOW_RISK_ISSUE } from './fixtures.mjs';
 // dry run performs zero writes, and a live run performs exactly the
 // expected sequence — without any network access.
 class FakeClient {
-  constructor(state) {
+  constructor(state, { dispatchError = null } = {}) {
     this.state = state;
+    this.dispatchError = dispatchError;
     this.calls = [];
   }
   listOpenIssuesWithLabel(label) {
@@ -31,6 +32,10 @@ class FakeClient {
     this.calls.push(['createComment', ...args]);
     return Promise.resolve();
   }
+  dispatchWorkflow(...args) {
+    this.calls.push(['dispatchWorkflow', ...args]);
+    return this.dispatchError ? Promise.reject(this.dispatchError) : Promise.resolve();
+  }
 }
 
 test('dry run causes no mutation', async () => {
@@ -44,7 +49,7 @@ test('dry run causes no mutation', async () => {
   assert.equal(client.calls.length, 0);
 });
 
-test('live run mutates exactly once per label/comment call, in order', async () => {
+test('live run claims, records, and directly starts the Claude workflow in order', async () => {
   const client = new FakeClient({
     inProgressIssues: [],
     openAutomationManagedPrs: [],
@@ -52,8 +57,42 @@ test('live run mutates exactly once per label/comment call, in order', async () 
   });
   await dispatch(client, { dryRun: false });
   const kinds = client.calls.map((c) => c[0]);
-  assert.deepEqual(kinds, ['removeLabel', 'addLabels', 'createComment']);
+  assert.deepEqual(kinds, ['removeLabel', 'addLabels', 'createComment', 'dispatchWorkflow']);
   assert.equal(client.calls[0][1], READY_LOW_RISK_ISSUE.number);
+  assert.deepEqual(client.calls[3].slice(1), [
+    'claude.yml',
+    { ref: 'main', inputs: { issue_number: String(READY_LOW_RISK_ISSUE.number) } },
+  ]);
+});
+
+test('failed downstream dispatch returns the issue to ready and fails visibly', async () => {
+  const client = new FakeClient(
+    {
+      inProgressIssues: [],
+      openAutomationManagedPrs: [],
+      readyIssues: [READY_LOW_RISK_ISSUE],
+    },
+    { dispatchError: new Error('workflow dispatch denied') }
+  );
+
+  await assert.rejects(() => dispatch(client, { dryRun: false }), /Failed to start Claude workflow/);
+  assert.deepEqual(
+    client.calls.map((call) => call[0]),
+    [
+      'removeLabel',
+      'addLabels',
+      'createComment',
+      'dispatchWorkflow',
+      'removeLabel',
+      'removeLabel',
+      'addLabels',
+      'createComment',
+    ]
+  );
+  assert.deepEqual(client.calls[6].slice(1), [
+    READY_LOW_RISK_ISSUE.number,
+    ['ready', 'automation-failed', 'needs-human'],
+  ]);
 });
 
 test('active work prevents dispatch end-to-end: no mutation when an issue is already in-progress', async () => {

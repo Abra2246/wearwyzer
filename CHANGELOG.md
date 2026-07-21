@@ -22,13 +22,17 @@ All notable changes to this project are recorded here.
   fixture universe: manifest → written `js/guides.js`/`js/products.js`/sitemap text → a
   proven-idempotent repeat run.
 - `docs/PRODUCTION_WRITER_V1.md` and the corresponding `ARCHITECTURE.md` decision entry.
+- The active Guide Factory workflow now validates generated site content, persists it on a
+  dedicated automation branch, and opens a labeled review PR instead of losing the writer's
+  output when the ephemeral runner exits. Generated content is never merged automatically.
 - 27 new deterministic tests (`scripts/__tests__/guide-production-writer.test.mjs`,
   `scripts/__tests__/hero-candidate-assessor.test.mjs`): successful production, missing
   product facts, fabricated price, missing rendered asset, idempotent re-run, affiliate
   coverage staying intact and non-blocking, no-eligible-hero and at-least-one-eligible-hero
   assessment.
 ### Verified
-- `node --test scripts/__tests__/*.test.mjs`: 399/399 passing.
+- `node --test scripts/__tests__/*.test.mjs`: full suite passing, including the active
+  workflow-to-review-PR contract.
 - `node scripts/simulate-guide-production.mjs`: fixture manifest applied once, repeat run a
   full no-op.
 - Content data, static-site, Knowledge Graph, legacy-adapter comparison, and Hero Product
@@ -42,6 +46,15 @@ All notable changes to this project are recorded here.
   outcome, not a bug. No live guide, product, or sitemap entry was published in this change;
   see `docs/PRODUCTION_WRITER_V1.md` §3 for the full finding and the exact next action for a
   human editor.
+
+## Unreleased (2026-07-20) — Direct queue-to-Claude dispatch (issue #47)
+### Fixed
+- The engineering dispatcher now invokes the Claude Code workflow directly
+  after claiming an issue instead of relying on an `@claude` comment created by
+  `GITHUB_TOKEN`, which GitHub intentionally does not allow to trigger another
+  workflow.
+- A failed downstream dispatch returns the issue to `ready`, marks it
+  `automation-failed` and `needs-human`, and fails the dispatcher visibly.
 
 ## Unreleased (2026-07-20) — Secure affiliate connector framework (issue #25)
 ### Added

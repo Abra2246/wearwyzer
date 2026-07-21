@@ -75,12 +75,13 @@ does, then adds the write step:
 Every stage records a Mission Control status event (`scripts/record-status-event.mjs`):
 `guide-production-started` when a job is claimed, an exception event when it blocks/needs a
 human, and `guide-production-ready-for-review` + `guide-production-completed` once the write
-succeeds (fired together since this writer never opens a PR itself — see §4).
+succeeds. The CLI owns filesystem writes; the active workflow owns the dedicated branch and
+review-PR handoff.
 
-This CLI never opens a PR and never merges. A human (or the existing handoff-watchdog,
-`docs/AUTOMATION_HANDOFF_WATCHDOG_V1.md`) commits the resulting working-tree diff on a
-dedicated branch and opens a reviewable PR — same boundary every other automation script in
-this repository stops at.
+The CLI never opens or merges a PR. The active
+`.github/workflows/guide-factory-dispatch.yml` validates the generated site, commits only the
+Guide Factory output on a dedicated branch, and opens a reviewable PR. Generated content is
+never merged automatically.
 
 ## 3. Hero-candidacy assessment (`scripts/hero-candidate-assessor.mjs`)
 
@@ -161,19 +162,18 @@ Plus `node scripts/simulate-guide-production.mjs` for the literal end-to-end fix
 run), and `node scripts/guide-production-writer-cli.mjs --dry-run` against the real
 Knowledge Graph as the evidence for §3's "why no real guide shipped" finding.
 
-## 6. Activation checklist
+## 6. Active production handoff
 
-Same constraint as every other epic here: this GitHub App token cannot write to
-`.github/workflows/`. `docs/automation/workflows/guide-factory-dispatch.yml` (staged) now
-calls `scripts/guide-production-writer-cli.mjs` instead of `scripts/guide-factory-cli.mjs` —
-a strict superset of the same behavior — so activating that one staged workflow file is the
-only step a maintainer needs to wire the next approved manifest all the way to a written,
-reviewable diff.
+`.github/workflows/guide-factory-dispatch.yml` calls the production writer directly. When a
+publishable guide diff exists, it runs the content, static-site, Knowledge Graph, and hero-page
+validators, creates a dedicated `automation/guide-production-*` branch, pushes the generated
+files, and opens a review PR labeled `automation-managed` and `risk-medium`. A no-op or blocked
+candidacy run creates no branch. `docs/automation/workflows/guide-factory-dispatch.yml` is the
+synchronized reference copy.
 
 ## What this version deliberately does not do
 
-- Does not open a PR or merge anything — a human (or the existing handoff watchdog) still
-  does that from the written working-tree diff, on a dedicated branch.
+- Does not merge anything. The workflow opens a review PR and stops.
 - Does not add a live affiliate credential, tracked-link substitution, or secret.
 - Does not fabricate a `sourceUrl`, price, availability, or product match to force a pilot
   guide through — see §3.
