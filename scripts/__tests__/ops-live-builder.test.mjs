@@ -5,6 +5,9 @@ import {
   buildNotWiredSource,
   aggregateOverallState,
   detectStalledHandoff,
+  computeDispatchStalledSince,
+  detectStalledDispatch,
+  DISPATCH_SLA_MINUTES,
   buildCeoSummary,
   mergeAutomationFeed,
   feedEventsFromStatusLog,
@@ -107,6 +110,58 @@ test('detectStalledHandoff: automationState other than working never reports sta
   assert.equal(detectStalledHandoff({ automationState: 'idle', activeIssue: null, pr: null, now: NOW }).stalled, false);
 });
 
+test('computeDispatchStalledSince starts and preserves a queued-without-active clock', () => {
+  const earlier = minutesAgo(NOW, 30);
+  assert.equal(computeDispatchStalledSince({ automationState: 'queued', readyCount: 3, previousSinceIso: null, now: NOW }), NOW);
+  assert.equal(computeDispatchStalledSince({ automationState: 'queued', readyCount: 3, previousSinceIso: earlier, now: NOW }), earlier);
+});
+
+test('computeDispatchStalledSince resets when work starts or the queue empties', () => {
+  const earlier = minutesAgo(NOW, 30);
+  assert.equal(computeDispatchStalledSince({ automationState: 'working', readyCount: 3, previousSinceIso: earlier, now: NOW }), null);
+  assert.equal(computeDispatchStalledSince({ automationState: 'review', readyCount: 3, previousSinceIso: earlier, now: NOW }), null);
+  assert.equal(computeDispatchStalledSince({ automationState: 'queued', readyCount: 0, previousSinceIso: earlier, now: NOW }), null);
+});
+
+test('detectStalledDispatch flags ready work beyond the dispatcher SLA', () => {
+  const result = detectStalledDispatch({
+    automationState: 'queued',
+    readyCount: 3,
+    dispatchStalledSinceIso: minutesAgo(NOW, DISPATCH_SLA_MINUTES + 1),
+    now: NOW,
+  });
+  assert.equal(result.stalled, true);
+  assert.match(result.reason, /Automation Queue Dispatcher/);
+});
+
+test('detectStalledDispatch does not flag within the SLA', () => {
+  const result = detectStalledDispatch({
+    automationState: 'queued',
+    readyCount: 3,
+    dispatchStalledSinceIso: minutesAgo(NOW, 15),
+    now: NOW,
+  });
+  assert.equal(result.stalled, false);
+});
+
+test('buildCeoSummary distinguishes stalled dispatch from stalled handoff', () => {
+  const engineering = {
+    state: 'live',
+    data: {
+      automationState: 'queued',
+      activeIssue: null,
+      pr: null,
+      queue: { readyCount: 3 },
+      handoff: { stalled: true, reason: '3 issues are undispatched.' },
+      ci: { status: 'passing', latestRunUrl: null },
+    },
+  };
+  const deployment = { state: 'live', data: { status: 'healthy' } };
+  const summary = buildCeoSummary({ overallState: 'live', engineering, deployment });
+  assert.match(summary.headline, /not being dispatched/i);
+  assert.equal(summary.requiredAction, '3 issues are undispatched.');
+});
+
 test('buildCeoSummary: an offline engineering source takes precedence over everything else', () => {
   const engineering = { state: 'offline', data: null };
   const deployment = { state: 'live', data: { status: 'healthy' } };
@@ -195,7 +250,7 @@ test('buildLiveFeed: end-to-end first run, both sources healthy -> overallState 
         data: {
           automationState: 'idle',
           activeIssue: null,
-          queue: { depth: 0, readyCount: 0, blockedCount: 0 },
+          queue: { depth: 0, readyCount: 0, blockedCount: 0, stalledSinceIso: null },
           pr: null,
           ci: { status: 'passing', latestRunIso: NOW, latestRunUrl: 'https://x', recentFailureCount: 0 },
           handoff: { stalled: false, reason: null },
@@ -219,7 +274,7 @@ test('buildLiveFeed: engineering fetch fails on a later run but last-known-good 
     {
       engineering: {
         fetchOk: true,
-        data: { automationState: 'idle', activeIssue: null, queue: { depth: 0, readyCount: 0, blockedCount: 0 }, pr: null, ci: { status: 'passing', latestRunIso: NOW, latestRunUrl: null, recentFailureCount: 0 }, handoff: { stalled: false, reason: null } },
+        data: { automationState: 'idle', activeIssue: null, queue: { depth: 0, readyCount: 0, blockedCount: 0, stalledSinceIso: null }, pr: null, ci: { status: 'passing', latestRunIso: NOW, latestRunUrl: null, recentFailureCount: 0 }, handoff: { stalled: false, reason: null } },
       },
       deployment: { fetchOk: true, data: { status: 'healthy', lastHealthyShaShort: 'abc1234', lastDeployIso: NOW, ageMinutes: 0, pagesUrl: null } },
       previousDoc: null,

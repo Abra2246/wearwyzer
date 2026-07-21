@@ -5,10 +5,32 @@ import {
   computeConnectionState,
   fetchLiveFeed,
   buildLiveFeedUrls,
+  applyClientFreshness,
+  FEED_DELAYED_AFTER_MINUTES,
+  FEED_OFFLINE_AFTER_MINUTES,
   POLL_INTERVAL_MS,
   BACKOFF_MAX_MS,
   MAX_CONSECUTIVE_FAILURES_BEFORE_OFFLINE,
 } from '../ops-live-refresh-state.mjs';
+
+const NOW = '2026-07-20T12:00:00.000Z';
+
+function minutesAgo(minutes) {
+  return new Date(new Date(NOW).getTime() - minutes * 60000).toISOString();
+}
+
+function feed({ generatedAtIso = NOW, engineeringAtIso = NOW, deploymentAtIso = NOW } = {}) {
+  return {
+    generatedAtIso,
+    overallState: 'live',
+    ceo: { headline: 'Everything is healthy — no action needed.', requiredAction: null, activeWorkSummary: null },
+    sources: {
+      engineering: { wired: true, state: 'live', lastUpdatedIso: engineeringAtIso, data: {} },
+      deployment: { wired: true, state: 'live', lastUpdatedIso: deploymentAtIso, data: {} },
+      content: { wired: false, state: 'not-wired', lastUpdatedIso: null, data: null },
+    },
+  };
+}
 
 test('computeBackoffDelayMs: no failures polls at the normal interval', () => {
   assert.equal(computeBackoffDelayMs(0), POLL_INTERVAL_MS);
@@ -74,4 +96,63 @@ test('fetchLiveFeed: falls back to the Pages copy when the primary fetch throws'
 
 test('fetchLiveFeed: throws when both primary and fallback fail (fully offline)', async () => {
   await assert.rejects(() => fetchLiveFeed(fakeFetch(['fail', 'http-error']), 1));
+});
+
+test('applyClientFreshness: fresh feed remains live', () => {
+  const result = applyClientFreshness(feed(), new Date(NOW).getTime());
+  assert.equal(result.overallState, 'live');
+  assert.match(result.ceo.headline, /healthy/i);
+});
+
+test('applyClientFreshness: feed at delayed threshold is delayed even after a successful fetch', () => {
+  const result = applyClientFreshness(
+    feed({ generatedAtIso: minutesAgo(FEED_DELAYED_AFTER_MINUTES) }),
+    new Date(NOW).getTime()
+  );
+  assert.equal(result.overallState, 'delayed');
+  assert.match(result.ceo.headline, /delayed/i);
+  assert.doesNotMatch(result.ceo.headline, /healthy/i);
+});
+
+test('applyClientFreshness: multi-day-old feed is offline even when baked state says live', () => {
+  const old = minutesAgo(4 * 24 * 60);
+  const result = applyClientFreshness(
+    feed({ generatedAtIso: old, engineeringAtIso: old, deploymentAtIso: old }),
+    new Date(NOW).getTime()
+  );
+  assert.equal(result.overallState, 'offline');
+  assert.equal(result.sources.engineering.state, 'offline');
+  assert.match(result.ceo.requiredAction, /60 minutes/i);
+});
+
+test('applyClientFreshness: feed at offline threshold is offline', () => {
+  const result = applyClientFreshness(
+    feed({ generatedAtIso: minutesAgo(FEED_OFFLINE_AFTER_MINUTES) }),
+    new Date(NOW).getTime()
+  );
+  assert.equal(result.overallState, 'offline');
+});
+
+test('applyClientFreshness: invalid generatedAtIso fails closed as offline', () => {
+  const result = applyClientFreshness(feed({ generatedAtIso: 'not-a-date' }), new Date(NOW).getTime());
+  assert.equal(result.overallState, 'offline');
+});
+
+test('applyClientFreshness: stale critical source makes a fresh feed delayed', () => {
+  const result = applyClientFreshness(
+    feed({ engineeringAtIso: minutesAgo(20) }),
+    new Date(NOW).getTime()
+  );
+  assert.equal(result.sources.engineering.state, 'delayed');
+  assert.equal(result.overallState, 'delayed');
+});
+
+test('applyClientFreshness: stored generator failure remains worse than fresh timestamps', () => {
+  const staleState = feed();
+  staleState.overallState = 'offline';
+  staleState.sources.engineering.state = 'offline';
+  const result = applyClientFreshness(staleState, new Date(NOW).getTime());
+  assert.equal(result.sources.engineering.state, 'live');
+  assert.equal(result.overallState, 'offline');
+  assert.match(result.ceo.headline, /offline/i);
 });
