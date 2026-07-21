@@ -2,6 +2,20 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-20) — Secure affiliate connector framework (issue #25)
+### Added
+- A safe provider-definition and credential-registry contract containing only
+  secret names and non-sensitive connection metadata.
+- A runtime-only connection tester with least-privilege scope enforcement,
+  sandbox/production isolation, expiry/revocation handling, refresh support,
+  sanitized provider health, and secret-free audit events.
+- `docs/AFFILIATE_CONNECTOR_V1.md`, including CEO onboarding, rotation,
+  revocation, and mandatory security-review boundaries. No live affiliate
+  account or credential is connected by this change.
+- Deterministic coverage for missing/invalid/revoked credentials, insufficient
+  scopes, expiration, pending approval, refresh failure, environment isolation,
+  and safe registry/status/audit output.
+
 ## Unreleased (2026-07-14) — Mission Control v2 live operations dashboard, Phase 1 + 2 (issue #42)
 ### Added
 - `docs/OPS_DASHBOARD_V2.md` — Phase 1 architecture doc and data contract for a live,

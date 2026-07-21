@@ -246,6 +246,31 @@ customer-facing claims). Stops before merge; does not activate the staged revali
 workflow (`.github/workflows/` is outside this change's permitted scope — see
 `docs/AUTOMATION_WORKFLOW.md` activation checklist).
 
+## Decision — Secure affiliate connector boundary (issue #25)
+**Current state:** issue #24 ships a provider-agnostic supporting-item link engine,
+but its real HTTP adapters are deliberately inert. There is no approved mechanism for
+supplying affiliate credentials, validating scopes, rotating tokens, or reporting a
+provider's connection health without risking secret leakage.
+
+**Proposed solution:** add a dependency-free connector contract whose provider
+definitions contain only safe metadata. Runtime secret resolvers inject credentials
+from named environment secrets directly into an injected provider transport; connection
+results, audit events, and Mission Control projections are closed, sanitized shapes that
+never contain credential values or account identifiers. OAuth and static-secret providers
+share explicit sandbox/production isolation, least-privilege scope policy, expiry and
+revocation states, and rotation-without-code-change semantics. The framework remains
+transport-injected and fixture-tested until the CEO approves a real provider/account.
+
+**Benefit:** real network adapters can be added behind issue #24's existing product/link
+contract without teaching the content pipeline how credentials work, while one failed or
+expired provider degrades only itself and creates one actionable `needs-human` status.
+
+**Migration effort:** additive. No live account, provider OAuth application, repository
+secret, product link, payout setting, or customer-facing page changes in v1.
+
+**Priority:** P1 after Mission Control issue #42 reaches review; high risk, mandatory
+security review before any production credential is connected.
+
 ## Decision — Mission Control v2 live-data layer (issue #42, Phase 1 + 2)
 **Current state:** Mission Control v1 (issue #19) is a real, working snapshot dashboard, but
 it is snapshot-first: one blended `overallHealth` computed from a single `generatedAtIso` on
