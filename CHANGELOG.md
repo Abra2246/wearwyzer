@@ -2,6 +2,15 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-20) — Direct queue-to-Claude dispatch (issue #47)
+### Fixed
+- The engineering dispatcher now invokes the Claude Code workflow directly
+  after claiming an issue instead of relying on an `@claude` comment created by
+  `GITHUB_TOKEN`, which GitHub intentionally does not allow to trigger another
+  workflow.
+- A failed downstream dispatch returns the issue to `ready`, marks it
+  `automation-failed` and `needs-human`, and fails the dispatcher visibly.
+
 ## Unreleased (2026-07-20) — Secure affiliate connector framework (issue #25)
 ### Added
 - A safe provider-definition and credential-registry contract containing only
