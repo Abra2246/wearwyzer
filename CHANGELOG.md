@@ -2,6 +2,13 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-21) — Queue-dispatched Claude actor authorization
+### Fixed
+- The Claude workflow now explicitly accepts the narrowly scoped `github-actions` bot actor used
+  by the queue dispatcher's `workflow_dispatch` call. The action previously rejected the correct
+  downstream run before implementation began, despite the dispatcher itself succeeding.
+- A regression test prevents replacing that exact actor with a wildcard bot authorization.
+
 ## Unreleased (2026-07-21) — Guide production writer (issue #46)
 ### Added
 - `scripts/guide-production-writer.mjs` — pure, idempotent write planning for the Guide
