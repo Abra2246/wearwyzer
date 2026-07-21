@@ -58,7 +58,7 @@ const CRITICAL_SOURCE_NAMES = Object.freeze(['engineering', 'deployment']);
 
 const ENGINEERING_DATA_KEYS = Object.freeze(['automationState', 'activeIssue', 'queue', 'pr', 'ci', 'handoff']);
 const ACTIVE_ISSUE_KEYS = Object.freeze(['number', 'title', 'url', 'updatedIso']);
-const QUEUE_KEYS = Object.freeze(['depth', 'readyCount', 'blockedCount']);
+const QUEUE_KEYS = Object.freeze(['depth', 'readyCount', 'blockedCount', 'stalledSinceIso']);
 const PR_KEYS = Object.freeze(['number', 'title', 'url', 'isDraft', 'reviewDecision', 'mergeableState', 'createdIso', 'updatedIso']);
 const CI_KEYS = Object.freeze(['status', 'latestRunIso', 'latestRunUrl', 'recentFailureCount']);
 const HANDOFF_KEYS = Object.freeze(['stalled', 'reason']);
@@ -116,6 +116,10 @@ function validateWiredSource(source, name, errors) {
       }
       checkNullableClosedShape(source.data.activeIssue, ACTIVE_ISSUE_KEYS, 'sources.engineering.data.activeIssue', errors);
       checkClosedShape(source.data.queue, QUEUE_KEYS, 'sources.engineering.data.queue', errors);
+      if (isPlainObject(source.data.queue) && source.data.queue.stalledSinceIso !== null
+        && (!isNonEmptyString(source.data.queue.stalledSinceIso) || Number.isNaN(Date.parse(source.data.queue.stalledSinceIso)))) {
+        errors.push('sources.engineering.data.queue.stalledSinceIso must be a valid ISO timestamp or null');
+      }
       checkNullableClosedShape(source.data.pr, PR_KEYS, 'sources.engineering.data.pr', errors);
       checkClosedShape(source.data.ci, CI_KEYS, 'sources.engineering.data.ci', errors);
       if (isPlainObject(source.data.ci) && !CI_STATUSES.includes(source.data.ci.status)) {

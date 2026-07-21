@@ -7,6 +7,8 @@
 //
 // Canonical spec: docs/OPS_DASHBOARD_V2.md
 
+import { computeSourceState, DEFAULT_THRESHOLDS } from './ops-live-schema.mjs';
+
 export const POLL_INTERVAL_MS = 45000; // issue #42 asks for "every 30-60 seconds"
 
 // Exponential backoff on repeated fetch failures (issue #42's reliability
@@ -27,6 +29,12 @@ export const CONNECTION_STATES = Object.freeze(['connected', 'updating', 'reconn
 // look "connected" and reports offline outright rather than silently
 // backing off forever.
 export const MAX_CONSECUTIVE_FAILURES_BEFORE_OFFLINE = 4;
+
+// Feed-level thresholds are deliberately independent from the poll loop.
+// A successful HTTP response proves connectivity, not that the generator
+// produced the document recently. These values are the Issue #42 contract.
+export const FEED_DELAYED_AFTER_MINUTES = 15;
+export const FEED_OFFLINE_AFTER_MINUTES = 60;
 
 export function computeBackoffDelayMs(consecutiveFailures) {
   if (consecutiveFailures <= 0) return POLL_INTERVAL_MS;
@@ -70,6 +78,78 @@ export async function fetchLiveFeed(fetchImpl, nowMs) {
   } catch {
     return await fetchLiveFeedJson(fetchImpl, fallbackUrl);
   }
+}
+
+const CRITICAL_SOURCE_NAMES = Object.freeze(['engineering', 'deployment']);
+
+function ageState(iso, nowMs, { delayedAfterMinutes, offlineAfterMinutes }) {
+  const generatedMs = new Date(iso).getTime();
+  if (!Number.isFinite(generatedMs) || !Number.isFinite(nowMs)) return 'offline';
+  const ageMinutes = Math.max(0, (nowMs - generatedMs) / 60000);
+  if (ageMinutes >= offlineAfterMinutes) return 'offline';
+  if (ageMinutes >= delayedAfterMinutes) return 'delayed';
+  return 'live';
+}
+
+function worstState(states) {
+  if (states.includes('offline')) return 'offline';
+  if (states.includes('delayed')) return 'delayed';
+  return 'live';
+}
+
+/**
+ * Recomputes effective health from wall-clock time on every render.
+ *
+ * A committed feed is a static snapshot. Fetching it successfully hours or
+ * days later must not preserve the baked-in `"live"` strings. Feed age is
+ * evaluated from `generatedAtIso`; critical sources are independently aged
+ * from `lastUpdatedIso`. The worse result wins. CEO copy is also corrected so
+ * stale data cannot retain an old "Everything is healthy" message.
+ */
+export function applyClientFreshness(doc, nowMs) {
+  if (!doc || typeof doc !== 'object' || !doc.sources) return doc;
+
+  const feedState = ageState(doc.generatedAtIso, nowMs, {
+    delayedAfterMinutes: FEED_DELAYED_AFTER_MINUTES,
+    offlineAfterMinutes: FEED_OFFLINE_AFTER_MINUTES,
+  });
+
+  const sources = { ...doc.sources };
+  for (const name of CRITICAL_SOURCE_NAMES) {
+    const source = sources[name];
+    if (!source || !source.wired) continue;
+    const thresholds = DEFAULT_THRESHOLDS[name];
+    const state = computeSourceState(source.lastUpdatedIso, {
+      now: nowMs,
+      staleAfterMinutes: thresholds.staleAfterMinutes,
+      offlineAfterMinutes: thresholds.offlineAfterMinutes,
+    });
+    sources[name] = { ...source, state };
+  }
+
+  const sourceStates = CRITICAL_SOURCE_NAMES.flatMap((name) => {
+    const source = sources[name];
+    if (!source || !source.wired) return ['offline'];
+    return [source.state, doc.sources[name].state];
+  });
+  const overallState = worstState([feedState, doc.overallState, ...sourceStates]);
+
+  let ceo = doc.ceo;
+  if (overallState === 'offline') {
+    ceo = {
+      ...ceo,
+      headline: 'Mission Control data is offline.',
+      requiredAction: 'The live-feed generator has not produced trustworthy data within 60 minutes. Check the Ops Live Feed Refresh workflow.',
+    };
+  } else if (overallState === 'delayed') {
+    ceo = {
+      ...ceo,
+      headline: 'Mission Control data is delayed.',
+      requiredAction: 'The live-feed generator has not refreshed within 15 minutes. Treat the details below as last-known state.',
+    };
+  }
+
+  return { ...doc, sources, overallState, ceo };
 }
 
 export function relativeTimeFromNow(isoOrMs, nowMs) {
