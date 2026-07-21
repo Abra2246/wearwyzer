@@ -2,6 +2,51 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-21) — Guide production writer (issue #46)
+### Added
+- `scripts/guide-production-writer.mjs` — pure, idempotent write planning for the Guide
+  Factory's `ready-for-pr` output: inserts a new guide record into `js/guides.js`, inserts new
+  product records and patches every existing referenced product's `featuredInGuides` in
+  `js/products.js`, and upserts a `sitemap.xml` entry — all detected as already-applied by
+  id/loc presence, never duplicated on a repeat run.
+- `scripts/hero-candidate-assessor.mjs` — assesses every profile-bearing product in the live
+  Knowledge Graph against hero-cooldown and "does this repo capture a verifiable source URL"
+  before a pilot guide is ever attempted; never invents a source to force one through.
+- `scripts/guide-production-writer-cli.mjs` — the dispatcher wiring: writes an approved
+  manifest's content to disk on `ready-for-pr`, regenerates the link-engine affiliate-coverage
+  report so it covers the new guide, records every Mission Control lifecycle event
+  (`guide-production-started`/`-ready-for-review`/`-completed`, plus the existing
+  `unverifiable-product-facts` exception), and runs the hero-candidacy assessment instead of a
+  bare no-op when the job queue is empty.
+- `scripts/simulate-guide-production.mjs` — end-to-end proof against the existing isolated
+  fixture universe: manifest → written `js/guides.js`/`js/products.js`/sitemap text → a
+  proven-idempotent repeat run.
+- `docs/PRODUCTION_WRITER_V1.md` and the corresponding `ARCHITECTURE.md` decision entry.
+- The active Guide Factory workflow now validates generated site content, persists it on a
+  dedicated automation branch, and opens a labeled review PR instead of losing the writer's
+  output when the ephemeral runner exits. Generated content is never merged automatically.
+- 27 new deterministic tests (`scripts/__tests__/guide-production-writer.test.mjs`,
+  `scripts/__tests__/hero-candidate-assessor.test.mjs`): successful production, missing
+  product facts, fabricated price, missing rendered asset, idempotent re-run, affiliate
+  coverage staying intact and non-blocking, no-eligible-hero and at-least-one-eligible-hero
+  assessment.
+### Verified
+- `node --test scripts/__tests__/*.test.mjs`: full suite passing, including the active
+  workflow-to-review-PR contract.
+- `node scripts/simulate-guide-production.mjs`: fixture manifest applied once, repeat run a
+  full no-op.
+- Content data, static-site, Knowledge Graph, legacy-adapter comparison, and Hero Product
+  validators all completed successfully with zero structural errors (unchanged from before
+  this change — no real site content was modified).
+- Ran `node scripts/guide-production-writer-cli.mjs` against the real repository: reports 0 of
+  3 hero candidates eligible (`on-cloud-x4`/`nb-530-turtledove` are inside the 60-day hero
+  cooldown; `nb-9060-breakfast-tea` has no verifiable source URL captured anywhere in this
+  repo) and records the `unverifiable-product-facts` exception event — the issue's own
+  explicitly-authorized "stop with a precise needs-human report instead of inventing data"
+  outcome, not a bug. No live guide, product, or sitemap entry was published in this change;
+  see `docs/PRODUCTION_WRITER_V1.md` §3 for the full finding and the exact next action for a
+  human editor.
+
 ## Unreleased (2026-07-20) — Direct queue-to-Claude dispatch (issue #47)
 ### Fixed
 - The engineering dispatcher now invokes the Claude Code workflow directly
