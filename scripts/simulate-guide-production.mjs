@@ -5,7 +5,7 @@
 // editing multiple content files"). Runs entirely against the isolated
 // fixture universe in scripts/__fixtures__/guide-jobs.mjs and an
 // in-memory copy of the current js/guides.js / js/products.js /
-// sitemap.xml shape — never the real site content — so this is safe to
+// sitemap.xml shape plus an isolated temporary asset tree — never real site content — so this is safe to
 // run any time without touching a single real file.
 //
 // Usage:
@@ -17,6 +17,11 @@
 
 import { runGuideFactoryJob } from './guide-factory.mjs';
 import { planGuideProduction, recordExists } from './guide-production-writer.mjs';
+import { planGuideAssetWrites, writeGuideAssetPlan } from './guide-production-assets.mjs';
+import { scanStaticSite } from './qa-static-site.mjs';
+import { mkdtempSync, readFileSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import path from 'node:path';
 import { FIXTURE_PRODUCT_IDS, FIXTURE_EXISTING_GUIDES, COMPLETE_APPROVED_MANIFEST, NOW } from './__fixtures__/guide-jobs.mjs';
 
 const FIXTURE_GUIDES_SOURCE = `export const guides = [
@@ -67,6 +72,22 @@ const secondRun = planGuideProduction({
   factoryResult: result,
 });
 
+const assetRoot = mkdtempSync(path.join(tmpdir(), 'wearwyzer-production-simulation-'));
+const assetPlan = planGuideAssetWrites(result);
+const firstAssetRun = writeGuideAssetPlan(assetRoot, assetPlan);
+const firstAssetBytes = new Map(
+  firstAssetRun.allPaths.map((relativePath) => [relativePath, readFileSync(path.join(assetRoot, relativePath), 'utf8')])
+);
+const secondAssetRun = writeGuideAssetPlan(assetRoot, assetPlan);
+const assetBytesUnchanged = secondAssetRun.allPaths.every(
+  (relativePath) => readFileSync(path.join(assetRoot, relativePath), 'utf8') === firstAssetBytes.get(relativePath)
+);
+const assetReferences = [...result.guideRecord.slideImages.map((image) => image.src), result.guideRecord.coverImage]
+  .map((src) => `<img src="${src}" alt="fixture">`)
+  .join('\n');
+writeFileSync(path.join(assetRoot, result.guideRecord.slug), `<!doctype html><html><body>${assetReferences}</body></html>`, 'utf8');
+const staticQa = scanStaticSite(assetRoot);
+
 const evidence = {
   jobId: COMPLETE_APPROVED_MANIFEST.jobId,
   outcome: result.outcome,
@@ -74,6 +95,14 @@ const evidence = {
   secondRun: { anyApplied: secondRun.anyApplied, alreadyFullyApplied: secondRun.alreadyFullyApplied },
   guideWrittenOnce: (firstRun.guidesSourceText.match(new RegExp(`id: "${result.guideRecord.id}"`, 'g')) || []).length === 1,
   sitemapEntryWrittenOnce: (firstRun.sitemapSourceText.match(new RegExp(result.guideRecord.slug.replace('.dc.html', '.html'), 'g')) || []).length === 1,
+  assets: {
+    expected: COMPLETE_APPROVED_MANIFEST.slides.length + 1,
+    firstRunWritten: firstAssetRun.written.length,
+    secondRunWritten: secondAssetRun.written.length,
+    secondRunSkipped: secondAssetRun.skipped.length,
+    byteIdentical: assetBytesUnchanged,
+    staticQaPassed: staticQa.passed,
+  },
 };
 
 console.log(JSON.stringify(evidence, null, 2));
@@ -85,11 +114,16 @@ const ok =
   secondRun.guidesSourceText === firstRun.guidesSourceText &&
   recordExists(firstRun.guidesSourceText, result.guideRecord.id) &&
   evidence.guideWrittenOnce &&
-  evidence.sitemapEntryWrittenOnce;
+  evidence.sitemapEntryWrittenOnce &&
+  firstAssetRun.written.length === COMPLETE_APPROVED_MANIFEST.slides.length + 1 &&
+  secondAssetRun.written.length === 0 &&
+  secondAssetRun.skipped.length === firstAssetRun.allPaths.length &&
+  assetBytesUnchanged &&
+  staticQa.passed;
 
 if (!ok) {
   console.error('\n✗ Simulation FAILED — production writer did not apply-once-and-then-no-op as expected.');
   process.exit(1);
 }
 
-console.log('\n✓ Fixture guide job ran end-to-end from manifest to written content, and a repeat run was a full no-op (idempotent).');
+console.log('\n✓ Fixture guide job ran end-to-end from manifest to written content and persisted assets; static QA passed and a repeat run was a byte-identical no-op.');

@@ -3,8 +3,8 @@
 **Document type:** Living product vision and master PRD  
 **Owner:** Abraham — Founder and CEO  
 **Status:** Active canonical product reference  
-**Version:** 1.1  
-**Last updated:** July 21, 2026  
+**Version:** 1.2
+**Last updated:** July 22, 2026
 **Notion source:** [WearWyzer Product Vision & Master PRD](https://app.notion.com/p/3a4a52a2f7bd8166b396c0d3c3ff940c)
 
 This document is the repository mirror of WearWyzer's canonical product vision. Notion owns
@@ -166,6 +166,24 @@ The extension is the shopping-decision layer. On a product page it should:
 7. save to wishlist or closet and deep-link into the app or website.
 
 The extension must never present an approximate match as exact.
+
+### Personalized shopping decision
+
+The signature cross-surface experience is personalized before the purchase is made:
+
+1. a user opens a shoe, jacket, or other product page while shopping;
+2. the extension recognizes the exact item or states its uncertainty;
+3. WearWyzer combines the digital wardrobe, Style DNA, Fit DNA, preferred brands, budget,
+   climate, and intended occasion;
+4. it recommends complete outfits using owned items first and proposes only the missing pieces;
+5. it shows Outfit Unlocks, redundancy risk, likely size, verified merchants, and the honest
+   recommendation to buy, wait, choose an alternative, or buy nothing;
+6. the user can save the item to a wishlist or inventory and continue the same decision in the
+   app or website.
+
+Favorite and most-worn brands are explicit profile controls as well as learned signals. Brand
+affinity may improve relevance and fit confidence, but it must not override better wardrobe
+compatibility, value, or verified evidence.
 
 ### Mission Control
 
@@ -541,6 +559,20 @@ references, and owner.
   verify offers → render images → open review PR → deploy → measure in Mission Control.
 - The Chrome extension stays in the roadmap but follows proven product intelligence,
   recommendations, and user value on the website.
+
+## Current execution record — July 22, 2026
+
+- The GitHub audit found no open pull requests and confirmed that both Mission Control status
+  feeds are refreshing. Repository inactivity was not caused by the dashboard pipeline.
+- The active P0 blocker is Issue #51: the Guide Factory created rendered slide strings and
+  referenced their paths, but its production writer did not persist or stage those assets.
+- The reliability repair adds fail-closed, idempotent slide and cover persistence, synchronizes
+  active/reference workflows, and proves the full fixture path through static QA before any live
+  pilot is attempted.
+- After this repair is reviewed and merged, the next priority is one verified, review-gated
+  production pilot—not a new surface. The Chrome extension, mobile app, Digital Wardrobe, Style
+  DNA, Fit DNA, Wardrobe Value Score, and AI Stylist remain the documented destination and will be
+  built through measurable vertical slices.
 
 ## Final north-star statement
 

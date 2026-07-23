@@ -59,7 +59,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           new_pages="$(git ls-files --others --exclude-standard -- 'guide-*.dc.html')"
-          if git diff --quiet -- js/guides.js js/products.js sitemap.xml && [ -z "$new_pages" ]; then
+          new_assets="$(git ls-files --others --exclude-standard -- 'assets/images/guides/**')"
+          if git diff --quiet -- js/guides.js js/products.js sitemap.xml assets/images/guides && [ -z "$new_pages" ] && [ -z "$new_assets" ]; then
             echo "No publishable guide changes were produced; no branch or PR is needed."
             exit 0
           fi
@@ -68,7 +69,7 @@ jobs:
           git switch -c "$branch"
           git config user.name "wearwyzer-automation[bot]"
           git config user.email "wearwyzer-automation[bot]@users.noreply.github.com"
-          git add -- js/guides.js js/products.js sitemap.xml automation/guide-jobs automation/status 'guide-*.dc.html'
+          git add -- js/guides.js js/products.js sitemap.xml automation/guide-jobs automation/status assets/images/guides 'guide-*.dc.html'
           git commit -m "feat(content): publish approved Guide Factory output"
           git push --set-upstream origin "$branch"
 
