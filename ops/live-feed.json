@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T19:26:21.073Z",
+  "generatedAtIso": "2026-07-23T19:34:50.880Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "3 eligible issue(s) queued, none active."
+    "activeWorkSummary": "2 eligible issue(s) queued, none active."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T19:26:21.073Z",
+      "lastUpdatedIso": "2026-07-23T19:34:50.880Z",
       "fetchOk": true,
       "data": {
         "automationState": "queued",
         "activeIssue": null,
         "queue": {
-          "depth": 3,
-          "readyCount": 3,
-          "labeledReadyCount": 3,
-          "eligibleReadyCount": 3,
+          "depth": 2,
+          "readyCount": 2,
+          "labeledReadyCount": 2,
+          "eligibleReadyCount": 2,
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
@@ -31,8 +31,8 @@
         "pr": null,
         "ci": {
           "status": "unknown",
-          "latestRunIso": "2026-07-23T19:26:19Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30037950449",
+          "latestRunIso": "2026-07-23T19:34:48Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30038537364",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T19:26:21.073Z",
+      "lastUpdatedIso": "2026-07-23T19:34:50.880Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "619de1d",
-        "lastDeployIso": "2026-07-23T18:35:25Z",
-        "ageMinutes": 51,
+        "lastHealthyShaShort": "7b2e34d",
+        "lastDeployIso": "2026-07-23T19:27:05Z",
+        "ageMinutes": 8,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -82,6 +82,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:64",
+      "timestampIso": "2026-07-23T19:34:41Z",
+      "type": "pr-merged",
+      "summary": "PR #64 \"Fail queue runs without durable handoff evidence\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/64"
+    },
+    {
+      "key": "deploy:7b2e34d",
+      "timestampIso": "2026-07-23T19:27:05Z",
+      "type": "deployed",
+      "summary": "Deployed build 7b2e34d — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "pr-merged:63",
       "timestampIso": "2026-07-23T19:26:08Z",
