@@ -19,6 +19,7 @@ Every push to `main` deploys automatically via `.github/workflows/pages.yml`. Pr
 ```
 node scripts/validate-content-data.mjs      # js/guides.js <-> js/products.js cross-references
 node scripts/qa-static-site.mjs             # local asset/link references in every page
+node scripts/qa-html-metadata.mjs            # title/description/lang + static metadata bindings
 node scripts/validate-knowledge-graph.mjs   # data/*.js Knowledge Graph structural checks
 node scripts/compare-legacy-adapter.mjs     # report-only: legacy files vs. graph adapter output
 node scripts/validate-hero-product-pages.mjs # js/hero-pages.js registry + recommendation-eligibility checks

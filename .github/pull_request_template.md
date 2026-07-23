@@ -13,6 +13,7 @@ Closes #
 ## Validation
 - [ ] Ran `node scripts/validate-content-data.mjs` (required if `js/guides.js` or `js/products.js` changed) — exit code 0, warnings read
 - [ ] Ran `node scripts/qa-static-site.mjs` (required if a page, asset, or local link changed) — exit code 0
+- [ ] Ran `node scripts/qa-html-metadata.mjs` (required if an HTML page changed) — exit code 0
 - [ ] Ran `node scripts/validate-knowledge-graph.mjs` (required if `js/guides.js`, `js/products.js`, or anything under `data/` changed) — exit code 0, warnings read
 - [ ] Ran `node scripts/compare-legacy-adapter.mjs` (required if anything under `data/` changed) — report-only, reviewed any diffs against `docs/CURRENT_DATA_TO_GRAPH_MAPPING.md`
 - [ ] Ran `./scripts/preview.sh` and loaded every page this PR touches in a real browser

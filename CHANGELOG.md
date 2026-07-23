@@ -2,6 +2,17 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-23) — HTML metadata QA (issue #11)
+### Added
+- A dependency-free validator for titles, indexable-page descriptions, language declarations, and
+  unresolved runtime tokens in static metadata surfaces.
+- Deterministic coverage for valid pages, known failures, noindex pages, imported components, and
+  intentional runtime bindings in page content.
+- PR/push validation and a pre-deployment gate for the new checker.
+### Fixed
+- Added `lang="en"` to every current `.dc.html` document, including imported components and
+  private operations pages.
+
 ## Unreleased (2026-07-21) — Queue-dispatched Claude actor authorization
 ### Fixed
 - The Claude workflow now explicitly accepts the narrowly scoped `github-actions` bot actor used
