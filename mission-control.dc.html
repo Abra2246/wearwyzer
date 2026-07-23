@@ -326,7 +326,11 @@ class Component extends DCLogic {
       engHasCiLink: !!(engData && engData.ci && engData.ci.latestRunUrl),
       engCiUrl: engData && engData.ci ? engData.ci.latestRunUrl : '',
       engCiLabel: engData && engData.ci ? 'CI: ' + engData.ci.status : '',
-      engQueueLabel: engData ? engData.queue.readyCount + ' ready, ' + engData.queue.blockedCount + ' blocked' : '—',
+      engQueueLabel: engData
+        ? (engData.queue.eligibleReadyCount ?? engData.queue.readyCount) + ' eligible, '
+          + (engData.queue.labeledReadyCount ?? engData.queue.readyCount) + ' labeled ready, '
+          + engData.queue.blockedCount + ' blocked'
+        : '—',
       engUpdatedLabel: lib ? lib.relativeTimeFromNow(eng.lastUpdatedIso, now) : 'never',
 
       depDotColor: DOT_COLORS[dep.state] || DOT_COLORS['not-wired'],

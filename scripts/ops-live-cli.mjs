@@ -32,7 +32,7 @@ import {
 import { validateLiveFeedShape, findSecretLikeValues } from './ops-live-schema.mjs';
 import { deriveAutomationState, truncateSummary } from './ops-status-builder.mjs';
 import { clientFromEnv, repoFromEnv } from './queue-github-client.mjs';
-import { INCIDENT_LABEL } from './queue-rules.mjs';
+import { INCIDENT_LABEL, summarizeIssueEligibility } from './queue-rules.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -63,6 +63,15 @@ function loadPreviousDoc() {
     // run can carry the last-known-good payload forward and upgrade it.
     if (queue && !Object.hasOwn(queue, 'stalledSinceIso')) {
       queue.stalledSinceIso = null;
+    }
+    if (queue) {
+      const formerReadyCount = Number.isInteger(queue.readyCount) ? queue.readyCount : 0;
+      if (!Object.hasOwn(queue, 'labeledReadyCount')) queue.labeledReadyCount = formerReadyCount;
+      if (!Object.hasOwn(queue, 'eligibleReadyCount')) queue.eligibleReadyCount = formerReadyCount;
+      if (!Object.hasOwn(queue, 'malformedCount')) queue.malformedCount = 0;
+      if (!Object.hasOwn(queue, 'riskGatedCount')) queue.riskGatedCount = 0;
+      if (!Object.hasOwn(queue, 'dependencyBlockedCount')) queue.dependencyBlockedCount = 0;
+      if (!Object.hasOwn(queue, 'rejections')) queue.rejections = [];
     }
     return doc;
   } catch {
@@ -130,17 +139,20 @@ async function loadEngineeringState(client, nowIso, previousDispatchStalledSince
       recentFailureCount: ciRuns.filter((r) => r.conclusion && r.conclusion !== 'success').length,
     };
 
-    const automationState = prRaw ? 'review' : deriveAutomationState(activeIssueRaw, { readyCount: readyIssues.length });
+    const eligibility = summarizeIssueEligibility(readyIssues);
+    const automationState = prRaw
+      ? 'review'
+      : deriveAutomationState(activeIssueRaw, { readyCount: eligibility.eligibleReadyCount });
     const stalledSinceIso = computeDispatchStalledSince({
       automationState,
-      readyCount: readyIssues.length,
+      readyCount: eligibility.eligibleReadyCount,
       previousSinceIso: previousDispatchStalledSinceIso,
       now: nowIso,
     });
     const handoffResult = detectStalledHandoff({ automationState, activeIssue, pr, now: nowIso });
     const dispatchResult = detectStalledDispatch({
       automationState,
-      readyCount: readyIssues.length,
+      readyCount: eligibility.eligibleReadyCount,
       dispatchStalledSinceIso: stalledSinceIso,
       now: nowIso,
     });
@@ -149,7 +161,22 @@ async function loadEngineeringState(client, nowIso, previousDispatchStalledSince
     const data = {
       automationState,
       activeIssue,
-      queue: { depth: readyIssues.length, readyCount: readyIssues.length, blockedCount: blockedIssues.length, stalledSinceIso },
+      queue: {
+        depth: eligibility.eligibleReadyCount,
+        readyCount: eligibility.eligibleReadyCount,
+        labeledReadyCount: eligibility.labeledReadyCount,
+        eligibleReadyCount: eligibility.eligibleReadyCount,
+        malformedCount: eligibility.malformedCount,
+        riskGatedCount: eligibility.riskGatedCount,
+        dependencyBlockedCount: eligibility.dependencyBlockedCount,
+        blockedCount: blockedIssues.length,
+        stalledSinceIso,
+        rejections: eligibility.rejected.map((entry) => ({
+          issueNumber: entry.issue.number,
+          category: entry.category,
+          reasons: entry.reasons,
+        })),
+      },
       pr,
       ci,
       handoff,

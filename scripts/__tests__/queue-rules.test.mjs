@@ -9,6 +9,7 @@ import {
   evaluateAutoMergeEligibility,
   extractLinkedIssueNumbers,
   determinePrSyncAction,
+  summarizeIssueEligibility,
 } from '../queue-rules.mjs';
 import {
   READY_LOW_RISK_ISSUE,
@@ -92,6 +93,30 @@ test('malformed issue rejected: missing/duplicate risk label', () => {
   const result = validateIssue(MALFORMED_NO_RISK_LABEL_ISSUE);
   assert.equal(result.valid, false);
   assert.ok(result.reasons.some((r) => r.includes('risk-low/risk-medium/risk-high')));
+});
+
+test('shared eligibility summary distinguishes eligible, malformed, risk-gated, and dependency-blocked issues', () => {
+  const blocked = {
+    ...READY_LOW_RISK_ISSUE,
+    number: 106,
+    labels: [...READY_LOW_RISK_ISSUE.labels, { name: 'blocked' }],
+  };
+  const summary = summarizeIssueEligibility([
+    READY_LOW_RISK_ISSUE,
+    MALFORMED_ISSUE,
+    READY_HIGH_RISK_ISSUE,
+    blocked,
+  ]);
+  assert.equal(summary.labeledReadyCount, 4);
+  assert.equal(summary.eligibleReadyCount, 1);
+  assert.equal(summary.malformedCount, 1);
+  assert.equal(summary.riskGatedCount, 1);
+  assert.equal(summary.dependencyBlockedCount, 1);
+  assert.deepEqual(summary.rejected.map((entry) => entry.category), [
+    'malformed',
+    'risk-gated',
+    'dependency-blocked',
+  ]);
 });
 
 // -- risk-high rejected ----------------------------------------------------
