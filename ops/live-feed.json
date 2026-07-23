@@ -1,37 +1,38 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T18:59:36.201Z",
+  "generatedAtIso": "2026-07-23T19:26:21.073Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#55 \"Expose queue eligibility and malformed-ready issues in Mission Control\" (no PR yet)"
+    "activeWorkSummary": "3 eligible issue(s) queued, none active."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T18:59:36.201Z",
+      "lastUpdatedIso": "2026-07-23T19:26:21.073Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 55,
-          "title": "Expose queue eligibility and malformed-ready issues in Mission Control",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/55",
-          "updatedIso": "2026-07-23T18:53:38Z"
-        },
+        "automationState": "queued",
+        "activeIssue": null,
         "queue": {
           "depth": 3,
           "readyCount": 3,
+          "labeledReadyCount": 3,
+          "eligibleReadyCount": 3,
+          "malformedCount": 0,
+          "riskGatedCount": 0,
+          "dependencyBlockedCount": 0,
           "blockedCount": 3,
-          "stalledSinceIso": null
+          "stalledSinceIso": "2026-07-23T19:26:21.073Z",
+          "rejections": []
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-23T18:35:00Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30034310900",
+          "status": "unknown",
+          "latestRunIso": "2026-07-23T19:26:19Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30037950449",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -44,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T18:59:36.201Z",
+      "lastUpdatedIso": "2026-07-23T19:26:21.073Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "619de1d",
         "lastDeployIso": "2026-07-23T18:35:25Z",
-        "ageMinutes": 24,
+        "ageMinutes": 51,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -81,6 +82,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:63",
+      "timestampIso": "2026-07-23T19:26:08Z",
+      "type": "pr-merged",
+      "summary": "PR #63 \"Fix Mission Control queue eligibility reporting\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/63"
+    },
     {
       "key": "issue-started:55",
       "timestampIso": "2026-07-23T18:53:38Z",
