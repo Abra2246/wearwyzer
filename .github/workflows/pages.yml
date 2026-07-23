@@ -33,6 +33,9 @@ jobs:
       - name: Run static-site QA check
         run: node scripts/qa-static-site.mjs
 
+      - name: Run HTML metadata QA check
+        run: node scripts/qa-html-metadata.mjs
+
       - name: Run Knowledge Graph validator
         run: node scripts/validate-knowledge-graph.mjs
 

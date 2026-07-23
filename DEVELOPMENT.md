@@ -34,6 +34,20 @@ node scripts/qa-static-site.mjs
 ```
 Also plain Node, zero dependencies. It scans every `*.dc.html` page and `index.html` for local `href`/`src` values and `<dc-import>` names, and confirms each one resolves to a real file — **case-sensitively**, even though this is normally run on macOS (case-insensitive filesystem), because GitHub Pages serves from a case-sensitive Linux host. Dynamic `{{ binding }}` values (resolved at runtime from `js/guides.js`/`js/products.js`) are skipped — that's `scripts/validate-content-data.mjs`'s job, not this script's.
 
+## Validating HTML metadata
+
+Before committing any HTML-page change, run:
+```
+node scripts/qa-html-metadata.mjs
+```
+The zero-dependency check scans every top-level `*.dc.html` file and `index.html` for a non-empty
+language declaration and, on standalone indexable pages, a title and meta description. It rejects
+unresolved dc-runtime tokens in static metadata consumed before client rendering: titles, meta
+content, canonical URLs, and JSON-LD. Runtime bindings in page content and interactive attributes
+are intentional and remain covered by controller/browser QA. `Site Nav.dc.html` and
+`Site Footer.dc.html` are documented imported components; `noindex` pages are documented
+description exceptions.
+
 ## Validating the Knowledge Graph v1 additive foundation
 Also before committing any change to `js/guides.js` or `js/products.js`, run:
 ```

@@ -37,6 +37,9 @@ jobs:
       - name: Run static-site QA check
         run: node scripts/qa-static-site.mjs
 
+      - name: Run HTML metadata QA check
+        run: node scripts/qa-html-metadata.mjs
+
   validate-knowledge-graph:
     name: Validate Knowledge Graph v1 additive foundation
     runs-on: ubuntu-latest
