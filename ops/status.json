@@ -1,24 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T18:34:52.911Z",
+  "generatedAtIso": "2026-07-23T19:14:14.423Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 54,
-    "title": "Run first review-gated Guide Factory production pilot",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/54",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-23T18:22:32Z"
-  },
+  "automationState": "queued",
+  "activeWork": null,
   "queue": {
-    "depth": 2,
-    "readyCount": 2,
-    "blockedCount": 2
+    "depth": 3,
+    "readyCount": 3,
+    "blockedCount": 3
   },
   "ci": {
-    "status": "unknown",
-    "lastRunIso": "2026-07-23T18:34:46Z",
+    "status": "passing",
+    "lastRunIso": "2026-07-23T18:35:00Z",
     "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30034310900"
   },
   "deployment": {
@@ -53,6 +46,6 @@
     "summary": null
   },
   "blockers": [],
-  "lastMeaningfulActivityIso": "2026-07-23T18:22:32.000Z",
+  "lastMeaningfulActivityIso": null,
   "staleAfterMinutes": 30
 }
