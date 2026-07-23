@@ -1,43 +1,48 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T19:34:50.880Z",
+  "generatedAtIso": "2026-07-23T20:18:03.367Z",
   "overallState": "live",
   "ceo": {
-    "headline": "Everything is healthy — no action needed.",
-    "requiredAction": null,
-    "activeWorkSummary": "2 eligible issue(s) queued, none active."
+    "headline": "A completed run looks stalled.",
+    "requiredAction": "#65 has been \"in-progress\" for 36m with no linked PR (grace period is 15m).",
+    "activeWorkSummary": "#65 \"Require current-run freshness in agent handoff evidence\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T19:34:50.880Z",
+      "lastUpdatedIso": "2026-07-23T20:18:03.367Z",
       "fetchOk": true,
       "data": {
-        "automationState": "queued",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 65,
+          "title": "Require current-run freshness in agent handoff evidence",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/65",
+          "updatedIso": "2026-07-23T19:41:44Z"
+        },
         "queue": {
-          "depth": 2,
-          "readyCount": 2,
-          "labeledReadyCount": 2,
-          "eligibleReadyCount": 2,
+          "depth": 1,
+          "readyCount": 1,
+          "labeledReadyCount": 1,
+          "eligibleReadyCount": 1,
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
           "blockedCount": 3,
-          "stalledSinceIso": "2026-07-23T19:26:21.073Z",
+          "stalledSinceIso": null,
           "rejections": []
         },
         "pr": null,
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-23T19:34:48Z",
+          "status": "passing",
+          "latestRunIso": "2026-07-23T19:35:01Z",
           "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30038537364",
           "recentFailureCount": 0
         },
         "handoff": {
-          "stalled": false,
-          "reason": null
+          "stalled": true,
+          "reason": "#65 has been \"in-progress\" for 36m with no linked PR (grace period is 15m)."
         }
       },
       "note": null
@@ -45,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T19:34:50.880Z",
+      "lastUpdatedIso": "2026-07-23T20:18:03.367Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "7b2e34d",
-        "lastDeployIso": "2026-07-23T19:27:05Z",
-        "ageMinutes": 8,
+        "lastHealthyShaShort": "c6c1161",
+        "lastDeployIso": "2026-07-23T19:35:32Z",
+        "ageMinutes": 43,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -82,6 +87,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:65",
+      "timestampIso": "2026-07-23T19:41:44Z",
+      "type": "issue-started",
+      "summary": "Issue #65 \"Require current-run freshness in agent handoff evidence\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/65"
+    },
+    {
+      "key": "deploy:c6c1161",
+      "timestampIso": "2026-07-23T19:35:32Z",
+      "type": "deployed",
+      "summary": "Deployed build c6c1161 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30038537364",
+      "timestampIso": "2026-07-23T19:35:01Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30038537364"
+    },
     {
       "key": "pr-merged:64",
       "timestampIso": "2026-07-23T19:34:41Z",
@@ -410,13 +436,6 @@
       "type": "pr-merged",
       "summary": "PR #4 \"fix: resolve remaining product mismatches, add automated content validation\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/4"
-    },
-    {
-      "key": "pr-merged:3",
-      "timestampIso": "2026-07-12T03:14:48Z",
-      "type": "pr-merged",
-      "summary": "PR #3 \"fix: correct one mismatched guide-item product mapping and derive guide links from real data\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/3"
     }
   ]
 }
