@@ -1,37 +1,37 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T01:12:53.126Z",
+  "generatedAtIso": "2026-07-23T04:40:09.047Z",
   "overallState": "live",
   "ceo": {
     "headline": "Queued work is not being dispatched.",
-    "requiredAction": "1 issue(s) ready and undispatched for 2514m (SLA is 90m) — check the Automation Queue Dispatcher workflow.",
-    "activeWorkSummary": "1 issue(s) queued, none active."
+    "requiredAction": "2 issue(s) ready and undispatched for 2721m (SLA is 90m) — check the Automation Queue Dispatcher workflow.",
+    "activeWorkSummary": "2 issue(s) queued, none active."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T01:12:53.126Z",
+      "lastUpdatedIso": "2026-07-23T04:40:09.047Z",
       "fetchOk": true,
       "data": {
         "automationState": "queued",
         "activeIssue": null,
         "queue": {
-          "depth": 1,
-          "readyCount": 1,
+          "depth": 2,
+          "readyCount": 2,
           "blockedCount": 0,
           "stalledSinceIso": "2026-07-21T07:19:21.082Z"
         },
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-21T04:19:08Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29800914465",
+          "latestRunIso": "2026-07-23T03:58:06Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/29978319140",
           "recentFailureCount": 0
         },
         "handoff": {
           "stalled": true,
-          "reason": "1 issue(s) ready and undispatched for 2514m (SLA is 90m) — check the Automation Queue Dispatcher workflow."
+          "reason": "2 issue(s) ready and undispatched for 2721m (SLA is 90m) — check the Automation Queue Dispatcher workflow."
         }
       },
       "note": null
@@ -39,13 +39,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T01:12:53.126Z",
+      "lastUpdatedIso": "2026-07-23T04:40:09.047Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "17e7f3b",
-        "lastDeployIso": "2026-07-21T04:19:41Z",
-        "ageMinutes": 2693,
+        "lastHealthyShaShort": "a651bce",
+        "lastDeployIso": "2026-07-23T03:58:35Z",
+        "ageMinutes": 42,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -76,6 +76,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:a651bce",
+      "timestampIso": "2026-07-23T03:58:35Z",
+      "type": "deployed",
+      "summary": "Deployed build a651bce — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:29978319140",
+      "timestampIso": "2026-07-23T03:58:06Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/29978319140"
+    },
+    {
+      "key": "pr-merged:53",
+      "timestampIso": "2026-07-23T03:57:49Z",
+      "type": "pr-merged",
+      "summary": "PR #53 \"Fix Guide Factory asset persistence before live pilot\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/53"
+    },
     {
       "key": "deploy:17e7f3b",
       "timestampIso": "2026-07-21T04:19:41Z",
