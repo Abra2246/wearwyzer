@@ -65,6 +65,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Node.js (current LTS)
         uses: actions/setup-node@v4
@@ -93,4 +95,20 @@ jobs:
           # redeploys to GitHub Pages.
           git add ops/live-feed.json
           git commit -m "chore(ops): refresh live-feed.json"
-          git push
+          max_attempts=3
+          for attempt in $(seq 1 "$max_attempts"); do
+            git fetch --no-tags origin main
+            if ! git rebase origin/main; then
+              echo "::error::Generated live-feed commit conflicts with current main; refusing to discard either change."
+              git rebase --abort || true
+              exit 1
+            fi
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+            if [ "$attempt" -eq "$max_attempts" ]; then
+              echo "::error::Could not push live-feed after $max_attempts attempts because main kept advancing."
+              exit 1
+            fi
+            echo "main advanced during push; retrying after fetch/rebase ($attempt/$max_attempts)."
+          done
