@@ -3,8 +3,8 @@
 **Document type:** Living product vision and master PRD  
 **Owner:** Abraham — Founder and CEO  
 **Status:** Active canonical product reference  
-**Version:** 1.2
-**Last updated:** July 22, 2026
+**Version:** 1.3
+**Last updated:** July 23, 2026
 **Notion source:** [WearWyzer Product Vision & Master PRD](https://app.notion.com/p/3a4a52a2f7bd8166b396c0d3c3ff940c)
 
 This document is the repository mirror of WearWyzer's canonical product vision. Notion owns
@@ -573,6 +573,22 @@ references, and owner.
   production pilot—not a new surface. The Chrome extension, mobile app, Digital Wardrobe, Style
   DNA, Fit DNA, Wardrobe Value Score, and AI Stylist remain the documented destination and will be
   built through measurable vertical slices.
+
+## Current execution record — July 23, 2026
+
+- PR #53 merged the Guide Factory asset-persistence repair; the clean repository passes 409
+  deterministic tests plus content, site, Knowledge Graph, adapter, and hero-page validation.
+- The apparent queue stall was traced to Issue #54's missing required `Validation requirements`
+  section. After repairing the issue contract and re-running the dispatcher, #54 was selected and
+  dispatched successfully.
+- Issue #55 now owns the permanent reliability fix: Mission Control must distinguish a
+  ready-labeled issue from an actually eligible issue and show rejection reasons.
+- Issue #11 is normalized as the next low-risk QA task. Issue #33 is explicitly blocked until the
+  personalization slice, public API, privacy boundary, verified offers, and browser-permission
+  approval exist.
+- `NEXT_ACTIONS.md` is the executable handoff queue. `docs/adr/` owns durable decisions.
+  `docs/EXECUTION_30_60_90.md` owns the measurable near-term path, and
+  `docs/PERSONALIZATION_PLATFORM_V1.md` defines the smallest useful personalized purchase slice.
 
 ## Final north-star statement
 
