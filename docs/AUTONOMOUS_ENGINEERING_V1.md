@@ -84,6 +84,21 @@ existing `claude.yml` workflow directly. It introduces no PAT or additional
 secret. If that invocation fails, the issue is returned to `ready`, labeled
 `automation-failed` and `needs-human`, and the dispatcher run fails visibly.
 
+### Immediate implementation-run postcondition
+
+The active Claude workflow fails closed after every queue dispatch. A successful agent process is
+not sufficient evidence of completed work. `scripts/verify-agent-handoff.mjs` requires one of:
+
+1. an open PR from the issue's `claude/issue-<N>-*` branch;
+2. a matching branch with a non-empty diff from `main`; or
+3. an issue already moved out of `in-progress` into `blocked` + `needs-human`, with the structured
+   `automation-handoff:evidence-backed-blocker` marker and evidence comment.
+
+If none exists, the same workflow becomes failed, removes `in-progress`, adds
+`automation-failed` + `needs-human`, and posts the run URL plus the safely extracted permission
+denial count (or `unknown`). The execution output itself is never printed. The scheduled handoff
+watchdog remains a secondary repair layer for branch-without-PR cases.
+
 ## Merge behavior
 - `risk-low`: auto-merge only when the PR is labeled `automation-managed` and `risk-low`, every required check succeeds, the PR is not draft, and protected paths are untouched.
 - `risk-medium`: stop in review.

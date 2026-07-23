@@ -50,7 +50,7 @@ jobs:
 
           prompt: >-
             ${{ github.event_name == 'workflow_dispatch' &&
-            format('Implement GitHub issue #{0} exactly as scoped. Read the issue body and repository instructions, create a dedicated branch, run all required validation, open a pull request into main that includes Closes #{0}, and stop for human review. Do not merge or publish externally.', inputs.issue_number) || '' }}
+            format('Implement GitHub issue #{0} exactly as scoped. Read the issue body and repository instructions, create a dedicated branch named with the prefix claude/issue-{0}-, run all required validation, open a pull request into main that includes Closes #{0}, and stop for human review. Do not merge or publish externally. If and only if a real external blocker prevents implementation, remove in-progress, add blocked and needs-human, and post an evidence-backed comment containing the exact marker <!-- automation-handoff:evidence-backed-blocker -->, the evidence, and the next required human action.', inputs.issue_number) || '' }}
 
           additional_permissions: |
             actions: read
@@ -63,3 +63,26 @@ jobs:
           claude_args: >-
             --allowed-tools
             "Bash(node *),Bash(npm *),Bash(npx *),Bash(python3 *),Bash(git status*),Bash(git diff*),Bash(git log*),Bash(git branch*),Bash(git switch*),Bash(git checkout*),Bash(git add *),Bash(git commit *),Bash(git push *),Bash(gh issue *),Bash(gh pr view*),Bash(gh pr create*),Bash(gh pr checks*),Bash(gh run view*),Bash(gh run list*),Bash(curl http://localhost:*),Bash(curl -I http://localhost:*),Bash(bash scripts/*),Bash(./scripts/*)"
+
+      - name: Verify queue-dispatched handoff evidence
+        id: handoff
+        if: ${{ always() && github.event_name == 'workflow_dispatch' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/verify-agent-handoff.mjs \
+            --issue "${{ inputs.issue_number }}" \
+            --execution-file "${{ steps.claude.outputs.execution_file }}"
+
+      - name: Mark queue issue failed when implementation or handoff fails
+        if: ${{ failure() && github.event_name == 'workflow_dispatch' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          PERMISSION_DENIAL_COUNT: ${{ steps.handoff.outputs.permission_denial_count || 'unknown' }}
+          WORKFLOW_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          node scripts/queue-pr-state.mjs mark-failed \
+            --issue "${{ inputs.issue_number }}" \
+            --reason "Claude workflow failed or exited without a linked PR, a non-empty implementation branch, or a structured evidence-backed blocker. Run: ${WORKFLOW_RUN_URL}. Permission denials: ${PERMISSION_DENIAL_COUNT}."

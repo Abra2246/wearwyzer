@@ -4,17 +4,20 @@ This is the executable handoff queue. It is intentionally short. The Book of Tru
 direction; GitHub issues own implementation scope; this file tells the next operator what to do.
 
 **Last verified:** July 23, 2026  
-**Evidence baseline:** `main` at PR #60 plus recurring operations commits
+**Evidence baseline:** `main` at PR #63 plus recurring operations commits
 
 ## Active
 
 1. **Issue #55 — queue eligibility in Mission Control**
-   - State: direct implementation in progress after the dispatched agent run returned success
-     without a branch or PR.
-   - Owner: reliability lead; review PR is the next evidence.
-   - Outcome: dispatcher, dashboard, and lint share one eligibility model; malformed,
-     dependency-blocked, and risk-gated ready labels are visible without creating false stalls.
-2. **Issue #54 — first Guide Factory production pilot**
+   - State: complete via PR #63.
+   - Evidence: 415 tests and all content/site/graph/hero validators passed; Mission Control,
+     dispatcher, and issue lint now share one eligibility model.
+2. **Issue #61 — fail false-success agent handoffs**
+   - State: direct implementation in progress.
+   - Owner: reliability lead; workflow-changing review PR is the next evidence.
+   - Outcome: queue-dispatched agent jobs fail unless they leave a linked PR, a non-empty issue
+     branch, or a structured evidence-backed blocker.
+3. **Issue #54 — first Guide Factory production pilot**
    - State: blocked with evidence.
    - Reason: the verified New Balance 9060 is sold out and violates the repository's 60-day hero
      cooldown because the same hero was used on July 9, 2026.
@@ -22,27 +25,26 @@ direction; GitHub issues own implementation scope; this file tells the next oper
 
 ## Next three executable tasks
 
-1. **Issue #61 — fail false-success agent handoffs**
-   - Dependency: #55 reaches review or an actionable blocker.
-   - Outcome: a dispatched run cannot succeed unless it leaves evidence of a PR, an implementation
-     branch, or an explicit evidence-backed blocker.
-2. **Issue #11 — HTML metadata and unresolved-template QA**
+1. **Issue #11 — HTML metadata and unresolved-template QA**
    - Dependency: #61 reaches review or an actionable blocker.
    - Outcome: deterministic metadata QA that understands intentional runtime bindings and gates
      PRs/Pages without reviving the former raw-template false positive.
-3. **Issue #62 — verified adidas Samba production pilot**
+2. **Issue #62 — verified adidas Samba production pilot**
    - Dependency: #55, #61, and #11 are stable.
    - Outcome: use official B75806 product evidence to prove the review-gated Guide Factory path
      without the cooldown and availability conflict that blocked #54.
+3. **Issue #57 — personalization vertical slice**
+   - Dependency: #62 proves the current production path and the privacy boundary remains
+     feature-flagged with fixture-only data.
+   - Outcome: manually add a style profile and wardrobe items, evaluate one prospective product,
+     and return compatibility, outfit, redundancy/gap, and buy/wait/skip evidence.
 
 ## Blocked / later
 
 - **Issue #33 — Chrome extension:** blocked by the personalization slice, public API boundary,
   offer routing, privacy review, and explicit permission/store-publishing approval.
-- **Issue #57 — personalization vertical slice:** feature-flagged and implementation-ready, but
-  intentionally sequenced after the P0 reliability loop and first production pilot.
-- Live affiliate-account credentials, paid image-budget changes, publishing to social platforms,
-  and production authentication require explicit authorization.
+- Live affiliate-account credentials, real personal wardrobe data, paid image-budget changes,
+  publishing to social platforms, and production authentication require explicit authorization.
 
 ## Cycle closeout checklist
 
