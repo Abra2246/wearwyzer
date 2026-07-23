@@ -1,25 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T20:19:58.149Z",
+  "generatedAtIso": "2026-07-23T20:22:16.471Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 65,
-    "title": "Require current-run freshness in agent handoff evidence",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/65",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-23T19:41:44Z"
-  },
+  "automationState": "queued",
+  "activeWork": null,
   "queue": {
     "depth": 1,
     "readyCount": 1,
     "blockedCount": 3
   },
   "ci": {
-    "status": "passing",
-    "lastRunIso": "2026-07-23T19:35:01Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30038537364"
+    "status": "unknown",
+    "lastRunIso": "2026-07-23T20:22:13Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30041788471"
   },
   "deployment": {
     "status": "unknown",
@@ -53,6 +46,6 @@
     "summary": null
   },
   "blockers": [],
-  "lastMeaningfulActivityIso": "2026-07-23T19:41:44.000Z",
+  "lastMeaningfulActivityIso": null,
   "staleAfterMinutes": 30
 }
