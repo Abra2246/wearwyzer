@@ -13,8 +13,8 @@ serves, wired into the same dispatch flow, idempotent, with no fabricated data.
 ("Why the CLI doesn't write site files yet"), nothing ever turned that result into an actual
 file on disk. This issue closes that gap: `scripts/guide-production-writer.mjs` (pure) plus
 `scripts/guide-production-writer-cli.mjs` (the only file in this feature that touches disk)
-take a `ready-for-pr` result and idempotently write `js/guides.js`, `js/products.js`, the new
-`*.dc.html` page, and `sitemap.xml` — reusing the existing guide template and canonical
+take a `ready-for-pr` result and idempotently write every rendered slide asset, a verified cover,
+`js/guides.js`, `js/products.js`, the new `*.dc.html` page, and `sitemap.xml` — reusing the existing guide template and canonical
 Knowledge Graph exactly as they are, never inventing a parallel content model.
 
 ## 1. What gets written (`scripts/guide-production-writer.mjs`)
@@ -40,6 +40,12 @@ Pure text/data transforms only — no filesystem or network access in this modul
 - **The new `*.dc.html` page** — written verbatim from the factory result's `pageHtml`
   (`scripts/guide-page-template.mjs`'s reusable template — no new page markup is ever
   hand-authored) only if the file doesn't already exist.
+- **Rendered guide assets** — `scripts/guide-production-assets.mjs` verifies a complete rendered
+  SVG exists for every canonical `guideRecord.slideImages[].src`, then writes those exact paths
+  below `assets/images/guides/<guide-id>/`. The canonical `coverImage` is a byte-for-byte copy of
+  verified slide 1, so it always exists without inventing a separate render. All targets are
+  preflighted before any write. A missing/blocked asset or a conflicting existing file fails
+  closed; identical existing files are skipped.
 - **Guide discoverability** — `guides.dc.html` (the guide library) and the hero product's own
   page/nav links all read `js/guides.js`/`js/hero-pages.js` at runtime and require no
   additional edit: once the new guide record exists, it is automatically discoverable from
@@ -65,8 +71,9 @@ does, then adds the write step:
 2. **An approved job fails validation** → `needs-human`, identical reasons/notification path
    as `scripts/guide-factory-cli.mjs` (manifest-validation or content-quality-policy stage);
    the job file's `status` is rewritten to `needs-human`; an exception status event is logged.
-3. **An approved job reaches `ready-for-pr`** → `planGuideProduction()` runs, every changed
-   file is written, the new page file is written if absent, and
+3. **An approved job reaches `ready-for-pr`** → `planGuideProduction()` and
+   `planGuideAssetWrites()` run. The complete asset set is preflighted and persisted first; only
+   then are changed content files and the new page written, followed by
    `scripts/link-engine-cli.mjs`'s `runOnce()` is re-invoked so
    `automation/status/link-engine-report.json` (and therefore Mission Control's `linkEngine`
    card) reflects the new guide's outfits — `data/outfits.js` re-derives from `js/guides.js`
@@ -144,7 +151,8 @@ for both a blocked manifest and a "no eligible hero" assessment.
 
 ## 5. Tests and simulation
 
-`node --test scripts/__tests__/guide-production-writer.test.mjs
+`node --test scripts/__tests__/guide-production-assets.test.mjs
+scripts/__tests__/guide-production-writer.test.mjs
 scripts/__tests__/hero-candidate-assessor.test.mjs` covers:
 
 | Scenario | Test |
@@ -154,11 +162,14 @@ scripts/__tests__/hero-candidate-assessor.test.mjs` covers:
 | Missing rendered asset never reaches the writer | same |
 | Idempotent re-run (no duplication) | same |
 | Affiliate coverage report stays intact through the writer (reporting-only, never blocking) | same |
+| Exact slide and cover paths, complete isolated writes, and byte-identical repeat | `guide-production-assets.test.mjs` |
+| Blocked/missing/conflicting assets fail before partial output | same |
+| Generated fixture page passes static asset QA | same |
 | No hero-eligible candidate (cooldown, missing source) | `hero-candidate-assessor.test.mjs` |
 | At least one eligible candidate | same |
 
 Plus `node scripts/simulate-guide-production.mjs` for the literal end-to-end fixture run
-(manifest → written `js/guides.js`/`js/products.js`/sitemap text → proven-idempotent repeat
+(manifest → written assets and content records → static QA → proven byte-identical repeat
 run), and `node scripts/guide-production-writer-cli.mjs --dry-run` against the real
 Knowledge Graph as the evidence for §3's "why no real guide shipped" finding.
 
@@ -167,7 +178,7 @@ Knowledge Graph as the evidence for §3's "why no real guide shipped" finding.
 `.github/workflows/guide-factory-dispatch.yml` calls the production writer directly. When a
 publishable guide diff exists, it runs the content, static-site, Knowledge Graph, and hero-page
 validators, creates a dedicated `automation/guide-production-*` branch, pushes the generated
-files, and opens a review PR labeled `automation-managed` and `risk-medium`. A no-op or blocked
+files—including `assets/images/guides/**`—and opens a review PR labeled `automation-managed` and `risk-medium`. A no-op or blocked
 candidacy run creates no branch. `docs/automation/workflows/guide-factory-dispatch.yml` is the
 synchronized reference copy.
 

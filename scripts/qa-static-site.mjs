@@ -32,10 +32,6 @@ import path from 'node:path';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 
-const HTML_FILES = readdirSync(ROOT).filter(
-  (f) => f.endsWith('.dc.html') || f === 'index.html'
-);
-
 const ATTR_RE = /\b(?:href|src)\s*=\s*"([^"]*)"/g;
 const DC_IMPORT_RE = /<dc-import\s+name="([^"]+)"/g;
 
@@ -65,39 +61,51 @@ function existsCaseSensitive(absPath) {
   }
 }
 
-let errorCount = 0;
-let checked = 0;
+export function scanStaticSite(root = ROOT) {
+  const htmlFiles = readdirSync(root).filter(
+    (file) => file.endsWith('.dc.html') || file === 'index.html'
+  );
+  const errors = [];
+  let checked = 0;
 
-for (const file of HTML_FILES) {
-  const text = readFileSync(path.join(ROOT, file), 'utf8');
+  for (const file of htmlFiles) {
+    const text = readFileSync(path.join(root, file), 'utf8');
 
-  for (const match of text.matchAll(ATTR_RE)) {
-    const raw = match[1];
-    if (isSkippable(raw)) continue;
-    const clean = stripFragmentAndQuery(raw);
-    if (!clean) continue;
-    checked += 1;
-    const abs = path.join(ROOT, decodeURIComponent(clean));
-    if (!existsCaseSensitive(abs)) {
-      errorCount += 1;
-      console.error(`✗ ${file}: broken reference "${raw}" → ${path.relative(ROOT, abs)} does not exist`);
+    for (const match of text.matchAll(ATTR_RE)) {
+      const raw = match[1];
+      if (isSkippable(raw)) continue;
+      const clean = stripFragmentAndQuery(raw);
+      if (!clean) continue;
+      checked += 1;
+      const abs = path.join(root, decodeURIComponent(clean));
+      if (!existsCaseSensitive(abs)) {
+        errors.push(`${file}: broken reference "${raw}" → ${path.relative(root, abs)} does not exist`);
+      }
+    }
+
+    for (const match of text.matchAll(DC_IMPORT_RE)) {
+      const name = match[1];
+      checked += 1;
+      const abs = path.join(root, `${name}.dc.html`);
+      if (!existsCaseSensitive(abs)) {
+        errors.push(`${file}: <dc-import name="${name}"> → ${name}.dc.html does not exist`);
+      }
     }
   }
 
-  for (const match of text.matchAll(DC_IMPORT_RE)) {
-    const name = match[1];
-    checked += 1;
-    const abs = path.join(ROOT, `${name}.dc.html`);
-    if (!existsCaseSensitive(abs)) {
-      errorCount += 1;
-      console.error(`✗ ${file}: <dc-import name="${name}"> → ${name}.dc.html does not exist`);
-    }
-  }
+  return { checked, pageCount: htmlFiles.length, errors, passed: errors.length === 0 };
 }
 
-console.log(`Checked ${checked} local references across ${HTML_FILES.length} pages.`);
-if (errorCount > 0) {
-  console.error(`\n✗ ${errorCount} broken static reference(s) found.`);
-  process.exit(1);
+function main() {
+  const result = scanStaticSite(ROOT);
+  for (const error of result.errors) console.error(`✗ ${error}`);
+  console.log(`Checked ${result.checked} local references across ${result.pageCount} pages.`);
+  if (!result.passed) {
+    console.error(`\n✗ ${result.errors.length} broken static reference(s) found.`);
+    process.exitCode = 1;
+    return;
+  }
+  console.log('\n✓ No broken local asset/link references.');
 }
-console.log('\n✓ No broken local asset/link references.');
+
+if (import.meta.url === `file://${process.argv[1]}`) main();

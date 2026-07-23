@@ -43,6 +43,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { runGuideFactoryJob, selectNextApprovedJob } from './guide-factory.mjs';
 import { planGuideProduction } from './guide-production-writer.mjs';
+import { planGuideAssetWrites, writeGuideAssetPlan } from './guide-production-assets.mjs';
 import { assessHeroCandidates, renderHeroCandidateReport } from './hero-candidate-assessor.mjs';
 import { appendEvent } from './record-status-event.mjs';
 import { buildStatusEvent } from './status-log.mjs';
@@ -106,10 +107,21 @@ async function writeGuideProduction(factoryResult, { dryRun, now }) {
     sitemapSourceText: readFileSync(sitemapPath, 'utf8'),
     factoryResult,
   });
+  const assetPlan = planGuideAssetWrites(factoryResult);
 
-  console.log(JSON.stringify({ guideId: plan.guideId, changes: plan.changes, anyApplied: plan.anyApplied }, null, 2));
+  console.log(JSON.stringify({
+    guideId: plan.guideId,
+    changes: plan.changes,
+    anyApplied: plan.anyApplied,
+    assetPaths: assetPlan.writes.map((entry) => entry.path),
+  }, null, 2));
 
-  if (dryRun) return plan;
+  if (dryRun) return { ...plan, assetPlan, assetWriteResult: null };
+
+  // Persist every referenced slide and cover before content records can be
+  // marked ready for review. The writer preflights the complete asset set and
+  // fails closed on missing, blocked, or conflicting output.
+  const assetWriteResult = writeGuideAssetPlan(ROOT, assetPlan);
 
   if (plan.anyApplied) {
     writeFileSync(guidesPath, plan.guidesSourceText, 'utf8');
@@ -127,12 +139,12 @@ async function writeGuideProduction(factoryResult, { dryRun, now }) {
   await runLinkEngineOnce({ now });
 
   const summary = plan.alreadyFullyApplied
-    ? `Guide "${plan.guideId}" was already fully published — production writer run was a no-op (idempotent).`
-    : `Guide "${plan.guideId}" was written to js/guides.js, js/products.js, sitemap.xml, and ${factoryResult.guideRecord.slug}.`;
+    ? `Guide "${plan.guideId}" was already fully published; ${assetWriteResult.skipped.length} verified assets were unchanged (idempotent no-op).`
+    : `Guide "${plan.guideId}" was written with ${assetWriteResult.allPaths.length} verified assets, site records, sitemap entry, and ${factoryResult.guideRecord.slug}.`;
   record(now, 'routine', 'guide-production-ready-for-review', summary);
   record(now, 'routine', 'guide-production-completed', summary);
 
-  return plan;
+  return { ...plan, assetPlan, assetWriteResult };
 }
 
 export async function runOnce({ dryRun = false, now } = {}) {
@@ -170,7 +182,18 @@ export async function runOnce({ dryRun = false, now } = {}) {
     return { type: 'needs-human', result };
   }
 
-  const plan = await writeGuideProduction(result, { dryRun, now: nowIso });
+  let plan;
+  try {
+    plan = await writeGuideProduction(result, { dryRun, now: nowIso });
+  } catch (error) {
+    if (!dryRun) {
+      const detail = error instanceof Error ? error.message : String(error);
+      const jobRecord = jobFiles.find((f) => f.manifest.jobId === selected.jobId);
+      if (jobRecord) writeFileSync(jobRecord.file, JSON.stringify({ ...selected, status: 'needs-human' }, null, 2) + '\n', 'utf8');
+      record(nowIso, 'exception', 'unverifiable-product-facts', `Guide job "${selected.jobId}" could not persist its verified production assets.`, detail);
+    }
+    throw error;
+  }
 
   if (!dryRun) {
     const jobRecord = jobFiles.find((f) => f.manifest.jobId === selected.jobId);
