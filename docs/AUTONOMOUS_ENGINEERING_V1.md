@@ -44,6 +44,20 @@ The dispatcher must not claim work when:
 - the candidate is high risk
 - the candidate lacks the required specification fields
 
+### Ready label versus dispatch eligibility
+
+The `ready` label is a nomination, not proof that an issue can be dispatched. The dispatcher,
+Mission Control, and issue-contract lint all consume the same validator in
+`scripts/queue-rules.mjs`.
+
+- `labeledReadyCount` counts issues carrying `ready`.
+- `eligibleReadyCount` counts only ready issues that pass risk, dependency, and contract checks.
+- rejected issues are grouped as malformed, risk-gated, or dependency-blocked with exact reasons.
+- only `eligibleReadyCount` may trigger a stalled-dispatch alert.
+
+Run `node scripts/lint-issue-contracts.mjs` to fail visibly when a ready-labeled issue is not
+actually eligible.
+
 ## State transitions
 
 `backlog` → `ready` → `in-progress` → `review` → `done`

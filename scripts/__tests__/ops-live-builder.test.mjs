@@ -17,6 +17,22 @@ import {
 import { validateLiveFeedShape, findSecretLikeValues } from '../ops-live-schema.mjs';
 
 const NOW = '2026-07-14T12:00:00.000Z';
+
+function queue(overrides = {}) {
+  return {
+    depth: 0,
+    readyCount: 0,
+    labeledReadyCount: 0,
+    eligibleReadyCount: 0,
+    malformedCount: 0,
+    riskGatedCount: 0,
+    dependencyBlockedCount: 0,
+    blockedCount: 0,
+    stalledSinceIso: null,
+    rejections: [],
+    ...overrides,
+  };
+}
 const THRESHOLDS = { staleAfterMinutes: 10, offlineAfterMinutes: 45 };
 
 function minutesAgo(iso, minutes) {
@@ -151,7 +167,7 @@ test('buildCeoSummary distinguishes stalled dispatch from stalled handoff', () =
       automationState: 'queued',
       activeIssue: null,
       pr: null,
-      queue: { readyCount: 3 },
+      queue: queue({ depth: 3, readyCount: 3, labeledReadyCount: 3, eligibleReadyCount: 3 }),
       handoff: { stalled: true, reason: '3 issues are undispatched.' },
       ci: { status: 'passing', latestRunUrl: null },
     },
@@ -176,7 +192,7 @@ test('buildCeoSummary: a stalled handoff is surfaced as the required action', ()
       automationState: 'working',
       activeIssue: { number: 9, title: 'Big feature', url: null },
       pr: null,
-      queue: { readyCount: 0 },
+      queue: queue(),
       handoff: { stalled: true, reason: '#9 has been stuck for 40m.' },
       ci: { status: 'unknown', latestRunUrl: null },
     },
@@ -189,12 +205,35 @@ test('buildCeoSummary: a stalled handoff is surfaced as the required action', ()
 test('buildCeoSummary: nothing wrong -> healthy headline with no required action', () => {
   const engineering = {
     state: 'live',
-    data: { automationState: 'idle', activeIssue: null, pr: null, queue: { readyCount: 0 }, handoff: { stalled: false, reason: null }, ci: { status: 'passing', latestRunUrl: null } },
+    data: { automationState: 'idle', activeIssue: null, pr: null, queue: queue(), handoff: { stalled: false, reason: null }, ci: { status: 'passing', latestRunUrl: null } },
   };
   const deployment = { state: 'live', data: { status: 'healthy' } };
   const summary = buildCeoSummary({ overallState: 'live', engineering, deployment });
   assert.equal(summary.requiredAction, null);
   assert.match(summary.headline, /healthy/i);
+});
+
+test('buildCeoSummary: malformed ready labels are reported as misconfiguration, never stalled dispatch', () => {
+  const engineering = {
+    state: 'live',
+    data: {
+      automationState: 'idle',
+      activeIssue: null,
+      pr: null,
+      queue: queue({
+        labeledReadyCount: 1,
+        malformedCount: 1,
+        rejections: [{ issueNumber: 54, category: 'malformed', reasons: ['malformed: missing required section(s): validation requirements'] }],
+      }),
+      handoff: { stalled: false, reason: null },
+      ci: { status: 'passing', latestRunUrl: null },
+    },
+  };
+  const deployment = { state: 'live', data: { status: 'healthy' } };
+  const summary = buildCeoSummary({ overallState: 'live', engineering, deployment });
+  assert.match(summary.headline, /not dispatchable/i);
+  assert.match(summary.requiredAction, /#54/);
+  assert.doesNotMatch(summary.headline, /stalled/i);
 });
 
 test('mergeAutomationFeed: dedups by key, keeping the existing (previous-run) entry rather than overwriting it', () => {
@@ -250,7 +289,7 @@ test('buildLiveFeed: end-to-end first run, both sources healthy -> overallState 
         data: {
           automationState: 'idle',
           activeIssue: null,
-          queue: { depth: 0, readyCount: 0, blockedCount: 0, stalledSinceIso: null },
+          queue: queue(),
           pr: null,
           ci: { status: 'passing', latestRunIso: NOW, latestRunUrl: 'https://x', recentFailureCount: 0 },
           handoff: { stalled: false, reason: null },
@@ -274,7 +313,7 @@ test('buildLiveFeed: engineering fetch fails on a later run but last-known-good 
     {
       engineering: {
         fetchOk: true,
-        data: { automationState: 'idle', activeIssue: null, queue: { depth: 0, readyCount: 0, blockedCount: 0, stalledSinceIso: null }, pr: null, ci: { status: 'passing', latestRunIso: NOW, latestRunUrl: null, recentFailureCount: 0 }, handoff: { stalled: false, reason: null } },
+        data: { automationState: 'idle', activeIssue: null, queue: queue(), pr: null, ci: { status: 'passing', latestRunIso: NOW, latestRunUrl: null, recentFailureCount: 0 }, handoff: { stalled: false, reason: null } },
       },
       deployment: { fetchOk: true, data: { status: 'healthy', lastHealthyShaShort: 'abc1234', lastDeployIso: NOW, ageMinutes: 0, pagesUrl: null } },
       previousDoc: null,

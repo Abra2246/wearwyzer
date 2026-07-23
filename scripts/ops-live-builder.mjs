@@ -140,6 +140,21 @@ export function buildCeoSummary({ overallState, engineering, deployment }) {
       activeWorkSummary: eng ? activeWorkSummaryText(eng) : null,
     };
   }
+  if (
+    eng
+    && eng.automationState === 'idle'
+    && eng.queue.labeledReadyCount > 0
+    && eng.queue.eligibleReadyCount === 0
+  ) {
+    const first = eng.queue.rejections[0];
+    return {
+      headline: 'Ready-labeled work is not dispatchable.',
+      requiredAction: first
+        ? `Fix issue #${first.issueNumber}: ${first.reasons.join('; ')}`
+        : 'Run the issue-contract lint and repair the rejected ready issue.',
+      activeWorkSummary: 'No eligible issue can enter the engineering queue.',
+    };
+  }
   if (eng && eng.handoff.stalled) {
     return {
       headline: eng.automationState === 'queued' ? 'Queued work is not being dispatched.' : 'A completed run looks stalled.',
@@ -183,7 +198,15 @@ export function buildCeoSummary({ overallState, engineering, deployment }) {
 }
 
 function activeWorkSummaryText(eng) {
-  if (!eng.activeIssue) return eng.queue.readyCount > 0 ? `${eng.queue.readyCount} issue(s) queued, none active.` : 'No active automation work.';
+  if (!eng.activeIssue) {
+    if (eng.queue.eligibleReadyCount > 0) {
+      return `${eng.queue.eligibleReadyCount} eligible issue(s) queued, none active.`;
+    }
+    if (eng.queue.labeledReadyCount > 0) {
+      return `${eng.queue.labeledReadyCount} ready-labeled issue(s), none eligible.`;
+    }
+    return 'No active automation work.';
+  }
   const prPart = eng.pr ? ` (PR #${eng.pr.number}${eng.pr.isDraft ? ', draft' : ''})` : ' (no PR yet)';
   return `#${eng.activeIssue.number} "${truncate(eng.activeIssue.title, 80)}"${prPart}`;
 }

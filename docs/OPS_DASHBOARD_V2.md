@@ -133,7 +133,18 @@ NotWiredSource {
 EngineeringData {
   automationState: 'working' | 'queued' | 'review' | 'blocked' | 'failed' | 'idle'  // same enum as v1
   activeIssue: { number, title, url, updatedIso } | null
-  queue: { depth, readyCount, blockedCount }
+  queue: {
+    depth,
+    readyCount,                 // compatibility alias for eligibleReadyCount
+    labeledReadyCount,
+    eligibleReadyCount,
+    malformedCount,
+    riskGatedCount,
+    dependencyBlockedCount,
+    blockedCount,
+    stalledSinceIso,
+    rejections: [{ number, title, url, category, reasons }]
+  }
   pr: { number, title, url, isDraft, reviewDecision, mergeableState, createdIso, updatedIso } | null
   ci: { status: 'passing'|'failing'|'unknown', latestRunIso, latestRunUrl, recentFailureCount }
   handoff: { stalled: boolean, reason: string | null }

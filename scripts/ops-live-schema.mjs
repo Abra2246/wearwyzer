@@ -58,7 +58,20 @@ const CRITICAL_SOURCE_NAMES = Object.freeze(['engineering', 'deployment']);
 
 const ENGINEERING_DATA_KEYS = Object.freeze(['automationState', 'activeIssue', 'queue', 'pr', 'ci', 'handoff']);
 const ACTIVE_ISSUE_KEYS = Object.freeze(['number', 'title', 'url', 'updatedIso']);
-const QUEUE_KEYS = Object.freeze(['depth', 'readyCount', 'blockedCount', 'stalledSinceIso']);
+const QUEUE_KEYS = Object.freeze([
+  'depth',
+  'readyCount',
+  'labeledReadyCount',
+  'eligibleReadyCount',
+  'malformedCount',
+  'riskGatedCount',
+  'dependencyBlockedCount',
+  'blockedCount',
+  'stalledSinceIso',
+  'rejections',
+]);
+const QUEUE_REJECTION_KEYS = Object.freeze(['issueNumber', 'category', 'reasons']);
+const QUEUE_REJECTION_CATEGORIES = Object.freeze(['malformed', 'risk-gated', 'dependency-blocked', 'rejected']);
 const PR_KEYS = Object.freeze(['number', 'title', 'url', 'isDraft', 'reviewDecision', 'mergeableState', 'createdIso', 'updatedIso']);
 const CI_KEYS = Object.freeze(['status', 'latestRunIso', 'latestRunUrl', 'recentFailureCount']);
 const HANDOFF_KEYS = Object.freeze(['stalled', 'reason']);
@@ -116,9 +129,34 @@ function validateWiredSource(source, name, errors) {
       }
       checkNullableClosedShape(source.data.activeIssue, ACTIVE_ISSUE_KEYS, 'sources.engineering.data.activeIssue', errors);
       checkClosedShape(source.data.queue, QUEUE_KEYS, 'sources.engineering.data.queue', errors);
-      if (isPlainObject(source.data.queue) && source.data.queue.stalledSinceIso !== null
-        && (!isNonEmptyString(source.data.queue.stalledSinceIso) || Number.isNaN(Date.parse(source.data.queue.stalledSinceIso)))) {
-        errors.push('sources.engineering.data.queue.stalledSinceIso must be a valid ISO timestamp or null');
+      if (isPlainObject(source.data.queue)) {
+        if (source.data.queue.stalledSinceIso !== null
+          && (!isNonEmptyString(source.data.queue.stalledSinceIso) || Number.isNaN(Date.parse(source.data.queue.stalledSinceIso)))) {
+          errors.push('sources.engineering.data.queue.stalledSinceIso must be a valid ISO timestamp or null');
+        }
+        for (const key of ['depth', 'readyCount', 'labeledReadyCount', 'eligibleReadyCount', 'malformedCount', 'riskGatedCount', 'dependencyBlockedCount', 'blockedCount']) {
+          if (!Number.isInteger(source.data.queue[key]) || source.data.queue[key] < 0) {
+            errors.push(`sources.engineering.data.queue.${key} must be a non-negative integer`);
+          }
+        }
+        if (!Array.isArray(source.data.queue.rejections)) {
+          errors.push('sources.engineering.data.queue.rejections must be an array');
+        } else {
+          source.data.queue.rejections.forEach((rejection, index) => {
+            const label = `sources.engineering.data.queue.rejections[${index}]`;
+            checkClosedShape(rejection, QUEUE_REJECTION_KEYS, label, errors);
+            if (!isPlainObject(rejection)) return;
+            if (!Number.isInteger(rejection.issueNumber) || rejection.issueNumber <= 0) {
+              errors.push(`${label}.issueNumber must be a positive integer`);
+            }
+            if (!QUEUE_REJECTION_CATEGORIES.includes(rejection.category)) {
+              errors.push(`${label}.category must be one of ${QUEUE_REJECTION_CATEGORIES.join(', ')}`);
+            }
+            if (!Array.isArray(rejection.reasons) || rejection.reasons.length === 0 || rejection.reasons.some((reason) => !isNonEmptyString(reason))) {
+              errors.push(`${label}.reasons must be a non-empty array of strings`);
+            }
+          });
+        }
       }
       checkNullableClosedShape(source.data.pr, PR_KEYS, 'sources.engineering.data.pr', errors);
       checkClosedShape(source.data.ci, CI_KEYS, 'sources.engineering.data.ci', errors);

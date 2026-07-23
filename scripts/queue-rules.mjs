@@ -131,13 +131,46 @@ export function validateIssue(issue) {
 }
 
 /**
+ * Converts the dispatcher validation result into a stable operator-facing
+ * category. Keep this beside validateIssue so Mission Control, linting, and
+ * dispatch can never drift into different definitions of "ready".
+ */
+export function classifyIssueEligibility(issue) {
+  const evaluation = validateIssue(issue);
+  let category = 'eligible';
+  if (!evaluation.valid) {
+    if (evaluation.reasons.some((reason) => reason.startsWith('malformed:'))) category = 'malformed';
+    else if (evaluation.reasons.some((reason) => reason.includes('"blocked" label'))) category = 'dependency-blocked';
+    else if (evaluation.reasons.some((reason) => reason.includes('risk-high'))) category = 'risk-gated';
+    else category = 'rejected';
+  }
+  return { issue, category, ...evaluation };
+}
+
+/** Summarizes ready-labeled issues with the exact rules the dispatcher uses. */
+export function summarizeIssueEligibility(issues) {
+  const evaluated = (issues || []).map(classifyIssueEligibility);
+  const eligible = evaluated.filter((entry) => entry.valid);
+  const rejected = evaluated.filter((entry) => !entry.valid);
+  return {
+    labeledReadyCount: evaluated.length,
+    eligibleReadyCount: eligible.length,
+    malformedCount: rejected.filter((entry) => entry.category === 'malformed').length,
+    riskGatedCount: rejected.filter((entry) => entry.category === 'risk-gated').length,
+    dependencyBlockedCount: rejected.filter((entry) => entry.category === 'dependency-blocked').length,
+    eligible,
+    rejected,
+  };
+}
+
+/**
  * Deterministically select the single highest-priority eligible issue from
  * a list of open, `ready`-labeled issue objects ({ number, labels, body }).
  * Priority order: lowest priorityRank first (p0 beats p3), then lowest
  * issue number (oldest first) as a stable tiebreaker.
  */
 export function selectNextIssue(issues) {
-  const evaluated = (issues || []).map((issue) => ({ issue, ...validateIssue(issue) }));
+  const evaluated = (issues || []).map(classifyIssueEligibility);
   const eligible = evaluated.filter((e) => e.valid);
   eligible.sort((a, b) => a.priorityRank - b.priorityRank || a.issue.number - b.issue.number);
   return {

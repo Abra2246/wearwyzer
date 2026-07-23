@@ -87,6 +87,19 @@ The dispatcher and Mission Control used different definitions:
 This produced a truthful dispatcher no-op but a misleading “stalled dispatch” alert. Issue #55
 will make both systems consume the same validation result and expose rejection reasons.
 
+## Execution evidence after the initial audit
+
+- PR #60 added bounded rebase-and-push retry logic to both operations-feed writers. The first
+  post-merge Ops Status and Ops Live Feed runs both completed successfully from the same merge,
+  proving the concurrent-write repair.
+- Issue #54 stopped safely before generation. The exact New Balance 9060 variant was verified, but
+  it was sold out and the hero had appeared only 14 days earlier, inside the 60-day cooldown.
+- The agent runs dispatched for Issues #54 and #55 both reported success without producing a
+  branch or PR; their run metadata recorded permission denials. Issue #61 now tracks an immediate
+  postcondition so this state becomes a visible workflow failure rather than false success.
+- Issue #62 provides the next production pilot with a verified, available adidas Samba OG B75806
+  and remains dependency-gated behind the reliability and metadata checks.
+
 ## Evidence commands
 
 ```text
