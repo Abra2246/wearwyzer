@@ -99,6 +99,9 @@ will make both systems consume the same validation result and expose rejection r
   postcondition so this state becomes a visible workflow failure rather than false success.
 - Issue #62 provides the next production pilot with a verified, available adidas Samba OG B75806
   and remains dependency-gated behind the reliability and metadata checks.
+- PR #63 merged the shared queue-eligibility model with 415 passing tests. Issue #61 now adds an
+  immediate fail-closed postcondition so a successful model process cannot become a successful
+  engineering run without durable handoff evidence.
 
 ## Evidence commands
 

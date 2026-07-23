@@ -589,6 +589,15 @@ references, and owner.
 - `NEXT_ACTIONS.md` is the executable handoff queue. `docs/adr/` owns durable decisions.
   `docs/EXECUTION_30_60_90.md` owns the measurable near-term path, and
   `docs/PERSONALIZATION_PLATFORM_V1.md` defines the smallest useful personalized purchase slice.
+- PR #60 proved that concurrent operations-feed writers can both update `main` without false
+  non-fast-forward failures.
+- PR #63 made queue eligibility evidence-based across dispatch, Mission Control, and issue lint.
+- Issue #54 stopped before generation because its verified hero was sold out and inside the
+  60-day cooldown; no paid call or public asset was created.
+- Issue #61 is the active fail-closed handoff repair. It prevents a model process from reporting a
+  green engineering outcome without a linked PR, non-empty issue branch, or structured blocker.
+- Issue #62 is the next production pilot, using the verified adidas Samba OG B75806 after the
+  reliability and metadata gates are stable.
 
 ## Final north-star statement
 

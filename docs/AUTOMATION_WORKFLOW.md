@@ -44,6 +44,10 @@ Until that's set up, "Claude implementation" in the workflow above means: a huma
 - `scripts/queue-labels.mjs` — idempotently creates/updates the label contract below without deleting anything it doesn't own. Run with `node scripts/queue-labels.mjs [--dry-run]`.
 - `scripts/queue-dispatch.mjs` — the dispatcher. Exits without changes if another issue is `in-progress` or an `automation-managed` PR is open; otherwise deterministically selects the highest-priority eligible `ready` issue (rejecting `risk-high` and malformed issues), removes `ready`, adds `in-progress` + `automation-managed`, and posts one `@claude` implementation comment recording the risk tier, selection reason, and next expected event. Run with `node scripts/queue-dispatch.mjs [--dry-run]`.
 - `scripts/queue-pr-state.mjs` — `sync --pr <N>` moves an `automation-managed` issue from `in-progress` to `review` once its linked (`Closes #N`) PR is open and not a draft, and reports (but never executes) the low-risk auto-merge gate on every non-draft `automation-managed` PR. `mark-failed --issue <N> --reason "..."` labels an issue `automation-failed` + `needs-human` with an explanatory comment when a run can't complete.
+- `scripts/verify-agent-handoff.mjs` — immediate postcondition for queue-dispatched Claude runs.
+  It accepts only a linked PR, a non-empty issue branch, or a structured evidence-backed blocker.
+  Otherwise it makes the workflow fail visibly and records the run URL and a safe
+  permission-denial count on the issue. It never prints the execution file.
 
 ### Label contract
 `ready`, `in-progress`, `review`, `blocked`, `needs-human`, `automation-failed`, `automation-managed`, `risk-low`, `risk-medium`, `risk-high`, `priority-p0`…`priority-p3` (unset defaults to `p2`). Full colors/descriptions in `scripts/queue-labels.mjs`.
@@ -56,7 +60,9 @@ The queue's logic ships in this PR; making it run on a schedule requires a maint
 1. Copy `docs/automation/workflows/sync-labels.yml`, `dispatch-queue.yml`, and `pr-state-sync.yml` into `.github/workflows/`, then run the label-sync workflow once (or `node scripts/queue-labels.mjs` locally) to create the label contract.
 2. Confirm `Settings → Actions → General → Workflow permissions` allows `issues: write` for the default `GITHUB_TOKEN` (same setting already required for `.github/workflows/claude.yml`).
 3. Leave `AUTOMATION_AUTO_MERGE_ENABLED` unset (or `"false"`) to keep the merge gate closed; only a maintainer decision changes that.
-4. Optionally copy `mark-failed.yml` and wire a step into `.github/workflows/claude.yml` (also outside Claude's edit permission) that calls it when the implementation job's conclusion is `failure`.
+4. The active `.github/workflows/claude.yml` enforces the handoff postcondition and calls
+   `queue-pr-state.mjs mark-failed` when implementation or handoff evidence fails. Keep
+   `mark-failed.yml` only as a manual recovery entry point.
 
 ### Testing
 ```
