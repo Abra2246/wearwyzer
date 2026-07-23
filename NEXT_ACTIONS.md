@@ -26,7 +26,7 @@ direction; GitHub issues own implementation scope; this file tells the next oper
    - Dependency: #55 reaches review or an actionable blocker.
    - Outcome: deterministic metadata QA that understands intentional runtime bindings and gates
      PRs/Pages without reviving the former raw-template false positive.
-3. **Personalization vertical-slice issue**
+3. **Issue #57 — personalization vertical slice**
    - Dependency: canonical schema and privacy boundary in
      `docs/PERSONALIZATION_PLATFORM_V1.md`; reliability tasks above stable.
    - Outcome: feature-flagged prototype for profile + manual wardrobe + prospective purchase
@@ -47,4 +47,3 @@ direction; GitHub issues own implementation scope; this file tells the next oper
 - Update Mission Control source data.
 - Update the Book of Truth execution record when a material milestone changes.
 - Refresh this file so the next operator has three executable tasks.
-
