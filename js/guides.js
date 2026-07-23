@@ -353,4 +353,167 @@ export const guides = [
     tags: [],
     comingSoon: true,
   },
+  {
+    id: "adidas-samba-og-b75806",
+    heroProductId: "adidas-samba-og-b75806",
+    title: "5 Ways to Wear adidas Sambas Without Looking Like Everyone Else",
+    slug: "guide-adidas-samba-og-b75806.dc.html",
+    verdict: "Five distinct menswear outfits that make the adidas Samba OG feel intentional rather than interchangeable with every other Samba outfit online.",
+    description: "5 ways to wear Sambas without looking like everyone else.",
+    coverImage: "assets/images/guides/adidas-samba-og-b75806/cover.svg",
+    slideImages: [
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-01.svg",
+        label: "5 Ways to Wear Sambas",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-02.svg",
+        label: "Clean Summer Uniform",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-03.svg",
+        label: "Relaxed Creative Office",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-04.svg",
+        label: "Terrace Influence, Grown Up",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-05.svg",
+        label: "Minimal Evening",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-06.svg",
+        label: "Weekend City Utility",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-07.svg",
+        label: "Shop the Styling System",
+      },
+    ],
+    outfitCount: 5,
+    outfits: [
+      {
+        name: "Clean Summer Uniform",
+        when: "Warm city days, casual lunches, and weekend plans.",
+        why: "Navy pleated shorts create clear contrast with the white-and-black shoe while the cream tee keeps the look quiet and intentional.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Oversized Cream Tee",
+            productId: "cream-tee",
+          },
+          {
+            name: "Navy Pleated Shorts",
+            productId: "af-pleated-shorts",
+          },
+          {
+            name: "Minimal Watch",
+            productId: "minimal-watch",
+          },
+        ],
+      },
+      {
+        name: "Relaxed Creative Office",
+        when: "Internships, creative offices, and casual client meetings.",
+        why: "The Oxford shirt and tailored trousers raise the formality while the low-profile Samba keeps the outfit contemporary rather than corporate.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Light Blue Oxford Shirt",
+            productId: "oxford-shirt",
+          },
+          {
+            name: "Black Tailored Trousers",
+            productId: "black-trousers",
+          },
+        ],
+      },
+      {
+        name: "Terrace Influence, Grown Up",
+        when: "Match days, coffee runs, and relaxed afternoons.",
+        why: "A knit polo and straight denim reference the shoe's terrace history without relying on a retro costume or loud branding.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Black Knit Polo",
+            productId: "knit-polo",
+          },
+          {
+            name: "Light Wash Jeans",
+            productId: "light-jeans",
+          },
+          {
+            name: "Neutral Cap",
+            productId: "cap",
+          },
+        ],
+      },
+      {
+        name: "Minimal Evening",
+        when: "Casual dinners, gallery openings, and low-key dates.",
+        why: "A controlled black palette lets the gum sole provide warmth and keeps the familiar sneaker from reading as an afterthought.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Black Knit Polo",
+            productId: "knit-polo",
+          },
+          {
+            name: "Black Tailored Trousers",
+            productId: "black-trousers",
+          },
+          {
+            name: "Minimal Watch",
+            productId: "minimal-watch",
+          },
+        ],
+      },
+      {
+        name: "Weekend City Utility",
+        when: "Travel days, errands, and long weekends in the city.",
+        why: "A light overshirt and technical trousers introduce utility and texture without turning the Samba into a generic jeans-and-tee uniform.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Lightweight Overshirt",
+            productId: "gap-overshirt-beige",
+          },
+          {
+            name: "Oversized Cream Tee",
+            productId: "cream-tee",
+          },
+          {
+            name: "Black Tech Pants",
+            productId: "tech-pants",
+          },
+          {
+            name: "Minimal Backpack",
+            productId: "backpack",
+          },
+        ],
+      },
+    ],
+    styleNotes: ["Keep the exact B75806 Cloud White / Core Black / gum colorway consistent.", "One outfit per styling slide; do not collapse the five looks into a collage.", "Menswear-first; no female-only or female-targeted styling.", "Do not invent or distort adidas branding in later image generation.", "The deterministic pilot assets prove structure and copy only; photoreal editorial image generation remains separately review-gated."],
+    relatedProducts: ["adidas-samba-og-b75806", "cream-tee", "af-pleated-shorts", "minimal-watch", "oxford-shirt", "black-trousers", "knit-polo", "light-jeans", "cap", "gap-overshirt-beige", "tech-pants", "backpack"],
+    instagramUrl: "",
+    publishedDate: null,
+    tags: ["Sneakers", "Everyday", "Summer", "Business casual", "Date night"],
+    comingSoon: true,
+  },
 ];

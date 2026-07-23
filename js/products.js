@@ -50,7 +50,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Business casual", "Work", "Date night"],
-    featuredInGuides: ["on-cloud-x4", "barrel-pants-nb530"],
+    featuredInGuides: ["on-cloud-x4", "barrel-pants-nb530", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
   {
@@ -82,7 +82,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Everyday", "College", "Summer"],
-    featuredInGuides: ["on-cloud-x4"],
+    featuredInGuides: ["on-cloud-x4", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
   {
@@ -98,7 +98,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Everyday", "College", "Date night"],
-    featuredInGuides: ["on-cloud-x4"],
+    featuredInGuides: ["on-cloud-x4", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
   {
@@ -114,7 +114,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Everyday", "Summer", "College"],
-    featuredInGuides: ["on-cloud-x4", "barrel-pants-nb530"],
+    featuredInGuides: ["on-cloud-x4", "barrel-pants-nb530", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
   {
@@ -130,7 +130,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Date night", "Business casual", "Summer"],
-    featuredInGuides: ["on-cloud-x4"],
+    featuredInGuides: ["on-cloud-x4", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
   {
@@ -146,7 +146,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Date night", "Business casual", "Work"],
-    featuredInGuides: ["on-cloud-x4"],
+    featuredInGuides: ["on-cloud-x4", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
   {
@@ -162,7 +162,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Business casual", "Date night", "Work"],
-    featuredInGuides: ["on-cloud-x4", "barrel-pants-nb530", "nb9060-zara-polo"],
+    featuredInGuides: ["on-cloud-x4", "barrel-pants-nb530", "nb9060-zara-polo", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
   {
@@ -194,7 +194,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Travel", "Everyday", "Gym-to-street"],
-    featuredInGuides: ["on-cloud-x4"],
+    featuredInGuides: ["on-cloud-x4", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
   {
@@ -210,7 +210,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Similar option",
     tags: ["Travel", "College", "Everyday"],
-    featuredInGuides: ["on-cloud-x4"],
+    featuredInGuides: ["on-cloud-x4", "adidas-samba-og-b75806"],
     lastChecked: "",
   },
 
@@ -286,7 +286,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Exact item",
     tags: ["College", "Everyday", "Summer"],
-    featuredInGuides: ["nb9060-zara-polo"],
+    featuredInGuides: ["nb9060-zara-polo", "adidas-samba-og-b75806"],
     lastChecked: "2026-07-09",
   },
   {
@@ -350,7 +350,7 @@ export const products = [
     affiliateUrl: "",
     exactOrSimilar: "Exact item",
     tags: ["Everyday", "Travel"],
-    featuredInGuides: ["nb9060-zara-polo"],
+    featuredInGuides: ["nb9060-zara-polo", "adidas-samba-og-b75806"],
     lastChecked: "2026-07-09",
   },
   {
@@ -572,6 +572,28 @@ export const products = [
     tags: ["Summer", "Everyday"],
     featuredInGuides: ["barrel-pants-nb530"],
     lastChecked: "",
+  },
+  {
+    id: "adidas-samba-og-b75806",
+    name: "Samba OG Shoes",
+    brand: "adidas",
+    category: "Sneakers",
+    colorway: "Cloud White / Core Black / Gum",
+    image: "assets/images/products/adidas-samba-og-b75806.svg",
+    price: 100,
+    priceStatus: "confirmed",
+    retailer: "adidas",
+    affiliateUrl: "",
+    affiliateStatus: "unverified",
+    sourceUrl: "https://www.adidas.com/us/samba-og-shoes/B75806.html",
+    sourceVerifiedAt: "2026-07-23T20:25:00.000Z",
+    priceSourceUrl: "https://www.adidas.com/us/samba-og-shoes/B75806.html",
+    availabilityStatus: "available",
+    fitGuidance: "Official page recommends ordering the usual size.",
+    exactOrSimilar: "Exact item",
+    tags: ["Everyday", "Summer", "Date night", "Business casual"],
+    featuredInGuides: ["adidas-samba-og-b75806"],
+    lastChecked: "2026-07-23",
   },
 ];
 

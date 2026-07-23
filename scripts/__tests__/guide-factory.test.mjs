@@ -44,6 +44,48 @@ test('complete guide job runs end to end to ready-for-pr with no human prompt re
   assert.equal(result.policyResult.passed, true);
 });
 
+test('new product records retain verification provenance without inventing affiliate facts', () => {
+  const sourceUrl = 'https://example.com/products/verified-hero';
+  const manifest = {
+    ...COMPLETE_APPROVED_MANIFEST,
+    jobId: 'fx-provenance-guide',
+    heroProductId: 'fx-new-provenance-hero',
+    sources: [{ url: sourceUrl, verifiedAt: NOW }],
+    newProducts: [
+      {
+        id: 'fx-new-provenance-hero',
+        name: 'Verified Hero',
+        brand: 'FixtureCo',
+        category: 'Sneakers',
+        image: 'assets/images/products/fx-new-provenance-hero.svg',
+        price: 100,
+        priceStatus: 'confirmed',
+        priceSourceUrl: sourceUrl,
+        sourceUrl,
+        sourceVerifiedAt: NOW,
+        availabilityStatus: 'available',
+        fitGuidance: 'True to size.',
+        affiliateStatus: 'unverified',
+        affiliateUrl: '',
+      },
+    ],
+    outfits: COMPLETE_APPROVED_MANIFEST.outfits.map((outfit) => ({
+      ...outfit,
+      items: outfit.items.map((item, index) =>
+        index === 0 ? { ...item, productId: 'fx-new-provenance-hero' } : item
+      ),
+    })),
+  };
+  const result = runJob(manifest, { existingGuides: [] });
+
+  assert.equal(result.outcome, 'ready-for-pr');
+  assert.equal(result.productRecords[0].sourceUrl, sourceUrl);
+  assert.equal(result.productRecords[0].priceSourceUrl, sourceUrl);
+  assert.equal(result.productRecords[0].availabilityStatus, 'available');
+  assert.equal(result.productRecords[0].affiliateStatus, 'unverified');
+  assert.equal(result.productRecords[0].affiliateUrl, '');
+});
+
 // -- missing product fact --------------------------------------------------
 
 test('missing product fact stops at manifest validation with no guessing', () => {

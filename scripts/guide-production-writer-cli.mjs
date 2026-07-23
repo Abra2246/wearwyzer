@@ -39,6 +39,7 @@
 //   node scripts/guide-production-writer-cli.mjs [--dry-run]
 
 import { readFileSync, writeFileSync, readdirSync, existsSync, mkdirSync } from 'node:fs';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { runGuideFactoryJob, selectNextApprovedJob } from './guide-factory.mjs';
@@ -48,7 +49,6 @@ import { assessHeroCandidates, renderHeroCandidateReport } from './hero-candidat
 import { appendEvent } from './record-status-event.mjs';
 import { buildStatusEvent } from './status-log.mjs';
 import { buildNotification } from './notify-exception.mjs';
-import { runOnce as runLinkEngineOnce } from './link-engine-cli.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -69,6 +69,24 @@ async function loadGraphSnapshot() {
 
 function record(nowIso, kind, type, summary, detail) {
   appendEvent(buildStatusEvent({ timestampIso: nowIso, kind, type, summary, detail }));
+}
+
+/**
+ * The writer imports js/guides.js before it persists the new guide. Running
+ * the link engine in the same process would therefore reuse Node's cached,
+ * pre-write graph and omit the guide that was just produced. A fresh process
+ * is the smallest reliable cache boundary and makes the persisted report
+ * reflect the files that will actually be reviewed.
+ */
+export function refreshLinkEngineReportInFreshProcess({ now, spawn = spawnSync } = {}) {
+  const result = spawn(process.execPath, [path.join(ROOT, 'scripts', 'link-engine-cli.mjs'), `--now=${now}`], {
+    cwd: ROOT,
+    encoding: 'utf8',
+  });
+  if (result.status !== 0) {
+    throw new Error(`link-engine report refresh failed: ${(result.stderr || result.stdout || 'unknown error').trim()}`);
+  }
+  return result.stdout;
 }
 
 /** No approved job exists: assess real hero candidacy and report precisely instead of a bare no-op. */
@@ -136,7 +154,7 @@ async function writeGuideProduction(factoryResult, { dryRun, now }) {
   // guide's outfits (data/outfits.js re-derives from js/guides.js on
   // every fresh import) — same report Mission Control's linkEngine
   // section already reads.
-  await runLinkEngineOnce({ now });
+  refreshLinkEngineReportInFreshProcess({ now });
 
   const summary = plan.alreadyFullyApplied
     ? `Guide "${plan.guideId}" was already fully published; ${assetWriteResult.skipped.length} verified assets were unchanged (idempotent no-op).`
