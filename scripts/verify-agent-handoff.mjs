@@ -3,10 +3,14 @@
 // runs in the same Claude workflow and fails that workflow before a false
 // green result can be recorded.
 
-import { appendFileSync, readFileSync } from 'node:fs';
+import { appendFileSync, readFileSync, writeFileSync } from 'node:fs';
 import { clientFromEnv } from './queue-github-client.mjs';
 import { branchPrefixForIssue } from './handoff-watchdog-rules.mjs';
-import { countPermissionDenials, evaluateAgentHandoff } from './agent-handoff-rules.mjs';
+import {
+  BLOCKER_MARKER,
+  countPermissionDenials,
+  evaluateAgentHandoff,
+} from './agent-handoff-rules.mjs';
 
 function parseArgs(argv) {
   const index = argv.indexOf('--issue');
@@ -15,9 +19,13 @@ function parseArgs(argv) {
     throw new Error('verify-agent-handoff requires --issue <positive integer>');
   }
   const executionIndex = argv.indexOf('--execution-file');
+  const baselineIndex = argv.indexOf('--baseline-file');
+  const captureIndex = argv.indexOf('--capture-baseline');
   return {
     issueNumber,
     executionFile: executionIndex >= 0 ? argv[executionIndex + 1] : null,
+    baselineFile: baselineIndex >= 0 ? argv[baselineIndex + 1] : null,
+    captureBaselineFile: captureIndex >= 0 ? argv[captureIndex + 1] : null,
   };
 }
 
@@ -53,6 +61,34 @@ function writeSafeOutputs(permissionDenialCount, env = process.env) {
 }
 
 export async function verifyAgentHandoff(client, issueNumber) {
+  return verifyAgentHandoffAgainstBaseline(client, issueNumber);
+}
+
+export async function captureAgentHandoffBaseline(client, issueNumber) {
+  const branchRefs = await client.listMatchingBranchRefs(branchPrefixForIssue(issueNumber));
+  const pullRequests = [];
+  for (const branch of branchRefs) {
+    const branchPullRequests = await client.listOpenPullRequestsForBranch(branch.name);
+    pullRequests.push(...branchPullRequests.map((pullRequest) => ({
+      number: pullRequest.number,
+      headSha: pullRequest.head?.sha || null,
+    })));
+  }
+  const blockerCommentIds = (await client.listIssueComments(issueNumber))
+    .filter((comment) => String(comment.body || '').includes(BLOCKER_MARKER))
+    .map((comment) => comment.id);
+  return {
+    branches: branchRefs.map(({ name, sha }) => ({ name, sha })),
+    pullRequests,
+    blockerCommentIds,
+  };
+}
+
+export async function verifyAgentHandoffAgainstBaseline(
+  client,
+  issueNumber,
+  baseline = { pullRequests: [], branches: [], blockerCommentIds: [] }
+) {
   const issue = await client.getIssue(issueNumber);
   const branchRefs = await client.listMatchingBranchRefs(branchPrefixForIssue(issueNumber));
   const implementationBranches = await Promise.all(
@@ -71,6 +107,7 @@ export async function verifyAgentHandoff(client, issueNumber) {
     implementationBranches,
     issueLabels: issue.labels,
     issueComments,
+    baseline,
   });
 
   console.log(`Issue #${issueNumber} handoff: ${result.valid ? 'valid' : 'INVALID'} — ${result.detail}`);
@@ -78,13 +115,29 @@ export async function verifyAgentHandoff(client, issueNumber) {
 }
 
 async function main() {
-  const { issueNumber, executionFile } = parseArgs(process.argv.slice(2));
+  const {
+    issueNumber,
+    executionFile,
+    baselineFile,
+    captureBaselineFile,
+  } = parseArgs(process.argv.slice(2));
+  const client = clientFromEnv();
+  if (captureBaselineFile) {
+    const baseline = await captureAgentHandoffBaseline(client, issueNumber);
+    writeFileSync(captureBaselineFile, `${JSON.stringify(baseline, null, 2)}\n`);
+    console.log(`Captured Issue #${issueNumber} handoff baseline.`);
+    return;
+  }
   const permissionDenialCount = permissionDenialCountFromFile(executionFile);
   writeSafeOutputs(permissionDenialCount);
   console.log(
     `Claude permission denials: ${permissionDenialCount === null ? 'not safely available' : permissionDenialCount}`
   );
-  const result = await verifyAgentHandoff(clientFromEnv(), issueNumber);
+  if (!baselineFile) {
+    throw new Error('verify-agent-handoff requires --baseline-file for post-run verification');
+  }
+  const baseline = JSON.parse(readFileSync(baselineFile, 'utf8'));
+  const result = await verifyAgentHandoffAgainstBaseline(client, issueNumber, baseline);
   if (!result.valid) process.exitCode = 1;
 }
 

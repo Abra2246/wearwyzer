@@ -8,7 +8,11 @@ import {
   countPermissionDenials,
   evaluateAgentHandoff,
 } from '../agent-handoff-rules.mjs';
-import { permissionDenialCountFromFile, verifyAgentHandoff } from '../verify-agent-handoff.mjs';
+import {
+  captureAgentHandoffBaseline,
+  permissionDenialCountFromFile,
+  verifyAgentHandoffAgainstBaseline,
+} from '../verify-agent-handoff.mjs';
 
 class FakeClient {
   constructor({
@@ -27,18 +31,52 @@ class FakeClient {
   listIssueComments() { return Promise.resolve(this.comments); }
 }
 
-test('linked PR is sufficient evidence', () => {
-  const result = evaluateAgentHandoff({ linkedPullRequests: [{ number: 63 }] });
+test('new linked PR is sufficient evidence', () => {
+  const result = evaluateAgentHandoff({
+    linkedPullRequests: [{ number: 63, headSha: 'new' }],
+    baseline: { pullRequests: [], branches: [], blockerCommentIds: [] },
+  });
   assert.equal(result.valid, true);
   assert.equal(result.evidence, 'pull-request');
 });
 
-test('non-empty matching implementation branch is sufficient evidence', () => {
+test('advanced matching implementation branch is sufficient evidence', () => {
   const result = evaluateAgentHandoff({
-    implementationBranches: [{ name: 'claude/issue-61-run', changedFiles: ['scripts/check.mjs'] }],
+    implementationBranches: [{ name: 'claude/issue-61-run', sha: 'new', changedFiles: ['scripts/check.mjs'] }],
+    baseline: {
+      pullRequests: [],
+      branches: [{ name: 'claude/issue-61-run', sha: 'old' }],
+      blockerCommentIds: [],
+    },
   });
   assert.equal(result.valid, true);
   assert.equal(result.evidence, 'implementation-branch');
+});
+
+test('stale pre-existing branch cannot satisfy a new run', () => {
+  const result = evaluateAgentHandoff({
+    implementationBranches: [{ name: 'claude/issue-11-old', sha: 'same', changedFiles: ['old-change.mjs'] }],
+    baseline: {
+      pullRequests: [],
+      branches: [{ name: 'claude/issue-11-old', sha: 'same' }],
+      blockerCommentIds: [],
+    },
+  });
+  assert.equal(result.valid, false);
+  assert.match(result.detail, /created or advanced/);
+});
+
+test('an existing PR must advance during the run', () => {
+  const stale = evaluateAgentHandoff({
+    linkedPullRequests: [{ number: 63, headSha: 'same' }],
+    baseline: { pullRequests: [{ number: 63, headSha: 'same' }], branches: [], blockerCommentIds: [] },
+  });
+  assert.equal(stale.valid, false);
+  const advanced = evaluateAgentHandoff({
+    linkedPullRequests: [{ number: 63, headSha: 'new' }],
+    baseline: { pullRequests: [{ number: 63, headSha: 'old' }], branches: [], blockerCommentIds: [] },
+  });
+  assert.equal(advanced.valid, true);
 });
 
 test('empty branch without a PR is not evidence', () => {
@@ -52,10 +90,21 @@ test('empty branch without a PR is not evidence', () => {
 test('structured blocker requires marker and completed blocker labels', () => {
   const result = evaluateAgentHandoff({
     issueLabels: ['blocked', 'needs-human'],
-    issueComments: [{ body: `${BLOCKER_MARKER}\n\nReason: missing production credential.` }],
+    issueComments: [{ id: 2, body: `${BLOCKER_MARKER}\n\nReason: missing production credential.` }],
+    baseline: { pullRequests: [], branches: [], blockerCommentIds: [1] },
   });
   assert.equal(result.valid, true);
   assert.equal(result.evidence, 'evidence-backed-blocker');
+});
+
+test('stale blocker comment cannot satisfy a new run', () => {
+  const result = evaluateAgentHandoff({
+    issueLabels: ['blocked', 'needs-human'],
+    issueComments: [{ id: 1, body: BLOCKER_MARKER }],
+    baseline: { pullRequests: [], branches: [], blockerCommentIds: [1] },
+  });
+  assert.equal(result.valid, false);
+  assert.match(result.detail, /no new structured blocker comment/);
 });
 
 test('ordinary blocker prose cannot turn a run green', () => {
@@ -64,7 +113,7 @@ test('ordinary blocker prose cannot turn a run green', () => {
     issueComments: [{ body: 'I am blocked.' }],
   });
   assert.equal(result.valid, false);
-  assert.match(result.detail, /no structured blocker comment/);
+  assert.match(result.detail, /no new structured blocker comment/);
 });
 
 test('in-progress issue cannot claim a completed blocker handoff', () => {
@@ -95,19 +144,43 @@ test('execution-file reader handles JSON lines without echoing model output', ()
   assert.equal(permissionDenialCountFromFile(join(directory, 'missing.jsonl')), null);
 });
 
-test('dry-run fixture verifies branch and PR evidence without mutating GitHub state', async () => {
+test('dry-run fixture verifies branch and PR evidence created after baseline', async () => {
   const client = new FakeClient({
     branches: [{ name: 'claude/issue-61-run', sha: 'abc' }],
     changedFiles: { 'claude/issue-61-run': ['scripts/fix.mjs'] },
-    pullRequests: { 'claude/issue-61-run': [{ number: 64 }] },
+    pullRequests: { 'claude/issue-61-run': [{ number: 64, head: { sha: 'abc' } }] },
   });
-  const result = await verifyAgentHandoff(client, 61);
+  const baseline = { pullRequests: [], branches: [], blockerCommentIds: [] };
+  const result = await verifyAgentHandoffAgainstBaseline(client, 61, baseline);
   assert.equal(result.valid, true);
   assert.equal(result.evidence, 'pull-request');
 });
 
 test('dry-run fixture rejects a false-success run with no durable evidence', async () => {
-  const result = await verifyAgentHandoff(new FakeClient(), 61);
+  const result = await verifyAgentHandoffAgainstBaseline(
+    new FakeClient(),
+    61,
+    { pullRequests: [], branches: [], blockerCommentIds: [] }
+  );
   assert.equal(result.valid, false);
   assert.match(result.detail, /no matching implementation branch/);
+});
+
+test('baseline capture records existing refs, PR heads, and blocker comments', async () => {
+  const client = new FakeClient({
+    branches: [{ name: 'claude/issue-65-old', sha: 'old-sha' }],
+    pullRequests: {
+      'claude/issue-65-old': [{ number: 64, head: { sha: 'pr-sha' } }],
+    },
+    comments: [
+      { id: 9, body: BLOCKER_MARKER },
+      { id: 10, body: 'ordinary comment' },
+    ],
+  });
+  const baseline = await captureAgentHandoffBaseline(client, 65);
+  assert.deepEqual(baseline, {
+    branches: [{ name: 'claude/issue-65-old', sha: 'old-sha' }],
+    pullRequests: [{ number: 64, headSha: 'pr-sha' }],
+    blockerCommentIds: [9],
+  });
 });
