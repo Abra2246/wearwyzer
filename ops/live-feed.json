@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T20:18:03.367Z",
+  "generatedAtIso": "2026-07-23T20:22:20.058Z",
   "overallState": "live",
   "ceo": {
-    "headline": "A completed run looks stalled.",
-    "requiredAction": "#65 has been \"in-progress\" for 36m with no linked PR (grace period is 15m).",
-    "activeWorkSummary": "#65 \"Require current-run freshness in agent handoff evidence\" (no PR yet)"
+    "headline": "Everything is healthy — no action needed.",
+    "requiredAction": null,
+    "activeWorkSummary": "1 eligible issue(s) queued, none active."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T20:18:03.367Z",
+      "lastUpdatedIso": "2026-07-23T20:22:20.058Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 65,
-          "title": "Require current-run freshness in agent handoff evidence",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/65",
-          "updatedIso": "2026-07-23T19:41:44Z"
-        },
+        "automationState": "queued",
+        "activeIssue": null,
         "queue": {
           "depth": 1,
           "readyCount": 1,
@@ -30,19 +25,19 @@
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
           "blockedCount": 3,
-          "stalledSinceIso": null,
+          "stalledSinceIso": "2026-07-23T20:22:20.058Z",
           "rejections": []
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-23T19:35:01Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30038537364",
+          "status": "unknown",
+          "latestRunIso": "2026-07-23T20:22:13Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30041788471",
           "recentFailureCount": 0
         },
         "handoff": {
-          "stalled": true,
-          "reason": "#65 has been \"in-progress\" for 36m with no linked PR (grace period is 15m)."
+          "stalled": false,
+          "reason": null
         }
       },
       "note": null
@@ -50,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T20:18:03.367Z",
+      "lastUpdatedIso": "2026-07-23T20:22:20.058Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "c6c1161",
         "lastDeployIso": "2026-07-23T19:35:32Z",
-        "ageMinutes": 43,
+        "ageMinutes": 47,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -87,6 +82,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:66",
+      "timestampIso": "2026-07-23T20:22:03Z",
+      "type": "pr-merged",
+      "summary": "PR #66 \"Require current-run freshness in agent handoff evidence\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/66"
+    },
     {
       "key": "issue-started:65",
       "timestampIso": "2026-07-23T19:41:44Z",
@@ -429,13 +431,6 @@
       "type": "pr-merged",
       "summary": "PR #5 \"fix: close Guide #1 relationship gaps, add CI content validation\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/5"
-    },
-    {
-      "key": "pr-merged:4",
-      "timestampIso": "2026-07-12T03:36:23Z",
-      "type": "pr-merged",
-      "summary": "PR #4 \"fix: resolve remaining product mismatches, add automated content validation\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/4"
     }
   ]
 }
