@@ -15,6 +15,12 @@ direction; GitHub issues own implementation scope; this file tells the next oper
      five persisted slides plus cover, validation results, affiliate coverage, and spend.
    - Stop condition: unverifiable product identity/variant, missing credential, paid-generation
      control failure, or any invented fact.
+2. **Issue #59 — concurrent operations-feed commit repair**
+   - State: implementation and regression tests complete; review PR is the next evidence.
+   - Owner: reliability lead; human review at PR because active workflows are protected paths.
+   - Root cause: Live Feed and Status workflows committed different generated files from the same
+     parent; the second push was rejected after the first advanced `main`.
+   - Fix boundary: bounded fetch/rebase/push retries, no force push, and fail closed on conflicts.
 
 ## Next three executable tasks
 

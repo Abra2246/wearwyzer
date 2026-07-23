@@ -68,6 +68,14 @@ Gaps found:
 
 This documentation PR closes those gaps without changing runtime behavior.
 
+## Subsequent live-feed race found during execution
+
+After the documentation merge, Ops Live Feed run `30033902266` generated its feed successfully
+but failed to push. Ops Status had advanced `main` after the Live Feed checkout, so Git rejected
+the second commit as non-fast-forward. This is a real workflow write race, not a feed-generation
+failure. Issue #59 adds bounded fetch/rebase/push retries to both active and reference workflows,
+never force-pushes, and fails visibly on a same-file conflict.
+
 ## Automation diagnosis
 
 The dispatcher and Mission Control used different definitions:
@@ -104,4 +112,3 @@ Only these categories should interrupt autonomous work:
    likeness generation;
 5. irreversible publication, destructive data/branch operations, or a material change to the
    business model.
-
