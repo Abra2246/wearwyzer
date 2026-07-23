@@ -596,6 +596,11 @@ references, and owner.
   60-day cooldown; no paid call or public asset was created.
 - Issue #61 is the active fail-closed handoff repair. It prevents a model process from reporting a
   green engineering outcome without a linked PR, non-empty issue branch, or structured blocker.
+- PR #64 implemented that immediate postcondition. Its first live exercise on Issue #11 exposed a
+  narrower false-positive: the verifier accepted an unchanged branch created 12 days before the
+  run. Issue #65 now requires a pre-run baseline and evidence created or advanced by the current
+  run; historical branches and blocker comments cannot turn a new run green.
+- Issue #11 remains unfinished after that agent run and moves to direct implementation after #65.
 - Issue #62 is the next production pilot, using the verified adidas Samba OG B75806 after the
   reliability and metadata gates are stable.
 

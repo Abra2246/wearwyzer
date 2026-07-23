@@ -4,20 +4,26 @@ This is the executable handoff queue. It is intentionally short. The Book of Tru
 direction; GitHub issues own implementation scope; this file tells the next operator what to do.
 
 **Last verified:** July 23, 2026  
-**Evidence baseline:** `main` at PR #63 plus recurring operations commits
+**Evidence baseline:** `main` at PR #64 plus recurring operations commits
 
 ## Active
 
-1. **Issue #55 — queue eligibility in Mission Control**
+1. **Issue #65 — require current-run handoff evidence**
+   - State: direct implementation in progress.
+   - Evidence: run `30038614791` falsely passed by reusing the unchanged
+     `claude/issue-11-20260712-1717` branch; no new branch or PR existed and the run recorded five
+     permission denials.
+   - Outcome: capture a pre-run baseline and accept only a PR, branch head, or structured blocker
+     comment that is created or advanced by the current run.
+2. **Issue #55 — queue eligibility in Mission Control**
    - State: complete via PR #63.
    - Evidence: 415 tests and all content/site/graph/hero validators passed; Mission Control,
      dispatcher, and issue lint now share one eligibility model.
-2. **Issue #61 — fail false-success agent handoffs**
-   - State: direct implementation in progress.
-   - Owner: reliability lead; workflow-changing review PR is the next evidence.
+3. **Issue #61 — fail false-success agent handoffs**
+   - State: complete via PR #64, with the freshness regression tracked by #65.
    - Outcome: queue-dispatched agent jobs fail unless they leave a linked PR, a non-empty issue
      branch, or a structured evidence-backed blocker.
-3. **Issue #54 — first Guide Factory production pilot**
+4. **Issue #54 — first Guide Factory production pilot**
    - State: blocked with evidence.
    - Reason: the verified New Balance 9060 is sold out and violates the repository's 60-day hero
      cooldown because the same hero was used on July 9, 2026.
@@ -26,7 +32,8 @@ direction; GitHub issues own implementation scope; this file tells the next oper
 ## Next three executable tasks
 
 1. **Issue #11 — HTML metadata and unresolved-template QA**
-   - Dependency: #61 reaches review or an actionable blocker.
+   - State: agent run completed without new evidence; direct implementation follows #65.
+   - Dependency: #65 reaches review or an actionable blocker.
    - Outcome: deterministic metadata QA that understands intentional runtime bindings and gates
      PRs/Pages without reviving the former raw-template false positive.
 2. **Issue #62 — verified adidas Samba production pilot**

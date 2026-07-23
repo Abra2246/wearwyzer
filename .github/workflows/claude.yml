@@ -38,6 +38,16 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Capture queue-dispatched handoff baseline
+        if: ${{ github.event_name == 'workflow_dispatch' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: |
+          node scripts/verify-agent-handoff.mjs \
+            --issue "${{ inputs.issue_number }}" \
+            --capture-baseline "${RUNNER_TEMP}/agent-handoff-baseline.json"
+
       - name: Run Claude Code
         id: claude
         uses: anthropics/claude-code-action@v1
@@ -73,6 +83,7 @@ jobs:
         run: |
           node scripts/verify-agent-handoff.mjs \
             --issue "${{ inputs.issue_number }}" \
+            --baseline-file "${RUNNER_TEMP}/agent-handoff-baseline.json" \
             --execution-file "${{ steps.claude.outputs.execution_file }}"
 
       - name: Mark queue issue failed when implementation or handoff fails
