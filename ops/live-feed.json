@@ -1,36 +1,36 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T18:34:50.266Z",
+  "generatedAtIso": "2026-07-23T18:59:36.201Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#54 \"Run first review-gated Guide Factory production pilot\" (no PR yet)"
+    "activeWorkSummary": "#55 \"Expose queue eligibility and malformed-ready issues in Mission Control\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T18:34:50.266Z",
+      "lastUpdatedIso": "2026-07-23T18:59:36.201Z",
       "fetchOk": true,
       "data": {
         "automationState": "working",
         "activeIssue": {
-          "number": 54,
-          "title": "Run first review-gated Guide Factory production pilot",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/54",
-          "updatedIso": "2026-07-23T18:22:32Z"
+          "number": 55,
+          "title": "Expose queue eligibility and malformed-ready issues in Mission Control",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/55",
+          "updatedIso": "2026-07-23T18:53:38Z"
         },
         "queue": {
-          "depth": 2,
-          "readyCount": 2,
-          "blockedCount": 2,
+          "depth": 3,
+          "readyCount": 3,
+          "blockedCount": 3,
           "stalledSinceIso": null
         },
         "pr": null,
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-23T18:34:46Z",
+          "status": "passing",
+          "latestRunIso": "2026-07-23T18:35:00Z",
           "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30034310900",
           "recentFailureCount": 0
         },
@@ -44,13 +44,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T18:34:50.266Z",
+      "lastUpdatedIso": "2026-07-23T18:59:36.201Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "627e30b",
-        "lastDeployIso": "2026-07-23T18:32:05Z",
-        "ageMinutes": 3,
+        "lastHealthyShaShort": "619de1d",
+        "lastDeployIso": "2026-07-23T18:35:25Z",
+        "ageMinutes": 24,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -81,6 +81,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:55",
+      "timestampIso": "2026-07-23T18:53:38Z",
+      "type": "issue-started",
+      "summary": "Issue #55 \"Expose queue eligibility and malformed-ready issues in Mission Control\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/55"
+    },
+    {
+      "key": "deploy:619de1d",
+      "timestampIso": "2026-07-23T18:35:25Z",
+      "type": "deployed",
+      "summary": "Deployed build 619de1d — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30034310900",
+      "timestampIso": "2026-07-23T18:35:00Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30034310900"
+    },
     {
       "key": "pr-merged:60",
       "timestampIso": "2026-07-23T18:34:39Z",
