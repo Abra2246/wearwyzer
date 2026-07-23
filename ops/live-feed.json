@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T20:22:20.058Z",
+  "generatedAtIso": "2026-07-23T20:23:18.092Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T20:22:20.058Z",
+      "lastUpdatedIso": "2026-07-23T20:23:18.092Z",
       "fetchOk": true,
       "data": {
         "automationState": "queued",
@@ -31,8 +31,8 @@
         "pr": null,
         "ci": {
           "status": "unknown",
-          "latestRunIso": "2026-07-23T20:22:13Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30041788471",
+          "latestRunIso": "2026-07-23T20:23:14Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30041860662",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T20:22:20.058Z",
+      "lastUpdatedIso": "2026-07-23T20:23:18.092Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "c6c1161",
-        "lastDeployIso": "2026-07-23T19:35:32Z",
-        "ageMinutes": 47,
+        "lastHealthyShaShort": "578085b",
+        "lastDeployIso": "2026-07-23T20:22:52Z",
+        "ageMinutes": 0,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -82,6 +82,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:67",
+      "timestampIso": "2026-07-23T20:23:07Z",
+      "type": "pr-merged",
+      "summary": "PR #67 \"Add HTML metadata and unresolved-template QA\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/67"
+    },
+    {
+      "key": "deploy:578085b",
+      "timestampIso": "2026-07-23T20:22:52Z",
+      "type": "deployed",
+      "summary": "Deployed build 578085b — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "pr-merged:66",
       "timestampIso": "2026-07-23T20:22:03Z",
@@ -417,20 +431,6 @@
       "type": "pr-merged",
       "summary": "PR #8 \"fix: eliminate preview 404s and add static-site QA\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/8"
-    },
-    {
-      "key": "pr-merged:6",
-      "timestampIso": "2026-07-12T04:08:44Z",
-      "type": "pr-merged",
-      "summary": "PR #6 \"chore: preview and automation foundation\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/6"
-    },
-    {
-      "key": "pr-merged:5",
-      "timestampIso": "2026-07-12T03:52:50Z",
-      "type": "pr-merged",
-      "summary": "PR #5 \"fix: close Guide #1 relationship gaps, add CI content validation\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/5"
     }
   ]
 }
