@@ -1,37 +1,37 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-23T20:23:18.092Z",
+  "generatedAtIso": "2026-07-23T21:31:56.681Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "1 eligible issue(s) queued, none active."
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T20:23:18.092Z",
+      "lastUpdatedIso": "2026-07-23T21:31:56.681Z",
       "fetchOk": true,
       "data": {
-        "automationState": "queued",
+        "automationState": "idle",
         "activeIssue": null,
         "queue": {
-          "depth": 1,
-          "readyCount": 1,
-          "labeledReadyCount": 1,
-          "eligibleReadyCount": 1,
+          "depth": 0,
+          "readyCount": 0,
+          "labeledReadyCount": 0,
+          "eligibleReadyCount": 0,
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
           "blockedCount": 3,
-          "stalledSinceIso": "2026-07-23T20:22:20.058Z",
+          "stalledSinceIso": null,
           "rejections": []
         },
         "pr": null,
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-23T20:23:14Z",
+          "status": "passing",
+          "latestRunIso": "2026-07-23T20:23:31Z",
           "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30041860662",
           "recentFailureCount": 0
         },
@@ -45,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-23T20:23:18.092Z",
+      "lastUpdatedIso": "2026-07-23T21:31:56.681Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "578085b",
-        "lastDeployIso": "2026-07-23T20:22:52Z",
-        "ageMinutes": 0,
+        "lastHealthyShaShort": "fceb9ec",
+        "lastDeployIso": "2026-07-23T20:23:54Z",
+        "ageMinutes": 68,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -82,6 +82,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:fceb9ec",
+      "timestampIso": "2026-07-23T20:23:54Z",
+      "type": "deployed",
+      "summary": "Deployed build fceb9ec — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30041860662",
+      "timestampIso": "2026-07-23T20:23:31Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30041860662"
+    },
     {
       "key": "pr-merged:67",
       "timestampIso": "2026-07-23T20:23:07Z",
@@ -417,20 +431,6 @@
       "type": "pr-merged",
       "summary": "PR #13 \"feat: add Knowledge Graph v1 additive foundation\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/13"
-    },
-    {
-      "key": "pr-merged:9",
-      "timestampIso": "2026-07-12T05:11:48Z",
-      "type": "pr-merged",
-      "summary": "PR #9 \"Add Claude Code GitHub Workflow\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/9"
-    },
-    {
-      "key": "pr-merged:8",
-      "timestampIso": "2026-07-12T04:59:25Z",
-      "type": "pr-merged",
-      "summary": "PR #8 \"fix: eliminate preview 404s and add static-site QA\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/8"
     }
   ]
 }
