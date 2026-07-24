@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-24T18:25:17.883Z",
+  "generatedAtIso": "2026-07-24T19:57:17.382Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-24T18:25:17.883Z",
+      "lastUpdatedIso": "2026-07-24T19:57:17.382Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -45,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-24T18:25:17.883Z",
+      "lastUpdatedIso": "2026-07-24T19:57:17.382Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "fceb9ec",
         "lastDeployIso": "2026-07-23T20:23:54Z",
-        "ageMinutes": 1321,
+        "ageMinutes": 1413,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
