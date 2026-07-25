@@ -604,6 +604,22 @@ references, and owner.
 - Issue #62 is the next production pilot, using the verified adidas Samba OG B75806 after the
   reliability and metadata gates are stable.
 
+## Current execution record — July 25, 2026
+
+- Repository and Actions health are green; the platform is not broadly stalled.
+- PR #68 recovered three completed carousel sets, adds the verified Samba pilot, and passes all
+  current branch checks. It remains a draft because creative review is a real human gate.
+- The expected 12-guide inventory contains evidence for six complete guides only. Missing sources
+  remain missing; no guide is manufactured to reconcile the count.
+- Verified affiliate coverage on the Samba pilot is 0%. This is an honest infrastructure-to-
+  business gap: the link engine exists, but no live merchant or affiliate adapter is configured.
+- The audit found Mission Control omitted open draft PR #68 and reported older `main` CI. PR #69
+  fixes the aggregator to inspect all open PRs and their head checks.
+- Superseded New Balance pilot Issue #54 was closed because the exact product is sold out and
+  inside the hero cooldown. Issue #62 is now the single pilot review record.
+- The canonical gap analysis is `docs/SYSTEM_GAP_ANALYSIS_2026-07-25.md`; the executable queue is
+  `NEXT_ACTIONS.md`.
+
 ## Final north-star statement
 
 > **WearWyzer becomes the trusted personal-style layer between what someone owns and what they
