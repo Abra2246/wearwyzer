@@ -681,6 +681,13 @@ references, and owner.
 - The Issue #81 implementation remains fixture-only. It does not deploy a
   public endpoint or authorize production authentication, real personal data,
   extension permissions, or personalized likeness generation.
+- PR #82 merged the versioned personalization API boundary after 475 tests and
+  five passing GitHub checks. Mission Control refreshed successfully and
+  reported the review state without a stalled handoff.
+- Issue #83 is the active provider-agnostic private-service slice. It defines
+  same-account authorization, purpose-specific consent, corrections, export,
+  deletion, wardrobe snapshot freshness, and minimized audit evidence without
+  selecting a vendor or collecting real personal data.
 
 ## Final north-star statement
 
