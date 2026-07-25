@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Personalized Purchase Prototype — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme: light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d8cfbf; --gold:#c8941e; --green:#2e7d46; --red:#b3261e; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; background:var(--paper); color:var(--ink); }
+    header { background:var(--ink); color:var(--paper); padding:22px; }
+    header div, main { max-width:900px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(28px,5vw,48px); text-transform:uppercase; letter-spacing:.02em; }
+    header p { color:#b7b0a2; margin:8px 0 0; }
+    main { padding:28px 18px 70px; }
+    .notice,.card { background:var(--card); border:1px solid var(--line); padding:20px; margin-bottom:16px; }
+    .notice { border-left:5px solid var(--gold); }
+    .actions { display:flex; flex-wrap:wrap; gap:10px; margin:18px 0; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:11px 15px; font:inherit; font-weight:700; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button.danger { background:transparent; color:var(--red); border-color:var(--red); }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); gap:12px; }
+    .metric { background:var(--card); border:1px solid var(--line); padding:16px; }
+    .metric span { color:#68645d; font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+    .metric strong { display:block; font-size:28px; margin-top:5px; }
+    ul { padding-left:20px; }
+    code { background:#ece5d8; padding:2px 5px; }
+    [hidden] { display:none !important; }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Buy It Wyzer</h1>
+      <p>Fixture-only personalized purchase evaluation · local device storage · no analytics</p>
+    </div>
+  </header>
+  <main>
+    <section id="disabled" class="notice">
+      <h2>Prototype is off</h2>
+      <p>This route is deliberately disabled by default. It does not collect real user data, create an account, or send wardrobe information to a server.</p>
+      <a class="button" href="?ww_personalization=1">Open the fixture demo</a>
+    </section>
+
+    <section id="enabled" hidden>
+      <div class="notice">
+        <strong>Prototype boundary:</strong> the sample profile and wardrobe below are deterministic test fixtures. Anything saved remains in this browser's local storage and can be exported or deleted.
+      </div>
+      <div class="actions">
+        <button id="run" type="button">Evaluate the Samba</button>
+        <button id="export" class="secondary" type="button">Export prototype data</button>
+        <button id="delete" class="danger" type="button">Delete prototype data</button>
+      </div>
+      <p id="status" role="status">Ready to evaluate one verified product against six owned fixture items.</p>
+      <section id="results" hidden>
+        <div class="grid">
+          <div class="metric"><span>Recommendation</span><strong id="recommendation">—</strong></div>
+          <div class="metric"><span>Compatibility</span><strong id="compatibility">—</strong></div>
+          <div class="metric"><span>Outfit unlocks</span><strong id="unlocks">—</strong></div>
+          <div class="metric"><span>Purchase ROI</span><strong id="roi">—</strong></div>
+        </div>
+        <div class="card">
+          <h2>Why</h2>
+          <ul id="evidence"></ul>
+        </div>
+        <div class="card">
+          <h2>Owned-first outfits</h2>
+          <ol id="outfits"></ol>
+        </div>
+        <div class="card">
+          <h2>Evidence boundary</h2>
+          <p id="source"></p>
+          <p><strong>Scoring version:</strong> <code id="version"></code></p>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { evaluatePurchase } from './scripts/personalization-engine.mjs';
+    import { createPersonalizationStore } from './scripts/personalization-store.mjs';
+    import { FIXTURE_PROTOTYPE_DATA } from './scripts/__fixtures__/personalization.mjs';
+    import { products } from './data/products.js';
+
+    const enabled = new URLSearchParams(location.search).get('ww_personalization');
+    if (enabled !== '1') {
+      document.querySelector('#disabled').hidden = false;
+    } else {
+      document.querySelector('#disabled').hidden = true;
+      document.querySelector('#enabled').hidden = false;
+      const store = createPersonalizationStore(localStorage);
+      const byId = Object.fromEntries(products.map((product) => [product.id, product]));
+
+      document.querySelector('#run').addEventListener('click', () => {
+        store.save(FIXTURE_PROTOTYPE_DATA);
+        const result = evaluatePurchase({
+          profile: FIXTURE_PROTOTYPE_DATA.profile,
+          wardrobe: FIXTURE_PROTOTYPE_DATA.wardrobe,
+          candidateId: FIXTURE_PROTOTYPE_DATA.candidateId,
+        });
+        document.querySelector('#recommendation').textContent = result.recommendation.replace('-', ' ');
+        document.querySelector('#compatibility').textContent = `${result.scores.compatibility.score}/100`;
+        document.querySelector('#unlocks').textContent = String(result.scores.outfitUnlocks);
+        document.querySelector('#roi').textContent = `${result.scores.purchaseRoi}/100`;
+        document.querySelector('#version').textContent = result.scoringVersion;
+        document.querySelector('#source').textContent = result.candidate.sourceUrl
+          ? `Candidate facts use the canonical product source verified ${result.candidate.sourceVerifiedAt}.`
+          : 'Canonical product-source evidence is unavailable.';
+        const evidenceCopy = {
+          'strong-wardrobe-compatibility': 'Strong compatibility with the existing wardrobe',
+          'missing-role:footwear': 'Fills the wardrobe’s missing footwear role',
+          'verified-price-evidence': 'Uses verified current price evidence',
+        };
+        document.querySelector('#evidence').replaceChildren(
+          ...result.reasonCodes.map((reason) => {
+            const item = document.createElement('li');
+            item.textContent = evidenceCopy[reason]
+              || (/^unlocks-\d+-qualified-outfits$/.test(reason)
+                ? `Unlocks ${result.scores.outfitUnlocks} qualified outfits`
+                : reason.replaceAll('-', ' '));
+            return item;
+          })
+        );
+        document.querySelector('#outfits').replaceChildren(
+          ...result.outfits.map((outfit) => {
+            const item = document.createElement('li');
+            item.textContent = outfit.itemIds.map((id) => byId[id]?.name || id).join(' + ');
+            return item;
+          })
+        );
+        document.querySelector('#results').hidden = false;
+        document.querySelector('#status').textContent = 'Evaluation complete. No data left this browser.';
+      });
+
+      document.querySelector('#export').addEventListener('click', () => {
+        const blob = new Blob([store.exportJson()], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'wearwyzer-personalization-prototype.json';
+        link.click();
+        URL.revokeObjectURL(url);
+        document.querySelector('#status').textContent = 'Prototype data exported.';
+      });
+
+      document.querySelector('#delete').addEventListener('click', () => {
+        store.deleteAll();
+        document.querySelector('#results').hidden = true;
+        document.querySelector('#status').textContent = 'All prototype data deleted from this device.';
+      });
+    }
+  </script>
+</body>
+</html>

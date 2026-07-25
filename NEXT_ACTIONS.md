@@ -5,39 +5,43 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 25, 2026
-**Evidence baseline:** `main` at `4b6e727`, GitHub PR/issue/Actions audit,
-448 passing tests, and successful live-feed refresh run `30167476497`
+**Evidence baseline:** `main` at `fc11952`, GitHub PR/issue/Actions audit,
+the merged guide and route repairs, and 464 passing tests before the
+personalization review branch.
 
 ## Active review gates
 
-1. **PR #68 / Issue #62 — recovered guides and verified Samba pilot**
-   - State: draft, mergeable, and all five GitHub checks pass.
-   - Evidence: 438 tests pass on the branch; content, site, Knowledge Graph,
-     hero-page, and asset validation pass; image spend is $0.
-   - Human gate: editorially inspect the recovered Samba, Dickies, and
-     Birkenstock carousels before any merge or public deployment.
-   - Known KPI gap: verified affiliate coverage is 0% because no live merchant
-     or affiliate adapter is configured.
+1. **Issue #57 — fixture-only personalized purchase vertical slice**
+   - Hosted automation stopped honestly because its runner could not write
+     files. Direct execution resumed the same approved scope on
+     `codex/personalization-vertical-slice`.
+   - Review evidence: deterministic scoring and reason codes, all four
+     recommendation outcomes, three unique owned-first outfit unlocks for the
+     Samba fixture, export/delete, default-off and `noindex` route, and no
+     private fixture contents in Mission Control.
+   - Human gate: review the prototype behavior and limitations. Do not enable
+     real accounts, real personal data, or public indexing in this slice.
 
 ## Next executable tasks
 
-1. **Reconcile and import the remaining style-guide sources**
-   - Current evidence: six complete seven-slide guides exist; the expected
-     other six are absent from the repository, visible branches, workspace,
-     and synced project sources.
-   - Outcome: import real files when supplied; never manufacture missing
-     guides.
+1. **Review and merge the Issue #57 personalization slice**
+   - Outcome: prove the signature “should I buy this?” interaction using only
+     canonical repository facts and deterministic fixture data.
 2. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-3. **Issue #57 — fixture-only personalization vertical slice**
-   - Dependency: Issue #62 completes its editorial/merge gate.
-   - Outcome: evaluate one prospective item against a five-item fixture
-     wardrobe and return explainable compatibility, Outfit Unlocks,
-     redundancy/gap, and buy/wait/alternative/skip evidence behind a
-     default-off flag.
+3. **Define the public/private recommendation API boundary**
+   - Dependency: Issue #57 review results.
+   - Outcome: versioned product and recommendation responses that expose only
+     minimum necessary wardrobe evidence to future web/app/extension clients.
+4. **Reconcile and import remaining style-guide sources when real files exist**
+   - Current evidence: six complete seven-slide guides exist; the expected
+     other six are absent from the repository, visible branches, workspace,
+     and synced project sources.
+   - Outcome: import real files when supplied; never manufacture missing
+     guides.
 
 ## Closed or blocked with evidence
 
@@ -46,6 +50,11 @@ action from current evidence.
 - **Issue #71:** closed by merged PR #73. The live feed now contains real
   Guide Factory evidence and fail-closed image/affiliate sources; the first
   post-merge refresh completed successfully.
+- **Issue #62 / PR #68:** merged after editorial review and exact-product
+  correction. The current production guide gate is complete.
+- **Issue #76 / PR #77:** Mission Control startup no longer depends on a
+  third-party CDN and retries failed startup imports.
+- **PR #79:** sitemap routes now match the deployed `.dc.html` artifacts.
 - **Issue #33 — Chrome extension:** blocked by the personalization slice,
   public product/offer API, consent/privacy boundaries, and explicit browser
   permission and store-publication approval.
