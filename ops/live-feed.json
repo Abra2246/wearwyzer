@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T16:56:39.017Z",
+  "generatedAtIso": "2026-07-25T17:01:27.791Z",
   "overallState": "live",
   "ceo": {
-    "headline": "The latest deployment is failing health checks.",
-    "requiredAction": "Check the deploy-health-check workflow run and the last-known-healthy build.",
+    "headline": "PR #68 is awaiting review.",
+    "requiredAction": "Review the draft PR and either request changes or mark it ready: https://github.com/Abra2246/wearwyzer/pull/68",
     "activeWorkSummary": "PR #68 \"Recover completed style guides and add verified Samba pilot\" (draft)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T16:56:39.017Z",
+      "lastUpdatedIso": "2026-07-25T17:01:27.791Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
@@ -54,14 +54,14 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T16:56:39.017Z",
+      "lastUpdatedIso": "2026-07-25T17:01:27.791Z",
       "fetchOk": true,
       "data": {
-        "status": "failing",
-        "lastHealthyShaShort": null,
-        "lastDeployIso": "2026-07-25T16:56:39Z",
-        "ageMinutes": 0,
-        "pagesUrl": null
+        "status": "healthy",
+        "lastHealthyShaShort": "f8d1c51",
+        "lastDeployIso": "2026-07-25T16:56:52Z",
+        "ageMinutes": 5,
+        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
     },
@@ -91,6 +91,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:72",
+      "timestampIso": "2026-07-25T17:01:13Z",
+      "type": "pr-merged",
+      "summary": "PR #72 \"Prevent false-red deployment incidents while Pages is running\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/72"
+    },
+    {
+      "key": "deploy:f8d1c51",
+      "timestampIso": "2026-07-25T16:56:52Z",
+      "type": "deployed",
+      "summary": "Deployed build f8d1c51 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:2026-07-25T16:56:39Z",
       "timestampIso": "2026-07-25T16:56:39Z",
@@ -426,20 +440,6 @@
       "type": "pr-merged",
       "summary": "PR #35 \"Add Style Guides folder importer v1\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/35"
-    },
-    {
-      "key": "pr-merged:32",
-      "timestampIso": "2026-07-13T22:46:25Z",
-      "type": "pr-merged",
-      "summary": "PR #32 \"Add OpenAI Images API renderer behind Guide Factory\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/32"
-    },
-    {
-      "key": "pr-merged:30",
-      "timestampIso": "2026-07-13T18:11:48Z",
-      "type": "pr-merged",
-      "summary": "PR #30 \"Fix Deploy Health Check runtime-binding false positives\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/30"
     }
   ]
 }
