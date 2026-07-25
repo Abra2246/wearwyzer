@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T20:32:30.873Z",
+  "generatedAtIso": "2026-07-25T21:32:01.664Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#78 \"Make sitemap URLs match deployed Pages routes\" (no PR yet)"
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T20:32:30.873Z",
+      "lastUpdatedIso": "2026-07-25T21:32:01.664Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 78,
-          "title": "Make sitemap URLs match deployed Pages routes",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/78",
-          "updatedIso": "2026-07-25T20:32:03Z"
-        },
+        "automationState": "idle",
+        "activeIssue": null,
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -50,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T20:32:30.873Z",
+      "lastUpdatedIso": "2026-07-25T21:32:01.664Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "86c0e30",
         "lastDeployIso": "2026-07-25T20:29:01Z",
-        "ageMinutes": 3,
+        "ageMinutes": 63,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -64,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T20:32:30.873Z",
+      "lastUpdatedIso": "2026-07-25T21:32:01.664Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T20:32:30.873Z",
+      "lastUpdatedIso": "2026-07-25T21:32:01.664Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
