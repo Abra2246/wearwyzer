@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T22:31:56.314Z",
+  "generatedAtIso": "2026-07-25T23:11:55.482Z",
   "overallHealth": "yellow",
   "automationState": "idle",
   "activeWork": null,
@@ -10,8 +10,8 @@
     "blockedCount": 3
   },
   "ci": {
-    "status": "unknown",
-    "lastRunIso": "2026-07-25T22:31:52Z",
+    "status": "passing",
+    "lastRunIso": "2026-07-25T22:32:01Z",
     "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30177744013"
   },
   "deployment": {
