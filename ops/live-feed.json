@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T16:01:40.486Z",
+  "generatedAtIso": "2026-07-25T16:53:20.034Z",
   "overallState": "live",
   "ceo": {
-    "headline": "Everything is healthy — no action needed.",
-    "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "headline": "PR #70 is awaiting review.",
+    "requiredAction": "Review the draft PR and either request changes or mark it ready: https://github.com/Abra2246/wearwyzer/pull/70",
+    "activeWorkSummary": "PR #70 \"Document July 25 system gap analysis and execution queue\" (draft)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T16:01:40.486Z",
+      "lastUpdatedIso": "2026-07-25T16:53:20.034Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
+        "automationState": "review",
         "activeIssue": null,
         "queue": {
           "depth": 0,
@@ -24,15 +24,24 @@
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
-          "blockedCount": 3,
+          "blockedCount": 2,
           "stalledSinceIso": null,
           "rejections": []
         },
-        "pr": null,
+        "pr": {
+          "number": 70,
+          "title": "Document July 25 system gap analysis and execution queue",
+          "url": "https://github.com/Abra2246/wearwyzer/pull/70",
+          "isDraft": true,
+          "reviewDecision": null,
+          "mergeableState": "clean",
+          "createdIso": "2026-07-25T16:47:11Z",
+          "updatedIso": "2026-07-25T16:47:11Z"
+        },
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-23T20:23:31Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30041860662",
+          "latestRunIso": "2026-07-25T16:47:35Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30166323140/job/89699865360",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,13 +54,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T16:01:40.486Z",
+      "lastUpdatedIso": "2026-07-25T16:53:20.034Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "fceb9ec",
         "lastDeployIso": "2026-07-23T20:23:54Z",
-        "ageMinutes": 2618,
+        "ageMinutes": 2669,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -82,6 +91,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:69",
+      "timestampIso": "2026-07-25T16:53:04Z",
+      "type": "pr-merged",
+      "summary": "PR #69 \"Fix Mission Control visibility for open review work\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/69"
+    },
+    {
+      "key": "pr-opened:70",
+      "timestampIso": "2026-07-25T16:47:11Z",
+      "type": "pr-opened",
+      "summary": "PR #70 \"Document July 25 system gap analysis and execution queue\" opened (draft).",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/70"
+    },
     {
       "key": "deploy:fceb9ec",
       "timestampIso": "2026-07-23T20:23:54Z",
@@ -417,20 +440,6 @@
       "type": "pr-merged",
       "summary": "PR #20 \"Add autonomous engineering queue v1\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/20"
-    },
-    {
-      "key": "pr-merged:15",
-      "timestampIso": "2026-07-13T01:54:34Z",
-      "type": "pr-merged",
-      "summary": "PR #15 \"feat: Hero Product v1 — first page driven by the Knowledge Graph\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/15"
-    },
-    {
-      "key": "pr-merged:13",
-      "timestampIso": "2026-07-12T20:54:20Z",
-      "type": "pr-merged",
-      "summary": "PR #13 \"feat: add Knowledge Graph v1 additive foundation\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/13"
     }
   ]
 }
