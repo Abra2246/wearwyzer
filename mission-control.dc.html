@@ -177,22 +177,42 @@ class Component extends DCLogic {
     doc: null,
     error: null,
     nowMs: null,
-    isFetching: false,
+    isFetching: true,
     consecutiveFailures: 0,
     lastSuccessMs: null,
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     this.setState({ nowMs: Date.now() });
-    this._lib = await import('./scripts/ops-live-refresh-state.mjs');
-    this._tickTimer = setInterval(() => this.setState({ nowMs: Date.now() }), 15000);
-    this.poll();
+    this.initialize();
   }
 
   componentWillUnmount() {
     clearInterval(this._tickTimer);
     clearTimeout(this._pollTimeout);
+    clearTimeout(this._initializeTimeout);
   }
+
+  initialize = async () => {
+    this.setState({ isFetching: true });
+    try {
+      // A Pages deployment can briefly expose the HTML before this module.
+      // Cache-bust every boot attempt so one transient 404 is never cached as
+      // a permanent Loading screen.
+      this._lib = await import('./scripts/ops-live-refresh-state.mjs?boot=' + Date.now());
+      this._tickTimer = this._tickTimer || setInterval(() => this.setState({ nowMs: Date.now() }), 15000);
+      this.poll();
+    } catch (err) {
+      const nextFailures = this.state.consecutiveFailures + 1;
+      this.setState({
+        error: 'Dashboard startup failed; retrying automatically.',
+        isFetching: false,
+        consecutiveFailures: nextFailures,
+        nowMs: Date.now(),
+      });
+      this._initializeTimeout = setTimeout(this.initialize, Math.min(5000 * Math.pow(2, nextFailures - 1), 45000));
+    }
+  };
 
   poll = async () => {
     const lib = this._lib;
@@ -238,6 +258,7 @@ class Component extends DCLogic {
     };
 
     if (!doc) {
+      const startupFailed = !!error;
       return {
         ...base,
         ceoCardBg: '#FFFDF8',
@@ -245,8 +266,8 @@ class Component extends DCLogic {
         ceoDotColor: '#B7B0A2',
         ceoTextColor: '#0B0B0B',
         ceoMutedColor: '#68645D',
-        overallStateLabel: 'Loading…',
-        ceoHeadline: 'Fetching the live feed…',
+        overallStateLabel: startupFailed ? 'Unavailable' : 'Loading…',
+        ceoHeadline: startupFailed ? 'Dashboard could not start. Retrying automatically…' : 'Fetching the live feed…',
         hasRequiredAction: false,
         ceoRequiredAction: '',
         requiredActionBg: 'transparent',
