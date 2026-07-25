@@ -321,17 +321,28 @@ are unmodified by this change, per issue #42's own product principle
 `mission-control.dc.html` links to `ops.dc.html` in its footer for easy
 side-by-side comparison during the trial period.
 
-## What's deliberately deferred to Phase 3+
+## Phase 3 production evidence
 
-- `content` (Guide Factory stage/queue), `image` (renderer spend/failures),
-  `affiliate` (link-engine coverage/broken links) sources — all three exist
-  as real data already (`ops/status.json`'s `guideFactory`/`imageRenderer`/
-  `linkEngine` fields), but issue #42 scopes wiring them into the *live*,
-  independently-stale-tracked model to Phase 3. Wiring them now would mean
-  either re-deriving freshness semantics for three more sources without the
-  Phase 3 design conversation the issue explicitly calls for, or silently
-  reusing v1's single-clock semantics under a v2 label — both worse than an
-  honest `not-wired` card.
+Mission Control now wires three additional repository-backed sources:
+
+- **Guide Factory** reads the job manifests and sanitized guide/renderer
+  events. It shows the current and last job, stage/result, queued count, and
+  last meaningful event.
+- **Image renderer** reads the append-only spend ledger. Spend, render, and
+  failure totals are numeric only when that artifact exists; execution mode
+  remains `unavailable` for older entries that did not record it.
+- **Affiliate links** reads the link-engine report and shows portfolio and
+  per-guide coverage plus verified, unverified, and broken counts. Failure
+  classes not present in the v1 report (stale and out-of-stock) remain
+  explicitly unavailable.
+
+All three sources use the same last-known-good envelope as engineering and
+deployment. Missing or malformed artifacts never turn into `$0`, `0%`, or a
+healthy run. An empty, successfully read Guide Factory queue is a real zero;
+an absent renderer ledger or affiliate report is unavailable.
+
+## What's deliberately deferred to Phase 4+
+
 - CEO summary polish and dedicated mobile QA pass beyond "loads correctly
   and shows real content at a 375px viewport" — Phase 4.
 - A true PWA (manifest, service worker) — out of scope for both v1 and v2;

@@ -116,6 +116,26 @@ test('a wired source with an out-of-enum state is rejected', () => {
   assert.ok(result.errors.some((e) => e.includes('sources.engineering.state')));
 });
 
+test('wired production sources accept their closed evidence shapes and reject unknown fields', () => {
+  const doc = validDoc();
+  doc.sources.content = {
+    wired: true, state: 'live', lastUpdatedIso: NOW, fetchOk: true, note: null,
+    data: { state: 'idle', currentJob: null, lastJob: null, queuedCount: 0, lastMeaningfulEventIso: null },
+  };
+  doc.sources.image = {
+    wired: true, state: 'live', lastUpdatedIso: NOW, fetchOk: true, note: null,
+    data: { state: 'unavailable', mode: 'unavailable', lastResult: 'unavailable', monthlySpendUsd: null, monthlyCapUsd: 30, renderCount: null, failureCount: null, lastRunIso: null },
+  };
+  doc.sources.affiliate = {
+    wired: true, state: 'live', lastUpdatedIso: NOW, fetchOk: true, note: null,
+    data: { state: 'unavailable', guideCoverage: [], portfolioCoveragePct: null, targetMinPct: 80, targetMaxPct: 90, verifiedCount: null, unverifiedCount: null, staleCount: null, brokenCount: null, outOfStockCount: null, reportIso: null },
+  };
+  assert.deepEqual(validateLiveFeedShape(doc).errors, []);
+
+  doc.sources.image.data.apiKey = 'hidden';
+  assert.ok(validateLiveFeedShape(doc).errors.some((error) => error.includes('unexpected key "apiKey"')));
+});
+
 test('engineering queue stalledSinceIso accepts null or a valid timestamp and rejects invalid values', () => {
   const valid = validDoc();
   valid.sources.engineering.data.queue.stalledSinceIso = NOW;

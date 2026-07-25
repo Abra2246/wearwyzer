@@ -335,6 +335,9 @@ export function buildLiveFeed(sources = {}, { now } = {}) {
     previousDoc = null,
     statusEvents = [],
     feedCandidates = [],
+    content = null,
+    image = null,
+    affiliate = null,
   } = sources;
 
   const previousSources = previousDoc && previousDoc.sources ? previousDoc.sources : {};
@@ -360,9 +363,30 @@ export function buildLiveFeed(sources = {}, { now } = {}) {
   const sourcesOut = {
     engineering: engineeringSource,
     deployment: deploymentSource,
-    content: buildNotWiredSource('Guide Factory stage/queue integration ships in Phase 3 (issue #42).'),
-    image: buildNotWiredSource('Image renderer spend/render integration ships in Phase 3 (issue #42).'),
-    affiliate: buildNotWiredSource('Link-engine coverage integration ships in Phase 3 (issue #42).'),
+    content: buildSource({
+      name: 'content',
+      fetchOk: !!(content && content.fetchOk),
+      freshData: content ? content.data : null,
+      previous: previousSources.content || null,
+      now: nowIso,
+      thresholds: DEFAULT_THRESHOLDS.engineering,
+    }),
+    image: buildSource({
+      name: 'image',
+      fetchOk: !!(image && image.fetchOk),
+      freshData: image ? image.data : null,
+      previous: previousSources.image || null,
+      now: nowIso,
+      thresholds: DEFAULT_THRESHOLDS.engineering,
+    }),
+    affiliate: buildSource({
+      name: 'affiliate',
+      fetchOk: !!(affiliate && affiliate.fetchOk),
+      freshData: affiliate ? affiliate.data : null,
+      previous: previousSources.affiliate || null,
+      now: nowIso,
+      thresholds: DEFAULT_THRESHOLDS.engineering,
+    }),
   };
 
   const overallState = aggregateOverallState(sourcesOut);

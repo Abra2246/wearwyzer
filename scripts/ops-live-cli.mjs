@@ -18,7 +18,7 @@
 //
 // Canonical spec: docs/OPS_DASHBOARD_V2.md
 
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { readEvents } from './record-status-event.mjs';
@@ -33,12 +33,16 @@ import { validateLiveFeedShape, findSecretLikeValues } from './ops-live-schema.m
 import { deriveAutomationState, truncateSummary } from './ops-status-builder.mjs';
 import { clientFromEnv, repoFromEnv } from './queue-github-client.mjs';
 import { INCIDENT_LABEL, summarizeIssueEligibility } from './queue-rules.mjs';
+import { readLedger } from './openai-spend-ledger.mjs';
+import { summarizeAffiliate, summarizeGuideFactory, summarizeImageRenderer } from './ops-production-evidence.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
 const CI_WORKFLOW_FILE = 'content-validation.yml';
 const MAIN_BRANCH = 'main';
 export const LIVE_FEED_OUTPUT_PATH = path.join(ROOT, 'ops', 'live-feed.json');
+const GUIDE_JOBS_DIR = path.join(ROOT, 'automation', 'guide-jobs');
+const LINK_ENGINE_REPORT_PATH = path.join(ROOT, 'automation', 'status', 'link-engine-report.json');
 
 function parseArgs(argv) {
   const args = {};
@@ -81,6 +85,53 @@ function loadPreviousDoc() {
 
 function shortSha(sha) {
   return typeof sha === 'string' && sha.length > 0 ? sha.slice(0, 7) : null;
+}
+
+export function loadProductionSources({ now, statusEvents = [] } = {}) {
+  let jobsAvailable = true;
+  let jobs = [];
+  try {
+    if (!existsSync(GUIDE_JOBS_DIR)) {
+      jobsAvailable = false;
+    } else {
+      jobs = readdirSync(GUIDE_JOBS_DIR)
+        .filter((name) => name.endsWith('.json'))
+        .map((name) => JSON.parse(readFileSync(path.join(GUIDE_JOBS_DIR, name), 'utf8')));
+    }
+  } catch {
+    jobsAvailable = false;
+  }
+
+  let ledgerAvailable = existsSync(path.join(ROOT, 'automation', 'status', 'openai-spend.jsonl'));
+  let ledger = [];
+  try {
+    if (ledgerAvailable) ledger = readLedger({});
+  } catch {
+    ledgerAvailable = false;
+  }
+
+  let affiliateAvailable = existsSync(LINK_ENGINE_REPORT_PATH);
+  let affiliateReport = null;
+  try {
+    if (affiliateAvailable) affiliateReport = JSON.parse(readFileSync(LINK_ENGINE_REPORT_PATH, 'utf8'));
+  } catch {
+    affiliateAvailable = false;
+  }
+
+  return {
+    content: {
+      fetchOk: jobsAvailable,
+      data: jobsAvailable ? summarizeGuideFactory({ jobs, statusEvents, available: true }) : null,
+    },
+    image: {
+      fetchOk: ledgerAvailable,
+      data: ledgerAvailable ? summarizeImageRenderer({ ledger, available: true, now }) : null,
+    },
+    affiliate: {
+      fetchOk: affiliateAvailable,
+      data: affiliateAvailable ? summarizeAffiliate(affiliateReport, { available: true }) : null,
+    },
+  };
 }
 
 function mapPr(pr, reviewDecision) {
@@ -231,13 +282,14 @@ export async function generateLiveFeed({ now } = {}) {
   const nowIso = now || new Date().toISOString();
   const previousDoc = loadPreviousDoc();
   const statusEvents = readEvents({});
+  const productionSources = loadProductionSources({ now: nowIso, statusEvents });
 
   let client;
   try {
     client = clientFromEnv();
   } catch {
     console.error('GITHUB_TOKEN/GITHUB_REPOSITORY not set — engineering and deployment sources will degrade to last-known-good.');
-    return buildLiveFeed({ engineering: null, deployment: null, previousDoc, statusEvents, feedCandidates: [] }, { now: nowIso });
+    return buildLiveFeed({ engineering: null, deployment: null, previousDoc, statusEvents, feedCandidates: [], ...productionSources }, { now: nowIso });
   }
 
   const previousDispatchStalledSinceIso = previousDoc?.sources?.engineering?.data?.queue?.stalledSinceIso || null;
@@ -281,6 +333,7 @@ export async function generateLiveFeed({ now } = {}) {
       previousDoc,
       statusEvents,
       feedCandidates,
+      ...productionSources,
     },
     { now: nowIso }
   );
@@ -313,7 +366,7 @@ async function main() {
   }
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === path.resolve(process.argv[1])) {
   main().catch((err) => {
     console.error(err.stack || err.message);
     process.exit(1);

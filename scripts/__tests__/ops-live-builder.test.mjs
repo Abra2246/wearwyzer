@@ -367,6 +367,40 @@ test('buildLiveFeed: first-ever run with no token/no data at all -> fully offlin
   assert.deepEqual(validateLiveFeedShape(doc).errors, []);
 });
 
+test('buildLiveFeed: production evidence preserves last-known-good when a later artifact read fails', () => {
+  const contentData = {
+    state: 'idle',
+    currentJob: null,
+    lastJob: null,
+    queuedCount: 0,
+    lastMeaningfulEventIso: null,
+  };
+  const previousDoc = buildLiveFeed(
+    {
+      engineering: null,
+      deployment: null,
+      content: { fetchOk: true, data: contentData },
+      image: null,
+      affiliate: null,
+    },
+    { now: minutesAgo(NOW, 15) }
+  );
+  const nextDoc = buildLiveFeed(
+    {
+      engineering: null,
+      deployment: null,
+      content: { fetchOk: false, data: null },
+      image: null,
+      affiliate: null,
+      previousDoc,
+    },
+    { now: NOW }
+  );
+  assert.equal(nextDoc.sources.content.state, 'delayed');
+  assert.deepEqual(nextDoc.sources.content.data, contentData);
+  assert.equal(nextDoc.sources.content.fetchOk, false);
+});
+
 test('buildNotWiredSource always has the not-wired shape', () => {
   const source = buildNotWiredSource('Phase 3.');
   assert.equal(source.wired, false);

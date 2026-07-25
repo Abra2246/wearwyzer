@@ -1,5 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import { deploymentStatusFromState, loadEngineeringState } from '../ops-live-cli.mjs';
 
 const NOW = '2026-07-25T16:30:00.000Z';
@@ -87,4 +90,17 @@ test('deployment status distinguishes pending work from a real failure', () => {
   assert.equal(deploymentStatusFromState('queued'), 'unknown');
   assert.equal(deploymentStatusFromState('pending'), 'unknown');
   assert.equal(deploymentStatusFromState(null), 'unknown');
+});
+
+test('relative-path CLI invocation actually executes instead of silently exiting', () => {
+  const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const result = spawnSync(
+    process.execPath,
+    ['scripts/ops-live-cli.mjs', '--dry-run', '--now', NOW],
+    { cwd: root, encoding: 'utf8', env: { ...process.env, GITHUB_TOKEN: '', GITHUB_REPOSITORY: '' } }
+  );
+  assert.equal(result.status, 0, result.stderr);
+  const doc = JSON.parse(result.stdout);
+  assert.equal(doc.generatedAtIso, NOW);
+  assert.equal(doc.sources.content.wired, true);
 });

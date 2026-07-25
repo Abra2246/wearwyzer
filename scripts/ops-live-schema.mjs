@@ -77,6 +77,19 @@ const CI_KEYS = Object.freeze(['status', 'latestRunIso', 'latestRunUrl', 'recent
 const HANDOFF_KEYS = Object.freeze(['stalled', 'reason']);
 
 const DEPLOYMENT_DATA_KEYS = Object.freeze(['status', 'lastHealthyShaShort', 'lastDeployIso', 'ageMinutes', 'pagesUrl']);
+const CONTENT_DATA_KEYS = Object.freeze(['state', 'currentJob', 'lastJob', 'queuedCount', 'lastMeaningfulEventIso']);
+const GUIDE_JOB_KEYS = Object.freeze(['jobId', 'stage', 'result', 'updatedIso']);
+const CONTENT_STATES = Object.freeze(['idle', 'in-progress', 'needs-human', 'unavailable']);
+const IMAGE_DATA_KEYS = Object.freeze(['state', 'mode', 'lastResult', 'monthlySpendUsd', 'monthlyCapUsd', 'renderCount', 'failureCount', 'lastRunIso']);
+const IMAGE_STATES = Object.freeze(['idle', 'active', 'budget-exceeded', 'unavailable']);
+const IMAGE_MODES = Object.freeze(['simulation', 'dry-run', 'live', 'unavailable']);
+const IMAGE_RESULTS = Object.freeze(['accepted', 'rejected', 'unavailable']);
+const AFFILIATE_DATA_KEYS = Object.freeze([
+  'state', 'guideCoverage', 'portfolioCoveragePct', 'targetMinPct', 'targetMaxPct',
+  'verifiedCount', 'unverifiedCount', 'staleCount', 'brokenCount', 'outOfStockCount', 'reportIso',
+]);
+const GUIDE_COVERAGE_KEYS = Object.freeze(['guideId', 'coveragePct', 'meetsTarget']);
+const AFFILIATE_STATES = Object.freeze(['on-target', 'below-target', 'unavailable']);
 
 const FEED_EVENT_KEYS = Object.freeze(['key', 'timestampIso', 'type', 'summary', 'url']);
 
@@ -171,6 +184,49 @@ function validateWiredSource(source, name, errors) {
     checkClosedShape(source.data, DEPLOYMENT_DATA_KEYS, `sources.deployment.data`, errors);
     if (isPlainObject(source.data) && !DEPLOYMENT_STATUSES.includes(source.data.status)) {
       errors.push(`sources.deployment.data.status "${source.data.status}" must be one of ${DEPLOYMENT_STATUSES.join(', ')}`);
+    }
+  }
+
+  if (name === 'content' && source.data !== null) {
+    checkClosedShape(source.data, CONTENT_DATA_KEYS, 'sources.content.data', errors);
+    if (isPlainObject(source.data)) {
+      if (!CONTENT_STATES.includes(source.data.state)) errors.push(`sources.content.data.state must be one of ${CONTENT_STATES.join(', ')}`);
+      checkNullableClosedShape(source.data.currentJob, GUIDE_JOB_KEYS, 'sources.content.data.currentJob', errors);
+      checkNullableClosedShape(source.data.lastJob, GUIDE_JOB_KEYS, 'sources.content.data.lastJob', errors);
+      if (source.data.queuedCount !== null && (!Number.isInteger(source.data.queuedCount) || source.data.queuedCount < 0)) {
+        errors.push('sources.content.data.queuedCount must be a non-negative integer or null');
+      }
+    }
+  }
+
+  if (name === 'image' && source.data !== null) {
+    checkClosedShape(source.data, IMAGE_DATA_KEYS, 'sources.image.data', errors);
+    if (isPlainObject(source.data)) {
+      if (!IMAGE_STATES.includes(source.data.state)) errors.push(`sources.image.data.state must be one of ${IMAGE_STATES.join(', ')}`);
+      if (!IMAGE_MODES.includes(source.data.mode)) errors.push(`sources.image.data.mode must be one of ${IMAGE_MODES.join(', ')}`);
+      if (!IMAGE_RESULTS.includes(source.data.lastResult)) errors.push(`sources.image.data.lastResult must be one of ${IMAGE_RESULTS.join(', ')}`);
+      for (const key of ['monthlySpendUsd', 'monthlyCapUsd', 'renderCount', 'failureCount']) {
+        if (source.data[key] !== null && (typeof source.data[key] !== 'number' || source.data[key] < 0)) {
+          errors.push(`sources.image.data.${key} must be a non-negative number or null`);
+        }
+      }
+    }
+  }
+
+  if (name === 'affiliate' && source.data !== null) {
+    checkClosedShape(source.data, AFFILIATE_DATA_KEYS, 'sources.affiliate.data', errors);
+    if (isPlainObject(source.data)) {
+      if (!AFFILIATE_STATES.includes(source.data.state)) errors.push(`sources.affiliate.data.state must be one of ${AFFILIATE_STATES.join(', ')}`);
+      if (!Array.isArray(source.data.guideCoverage)) {
+        errors.push('sources.affiliate.data.guideCoverage must be an array');
+      } else {
+        source.data.guideCoverage.forEach((entry, index) => checkClosedShape(entry, GUIDE_COVERAGE_KEYS, `sources.affiliate.data.guideCoverage[${index}]`, errors));
+      }
+      for (const key of ['portfolioCoveragePct', 'targetMinPct', 'targetMaxPct', 'verifiedCount', 'unverifiedCount', 'staleCount', 'brokenCount', 'outOfStockCount']) {
+        if (source.data[key] !== null && (typeof source.data[key] !== 'number' || source.data[key] < 0)) {
+          errors.push(`sources.affiliate.data.${key} must be a non-negative number or null`);
+        }
+      }
     }
   }
 }

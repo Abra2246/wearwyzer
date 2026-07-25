@@ -5,18 +5,12 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 25, 2026
-**Evidence baseline:** `main` at `e6074a2`, GitHub PR/issue/Actions audit, and
-local validation of PRs #68 and #69
+**Evidence baseline:** `main` at `faed7b9`, GitHub PR/issue/Actions audit, and
+445 passing local tests on `codex/issue-71-mission-control-phase3`
 
 ## Active review gates
 
-1. **PR #69 — Mission Control open-review truthfulness**
-   - State: low-risk draft PR; 437 local tests pass.
-   - Outcome: show every open PR, including unlabeled drafts, and report its
-     current head checks instead of an older `main` workflow.
-   - Next action: wait for CI, review the diff, then mark ready and merge if
-     green.
-2. **PR #68 / Issue #62 — recovered guides and verified Samba pilot**
+1. **PR #68 / Issue #62 — recovered guides and verified Samba pilot**
    - State: draft, mergeable, and all five GitHub checks pass.
    - Evidence: 438 tests pass on the branch; content, site, Knowledge Graph,
      hero-page, and asset validation pass; image spend is $0.
@@ -27,11 +21,16 @@ local validation of PRs #68 and #69
 
 ## Next executable tasks
 
-1. **Wire Mission Control Phase 3 sources**
-   - Dependency: PR #69 merged.
-   - Outcome: replace the `not-wired` Guide Factory, image-renderer, and
-     affiliate cards with sanitized repository-backed status and regression
-     tests.
+1. **Issue #71 — Mission Control Phase 3 sources**
+   - State: the hosted automation failed its branch/PR handoff after 12
+     permission denials; direct implementation is complete locally on
+     `codex/issue-71-mission-control-phase3`.
+   - Evidence: 445 tests, authenticated-free live-feed dry run, static-site
+     QA, and whitespace validation pass.
+   - Outcome: Guide Factory, image-renderer, and affiliate cards now use
+     sanitized repository artifacts; missing spend/coverage evidence remains
+     unavailable rather than becoming `$0` or `0%`.
+   - Next action: open a small review PR, verify CI, and merge after review.
 2. **Reconcile and import the remaining style-guide sources**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
