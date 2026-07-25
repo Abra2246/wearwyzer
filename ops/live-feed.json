@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T18:11:12.914Z",
+  "generatedAtIso": "2026-07-25T18:42:27.486Z",
   "overallState": "live",
   "ceo": {
     "headline": "PR #68 is awaiting review.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T18:11:12.914Z",
+      "lastUpdatedIso": "2026-07-25T18:42:27.486Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
@@ -54,13 +54,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T18:11:12.914Z",
+      "lastUpdatedIso": "2026-07-25T18:42:27.486Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "18ae86d",
         "lastDeployIso": "2026-07-25T17:24:49Z",
-        "ageMinutes": 46,
+        "ageMinutes": 78,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -68,7 +68,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T18:11:12.914Z",
+      "lastUpdatedIso": "2026-07-25T18:42:27.486Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -97,6 +97,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:77",
+      "timestampIso": "2026-07-25T18:42:13Z",
+      "type": "pr-merged",
+      "summary": "PR #77 \"Make Mission Control boot resilient\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/77"
+    },
     {
       "key": "deploy:18ae86d",
       "timestampIso": "2026-07-25T17:24:49Z",
@@ -439,13 +446,6 @@
       "type": "pr-merged",
       "summary": "PR #43 \"feat(ops): Mission Control v2 live operations dashboard — Phase 1 + 2\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/43"
-    },
-    {
-      "key": "deploy:78cd5c6",
-      "timestampIso": "2026-07-14T20:13:19Z",
-      "type": "deployed",
-      "summary": "Deployed build 78cd5c6 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
