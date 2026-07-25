@@ -1,31 +1,31 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T23:30:38.461Z",
+  "generatedAtIso": "2026-07-25T23:40:21.335Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "1 eligible issue(s) queued, none active."
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:30:38.461Z",
+      "lastUpdatedIso": "2026-07-25T23:40:21.335Z",
       "fetchOk": true,
       "data": {
-        "automationState": "queued",
+        "automationState": "idle",
         "activeIssue": null,
         "queue": {
-          "depth": 1,
-          "readyCount": 1,
-          "labeledReadyCount": 1,
-          "eligibleReadyCount": 1,
+          "depth": 0,
+          "readyCount": 0,
+          "labeledReadyCount": 0,
+          "eligibleReadyCount": 0,
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
           "blockedCount": 2,
-          "stalledSinceIso": "2026-07-25T23:30:38.461Z",
+          "stalledSinceIso": null,
           "rejections": []
         },
         "pr": null,
@@ -45,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:30:38.461Z",
+      "lastUpdatedIso": "2026-07-25T23:40:21.335Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "ba7bd11",
-        "lastDeployIso": "2026-07-25T23:26:49Z",
-        "ageMinutes": 4,
+        "lastHealthyShaShort": "da98279",
+        "lastDeployIso": "2026-07-25T23:31:01Z",
+        "ageMinutes": 9,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:30:38.461Z",
+      "lastUpdatedIso": "2026-07-25T23:40:21.335Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:30:38.461Z",
+      "lastUpdatedIso": "2026-07-25T23:40:21.335Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +126,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:da98279",
+      "timestampIso": "2026-07-25T23:31:01Z",
+      "type": "deployed",
+      "summary": "Deployed build da98279 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "ci-run:30179517480",
       "timestampIso": "2026-07-25T23:30:25Z",
@@ -468,13 +475,6 @@
       "type": "issue-started",
       "summary": "Issue #55 \"Expose queue eligibility and malformed-ready issues in Mission Control\" started.",
       "url": "https://github.com/Abra2246/wearwyzer/issues/55"
-    },
-    {
-      "key": "deploy:619de1d",
-      "timestampIso": "2026-07-23T18:35:25Z",
-      "type": "deployed",
-      "summary": "Deployed build 619de1d — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
