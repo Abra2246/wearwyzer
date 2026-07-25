@@ -353,4 +353,342 @@ export const guides = [
     tags: [],
     comingSoon: true,
   },
+  {
+    id: "adidas-samba-og-b75806",
+    heroProductId: "adidas-samba-og-b75806",
+    title: "5 Ways to Wear adidas Sambas Without Looking Like Everyone Else",
+    slug: "guide-adidas-samba-og-b75806.dc.html",
+    verdict: "Five distinct menswear outfits that make the adidas Samba OG feel intentional rather than interchangeable with every other Samba outfit online.",
+    description: "5 ways to wear Sambas without looking like everyone else.",
+    coverImage: "assets/images/guides/adidas-samba-og-b75806/cover.png",
+    slideImages: [
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-01.png",
+        label: "5 Ways to Wear Sambas",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-02.png",
+        label: "Linen Weekend",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-03.png",
+        label: "Internship Casual",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-04.png",
+        label: "Terrace Knit",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-05.png",
+        label: "Blackout Minimal",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-06.png",
+        label: "City Utility",
+      },
+      {
+        src: "assets/images/guides/adidas-samba-og-b75806/slide-07.png",
+        label: "Shop the Look",
+      },
+    ],
+    outfitCount: 5,
+    outfits: [
+      {
+        name: "Clean Summer Uniform",
+        when: "Warm city days, casual lunches, and weekend plans.",
+        why: "Navy pleated shorts create clear contrast with the white-and-black shoe while the cream tee keeps the look quiet and intentional.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Oversized Cream Tee",
+            productId: "cream-tee",
+          },
+          {
+            name: "Navy Pleated Shorts",
+            productId: "af-pleated-shorts",
+          },
+          {
+            name: "Minimal Watch",
+            productId: "minimal-watch",
+          },
+        ],
+      },
+      {
+        name: "Relaxed Creative Office",
+        when: "Internships, creative offices, and casual client meetings.",
+        why: "The Oxford shirt and tailored trousers raise the formality while the low-profile Samba keeps the outfit contemporary rather than corporate.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Light Blue Oxford Shirt",
+            productId: "oxford-shirt",
+          },
+          {
+            name: "Black Tailored Trousers",
+            productId: "black-trousers",
+          },
+        ],
+      },
+      {
+        name: "Terrace Influence, Grown Up",
+        when: "Match days, coffee runs, and relaxed afternoons.",
+        why: "A knit polo and straight denim reference the shoe's terrace history without relying on a retro costume or loud branding.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Black Knit Polo",
+            productId: "knit-polo",
+          },
+          {
+            name: "Light Wash Jeans",
+            productId: "light-jeans",
+          },
+          {
+            name: "Neutral Cap",
+            productId: "cap",
+          },
+        ],
+      },
+      {
+        name: "Minimal Evening",
+        when: "Casual dinners, gallery openings, and low-key dates.",
+        why: "A controlled black palette lets the gum sole provide warmth and keeps the familiar sneaker from reading as an afterthought.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Black Knit Polo",
+            productId: "knit-polo",
+          },
+          {
+            name: "Black Tailored Trousers",
+            productId: "black-trousers",
+          },
+          {
+            name: "Minimal Watch",
+            productId: "minimal-watch",
+          },
+        ],
+      },
+      {
+        name: "Weekend City Utility",
+        when: "Travel days, errands, and long weekends in the city.",
+        why: "A light overshirt and technical trousers introduce utility and texture without turning the Samba into a generic jeans-and-tee uniform.",
+        items: [
+          {
+            name: "adidas Samba OG Shoes",
+            productId: "adidas-samba-og-b75806",
+          },
+          {
+            name: "Lightweight Overshirt",
+            productId: "gap-overshirt-beige",
+          },
+          {
+            name: "Oversized Cream Tee",
+            productId: "cream-tee",
+          },
+          {
+            name: "Black Tech Pants",
+            productId: "tech-pants",
+          },
+          {
+            name: "Minimal Backpack",
+            productId: "backpack",
+          },
+        ],
+      },
+    ],
+    styleNotes: ["Keep the exact B75806 Cloud White / Core Black / gum colorway consistent.", "One outfit per styling slide; do not collapse the five looks into a collage.", "Menswear-first; no female-only or female-targeted styling.", "Do not invent or distort adidas branding in later image generation.", "The deterministic pilot assets prove structure and copy only; photoreal editorial image generation remains separately review-gated."],
+    relatedProducts: ["adidas-samba-og-b75806", "cream-tee", "af-pleated-shorts", "minimal-watch", "oxford-shirt", "black-trousers", "knit-polo", "light-jeans", "cap", "gap-overshirt-beige", "tech-pants", "backpack"],
+    instagramUrl: "",
+    publishedDate: null,
+    tags: ["Sneakers", "Everyday", "Summer", "Business casual", "Date night"],
+    comingSoon: false,
+  },
+  {
+    id: "dickies-874-dark-navy",
+    heroProductId: "dickies-874-dark-navy",
+    title: "5 Ways to Style Dickies 874 Work Pants",
+    slug: "guide-dickies-874-dark-navy.dc.html",
+    productName: "Original 874® Work Pants",
+    brand: "Dickies",
+    colorway: "Dark Navy",
+    category: "Pants",
+    verdict: "The 874 moves well beyond a work uniform when its straight, structured shape is balanced with cleaner layers, varied footwear, and controlled proportions.",
+    description: "Five menswear outfits that take Dickies 874 Work Pants from city uniform to smart casual, skate influence, and summer minimalism.",
+    coverImage: "assets/images/guides/dickies-874-dark-navy/cover.png",
+    slideImages: [
+      { src: "assets/images/guides/dickies-874-dark-navy/slide-01.png", label: "Cover" },
+      { src: "assets/images/guides/dickies-874-dark-navy/slide-02.png", label: "Clean City Uniform" },
+      { src: "assets/images/guides/dickies-874-dark-navy/slide-03.png", label: "Modern Workwear" },
+      { src: "assets/images/guides/dickies-874-dark-navy/slide-04.png", label: "Smart Casual" },
+      { src: "assets/images/guides/dickies-874-dark-navy/slide-05.png", label: "Skate Influence, Grown Up" },
+      { src: "assets/images/guides/dickies-874-dark-navy/slide-06.png", label: "Summer Minimalist" },
+      { src: "assets/images/guides/dickies-874-dark-navy/slide-07.png", label: "Shop the Look" },
+    ],
+    outfitCount: 5,
+    bestFor: "Everyday · Workwear · Smart casual · Summer · Skate-inspired",
+    outfits: [
+      {
+        name: "Clean City Uniform",
+        when: "Daily city wear, errands, and casual meetups.",
+        why: "A clean tee and restrained accessories let the structured pant silhouette look intentional rather than uniform-like.",
+        items: [
+          { name: "Original 874® Work Pants", productId: "dickies-874-dark-navy" },
+          { name: "Oversized Cream Tee", productId: "cream-tee" },
+          { name: "Minimal Watch", productId: "minimal-watch" },
+        ],
+      },
+      {
+        name: "Modern Workwear",
+        when: "Cooler weekends and casual creative settings.",
+        why: "A single textured overshirt acknowledges the 874's workwear roots without turning the outfit into a costume.",
+        items: [
+          { name: "Original 874® Work Pants", productId: "dickies-874-dark-navy" },
+          { name: "Lightweight Overshirt", productId: "gap-overshirt-beige" },
+          { name: "Oversized Cream Tee", productId: "cream-tee" },
+        ],
+      },
+      {
+        name: "Smart Casual",
+        when: "Dinner, a creative office, or a casual date.",
+        why: "A knit polo raises the formality while the 874 keeps the outfit grounded and contemporary.",
+        items: [
+          { name: "Original 874® Work Pants", productId: "dickies-874-dark-navy" },
+          { name: "Black Knit Polo", productId: "knit-polo" },
+          { name: "Minimal Watch", productId: "minimal-watch" },
+        ],
+      },
+      {
+        name: "Skate Influence, Grown Up",
+        when: "Weekends, concerts, and relaxed city plans.",
+        why: "Relaxed layers and a cap nod to skate history while the controlled palette keeps the result mature.",
+        items: [
+          { name: "Original 874® Work Pants", productId: "dickies-874-dark-navy" },
+          { name: "Lightweight Overshirt", productId: "gap-overshirt-beige" },
+          { name: "Neutral Cap", productId: "cap" },
+        ],
+      },
+      {
+        name: "Summer Minimalist",
+        when: "Warm days and lightweight evening plans.",
+        why: "A breathable, simple top and minimal accessories prove the structured 874 can work without heavy layering.",
+        items: [
+          { name: "Original 874® Work Pants", productId: "dickies-874-dark-navy" },
+          { name: "Oversized Cream Tee", productId: "cream-tee" },
+          { name: "Minimal Watch", productId: "minimal-watch" },
+        ],
+      },
+    ],
+    styleNotes: [
+      "Keep the authentic high-rise, relaxed seat and thigh, and straight leg with slight taper.",
+      "Use one workwear signal at a time; avoid costume styling.",
+      "The completed carousel is menswear-first and uses one outfit per styling slide.",
+      "Hero-product facts were reverified on Dickies' official page on July 25, 2026.",
+    ],
+    relatedProducts: ["dickies-874-dark-navy", "cream-tee", "minimal-watch", "gap-overshirt-beige", "knit-polo", "cap"],
+    instagramUrl: "",
+    publishedDate: null,
+    tags: ["Pants", "Everyday", "Work", "Business casual", "Summer"],
+    comingSoon: false,
+  },
+  {
+    id: "birkenstock-boston-taupe",
+    heroProductId: "birkenstock-boston-taupe",
+    title: "5 Ways to Style Birkenstock Bostons Without Looking Lazy",
+    slug: "guide-birkenstock-boston-taupe.dc.html",
+    productName: "Boston Soft Footbed",
+    brand: "Birkenstock",
+    colorway: "Taupe",
+    category: "Shoes",
+    verdict: "The Taupe Suede Boston looks deliberate when relaxed comfort is balanced with texture, clean proportions, and at least one polished supporting piece.",
+    description: "Five menswear outfits for the Taupe Suede Birkenstock Boston, from summer uniform to soft workwear and an unexpected polished look.",
+    coverImage: "assets/images/guides/birkenstock-boston-taupe/cover.png",
+    slideImages: [
+      { src: "assets/images/guides/birkenstock-boston-taupe/slide-01.png", label: "Cover" },
+      { src: "assets/images/guides/birkenstock-boston-taupe/slide-02.png", label: "Clean Summer Uniform" },
+      { src: "assets/images/guides/birkenstock-boston-taupe/slide-03.png", label: "Mediterranean Summer" },
+      { src: "assets/images/guides/birkenstock-boston-taupe/slide-04.png", label: "Modern Minimalist" },
+      { src: "assets/images/guides/birkenstock-boston-taupe/slide-05.png", label: "Soft Workwear" },
+      { src: "assets/images/guides/birkenstock-boston-taupe/slide-06.png", label: "Unexpected Polished Look" },
+      { src: "assets/images/guides/birkenstock-boston-taupe/slide-07.png", label: "Shop the Look" },
+    ],
+    outfitCount: 5,
+    bestFor: "Summer · Everyday · Travel · Smart casual · Workwear",
+    outfits: [
+      {
+        name: "Clean Summer Uniform",
+        when: "Warm city days and relaxed weekends.",
+        why: "Simple shapes and a controlled palette make the relaxed clog feel deliberate.",
+        items: [
+          { name: "Boston Soft Footbed", productId: "birkenstock-boston-taupe" },
+          { name: "Oversized Cream Tee", productId: "cream-tee" },
+          { name: "Navy Pleated Shorts", productId: "af-pleated-shorts" },
+        ],
+      },
+      {
+        name: "Mediterranean Summer",
+        when: "Vacation, outdoor dinner, or a summer city.",
+        why: "Lightweight layers and natural colors complement the suede and cork without becoming resort costume.",
+        items: [
+          { name: "Boston Soft Footbed", productId: "birkenstock-boston-taupe" },
+          { name: "Light Blue Oxford Shirt", productId: "oxford-shirt" },
+          { name: "Oversized Cream Tee", productId: "cream-tee" },
+        ],
+      },
+      {
+        name: "Modern Minimalist",
+        when: "Gallery visits, coffee, and contemporary city wear.",
+        why: "Strong trouser lines and restrained contrast place the Boston in a clean modern wardrobe.",
+        items: [
+          { name: "Boston Soft Footbed", productId: "birkenstock-boston-taupe" },
+          { name: "Black Tailored Trousers", productId: "black-trousers" },
+          { name: "Oversized Cream Tee", productId: "cream-tee" },
+        ],
+      },
+      {
+        name: "Soft Workwear",
+        when: "Casual weekends and transitional weather.",
+        why: "A single overshirt adds utility and texture without making the clog look like work footwear.",
+        items: [
+          { name: "Boston Soft Footbed", productId: "birkenstock-boston-taupe" },
+          { name: "Lightweight Overshirt", productId: "gap-overshirt-beige" },
+          { name: "Light Wash Jeans", productId: "light-jeans" },
+        ],
+      },
+      {
+        name: "Unexpected Polished Look",
+        when: "A creative office, casual dinner, or gallery event.",
+        why: "A refined knit and tailored trousers create the controlled contrast that makes the relaxed Boston feel surprisingly polished.",
+        items: [
+          { name: "Boston Soft Footbed", productId: "birkenstock-boston-taupe" },
+          { name: "Black Knit Polo", productId: "knit-polo" },
+          { name: "Black Tailored Trousers", productId: "black-trousers" },
+          { name: "Minimal Watch", productId: "minimal-watch" },
+        ],
+      },
+    ],
+    styleNotes: [
+      "Keep the Taupe Suede upper, adjustable metal pin buckle, cork-latex footbed, and EVA sole consistent.",
+      "Avoid five variations of a loose shirt and loose trousers.",
+      "The completed carousel is menswear-first and uses one outfit per styling slide.",
+      "Hero-product facts were reverified on Birkenstock's official page on July 25, 2026.",
+    ],
+    relatedProducts: ["birkenstock-boston-taupe", "cream-tee", "af-pleated-shorts", "oxford-shirt", "black-trousers", "gap-overshirt-beige", "light-jeans", "knit-polo", "minimal-watch"],
+    instagramUrl: "",
+    publishedDate: null,
+    tags: ["Shoes", "Summer", "Everyday", "Travel", "Business casual"],
+    comingSoon: false,
+  },
 ];

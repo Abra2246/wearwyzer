@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "1.0.0",
+  "jobId": "adidas-samba-og-b75806",
+  "status": "ready-for-pr",
+  "riskTier": "medium",
+  "confidence": "verified",
+  "heroProductId": "adidas-samba-og-b75806",
+  "concept": "Five distinct menswear outfits that make the adidas Samba OG feel intentional rather than interchangeable with every other Samba outfit online.",
+  "hook": "5 ways to wear Sambas without looking like everyone else.",
+  "audience": {
+    "gender": "men",
+    "mixedGenderValue": "The product is unisex, but this pilot remains menswear-first."
+  },
+  "sources": [
+    {
+      "url": "https://www.adidas.com/us/samba-og-shoes/B75806.html",
+      "verifiedAt": "2026-07-23T20:25:00.000Z",
+      "facts": [
+        "Samba OG Shoes",
+        "Product code B75806",
+        "Cloud White / Core Black / gum",
+        "Displayed price $100",
+        "True-to-size guidance",
+        "Add to bag available"
+      ]
+    }
+  ],
+  "productReferences": [
+    "cream-tee",
+    "af-pleated-shorts",
+    "minimal-watch",
+    "oxford-shirt",
+    "black-trousers",
+    "knit-polo",
+    "light-jeans",
+    "cap",
+    "gap-overshirt-beige",
+    "tech-pants",
+    "backpack"
+  ],
+  "newProducts": [
+    {
+      "id": "adidas-samba-og-b75806",
+      "name": "Samba OG Shoes",
+      "brand": "adidas",
+      "category": "Sneakers",
+      "colorway": "Cloud White / Core Black / Gum",
+      "image": "assets/images/products/adidas-samba-og-b75806.svg",
+      "price": 100,
+      "priceStatus": "confirmed",
+      "priceSourceUrl": "https://www.adidas.com/us/samba-og-shoes/B75806.html",
+      "sourceUrl": "https://www.adidas.com/us/samba-og-shoes/B75806.html",
+      "sourceVerifiedAt": "2026-07-23T20:25:00.000Z",
+      "availabilityStatus": "available",
+      "fitGuidance": "Official page recommends ordering the usual size.",
+      "retailer": "adidas",
+      "affiliateStatus": "unverified",
+      "affiliateUrl": "",
+      "exactOrSimilar": "Exact item",
+      "tags": [
+        "Everyday",
+        "Summer",
+        "Date night",
+        "Business casual"
+      ],
+      "lastChecked": "2026-07-23"
+    }
+  ],
+  "outfits": [
+    {
+      "name": "Clean Summer Uniform",
+      "when": "Warm city days, casual lunches, and weekend plans.",
+      "why": "Navy pleated shorts create clear contrast with the white-and-black shoe while the cream tee keeps the look quiet and intentional.",
+      "items": [
+        {
+          "name": "adidas Samba OG Shoes",
+          "productId": "adidas-samba-og-b75806"
+        },
+        {
+          "name": "Oversized Cream Tee",
+          "productId": "cream-tee"
+        },
+        {
+          "name": "Navy Pleated Shorts",
+          "productId": "af-pleated-shorts"
+        },
+        {
+          "name": "Minimal Watch",
+          "productId": "minimal-watch"
+        }
+      ]
+    },
+    {
+      "name": "Relaxed Creative Office",
+      "when": "Internships, creative offices, and casual client meetings.",
+      "why": "The Oxford shirt and tailored trousers raise the formality while the low-profile Samba keeps the outfit contemporary rather than corporate.",
+      "items": [
+        {
+          "name": "adidas Samba OG Shoes",
+          "productId": "adidas-samba-og-b75806"
+        },
+        {
+          "name": "Light Blue Oxford Shirt",
+          "productId": "oxford-shirt"
+        },
+        {
+          "name": "Black Tailored Trousers",
+          "productId": "black-trousers"
+        }
+      ]
+    },
+    {
+      "name": "Terrace Influence, Grown Up",
+      "when": "Match days, coffee runs, and relaxed afternoons.",
+      "why": "A knit polo and straight denim reference the shoe's terrace history without relying on a retro costume or loud branding.",
+      "items": [
+        {
+          "name": "adidas Samba OG Shoes",
+          "productId": "adidas-samba-og-b75806"
+        },
+        {
+          "name": "Black Knit Polo",
+          "productId": "knit-polo"
+        },
+        {
+          "name": "Light Wash Jeans",
+          "productId": "light-jeans"
+        },
+        {
+          "name": "Neutral Cap",
+          "productId": "cap"
+        }
+      ]
+    },
+    {
+      "name": "Minimal Evening",
+      "when": "Casual dinners, gallery openings, and low-key dates.",
+      "why": "A controlled black palette lets the gum sole provide warmth and keeps the familiar sneaker from reading as an afterthought.",
+      "items": [
+        {
+          "name": "adidas Samba OG Shoes",
+          "productId": "adidas-samba-og-b75806"
+        },
+        {
+          "name": "Black Knit Polo",
+          "productId": "knit-polo"
+        },
+        {
+          "name": "Black Tailored Trousers",
+          "productId": "black-trousers"
+        },
+        {
+          "name": "Minimal Watch",
+          "productId": "minimal-watch"
+        }
+      ]
+    },
+    {
+      "name": "Weekend City Utility",
+      "when": "Travel days, errands, and long weekends in the city.",
+      "why": "A light overshirt and technical trousers introduce utility and texture without turning the Samba into a generic jeans-and-tee uniform.",
+      "items": [
+        {
+          "name": "adidas Samba OG Shoes",
+          "productId": "adidas-samba-og-b75806"
+        },
+        {
+          "name": "Lightweight Overshirt",
+          "productId": "gap-overshirt-beige"
+        },
+        {
+          "name": "Oversized Cream Tee",
+          "productId": "cream-tee"
+        },
+        {
+          "name": "Black Tech Pants",
+          "productId": "tech-pants"
+        },
+        {
+          "name": "Minimal Backpack",
+          "productId": "backpack"
+        }
+      ]
+    }
+  ],
+  "slides": [
+    {
+      "order": 1,
+      "label": "5 Ways to Wear Sambas",
+      "copy": "Without looking like everyone else. adidas Samba OG B75806 in Cloud White / Core Black / gum.",
+      "altText": "Cover slide naming five menswear ways to style the Cloud White and Core Black adidas Samba OG."
+    },
+    {
+      "order": 2,
+      "label": "Clean Summer Uniform",
+      "copy": "Cream heavyweight tee, navy pleated shorts, minimal watch, and the same Samba OG.",
+      "altText": "Clean summer menswear outfit built around the adidas Samba OG with a cream tee and navy pleated shorts."
+    },
+    {
+      "order": 3,
+      "label": "Relaxed Creative Office",
+      "copy": "Light blue Oxford, black tailored trousers, and low-profile Sambas instead of a corporate shoe.",
+      "altText": "Creative-office menswear outfit with a light blue Oxford, black tailored trousers, and adidas Samba OG shoes."
+    },
+    {
+      "order": 4,
+      "label": "Terrace Influence, Grown Up",
+      "copy": "Black knit polo, straight light-wash denim, and a neutral cap with restrained terrace references.",
+      "altText": "Mature terrace-inspired outfit with a black knit polo, light-wash jeans, neutral cap, and adidas Samba OG shoes."
+    },
+    {
+      "order": 5,
+      "label": "Minimal Evening",
+      "copy": "Black knit polo and tailored trousers make the gum sole the warm accent.",
+      "altText": "Minimal black evening outfit with tailored trousers and Cloud White adidas Samba OG shoes."
+    },
+    {
+      "order": 6,
+      "label": "Weekend City Utility",
+      "copy": "Light overshirt, cream tee, technical trousers, and a compact backpack.",
+      "altText": "Weekend city utility outfit with a beige overshirt, cream tee, black technical trousers, backpack, and adidas Samba OG shoes."
+    },
+    {
+      "order": 7,
+      "label": "Shop the Styling System",
+      "copy": "One exact hero, five distinct outfit formulas. Verified affiliate coverage is reported separately; no unsourced links are presented.",
+      "altText": "Recap slide summarizing five menswear styling systems for the adidas Samba OG."
+    }
+  ],
+  "website": {
+    "title": "5 Ways to Wear adidas Sambas Without Looking Like Everyone Else",
+    "description": "Five distinct menswear outfits for the adidas Samba OG B75806, from a clean summer uniform to relaxed tailoring and weekend city utility.",
+    "slugHint": "adidas-samba-og-b75806",
+    "tags": [
+      "Sneakers",
+      "Everyday",
+      "Summer",
+      "Business casual",
+      "Date night"
+    ],
+    "breadcrumbLabel": "adidas Samba OG"
+  },
+  "social": {
+    "caption": "The Samba is familiar. Your outfit does not have to be. Five menswear formulas that move from clean summer dressing to relaxed tailoring and city utility. You bought it. Now wear it right. #WearWyzer #adidasSamba #Menswear",
+    "altText": "Seven-slide carousel with five distinct menswear outfits built around the Cloud White and Core Black adidas Samba OG."
+  },
+  "styleNotes": [
+    "Keep the exact B75806 Cloud White / Core Black / gum colorway consistent.",
+    "One outfit per styling slide; do not collapse the five looks into a collage.",
+    "Menswear-first; no female-only or female-targeted styling.",
+    "Do not invent or distort adidas branding in later image generation.",
+    "The deterministic pilot assets prove structure and copy only; photoreal editorial image generation remains separately review-gated."
+  ],
+  "assets": {
+    "rendererMode": "deterministic-template"
+  },
+  "publication": {
+    "status": "draft",
+    "publishedDate": null
+  },
+  "createdAt": "2026-07-23T20:25:00.000Z"
+}

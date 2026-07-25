@@ -1,58 +1,4 @@
-// Reusable `.dc.html` guide-page template for the autonomous guide
-// factory (issue #17, section 2's "generate the website guide page ...
-// from reusable templates"). Pure string templating — no dependencies,
-// no build step.
-//
-// The generated page is structurally identical to the existing
-// hand-authored guide pages (guide-on-cloud-x4.dc.html,
-// guide-nb9060.dc.html): it imports Site Nav/Site Footer via
-// <dc-import>, reads its content from js/guides.js and js/products.js at
-// runtime through the same DCLogic controller pattern, and computes
-// every cross-page link (hero product page, related guides) from actual
-// data instead of hardcoding it — see CLAUDE.md's "a page's guideHref
-// must be computed from the actual data" rule. This template is the
-// single place that pattern is authored; a new guide never needs a new
-// hand-written page file.
-
-function escapeHtml(value) {
-  return String(value ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
-}
-
-function escapeJs(value) {
-  return String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-}
-
-/**
- * @param {object} params
- * @param {string} params.guideId - matches the `id` field the factory writes into js/guides.js
- * @param {string} params.heroProductId - product id whose hero page (if any) gets linked
- * @param {string} params.title
- * @param {string} params.description
- * @param {string} params.coverImage
- * @param {string} params.publishedDateIso - ISO date string for the JSON-LD `datePublished`
- * @param {string} params.breadcrumbLabel - short label for the breadcrumb trail
- */
-export function renderGuidePageHtml({
-  guideId,
-  heroProductId,
-  title,
-  description,
-  coverImage,
-  publishedDateIso,
-  breadcrumbLabel,
-}) {
-  const safeTitle = escapeHtml(title);
-  const safeDescription = escapeHtml(description);
-  const safeCover = escapeHtml(coverImage);
-  const safeBreadcrumb = escapeHtml(breadcrumbLabel);
-  const jsGuideId = escapeJs(guideId);
-  const jsHeroProductId = escapeJs(heroProductId || '');
-
-  return `<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -62,18 +8,18 @@ export function renderGuidePageHtml({
 <body>
 <x-dc>
 <helmet>
-  <title>${safeTitle} — WearWyzer</title>
-  <meta name="description" content="${safeDescription}">
-  <meta property="og:title" content="${safeTitle}">
-  <meta property="og:description" content="${safeDescription}">
+  <title>5 Ways to Style Dickies 874 Work Pants — WearWyzer</title>
+  <meta name="description" content="Five menswear outfits that take Dickies 874 Work Pants from city uniform to smart casual, skate influence, and summer minimalism.">
+  <meta property="og:title" content="5 Ways to Style Dickies 874 Work Pants">
+  <meta property="og:description" content="Five menswear outfits that take Dickies 874 Work Pants from city uniform to smart casual, skate influence, and summer minimalism.">
   <meta property="og:type" content="article">
-  <meta property="og:image" content="${safeCover}">
+  <meta property="og:image" content="assets/images/guides/dickies-874-dark-navy/cover.png">
   <meta name="twitter:card" content="summary_large_image">
   <link rel="icon" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;600;700&amp;display=swap" rel="stylesheet">
   <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Article","headline":"${safeTitle}","description":"${safeDescription}","image":"${safeCover}","datePublished":"${escapeHtml(publishedDateIso || '')}","author":{"@type":"Organization","name":"WearWyzer"}}
+  {"@context":"https://schema.org","@type":"Article","headline":"5 Ways to Style Dickies 874 Work Pants","description":"Five menswear outfits that take Dickies 874 Work Pants from city uniform to smart casual, skate influence, and summer minimalism.","image":"assets/images/guides/dickies-874-dark-navy/cover.png","datePublished":"","author":{"@type":"Organization","name":"WearWyzer"}}
   </script>
   <style>body { margin: 0; background: #F6F1E8; -webkit-text-size-adjust: 100%; text-size-adjust: 100%; }</style>
 </helmet>
@@ -89,7 +35,7 @@ export function renderGuidePageHtml({
       <ol style="list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px;font-size:13px;color:#68645D">
         <li><a href="index.dc.html" style="color:#68645D;text-decoration:none" style-hover="color:#C8941E">Home</a> <span aria-hidden="true">/</span></li>
         <li><a href="guides.dc.html" style="color:#68645D;text-decoration:none" style-hover="color:#C8941E">Style Guides</a> <span aria-hidden="true">/</span></li>
-        <li aria-current="page" style="color:#0B0B0B;font-weight:600">${safeBreadcrumb}</li>
+        <li aria-current="page" style="color:#0B0B0B;font-weight:600">Dickies 874</li>
       </ol>
     </nav>
 
@@ -218,8 +164,8 @@ export function renderGuidePageHtml({
 // Do not hand-edit the GUIDE_ID/HERO_PRODUCT_ID below without also
 // updating the matching entry in js/guides.js; see
 // docs/AUTONOMOUS_GUIDE_FACTORY_V1.md.
-const GUIDE_ID = '${jsGuideId}';
-const HERO_PRODUCT_ID = '${jsHeroProductId}';
+const GUIDE_ID = 'dickies-874-dark-navy';
+const HERO_PRODUCT_ID = 'dickies-874-dark-navy';
 
 class Component extends DCLogic {
   state = { guide: null, products: [], related: [], heroProductPageHref: null };
@@ -274,12 +220,12 @@ class Component extends DCLogic {
     });
 
     return {
-      title: g ? g.title : '${safeTitle}',
+      title: g ? g.title : '5 Ways to Wear adidas Sambas Without Looking Like Everyone Else',
       heroMeta: g ? [g.category, g.brand, g.colorway].filter(Boolean).join(' · ') : '',
-      tagline: g ? g.description : '${safeDescription}',
+      tagline: g ? g.description : '5 ways to wear Sambas without looking like everyone else.',
       verdict: g ? g.verdict : '',
-      coverImage: g ? g.coverImage : '${safeCover}',
-      coverAlt: 'Guide cover: ' + (g ? g.title : '${safeTitle}'),
+      coverImage: g ? g.coverImage : 'assets/images/guides/adidas-samba-og-b75806/cover.svg',
+      coverAlt: 'Guide cover: ' + (g ? g.title : '5 Ways to Wear adidas Sambas Without Looking Like Everyone Else'),
       instagramHref: g && g.instagramUrl ? g.instagramUrl : '#',
       instagramLabel: g && g.instagramUrl ? 'View Instagram Post' : 'Instagram Post Soon',
       hasHeroProductPage: !!this.state.heroProductPageHref,
@@ -309,5 +255,3 @@ class Component extends DCLogic {
 </script>
 </body>
 </html>
-`;
-}

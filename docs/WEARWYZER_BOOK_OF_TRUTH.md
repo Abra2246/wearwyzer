@@ -1,5 +1,12 @@
 # WearWyzer Book of Truth
 
+> Execution update — July 25, 2026: the completed-guide inventory found six complete
+> seven-slide carousels in repository evidence. Three were already canonical; adidas Samba
+> OG, Dickies 874, and Birkenstock Boston were recovered from `uploads/` and integrated
+> without regenerating artwork. The other six expected guides are not present in any
+> currently visible repository/workspace source. See
+> `docs/STYLE_GUIDE_INVENTORY_2026-07-25.md`; do not infer missing content.
+
 **Document type:** Living product vision and master PRD  
 **Owner:** Abraham — Founder and CEO  
 **Status:** Active canonical product reference  
@@ -603,6 +610,19 @@ references, and owner.
 - Issue #11 remains unfinished after that agent run and moves to direct implementation after #65.
 - Issue #62 is the next production pilot, using the verified adidas Samba OG B75806 after the
   reliability and metadata gates are stable.
+- PR #66 made current-run handoff evidence mandatory. A historical branch, unchanged PR head, or
+  old blocker comment can no longer turn a new agent run green.
+- PR #67 completed the HTML metadata gate with 431 passing tests and all 19 site pages covered.
+- Issue #62 then exercised the corrected dispatcher. The agent run left no fresh evidence and
+  failed visibly, proving the postcondition works; direct execution continued instead of silently
+  stalling.
+- The first real Guide Factory pilot now uses the verified adidas Samba OG B75806. It produced a
+  seven-slide, five-outfit, menswear-first deterministic guide at $0 spend and stopped for review.
+- Affiliate coverage is honestly 0% because no live retailer or network adapter is configured.
+  The 80% target remains active; editorial quality was not reduced and no affiliate URL was
+  fabricated.
+- The pilot also fixed a production-writer cache defect so the post-write affiliate report is
+  regenerated in a fresh process and includes the guide that was just written.
 
 ## Current execution record — July 25, 2026
 

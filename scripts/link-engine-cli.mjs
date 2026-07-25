@@ -136,7 +136,9 @@ export async function runOnce({ dryRun = false, now } = {}) {
 
 async function main() {
   const dryRun = process.argv.includes('--dry-run');
-  await runOnce({ dryRun });
+  const nowArg = process.argv.find((arg) => arg.startsWith('--now='));
+  const now = nowArg ? nowArg.slice('--now='.length) : undefined;
+  await runOnce({ dryRun, now });
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

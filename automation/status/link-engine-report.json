@@ -1,0 +1,49 @@
+{
+  "generatedAtIso": "2026-07-23T20:25:00.000Z",
+  "adapterMode": "inert-no-credentials-configured",
+  "portfolioCoverage": {
+    "guideCount": 4,
+    "totalItems": 83,
+    "eligibleItems": 0,
+    "coveragePct": 0,
+    "meetsTarget": false
+  },
+  "guideCoverages": [
+    {
+      "guideId": "on-cloud-x4",
+      "totalItems": 20,
+      "eligibleItems": 0,
+      "coveragePct": 0,
+      "meetsTarget": false,
+      "shortfallPct": 80
+    },
+    {
+      "guideId": "nb9060-zara-polo",
+      "totalItems": 23,
+      "eligibleItems": 0,
+      "coveragePct": 0,
+      "meetsTarget": false,
+      "shortfallPct": 80
+    },
+    {
+      "guideId": "barrel-pants-nb530",
+      "totalItems": 20,
+      "eligibleItems": 0,
+      "coveragePct": 0,
+      "meetsTarget": false,
+      "shortfallPct": 80
+    },
+    {
+      "guideId": "adidas-samba-og-b75806",
+      "totalItems": 20,
+      "eligibleItems": 0,
+      "coveragePct": 0,
+      "meetsTarget": false,
+      "shortfallPct": 80
+    }
+  ],
+  "shortfallCount": 4,
+  "sourcingPriorityGuides": [],
+  "needsHumanCount": 83,
+  "brokenCount": 0
+}
