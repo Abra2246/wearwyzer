@@ -124,8 +124,8 @@ input, paid call, or deployed endpoint.
 After review:
 
 1. choose the production auth/storage architecture with legal/privacy input;
-2. threat-model sessions, service roles, exports, deletion, photos, and
-   extension access;
+2. review the provider-agnostic threat model in
+   `docs/PRIVATE_DATA_THREAT_MODEL_V1.md`;
 3. implement local or ephemeral end-to-end account flows before real users;
 4. add user-facing consent and correction interfaces;
 5. add secure server-side resolution for the merged personalization API;

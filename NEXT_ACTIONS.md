@@ -5,36 +5,34 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 25, 2026
-**Evidence baseline:** `main` after merged PR #82, the live Mission Control
-refresh at `2026-07-25T23:25:01.306Z`, 475 passing tests on the API-contract
-slice, and the active provider-agnostic Issue #83 branch.
+**Evidence baseline:** `main` after merged PR #84, the failed hosted Issue #85
+handoff with seven permission denials, and direct recovery on
+`codex/private-data-threat-model-v1`.
 
 ## Active review gates
 
-1. **Issue #83 — private profile and wardrobe service boundary**
-   - Active branch: `codex/private-profile-service-v1`.
-   - Scope: closed private record schemas, same-account authorization,
-     purpose-specific consent, corrections, export, deletion, and minimized
-     audit evidence.
+1. **Issue #85 — private-data threat model**
+   - Active branch: `codex/private-data-threat-model-v1`.
+   - Scope: sessions, authorization, CSRF, hostile extension pages/messages,
+     export, deletion, photos/measurements, logs, backups, service roles, and
+     provider-selection security requirements.
    - Human gate: architecture review only. No provider, production account,
      database, personal data, or browser permission is authorized.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #83**
-   - Outcome: define how future authenticated services protect private profile
-     and wardrobe facts while the merged recommendation API stays
-     data-minimized.
+1. **Complete and review Issue #85**
+   - Outcome: turn the private-service invariants into a threat register and
+     executable fail-closed session, extension-message, and deletion policies.
 2. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-3. **Threat-model the first authenticated account flow**
-   - Dependency: Issue #83 review and founder selection of a production
-     architecture.
-   - Outcome: explicit session, service-role, export, deletion, photo, and
-     extension boundaries before real-user implementation.
+3. **Build a fixture-only consent and correction center**
+   - Dependency: Issue #85 review.
+   - Outcome: let a test user inspect, revoke, correct, export, and delete
+     prototype records without production auth or storage.
 4. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
@@ -51,6 +49,9 @@ slice, and the active provider-agnostic Issue #83 branch.
 - **Issue #81 / PR #82:** merged after 475 tests and five passing GitHub checks.
   The future website, app, and extension now share a proposed
   privacy-minimized personalization contract.
+- **Issue #83 / PR #84:** merged after 484 tests and five passing GitHub checks.
+  Private records now have provider-agnostic ownership, consent, correction,
+  export, deletion, and audit contracts.
 - **Issue #71:** closed by merged PR #73. The live feed now contains real
   Guide Factory evidence and fail-closed image/affiliate sources; the first
   post-merge refresh completed successfully.

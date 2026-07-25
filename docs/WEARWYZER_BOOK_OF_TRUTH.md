@@ -688,6 +688,15 @@ references, and owner.
   same-account authorization, purpose-specific consent, corrections, export,
   deletion, wardrobe snapshot freshness, and minimized audit evidence without
   selecting a vendor or collecting real personal data.
+- PR #84 merged the private-service boundary after 484 tests and five passing
+  GitHub checks.
+- Issue #85's hosted run completed its reasoning but failed the durable
+  handoff after seven permission denials. The verifier correctly marked the
+  attempt failed instead of accepting silent completion.
+- Direct recovery on `codex/private-data-threat-model-v1` defines protected
+  assets, trust boundaries, a threat register, provider requirements, and
+  executable fail-closed policies for sessions, scopes, CSRF, extension
+  messages, sensitive payloads, and deletion completion.
 
 ## Final north-star statement
 
