@@ -167,6 +167,13 @@ FeedEvent {
 }
 ```
 
+The engineering source must inspect **all open pull requests**, including
+drafts and PRs without automation labels. When an open PR exists, Mission
+Control reports `review` rather than `idle`, links the PR, and derives CI
+from the PR head commit's complete Check Runs. Main-branch content CI is
+only the fallback when no PR is open. This prevents a review-gated content
+PR from disappearing behind an older successful run on `main`.
+
 ## Automation feed: merge-by-key, not diff-by-state
 
 The feed is assembled from two sources every generator run:

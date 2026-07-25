@@ -103,13 +103,13 @@ function mapPr(pr, reviewDecision) {
  * Returns `{ fetchOk: false }` (never throws) on any failure so the caller
  * degrades to last-known-good rather than crashing the whole run.
  */
-async function loadEngineeringState(client, nowIso, previousDispatchStalledSinceIso) {
+export async function loadEngineeringState(client, nowIso, previousDispatchStalledSinceIso) {
   try {
-    const [inProgressIssues, readyIssues, blockedIssues, automationManagedPrs, ciRuns] = await Promise.all([
+    const [inProgressIssues, readyIssues, blockedIssues, openPrs, mainCiRuns] = await Promise.all([
       client.listOpenIssuesWithLabel('in-progress'),
       client.listOpenIssuesWithLabel('ready'),
       client.listOpenIssuesWithLabel('blocked'),
-      client.listOpenPullRequestsWithLabel('automation-managed'),
+      client.listOpenPullRequests(),
       client.listWorkflowRunsForBranch(MAIN_BRANCH, CI_WORKFLOW_FILE),
     ]);
 
@@ -119,25 +119,39 @@ async function loadEngineeringState(client, nowIso, previousDispatchStalledSince
       : null;
 
     const prRaw = activeIssueRaw
-      ? automationManagedPrs.find((p) => new RegExp(`[Cc]loses #${activeIssueRaw.number}\\b`).test(p.body || '')) || null
-      : automationManagedPrs[0] || null;
+      ? openPrs.find((p) => new RegExp(`[Cc]loses #${activeIssueRaw.number}\\b`).test(p.body || '')) || openPrs[0] || null
+      : openPrs[0] || null;
     let reviewDecision = null;
+    let prDetail = prRaw;
     if (prRaw) {
       try {
-        reviewDecision = await client.getPullRequestReviewDecision(prRaw.number);
+        [prDetail, reviewDecision] = await Promise.all([
+          client.getPullRequest(prRaw.number),
+          client.getPullRequestReviewDecision(prRaw.number),
+        ]);
       } catch {
         reviewDecision = null;
       }
     }
-    const pr = mapPr(prRaw, reviewDecision);
+    const pr = mapPr(prDetail, reviewDecision);
 
-    const latestCiRun = ciRuns[0] || null;
-    const ci = {
-      status: latestCiRun && latestCiRun.conclusion ? (latestCiRun.conclusion === 'success' ? 'passing' : 'failing') : 'unknown',
-      latestRunIso: latestCiRun ? latestCiRun.updated_at || null : null,
-      latestRunUrl: latestCiRun ? latestCiRun.html_url || null : null,
-      recentFailureCount: ciRuns.filter((r) => r.conclusion && r.conclusion !== 'success').length,
+    const latestMainCiRun = mainCiRuns[0] || null;
+    let ci = {
+      status: latestMainCiRun && latestMainCiRun.conclusion
+        ? (latestMainCiRun.conclusion === 'success' ? 'passing' : 'failing')
+        : 'unknown',
+      latestRunIso: latestMainCiRun ? latestMainCiRun.updated_at || null : null,
+      latestRunUrl: latestMainCiRun ? latestMainCiRun.html_url || null : null,
+      recentFailureCount: mainCiRuns.filter((r) => r.conclusion && r.conclusion !== 'success').length,
     };
+    if (prRaw?.head?.sha) {
+      try {
+        ci = await client.getCommitCheckSummary(prRaw.head.sha);
+      } catch {
+        // Keep the last main-branch CI evidence when commit-check enrichment
+        // is temporarily unavailable; do not fail the entire engineering source.
+      }
+    }
 
     const eligibility = summarizeIssueEligibility(readyIssues);
     const automationState = prRaw
@@ -182,7 +196,7 @@ async function loadEngineeringState(client, nowIso, previousDispatchStalledSince
       handoff,
     };
 
-    return { fetchOk: true, data, ciRuns, activeIssueRaw };
+    return { fetchOk: true, data, ciRuns: mainCiRuns, activeIssueRaw };
   } catch (err) {
     console.error(`Engineering state fetch failed: ${err.message}`);
     return { fetchOk: false };
