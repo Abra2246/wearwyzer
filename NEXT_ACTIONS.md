@@ -1,63 +1,74 @@
 # WearWyzer next actions
 
-This is the executable handoff queue. It is intentionally short. The Book of Truth owns product
-direction; GitHub issues own implementation scope; this file tells the next operator what to do.
+This is the executable handoff queue. The Book of Truth owns product direction,
+GitHub issues own implementation scope, and this file identifies the next safe
+action from current evidence.
 
-**Last verified:** July 23, 2026  
-**Evidence baseline:** `main` at PR #64 plus recurring operations commits
+**Last verified:** July 25, 2026
+**Evidence baseline:** `main` at `e6074a2`, GitHub PR/issue/Actions audit, and
+local validation of PRs #68 and #69
 
-## Active
+## Active review gates
 
-1. **Issue #65 — require current-run handoff evidence**
-   - State: direct implementation in progress.
-   - Evidence: run `30038614791` falsely passed by reusing the unchanged
-     `claude/issue-11-20260712-1717` branch; no new branch or PR existed and the run recorded five
-     permission denials.
-   - Outcome: capture a pre-run baseline and accept only a PR, branch head, or structured blocker
-     comment that is created or advanced by the current run.
-2. **Issue #55 — queue eligibility in Mission Control**
-   - State: complete via PR #63.
-   - Evidence: 415 tests and all content/site/graph/hero validators passed; Mission Control,
-     dispatcher, and issue lint now share one eligibility model.
-3. **Issue #61 — fail false-success agent handoffs**
-   - State: complete via PR #64, with the freshness regression tracked by #65.
-   - Outcome: queue-dispatched agent jobs fail unless they leave a linked PR, a non-empty issue
-     branch, or a structured evidence-backed blocker.
-4. **Issue #54 — first Guide Factory production pilot**
-   - State: blocked with evidence.
-   - Reason: the verified New Balance 9060 is sold out and violates the repository's 60-day hero
-     cooldown because the same hero was used on July 9, 2026.
-   - No manifest, generated asset, paid call, PR, or publication was created.
+1. **PR #69 — Mission Control open-review truthfulness**
+   - State: low-risk draft PR; 437 local tests pass.
+   - Outcome: show every open PR, including unlabeled drafts, and report its
+     current head checks instead of an older `main` workflow.
+   - Next action: wait for CI, review the diff, then mark ready and merge if
+     green.
+2. **PR #68 / Issue #62 — recovered guides and verified Samba pilot**
+   - State: draft, mergeable, and all five GitHub checks pass.
+   - Evidence: 438 tests pass on the branch; content, site, Knowledge Graph,
+     hero-page, and asset validation pass; image spend is $0.
+   - Human gate: editorially inspect the recovered Samba, Dickies, and
+     Birkenstock carousels before any merge or public deployment.
+   - Known KPI gap: verified affiliate coverage is 0% because no live merchant
+     or affiliate adapter is configured.
 
-## Next three executable tasks
+## Next executable tasks
 
-1. **Issue #11 — HTML metadata and unresolved-template QA**
-   - State: agent run completed without new evidence; direct implementation follows #65.
-   - Dependency: #65 reaches review or an actionable blocker.
-   - Outcome: deterministic metadata QA that understands intentional runtime bindings and gates
-     PRs/Pages without reviving the former raw-template false positive.
-2. **Issue #62 — verified adidas Samba production pilot**
-   - Dependency: #55, #61, and #11 are stable.
-   - Outcome: use official B75806 product evidence to prove the review-gated Guide Factory path
-     without the cooldown and availability conflict that blocked #54.
-3. **Issue #57 — personalization vertical slice**
-   - Dependency: #62 proves the current production path and the privacy boundary remains
-     feature-flagged with fixture-only data.
-   - Outcome: manually add a style profile and wardrobe items, evaluate one prospective product,
-     and return compatibility, outfit, redundancy/gap, and buy/wait/skip evidence.
+1. **Wire Mission Control Phase 3 sources**
+   - Dependency: PR #69 merged.
+   - Outcome: replace the `not-wired` Guide Factory, image-renderer, and
+     affiliate cards with sanitized repository-backed status and regression
+     tests.
+2. **Reconcile and import the remaining style-guide sources**
+   - Current evidence: six complete seven-slide guides exist; the expected
+     other six are absent from the repository, visible branches, workspace,
+     and synced project sources.
+   - Outcome: import real files when supplied; never manufacture missing
+     guides.
+3. **Establish the first verifiable affiliate merchant path**
+   - Dependency: approved public product feed or affiliate-network/retailer
+     credentials.
+   - Outcome: verify exact offers and move planned guide coverage toward 80%
+     without changing editorial recommendations merely for commission.
+4. **Issue #57 — fixture-only personalization vertical slice**
+   - Dependency: Issue #62 completes its editorial/merge gate.
+   - Outcome: evaluate one prospective item against a five-item fixture
+     wardrobe and return explainable compatibility, Outfit Unlocks,
+     redundancy/gap, and buy/wait/alternative/skip evidence behind a
+     default-off flag.
 
-## Blocked / later
+## Closed or blocked with evidence
 
-- **Issue #33 — Chrome extension:** blocked by the personalization slice, public API boundary,
-  offer routing, privacy review, and explicit permission/store-publishing approval.
-- Live affiliate-account credentials, real personal wardrobe data, paid image-budget changes,
-  publishing to social platforms, and production authentication require explicit authorization.
+- **Issue #54:** closed as not planned. Its exact New Balance 9060 is sold out
+  and inside the 60-day hero cooldown; Issue #62 supersedes the pilot.
+- **Issue #33 — Chrome extension:** blocked by the personalization slice,
+  public product/offer API, consent/privacy boundaries, and explicit browser
+  permission and store-publication approval.
+- Live affiliate credentials, real personal wardrobe data, paid image-budget
+  changes, social publishing, production authentication, and personalized
+  likeness generation require explicit authorization.
 
-## Cycle closeout checklist
+## Queue rules
 
+- Prefer one thin vertical slice over a broad platform build.
+- Do not dispatch new implementation while a related review PR is unresolved.
 - Update issue labels from evidence, not expectation.
-- Link branch and PR to the issue.
-- Record exact tests and validation output.
-- Update Mission Control source data.
-- Update the Book of Truth execution record when a material milestone changes.
-- Refresh this file so the next operator has three executable tasks.
+- Link every branch and PR to its owning issue.
+- Record exact tests, validators, spend, coverage, and source timestamps.
+- Update Mission Control source data and the Book of Truth execution record
+  after every material milestone.
+- Keep at least three ordered next actions here; remove superseded work rather
+  than leaving contradictory active items.
