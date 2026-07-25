@@ -283,6 +283,23 @@ This is not a deployed endpoint. Production authentication, storage, real
 personal data, browser permissions, and public API access remain separate
 review and founder gates.
 
+## Private service contract boundary — July 25, 2026
+
+Issue #83 defines the next provider-agnostic boundary in
+`docs/PRIVATE_PROFILE_SERVICE_V1.md` and
+`scripts/private-profile-service-contract.mjs`:
+
+- same-account authorization for every private record;
+- purpose-specific, revocable consent;
+- explicit user corrections that outrank inferred Style/Fit DNA signals;
+- stable, freshness-checked wardrobe snapshots;
+- versioned machine-readable export;
+- explicit pending/completed/failed deletion semantics;
+- data-minimized audit events.
+
+The slice remains fixture-only and does not choose an authentication/database
+provider, create accounts, deploy storage, or collect real personal data.
+
 ### Known limitations
 
 - No authentication, server storage, real accounts, or real personal data.

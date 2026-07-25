@@ -5,38 +5,36 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 25, 2026
-**Evidence baseline:** `main` at `3cbe7e4`, the successful post-merge Pages
-deployment, the merged Issue #57 personalization slice, and the
-privacy-minimized Issue #81 API-contract branch.
+**Evidence baseline:** `main` after merged PR #82, the live Mission Control
+refresh at `2026-07-25T23:25:01.306Z`, 475 passing tests on the API-contract
+slice, and the active provider-agnostic Issue #83 branch.
 
 ## Active review gates
 
-1. **Issue #81 — public/private personalization API boundary**
-   - Active branch: `codex/personalization-api-v1`.
-   - Review evidence: closed versioned request/response schemas, reference-only
-     profile and wardrobe inputs, explicit consent, exact/similar/unknown
-     product states, source-freshness enforcement, minimized outfit evidence,
-     and deterministic privacy/negative tests.
-   - Human gate: architecture review only. This does not authorize production
-     authentication, real personal data, extension permissions, or public API
-     deployment.
+1. **Issue #83 — private profile and wardrobe service boundary**
+   - Active branch: `codex/private-profile-service-v1`.
+   - Scope: closed private record schemas, same-account authorization,
+     purpose-specific consent, corrections, export, deletion, and minimized
+     audit evidence.
+   - Human gate: architecture review only. No provider, production account,
+     database, personal data, or browser permission is authorized.
 
 ## Next executable tasks
 
-1. **Review and merge the Issue #81 API contract**
-   - Outcome: give future web, app, and extension clients one data-minimized
-     recommendation contract without duplicating the wardrobe or product
-     source of truth.
+1. **Complete and review Issue #83**
+   - Outcome: define how future authenticated services protect private profile
+     and wardrobe facts while the merged recommendation API stays
+     data-minimized.
 2. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-3. **Design the authenticated profile and wardrobe service boundary**
-   - Dependency: Issue #81 review; production provider selection remains a
-     founder decision.
-   - Outcome: storage, authorization, consent, correction, export, deletion,
-     and audit contracts without collecting real data yet.
+3. **Threat-model the first authenticated account flow**
+   - Dependency: Issue #83 review and founder selection of a production
+     architecture.
+   - Outcome: explicit session, service-role, export, deletion, photo, and
+     extension boundaries before real-user implementation.
 4. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
@@ -50,6 +48,9 @@ privacy-minimized Issue #81 API-contract branch.
   and inside the 60-day hero cooldown; Issue #62 supersedes the pilot.
 - **Issue #57 / PR #80:** merged after review. The fixture-only personalized
   purchase slice is deployed behind its default-off, non-indexed gate.
+- **Issue #81 / PR #82:** merged after 475 tests and five passing GitHub checks.
+  The future website, app, and extension now share a proposed
+  privacy-minimized personalization contract.
 - **Issue #71:** closed by merged PR #73. The live feed now contains real
   Guide Factory evidence and fail-closed image/affiliate sources; the first
   post-merge refresh completed successfully.
