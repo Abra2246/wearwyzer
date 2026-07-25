@@ -1,5 +1,12 @@
 # WearWyzer Book of Truth
 
+> Execution update — July 25, 2026: the completed-guide inventory found six complete
+> seven-slide carousels in repository evidence. Three were already canonical; adidas Samba
+> OG, Dickies 874, and Birkenstock Boston were recovered from `uploads/` and integrated
+> without regenerating artwork. The other six expected guides are not present in any
+> currently visible repository/workspace source. See
+> `docs/STYLE_GUIDE_INVENTORY_2026-07-25.md`; do not infer missing content.
+
 **Document type:** Living product vision and master PRD  
 **Owner:** Abraham — Founder and CEO  
 **Status:** Active canonical product reference  
