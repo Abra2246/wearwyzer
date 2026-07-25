@@ -623,14 +623,19 @@ references, and owner.
   merged the repository audit and canonical gap analysis. PR #72 prevents a
   pending Pages deployment from being reported as a failure.
 - Issue #71's hosted implementation run failed its evidence-backed handoff
-  after permission denials. Direct implementation moved to
-  `codex/issue-71-mission-control-phase3`: Guide Factory, image-renderer, and
-  affiliate evidence are now repository-backed, closed-schema, and
-  fail-closed. Missing ledgers and reports remain unavailable rather than
-  appearing as zero usage or zero coverage.
-- The next dependency path remains: review Issue #71's PR, complete the human
-  creative gate on PR #68, establish one verified merchant path, then unblock
-  the fixture-only personalized purchase slice in Issue #57.
+  after permission denials. Direct implementation recovered the task in
+  PR #73, which passed 448 tests and all five GitHub checks before merging.
+  Guide Factory, image-renderer, and affiliate evidence are now
+  repository-backed, closed-schema, and fail-closed. Missing ledgers and
+  reports remain unavailable rather than appearing as zero usage or zero
+  coverage.
+- The first post-merge live-feed refresh completed successfully and published
+  a fresh Phase 3 snapshot. Guide Factory truthfully reports an empty queue;
+  image and affiliate evidence remain offline until their first real artifacts
+  exist.
+- The next dependency path is: complete the human creative gate on PR #68,
+  establish one verified merchant path, then unblock the fixture-only
+  personalized purchase slice in Issue #57.
 
 ## Final north-star statement
 
