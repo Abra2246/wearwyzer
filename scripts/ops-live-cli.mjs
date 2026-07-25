@@ -203,11 +203,17 @@ export async function loadEngineeringState(client, nowIso, previousDispatchStall
   }
 }
 
+export function deploymentStatusFromState(state) {
+  if (state === 'success') return 'healthy';
+  if (['error', 'failure'].includes(state)) return 'failing';
+  return 'unknown';
+}
+
 /** Gathers GitHub Pages deployment state. Never throws — see getLatestPagesDeployment's own contract. */
 async function loadDeploymentState(client, nowIso) {
   const deployment = await client.getLatestPagesDeployment();
   if (!deployment) return { fetchOk: false };
-  const status = deployment.state === 'success' ? 'healthy' : deployment.state ? 'failing' : 'unknown';
+  const status = deploymentStatusFromState(deployment.state);
   const ageMinutes = deployment.updatedIso ? Math.max(0, (new Date(nowIso).getTime() - new Date(deployment.updatedIso).getTime()) / 60000) : null;
   return {
     fetchOk: true,
