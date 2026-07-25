@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { loadEngineeringState } from '../ops-live-cli.mjs';
+import { deploymentStatusFromState, loadEngineeringState } from '../ops-live-cli.mjs';
 
 const NOW = '2026-07-25T16:30:00.000Z';
 
@@ -77,4 +77,14 @@ test('Mission Control surfaces an unlabeled draft PR and its current checks', as
     latestRunUrl: 'https://github.example/actions/current-pr',
     recentFailureCount: 0,
   });
+});
+
+test('deployment status distinguishes pending work from a real failure', () => {
+  assert.equal(deploymentStatusFromState('success'), 'healthy');
+  assert.equal(deploymentStatusFromState('failure'), 'failing');
+  assert.equal(deploymentStatusFromState('error'), 'failing');
+  assert.equal(deploymentStatusFromState('in_progress'), 'unknown');
+  assert.equal(deploymentStatusFromState('queued'), 'unknown');
+  assert.equal(deploymentStatusFromState('pending'), 'unknown');
+  assert.equal(deploymentStatusFromState(null), 'unknown');
 });

@@ -174,6 +174,11 @@ from the PR head commit's complete Check Runs. Main-branch content CI is
 only the fallback when no PR is open. This prevents a review-gated content
 PR from disappearing behind an older successful run on `main`.
 
+Deployment state uses three honest outcomes: a successful GitHub Pages
+deployment is `healthy`, an explicit `failure` or `error` is `failing`, and
+queued, pending, or in-progress work is `unknown`. A deployment that is
+still running must never trigger a false red health incident.
+
 ## Automation feed: merge-by-key, not diff-by-state
 
 The feed is assembled from two sources every generator run:
