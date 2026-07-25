@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T23:17:28.666Z",
+  "generatedAtIso": "2026-07-25T23:25:01.306Z",
   "overallState": "live",
   "ceo": {
-    "headline": "Everything is healthy — no action needed.",
-    "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "headline": "PR #82 is awaiting review.",
+    "requiredAction": "Review and decide whether to merge PR #82: https://github.com/Abra2246/wearwyzer/pull/82",
+    "activeWorkSummary": "PR #82 \"Define the personalization API boundary\""
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:17:28.666Z",
+      "lastUpdatedIso": "2026-07-25T23:25:01.306Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
+        "automationState": "review",
         "activeIssue": null,
         "queue": {
           "depth": 0,
@@ -24,15 +24,24 @@
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
-          "blockedCount": 3,
+          "blockedCount": 2,
           "stalledSinceIso": null,
           "rejections": []
         },
-        "pr": null,
+        "pr": {
+          "number": 82,
+          "title": "Define the personalization API boundary",
+          "url": "https://github.com/Abra2246/wearwyzer/pull/82",
+          "isDraft": false,
+          "reviewDecision": null,
+          "mergeableState": "clean",
+          "createdIso": "2026-07-25T23:22:55Z",
+          "updatedIso": "2026-07-25T23:23:20Z"
+        },
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-25T23:17:23Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30179138053",
+          "status": "passing",
+          "latestRunIso": "2026-07-25T23:23:36Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30179316894/job/89733150061",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,13 +54,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:17:28.666Z",
+      "lastUpdatedIso": "2026-07-25T23:25:01.306Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "9849c12",
-        "lastDeployIso": "2026-07-25T22:32:42Z",
-        "ageMinutes": 45,
+        "lastHealthyShaShort": "3cbe7e4",
+        "lastDeployIso": "2026-07-25T23:18:16Z",
+        "ageMinutes": 7,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +68,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:17:28.666Z",
+      "lastUpdatedIso": "2026-07-25T23:25:01.306Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +95,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:17:28.666Z",
+      "lastUpdatedIso": "2026-07-25T23:25:01.306Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +135,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-opened:82",
+      "timestampIso": "2026-07-25T23:22:55Z",
+      "type": "pr-opened",
+      "summary": "PR #82 \"Define the personalization API boundary\" opened.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/82"
+    },
+    {
+      "key": "deploy:3cbe7e4",
+      "timestampIso": "2026-07-25T23:18:16Z",
+      "type": "deployed",
+      "summary": "Deployed build 3cbe7e4 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30179138053",
+      "timestampIso": "2026-07-25T23:17:38Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30179138053"
+    },
     {
       "key": "pr-merged:80",
       "timestampIso": "2026-07-25T23:17:16Z",
@@ -454,27 +484,6 @@
       "type": "pr-merged",
       "summary": "PR #58 \"Link the personalization vertical slice in next actions\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/58"
-    },
-    {
-      "key": "pr-merged:56",
-      "timestampIso": "2026-07-23T18:29:03Z",
-      "type": "pr-merged",
-      "summary": "PR #56 \"Establish autonomous operating handoff and personalization spec\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/56"
-    },
-    {
-      "key": "issue-started:54",
-      "timestampIso": "2026-07-23T18:22:32Z",
-      "type": "issue-started",
-      "summary": "Issue #54 \"Run first review-gated Guide Factory production pilot\" started.",
-      "url": "https://github.com/Abra2246/wearwyzer/issues/54"
-    },
-    {
-      "key": "deploy:a651bce",
-      "timestampIso": "2026-07-23T03:58:35Z",
-      "type": "deployed",
-      "summary": "Deployed build a651bce — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
