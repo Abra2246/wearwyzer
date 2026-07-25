@@ -34,7 +34,7 @@ that source must be added before they can be imported.
 
 - adidas Samba OG B75806: exact official adidas product page; Cloud White / Core Black / gum.
 - Dickies Original 874® Work Pants: exact official Dickies product page, product
-  `DK0008740DB`; current page showed Dark Brown and $29.99 on July 25, 2026.
+  `DK0008740DN`; current page showed Dark Navy and $29.99 on July 25, 2026.
 - Birkenstock Boston Soft Footbed: exact official Birkenstock product page; Taupe suede,
   $169.95 on July 25, 2026.
 
