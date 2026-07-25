@@ -1,26 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T16:53:20.034Z",
+  "generatedAtIso": "2026-07-25T16:56:39.017Z",
   "overallState": "live",
   "ceo": {
-    "headline": "PR #70 is awaiting review.",
-    "requiredAction": "Review the draft PR and either request changes or mark it ready: https://github.com/Abra2246/wearwyzer/pull/70",
-    "activeWorkSummary": "PR #70 \"Document July 25 system gap analysis and execution queue\" (draft)"
+    "headline": "The latest deployment is failing health checks.",
+    "requiredAction": "Check the deploy-health-check workflow run and the last-known-healthy build.",
+    "activeWorkSummary": "PR #68 \"Recover completed style guides and add verified Samba pilot\" (draft)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T16:53:20.034Z",
+      "lastUpdatedIso": "2026-07-25T16:56:39.017Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
         "activeIssue": null,
         "queue": {
-          "depth": 0,
-          "readyCount": 0,
-          "labeledReadyCount": 0,
-          "eligibleReadyCount": 0,
+          "depth": 1,
+          "readyCount": 1,
+          "labeledReadyCount": 1,
+          "eligibleReadyCount": 1,
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
@@ -29,19 +29,19 @@
           "rejections": []
         },
         "pr": {
-          "number": 70,
-          "title": "Document July 25 system gap analysis and execution queue",
-          "url": "https://github.com/Abra2246/wearwyzer/pull/70",
+          "number": 68,
+          "title": "Recover completed style guides and add verified Samba pilot",
+          "url": "https://github.com/Abra2246/wearwyzer/pull/68",
           "isDraft": true,
           "reviewDecision": null,
-          "mergeableState": "clean",
-          "createdIso": "2026-07-25T16:47:11Z",
-          "updatedIso": "2026-07-25T16:47:11Z"
+          "mergeableState": "unknown",
+          "createdIso": "2026-07-25T15:03:01Z",
+          "updatedIso": "2026-07-25T16:44:32Z"
         },
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-25T16:47:35Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30166323140/job/89699865360",
+          "latestRunIso": "2026-07-25T15:03:21Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30162851145/job/89690875856",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -54,14 +54,14 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T16:53:20.034Z",
+      "lastUpdatedIso": "2026-07-25T16:56:39.017Z",
       "fetchOk": true,
       "data": {
-        "status": "healthy",
-        "lastHealthyShaShort": "fceb9ec",
-        "lastDeployIso": "2026-07-23T20:23:54Z",
-        "ageMinutes": 2669,
-        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
+        "status": "failing",
+        "lastHealthyShaShort": null,
+        "lastDeployIso": "2026-07-25T16:56:39Z",
+        "ageMinutes": 0,
+        "pagesUrl": null
       },
       "note": null
     },
@@ -92,6 +92,27 @@
   },
   "automationFeed": [
     {
+      "key": "deploy:2026-07-25T16:56:39Z",
+      "timestampIso": "2026-07-25T16:56:39Z",
+      "type": "deploy-failed",
+      "summary": "Deployment failed its health checks.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30166615184",
+      "timestampIso": "2026-07-25T16:56:28Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30166615184"
+    },
+    {
+      "key": "pr-merged:70",
+      "timestampIso": "2026-07-25T16:56:09Z",
+      "type": "pr-merged",
+      "summary": "PR #70 \"Document July 25 system gap analysis and execution queue\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/70"
+    },
+    {
       "key": "pr-merged:69",
       "timestampIso": "2026-07-25T16:53:04Z",
       "type": "pr-merged",
@@ -104,6 +125,13 @@
       "type": "pr-opened",
       "summary": "PR #70 \"Document July 25 system gap analysis and execution queue\" opened (draft).",
       "url": "https://github.com/Abra2246/wearwyzer/pull/70"
+    },
+    {
+      "key": "pr-opened:68",
+      "timestampIso": "2026-07-25T15:03:01Z",
+      "type": "pr-opened",
+      "summary": "PR #68 \"Recover completed style guides and add verified Samba pilot\" opened (draft).",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/68"
     },
     {
       "key": "deploy:fceb9ec",
@@ -412,34 +440,6 @@
       "type": "pr-merged",
       "summary": "PR #30 \"Fix Deploy Health Check runtime-binding false positives\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/30"
-    },
-    {
-      "key": "pr-merged:28",
-      "timestampIso": "2026-07-13T18:03:27Z",
-      "type": "pr-merged",
-      "summary": "PR #28 \"Fix Deploy Health Check routes for GitHub Pages\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/28"
-    },
-    {
-      "key": "pr-merged:26",
-      "timestampIso": "2026-07-13T17:52:43Z",
-      "type": "pr-merged",
-      "summary": "PR #26 \"Add automation completion handoff watchdog\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/26"
-    },
-    {
-      "key": "pr-merged:21",
-      "timestampIso": "2026-07-13T14:28:54Z",
-      "type": "pr-merged",
-      "summary": "PR #21 \"Add Autonomous Site and Guide Factory v1\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/21"
-    },
-    {
-      "key": "pr-merged:20",
-      "timestampIso": "2026-07-13T03:27:07Z",
-      "type": "pr-merged",
-      "summary": "PR #20 \"Add autonomous engineering queue v1\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/20"
     }
   ]
 }
