@@ -259,6 +259,30 @@ owned fixture items. It returns decomposed compatibility evidence, three
 unique owned-first outfit candidates, gap and redundancy signals, Purchase
 ROI, confidence, and a recommendation.
 
+## Implemented API contract boundary — July 25, 2026
+
+The next review-gated slice defines the contract future website, app, and
+extension clients may share without becoming alternate stores for private user
+data:
+
+- `scripts/personalization-api-contract.mjs` owns the closed, versioned
+  request and response schemas plus the fixture-only server-side adapter.
+- Requests contain profile and wardrobe snapshot references, never embedded
+  profiles or inventories.
+- Explicit personalization consent is mandatory.
+- Exact, similar, and unknown product matches remain distinguishable; unknown
+  and ambiguous candidates fail before scoring.
+- Canonical product evidence older than 30 days fails closed.
+- Responses expose only the owned items used in active outfit suggestions.
+- Operational and public artifacts are tested to prevent fixture profile and
+  wardrobe leakage.
+- `docs/PERSONALIZATION_API_V1.md` is the canonical field-level contract and
+  privacy-boundary reference.
+
+This is not a deployed endpoint. Production authentication, storage, real
+personal data, browser permissions, and public API access remain separate
+review and founder gates.
+
 ### Known limitations
 
 - No authentication, server storage, real accounts, or real personal data.
