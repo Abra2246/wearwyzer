@@ -80,8 +80,12 @@ export class GitHubClient {
     return items.filter((item) => !item.pull_request);
   }
 
+  listOpenPullRequests() {
+    return this.paginate(`/repos/${this.owner}/${this.repo}/pulls?state=open`);
+  }
+
   async listOpenPullRequestsWithLabel(label) {
-    const prs = await this.paginate(`/repos/${this.owner}/${this.repo}/pulls?state=open`);
+    const prs = await this.listOpenPullRequests();
     return prs.filter((pr) => (pr.labels || []).some((l) => l.name === label));
   }
 
@@ -205,6 +209,52 @@ export class GitHubClient {
       ['success', 'neutral', 'skipped'].includes(run.conclusion)
     );
     return status.state === 'success' && runsOk;
+  }
+
+  /**
+   * Compact, evidence-backed CI state for a commit. Mission Control uses
+   * this for the currently open PR so an unlabeled draft and its checks do
+   * not disappear behind an older main-branch workflow run.
+   */
+  async getCommitCheckSummary(ref) {
+    const [status, checkRuns] = await Promise.all([
+      this.request('GET', `/repos/${this.owner}/${this.repo}/commits/${ref}/status`),
+      this.request('GET', `/repos/${this.owner}/${this.repo}/commits/${ref}/check-runs`),
+    ]);
+    const runs = checkRuns.check_runs || [];
+    const failureConclusions = new Set([
+      'action_required',
+      'cancelled',
+      'failure',
+      'stale',
+      'startup_failure',
+      'timed_out',
+    ]);
+    const failingRuns = runs.filter((run) => failureConclusions.has(run.conclusion));
+    const incompleteRuns = runs.filter((run) => !run.conclusion);
+    const statusFailed = ['error', 'failure'].includes(status.state);
+    // GitHub reports `pending` when a commit has zero legacy Status API
+    // contexts, even when every modern Check Run is complete and green.
+    const statusPending = status.state === 'pending' && status.total_count > 0;
+
+    let summaryStatus = 'unknown';
+    if (statusFailed || failingRuns.length > 0) summaryStatus = 'failing';
+    else if (incompleteRuns.length === 0 && !statusPending && runs.length > 0) summaryStatus = 'passing';
+
+    const latestRun = [...runs].sort((a, b) => {
+      const aTime = Date.parse(a.completed_at || a.started_at || a.created_at || 0);
+      const bTime = Date.parse(b.completed_at || b.started_at || b.created_at || 0);
+      return bTime - aTime;
+    })[0] || null;
+
+    return {
+      status: summaryStatus,
+      latestRunIso: latestRun
+        ? latestRun.completed_at || latestRun.started_at || latestRun.created_at || null
+        : null,
+      latestRunUrl: latestRun ? latestRun.details_url || null : null,
+      recentFailureCount: failingRuns.length + (statusFailed ? 1 : 0),
+    };
   }
 
   /**

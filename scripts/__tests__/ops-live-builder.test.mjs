@@ -213,6 +213,30 @@ test('buildCeoSummary: nothing wrong -> healthy headline with no required action
   assert.match(summary.headline, /healthy/i);
 });
 
+test('buildCeoSummary: an open draft PR is visible work that requires review', () => {
+  const engineering = {
+    state: 'live',
+    data: {
+      automationState: 'review',
+      activeIssue: null,
+      pr: {
+        number: 68,
+        title: 'Recover completed style guides',
+        url: 'https://github.example/pr/68',
+        isDraft: true,
+      },
+      queue: queue(),
+      handoff: { stalled: false, reason: null },
+      ci: { status: 'passing', latestRunUrl: null },
+    },
+  };
+  const deployment = { state: 'live', data: { status: 'healthy' } };
+  const summary = buildCeoSummary({ overallState: 'live', engineering, deployment });
+  assert.match(summary.headline, /PR #68 is awaiting review/);
+  assert.match(summary.requiredAction, /Review the draft PR/);
+  assert.match(summary.activeWorkSummary, /PR #68/);
+});
+
 test('buildCeoSummary: malformed ready labels are reported as misconfiguration, never stalled dispatch', () => {
   const engineering = {
     state: 'live',

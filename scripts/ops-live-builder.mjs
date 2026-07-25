@@ -183,6 +183,15 @@ export function buildCeoSummary({ overallState, engineering, deployment }) {
       activeWorkSummary: activeWorkSummaryText(eng),
     };
   }
+  if (eng && eng.automationState === 'review' && eng.pr) {
+    return {
+      headline: `PR #${eng.pr.number} is awaiting review.`,
+      requiredAction: eng.pr.isDraft
+        ? `Review the draft PR and either request changes or mark it ready: ${eng.pr.url || ''}`.trim()
+        : `Review and decide whether to merge PR #${eng.pr.number}: ${eng.pr.url || ''}`.trim(),
+      activeWorkSummary: activeWorkSummaryText(eng),
+    };
+  }
   if (overallState === 'delayed') {
     return {
       headline: 'Everything looks fine, but data is delayed.',
@@ -199,6 +208,9 @@ export function buildCeoSummary({ overallState, engineering, deployment }) {
 
 function activeWorkSummaryText(eng) {
   if (!eng.activeIssue) {
+    if (eng.pr) {
+      return `PR #${eng.pr.number} "${truncate(eng.pr.title, 80)}"${eng.pr.isDraft ? ' (draft)' : ''}`;
+    }
     if (eng.queue.eligibleReadyCount > 0) {
       return `${eng.queue.eligibleReadyCount} eligible issue(s) queued, none active.`;
     }
