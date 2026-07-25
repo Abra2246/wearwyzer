@@ -139,7 +139,11 @@ export async function runOnce({ dryRun = false, simulate = false, now, fetchImpl
     now: nowIso,
   });
 
-  const newLedgerEntries = hybridResults.length ? (hybridResults[hybridResults.length - 1].ledger || []).slice(ledger.length) : [];
+  const newLedgerEntries = hybridResults.length
+    ? (hybridResults[hybridResults.length - 1].ledger || [])
+      .slice(ledger.length)
+      .map((entry) => ({ ...entry, mode: effectiveSimulate ? 'simulation' : 'live' }))
+    : [];
   if (!dryRun) appendLedgerEntries(newLedgerEntries);
 
   const renderedAssets = [...deterministicResults, ...hybridResults].sort((a, b) => a.slideOrder - b.slideOrder);
