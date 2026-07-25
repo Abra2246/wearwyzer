@@ -5,8 +5,8 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 25, 2026
-**Evidence baseline:** `main` at `faed7b9`, GitHub PR/issue/Actions audit, and
-445 passing local tests on `codex/issue-71-mission-control-phase3`
+**Evidence baseline:** `main` at `4b6e727`, GitHub PR/issue/Actions audit,
+448 passing tests, and successful live-feed refresh run `30167476497`
 
 ## Active review gates
 
@@ -21,28 +21,18 @@ action from current evidence.
 
 ## Next executable tasks
 
-1. **Issue #71 — Mission Control Phase 3 sources**
-   - State: the hosted automation failed its branch/PR handoff after 12
-     permission denials; direct implementation is complete locally on
-     `codex/issue-71-mission-control-phase3`.
-   - Evidence: 445 tests, authenticated-free live-feed dry run, static-site
-     QA, and whitespace validation pass.
-   - Outcome: Guide Factory, image-renderer, and affiliate cards now use
-     sanitized repository artifacts; missing spend/coverage evidence remains
-     unavailable rather than becoming `$0` or `0%`.
-   - Next action: open a small review PR, verify CI, and merge after review.
-2. **Reconcile and import the remaining style-guide sources**
+1. **Reconcile and import the remaining style-guide sources**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
    - Outcome: import real files when supplied; never manufacture missing
      guides.
-3. **Establish the first verifiable affiliate merchant path**
+2. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-4. **Issue #57 — fixture-only personalization vertical slice**
+3. **Issue #57 — fixture-only personalization vertical slice**
    - Dependency: Issue #62 completes its editorial/merge gate.
    - Outcome: evaluate one prospective item against a five-item fixture
      wardrobe and return explainable compatibility, Outfit Unlocks,
@@ -53,6 +43,9 @@ action from current evidence.
 
 - **Issue #54:** closed as not planned. Its exact New Balance 9060 is sold out
   and inside the 60-day hero cooldown; Issue #62 supersedes the pilot.
+- **Issue #71:** closed by merged PR #73. The live feed now contains real
+  Guide Factory evidence and fail-closed image/affiliate sources; the first
+  post-merge refresh completed successfully.
 - **Issue #33 — Chrome extension:** blocked by the personalization slice,
   public product/offer API, consent/privacy boundaries, and explicit browser
   permission and store-publication approval.
