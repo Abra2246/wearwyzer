@@ -1,21 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T20:28:21.496Z",
+  "generatedAtIso": "2026-07-25T20:32:30.873Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "activeWorkSummary": "#78 \"Make sitemap URLs match deployed Pages routes\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T20:28:21.496Z",
+      "lastUpdatedIso": "2026-07-25T20:32:30.873Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 78,
+          "title": "Make sitemap URLs match deployed Pages routes",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/78",
+          "updatedIso": "2026-07-25T20:32:03Z"
+        },
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -30,8 +35,8 @@
         },
         "pr": null,
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-25T20:28:21Z",
+          "status": "passing",
+          "latestRunIso": "2026-07-25T20:28:27Z",
           "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30173637451",
           "recentFailureCount": 0
         },
@@ -45,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T20:28:21.496Z",
+      "lastUpdatedIso": "2026-07-25T20:32:30.873Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "c8d806f",
-        "lastDeployIso": "2026-07-25T18:43:03Z",
-        "ageMinutes": 105,
+        "lastHealthyShaShort": "86c0e30",
+        "lastDeployIso": "2026-07-25T20:29:01Z",
+        "ageMinutes": 3,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +64,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T20:28:21.496Z",
+      "lastUpdatedIso": "2026-07-25T20:32:30.873Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T20:28:21.496Z",
+      "lastUpdatedIso": "2026-07-25T20:32:30.873Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:78",
+      "timestampIso": "2026-07-25T20:32:03Z",
+      "type": "issue-started",
+      "summary": "Issue #78 \"Make sitemap URLs match deployed Pages routes\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/78"
+    },
+    {
+      "key": "deploy:86c0e30",
+      "timestampIso": "2026-07-25T20:29:01Z",
+      "type": "deployed",
+      "summary": "Deployed build 86c0e30 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30173637451",
+      "timestampIso": "2026-07-25T20:28:27Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30173637451"
+    },
     {
       "key": "pr-merged:68",
       "timestampIso": "2026-07-25T20:28:07Z",
@@ -454,27 +480,6 @@
       "type": "ci-passed",
       "summary": "Content data validation passed on main.",
       "url": "https://github.com/Abra2246/wearwyzer/actions/runs/29800914465"
-    },
-    {
-      "key": "pr-merged:52",
-      "timestampIso": "2026-07-21T04:18:54Z",
-      "type": "pr-merged",
-      "summary": "PR #52 \"Allow queue-dispatched Claude workflow actor\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/52"
-    },
-    {
-      "key": "issue-started:51",
-      "timestampIso": "2026-07-21T04:14:07Z",
-      "type": "issue-started",
-      "summary": "Issue #51 \"Close Guide Factory asset persistence gap before first live pilot\" started.",
-      "url": "https://github.com/Abra2246/wearwyzer/issues/51"
-    },
-    {
-      "key": "pr-merged:50",
-      "timestampIso": "2026-07-21T04:10:05Z",
-      "type": "pr-merged",
-      "summary": "PR #50 \"Establish the WearWyzer Book of Truth\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/50"
     }
   ]
 }
