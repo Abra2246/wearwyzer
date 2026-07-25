@@ -237,3 +237,36 @@ Personalized likeness generation is a later, independently approved capability. 
 - Unit, integration, privacy-boundary, and negative tests.
 - Feature flag defaults off in production.
 
+## Implemented fixture slice — July 25, 2026
+
+The first review-gated implementation is intentionally local and non-production:
+
+- `scripts/personalization-engine.mjs` owns versioned deterministic scoring,
+  Outfit Unlocks, owned-first outfit generation, redundancy/gap evidence, and
+  the four recommendation outcomes.
+- `scripts/personalization-store.mjs` owns browser-local save, machine-readable
+  export, and complete deletion for the prototype record.
+- `scripts/__fixtures__/personalization.mjs` defines the only supported user
+  and wardrobe data. It references canonical repository products and never
+  represents a real person.
+- `personalization-prototype.dc.html` is `noindex`, unlinked, and disabled
+  unless `?ww_personalization=1` is supplied explicitly.
+- Mission Control and public content bundles receive no fixture profile or
+  wardrobe contents.
+
+The verified demonstration evaluates the adidas Samba OG B75806 against six
+owned fixture items. It returns decomposed compatibility evidence, three
+unique owned-first outfit candidates, gap and redundancy signals, Purchase
+ROI, confidence, and a recommendation.
+
+### Known limitations
+
+- No authentication, server storage, real accounts, or real personal data.
+- No camera intake, receipt import, extension, app, or personalized imagery.
+- Product compatibility uses deterministic v1 heuristics and existing
+  repository metadata; it is not yet learned from user outcomes.
+- Fit confidence is limited by the small amount of verified product fit data.
+- Outfit generation currently proves the top/bottom/footwear core and optional
+  layering path; it is not a full wardrobe planner.
+- The prototype is a review artifact and must not be indexed or linked from the
+  public site.

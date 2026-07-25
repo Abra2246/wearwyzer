@@ -656,6 +656,21 @@ references, and owner.
 - The next dependency path is: complete the human creative gate on PR #68,
   establish one verified merchant path, then unblock the fixture-only
   personalized purchase slice in Issue #57.
+- PR #68 subsequently merged after visual review and exact-product correction.
+  PR #77 made Mission Control boot from pinned local runtime assets with
+  bounded startup retries. PR #79 corrected sitemap routes to the deployed
+  `.dc.html` files and added a regression test.
+- Issue #57 was selected by the autonomous queue, but the hosted implementation
+  runner had read-only repository permissions. It created an evidence-backed
+  blocker instead of reporting false success.
+- Direct execution then implemented the approved fixture-only personalized
+  purchase slice on `codex/personalization-vertical-slice`: deterministic
+  versioned scoring, all four recommendation outcomes, unique Outfit Unlocks,
+  owned-first outfits, named redundancy and gap evidence, browser-local
+  export/delete, a default-off non-indexed route, and privacy-boundary tests.
+- This slice advances personalization evidence without authorizing real user
+  data, production authentication, browser-extension permissions, paid calls,
+  personalized likenesses, or public indexing.
 
 ## Final north-star statement
 
