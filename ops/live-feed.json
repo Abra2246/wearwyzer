@@ -1,20 +1,20 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T19:37:25.010Z",
+  "generatedAtIso": "2026-07-25T20:28:21.496Z",
   "overallState": "live",
   "ceo": {
-    "headline": "PR #68 is awaiting review.",
-    "requiredAction": "Review the draft PR and either request changes or mark it ready: https://github.com/Abra2246/wearwyzer/pull/68",
-    "activeWorkSummary": "PR #68 \"Recover completed style guides and add verified Samba pilot\" (draft)"
+    "headline": "Everything is healthy — no action needed.",
+    "requiredAction": null,
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T19:37:25.010Z",
+      "lastUpdatedIso": "2026-07-25T20:28:21.496Z",
       "fetchOk": true,
       "data": {
-        "automationState": "review",
+        "automationState": "idle",
         "activeIssue": null,
         "queue": {
           "depth": 0,
@@ -28,20 +28,11 @@
           "stalledSinceIso": null,
           "rejections": []
         },
-        "pr": {
-          "number": 68,
-          "title": "Recover completed style guides and add verified Samba pilot",
-          "url": "https://github.com/Abra2246/wearwyzer/pull/68",
-          "isDraft": true,
-          "reviewDecision": null,
-          "mergeableState": "unknown",
-          "createdIso": "2026-07-25T15:03:01Z",
-          "updatedIso": "2026-07-25T17:03:10Z"
-        },
+        "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-25T15:03:21Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30162851145/job/89690875856",
+          "status": "unknown",
+          "latestRunIso": "2026-07-25T20:28:21Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30173637451",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -54,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T19:37:25.010Z",
+      "lastUpdatedIso": "2026-07-25T20:28:21.496Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "c8d806f",
         "lastDeployIso": "2026-07-25T18:43:03Z",
-        "ageMinutes": 54,
+        "ageMinutes": 105,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -68,14 +59,19 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T19:37:25.010Z",
+      "lastUpdatedIso": "2026-07-25T20:28:21.496Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
         "currentJob": null,
-        "lastJob": null,
+        "lastJob": {
+          "jobId": "adidas-samba-og-b75806",
+          "stage": "ready-for-pr",
+          "result": "ready-for-pr",
+          "updatedIso": "2026-07-23T20:25:00.000Z"
+        },
         "queuedCount": 0,
-        "lastMeaningfulEventIso": null
+        "lastMeaningfulEventIso": "2026-07-23T20:47:07.725Z"
       },
       "note": null
     },
@@ -89,14 +85,54 @@
     },
     "affiliate": {
       "wired": true,
-      "state": "offline",
-      "lastUpdatedIso": null,
-      "fetchOk": false,
-      "data": null,
+      "state": "live",
+      "lastUpdatedIso": "2026-07-25T20:28:21.496Z",
+      "fetchOk": true,
+      "data": {
+        "state": "below-target",
+        "guideCoverage": [
+          {
+            "guideId": "on-cloud-x4",
+            "coveragePct": 0,
+            "meetsTarget": false
+          },
+          {
+            "guideId": "nb9060-zara-polo",
+            "coveragePct": 0,
+            "meetsTarget": false
+          },
+          {
+            "guideId": "barrel-pants-nb530",
+            "coveragePct": 0,
+            "meetsTarget": false
+          },
+          {
+            "guideId": "adidas-samba-og-b75806",
+            "coveragePct": 0,
+            "meetsTarget": false
+          }
+        ],
+        "portfolioCoveragePct": 0,
+        "targetMinPct": 80,
+        "targetMaxPct": 90,
+        "verifiedCount": 0,
+        "unverifiedCount": 83,
+        "staleCount": null,
+        "brokenCount": 0,
+        "outOfStockCount": null,
+        "reportIso": "2026-07-23T20:25:00.000Z"
+      },
       "note": null
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:68",
+      "timestampIso": "2026-07-25T20:28:07Z",
+      "type": "pr-merged",
+      "summary": "PR #68 \"Recover completed style guides and add verified Samba pilot\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/68"
+    },
     {
       "key": "deploy:c8d806f",
       "timestampIso": "2026-07-25T18:43:03Z",
@@ -222,6 +258,34 @@
       "type": "pr-opened",
       "summary": "PR #68 \"Recover completed style guides and add verified Samba pilot\" opened (draft).",
       "url": "https://github.com/Abra2246/wearwyzer/pull/68"
+    },
+    {
+      "key": "log:2026-07-23T20:47:07.725Z:guide-job-ready-for-pr",
+      "timestampIso": "2026-07-23T20:47:07.725Z",
+      "type": "guide-job-ready-for-pr",
+      "summary": "Guide job \"adidas-samba-og-b75806\" passed every validator and is ready for a PR.",
+      "url": null
+    },
+    {
+      "key": "log:2026-07-23T20:25:00.000Z:guide-production-started",
+      "timestampIso": "2026-07-23T20:25:00.000Z",
+      "type": "guide-production-started",
+      "summary": "Guide production writer claimed job \"adidas-samba-og-b75806\".",
+      "url": null
+    },
+    {
+      "key": "log:2026-07-23T20:25:00.000Z:guide-production-ready-for-review",
+      "timestampIso": "2026-07-23T20:25:00.000Z",
+      "type": "guide-production-ready-for-review",
+      "summary": "Guide \"adidas-samba-og-b75806\" was written with 8 verified assets, site records, sitemap entry, and guide-adidas-samba-og-b75806.dc.html.",
+      "url": null
+    },
+    {
+      "key": "log:2026-07-23T20:25:00.000Z:guide-production-completed",
+      "timestampIso": "2026-07-23T20:25:00.000Z",
+      "type": "guide-production-completed",
+      "summary": "Guide \"adidas-samba-og-b75806\" was written with 8 verified assets, site records, sitemap entry, and guide-adidas-samba-og-b75806.dc.html.",
+      "url": null
     },
     {
       "key": "deploy:fceb9ec",
@@ -411,41 +475,6 @@
       "type": "pr-merged",
       "summary": "PR #50 \"Establish the WearWyzer Book of Truth\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/50"
-    },
-    {
-      "key": "pr-merged:49",
-      "timestampIso": "2026-07-21T04:04:42Z",
-      "type": "pr-merged",
-      "summary": "PR #49 \"Automate Guide Factory production and review handoff\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/49"
-    },
-    {
-      "key": "pr-merged:48",
-      "timestampIso": "2026-07-21T03:54:07Z",
-      "type": "pr-merged",
-      "summary": "PR #48 \"Fix direct Claude queue dispatch\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/48"
-    },
-    {
-      "key": "pr-merged:45",
-      "timestampIso": "2026-07-21T03:20:21Z",
-      "type": "pr-merged",
-      "summary": "PR #45 \"Add secure affiliate connector framework\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/45"
-    },
-    {
-      "key": "pr-merged:44",
-      "timestampIso": "2026-07-21T03:16:47Z",
-      "type": "pr-merged",
-      "summary": "PR #44 \"Fix Mission Control truthfulness and stalled dispatch\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/44"
-    },
-    {
-      "key": "deploy:2768576",
-      "timestampIso": "2026-07-18T15:57:33Z",
-      "type": "deployed",
-      "summary": "Deployed build 2768576 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
