@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T19:33:23.297Z",
+  "generatedAtIso": "2026-07-25T20:28:22.009Z",
   "overallHealth": "yellow",
   "automationState": "idle",
   "activeWork": null,
@@ -10,9 +10,9 @@
     "blockedCount": 3
   },
   "ci": {
-    "status": "passing",
-    "lastRunIso": "2026-07-25T18:42:34Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30170155673"
+    "status": "unknown",
+    "lastRunIso": "2026-07-25T20:28:21Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30173637451"
   },
   "deployment": {
     "status": "unknown",
@@ -31,21 +31,27 @@
     "budgetPct": 0
   },
   "linkEngine": {
-    "state": "unavailable",
-    "portfolioCoveragePct": null,
-    "targetMinPct": null,
-    "targetMaxPct": null,
-    "needsHumanCount": null,
-    "brokenCount": null,
-    "shortfallCount": null,
-    "lastRunIso": null
+    "state": "below-target",
+    "portfolioCoveragePct": 0,
+    "targetMinPct": 80,
+    "targetMaxPct": 90,
+    "needsHumanCount": 83,
+    "brokenCount": 0,
+    "shortfallCount": 4,
+    "lastRunIso": "2026-07-23T20:25:00.000Z"
   },
   "incident": {
     "active": false,
     "issueNumber": null,
     "summary": null
   },
-  "blockers": [],
-  "lastMeaningfulActivityIso": null,
+  "blockers": [
+    {
+      "summary": "Affiliate link coverage is 0% — below the 80% target (83 item(s) need a human).",
+      "issueNumber": null,
+      "type": "link-coverage-below-target"
+    }
+  ],
+  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
   "staleAfterMinutes": 30
 }
