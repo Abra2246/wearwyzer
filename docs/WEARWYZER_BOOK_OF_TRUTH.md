@@ -671,6 +671,16 @@ references, and owner.
 - This slice advances personalization evidence without authorizing real user
   data, production authentication, browser-extension permissions, paid calls,
   personalized likenesses, or public indexing.
+- PR #80 merged the fixture-only slice and its post-merge Pages deployment
+  completed successfully.
+- Issue #81 is the next thin personalization boundary: a closed, versioned
+  request/response contract shared by future website, app, and extension
+  clients. It requires explicit consent, profile and wardrobe references
+  instead of full payloads, honest exact/similar/unknown matching, fresh
+  canonical product evidence, and minimized outfit evidence.
+- The Issue #81 implementation remains fixture-only. It does not deploy a
+  public endpoint or authorize production authentication, real personal data,
+  extension permissions, or personalized likeness generation.
 
 ## Final north-star statement
 

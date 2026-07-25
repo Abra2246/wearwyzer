@@ -24,6 +24,7 @@ export const FIXTURE_WARDROBE = Object.freeze([
 ]);
 
 export const FIXTURE_CANDIDATE_ID = 'adidas-samba-og-b75806';
+export const FIXTURE_WARDROBE_SNAPSHOT_ID = 'fixture-wardrobe-snapshot-01';
 
 export const FIXTURE_PROTOTYPE_DATA = Object.freeze({
   fixtureOnly: true,
@@ -34,5 +35,6 @@ export const FIXTURE_PROTOTYPE_DATA = Object.freeze({
   }),
   profile: FIXTURE_PROFILE,
   wardrobe: FIXTURE_WARDROBE,
+  wardrobeSnapshotId: FIXTURE_WARDROBE_SNAPSHOT_ID,
   candidateId: FIXTURE_CANDIDATE_ID,
 });
