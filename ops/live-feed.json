@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T22:31:55.192Z",
+  "generatedAtIso": "2026-07-25T22:33:21.962Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T22:31:55.192Z",
+      "lastUpdatedIso": "2026-07-25T22:33:21.962Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -30,8 +30,8 @@
         },
         "pr": null,
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-25T22:31:52Z",
+          "status": "passing",
+          "latestRunIso": "2026-07-25T22:32:01Z",
           "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30177744013",
           "recentFailureCount": 0
         },
@@ -45,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T22:31:55.192Z",
+      "lastUpdatedIso": "2026-07-25T22:33:21.962Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "86c0e30",
-        "lastDeployIso": "2026-07-25T20:29:01Z",
-        "ageMinutes": 123,
+        "lastHealthyShaShort": "9849c12",
+        "lastDeployIso": "2026-07-25T22:32:42Z",
+        "ageMinutes": 1,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T22:31:55.192Z",
+      "lastUpdatedIso": "2026-07-25T22:33:21.962Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T22:31:55.192Z",
+      "lastUpdatedIso": "2026-07-25T22:33:21.962Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +126,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:9849c12",
+      "timestampIso": "2026-07-25T22:32:42Z",
+      "type": "deployed",
+      "summary": "Deployed build 9849c12 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30177744013",
+      "timestampIso": "2026-07-25T22:32:01Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30177744013"
+    },
     {
       "key": "pr-merged:79",
       "timestampIso": "2026-07-25T22:31:45Z",
@@ -461,20 +475,6 @@
       "type": "ci-passed",
       "summary": "Content data validation passed on main.",
       "url": "https://github.com/Abra2246/wearwyzer/actions/runs/29978319140"
-    },
-    {
-      "key": "pr-merged:53",
-      "timestampIso": "2026-07-23T03:57:49Z",
-      "type": "pr-merged",
-      "summary": "PR #53 \"Fix Guide Factory asset persistence before live pilot\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/53"
-    },
-    {
-      "key": "deploy:17e7f3b",
-      "timestampIso": "2026-07-21T04:19:41Z",
-      "type": "deployed",
-      "summary": "Deployed build 17e7f3b — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
