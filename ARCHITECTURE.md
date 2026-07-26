@@ -965,23 +965,22 @@ their policy:
    unsupported request fails closed before any resolution step runs.
 2. Step 1 (authenticate session) calls `validatePrivateSession`
    (`scripts/private-access-security-policy.mjs`).
-3. Steps 2–5 (authorize same-account ownership, verify active personalization
-   consent, resolve the profile reference, verify the wardrobe snapshot is
-   current) call `getPersonalizationReferences` on a fixture private
+3. Step 2 calls `authorizePrivateAction`
+   (`scripts/private-access-security-policy.mjs`) before private resolution,
+   requiring both same-account ownership and the
+   `personalization:evaluate` scope.
+4. Steps 2–5 then call `getPersonalizationReferences` on a fixture private
    profile/wardrobe service instance
-   (`scripts/private-profile-service-contract.mjs`) exactly once. That
-   function already enforces this same four-step order internally, so the
-   seam maps its single returned error code back onto the step it came from
-   (`access-denied` → ownership, `personalization-consent-required` →
-   consent, `private-context-not-found` → profile resolution,
-   `stale-wardrobe-snapshot` → snapshot freshness) and back-fills a `passed`
-   trace entry for every earlier step in that order the failure implies must
-   have already succeeded, instead of re-deriving the check itself.
-4. Step 6 (derive minimized outfit candidates) turns only the **count** of
-   resolved wardrobe-snapshot items into synthetic capsule candidates — never
-   their identity or content — so real wardrobe data is never inspected past
-   this point. Fewer than two derivable candidates fails closed.
-5. Steps 7–8 delegate the exact explicit context and minimized candidates to
+   (`scripts/private-profile-service-contract.mjs`) exactly once. The seam
+   maps its returned error to the exact step it came from: access denial,
+   missing/revoked consent, unresolved profile, unresolved snapshot, or stale
+   snapshot. It back-fills a `passed` trace entry only for earlier checks the
+   accepted private-service order proves succeeded.
+5. Step 6 (derive minimized outfit candidates) accepts only the authorized
+   wardrobe-snapshot reference plus one closed internal fixture mode
+   (`ready`, `tie`, or `insufficient`). It never reads snapshot contents or
+   item count; real derivation remains a separate production gate.
+6. Steps 7–8 delegate the exact explicit context and minimized candidates to
    `evaluateDailyOutfitIntent` and then `adaptDailyOutfitStylistResponse`
    unchanged; ready, review-required, tie, insufficiency, and abstention
    outcomes remain entirely owned by those two contracts.
@@ -1000,11 +999,59 @@ real endpoint, account, session, provider, database, migration, network call,
 Chrome permission, personalized image, commerce action, or external action.
 `scripts/__tests__/daily-stylist-service-seam.test.mjs` proves success, the
 exact step order, the invalid-request short-circuit, every fail-closed step
-(missing/expired session, cross-account access, revoked consent, an
-unresolved profile reference, a stale snapshot, insufficient candidates),
+(missing/expired session, missing scope, cross-account access, revoked
+consent, unresolved profile or snapshot references, a stale snapshot,
+insufficient candidates),
 that review-required/abstention/tie outcomes pass through unmodified, byte
 stability, and that the minimized result carries no private payload or
 commercial/external-action field.
+
+## Decision — a fixture Daily Stylist service-seam review journey (issue #165)
+
+**Problem:** issue #162 proved the accepted eight-step service seam executes
+correctly in code, but nothing let a person actually see authenticated
+success, each trust failure, an unknown or contradictory context, or an exact
+selection-boundary tie happen — or confirm that a stopped result really does
+carry no response and that no step past the first failure ever ran.
+
+**Decision:** the default-off fixture route
+`daily-stylist-service-seam-fixture.dc.html?ww_daily_stylist_service_seam=1`
+composes `scripts/daily-stylist-service-seam-journey.mjs`
+(`createDailyStylistServiceSeamJourney`) over the accepted
+`runDailyStylistServiceSeam` (issue #162) across thirteen closed, selectable
+scenarios: ready success; missing and expired sessions; missing
+personalization scope and cross-account access; revoked consent; an
+unresolved profile reference; an unresolved and a stale wardrobe snapshot;
+insufficient fixture candidates; unknown-context review; contradictory-context
+abstention; and an exact selection-boundary tie. Each scenario supplies its
+own synthetic session/request-envelope/private-service fixture input — the
+journey never re-derives any composed contract's policy, only which closed
+input to hand it. The page renders the seam's own `RESOLUTION_STEPS` order as
+a fixed, closed row list annotated `passed`/`failed`/`not-executed` from the
+seam's own trace, so the first failed step is visually outlined and every
+step after it is provably marked as never having run. Only the minimized step
+trace, outcome, reason codes, and — when the seam completes — the unmodified
+Grounded Stylist response (title, summary, selected/tied/qualified IDs,
+reason codes, uncertainty, next step, citations, limitations, policy) are
+shown. Changing the scenario invalidates the prior result; reset restores the
+`ready-success` default, clears the result, and returns keyboard focus to the
+scenario control.
+
+**Boundary:** the page does not rerank, break ties, fill missing context,
+rewrite uncertainty, or bypass authentication, authorization, consent,
+reference resolution, or freshness checks — every one of those decisions
+still comes from the already-accepted seam and the contracts it composes. It
+is unlinked, `noindex`, fixture-only, and absent from `sitemap.xml` and every
+other page's navigation. It accesses no live session, account, provider, real
+profile, or real closet, and performs no persistence, network call, tracking,
+commerce, Chrome permission, personalized image, or external action.
+`scripts/__tests__/daily-stylist-service-seam-journey.test.mjs` proves every
+scenario's exact outcome, the fixed step order, first-failure-then-not-
+executed step attribution for every failing scenario, byte-stable output,
+scenario-change/reset invalidation and focus return, the default-off/
+exact-flag/`noindex`/unlinked/absent-from-sitemap route contract, and that no
+session, raw profile, wardrobe payload, consent record, or commercial/
+external-action field ever appears in the journey's output.
 
 ## Non-recommendations (things we're deliberately not changing)
 

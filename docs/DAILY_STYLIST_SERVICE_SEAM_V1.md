@@ -145,6 +145,42 @@ downstream step ever executed after the first failure.
 The fixture contains no real account, session, profile, wardrobe, consent
 record, network request, database, or deployed endpoint.
 
+## Fixture review journey
+
+The unlinked, `noindex` route
+`daily-stylist-service-seam-fixture.dc.html?ww_daily_stylist_service_seam=1`
+(`scripts/daily-stylist-service-seam-journey.mjs`,
+`createDailyStylistServiceSeamJourney`) makes this seam's execution
+understandable without adding a second policy layer. It covers all thirteen
+closed scenarios:
+
+- ready success;
+- missing and expired sessions;
+- missing personalization scope and cross-account access;
+- revoked consent;
+- an unresolved profile reference;
+- an unresolved and a stale wardrobe snapshot;
+- insufficient fixture candidates;
+- unknown-context review;
+- contradictory-context abstention; and
+- an exact selection-boundary tie.
+
+Each scenario supplies its own synthetic session/request-envelope/
+private-service fixture input directly to `runDailyStylistServiceSeam` — the
+journey never re-derives any composed contract's policy. The page renders the
+fixed `RESOLUTION_STEPS` order as a closed row list annotated
+`passed`/`failed`/`not-executed` from the seam's own trace, so the first
+failed step is visually outlined and every later step is provably marked as
+never having run. Only the minimized step trace, outcome, reason codes, and —
+when the seam completes — the unmodified Grounded Stylist response are shown.
+Changing the scenario clears the previous result, and reset restores the
+`ready-success` default and keyboard focus.
+
+Without the exact query flag the fixture controls remain hidden. The route is
+not linked from any other site page or `sitemap.xml`, and contains no
+network/provider call, live/private input, persistence, analytics, commerce,
+or external action.
+
 ## Production gates
 
 No route, endpoint, provider, database, account, session, real user record,
@@ -153,7 +189,7 @@ commerce action, or external action is authorized by this seam.
 
 ## Later production gates
 
-After this seam is reviewed:
+After this seam and its review journey are reviewed:
 
 1. specify how a future authenticated server executes each resolution step
    against the real private profile/wardrobe service instead of the fixture
@@ -161,10 +197,7 @@ After this seam is reviewed:
 2. choose the production authentication and session architecture;
 3. complete privacy/legal review before any real profile or wardrobe data is
    processed;
-4. build a reviewable fixture journey for this seam's success and every
-   trust-failure path, behind a default-off, unlinked route, before any of
-   the above;
-5. expose the same contract to signed-in web clients before extension or
+4. expose the same contract to signed-in web clients before extension or
    mobile clients;
-6. begin a Chrome-extension proof only after browser permissions are
+5. begin a Chrome-extension proof only after browser permissions are
    separately approved.

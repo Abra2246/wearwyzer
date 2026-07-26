@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Daily Stylist Service Seam Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:1040px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); overflow-wrap:anywhere; }
+    .notice { border-left:5px solid var(--gold); }
+    label { display:block; margin-top:10px; font-weight:700; }
+    label:first-of-type { margin-top:0; }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .warn { color:var(--red); background:#f6e6e3; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .detail,.evidence { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .meta { color:var(--muted); font-size:13px; }
+    ol,ul { padding-left:22px; }
+    [hidden] { display:none !important; }
+    .steps { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+    .step { display:flex; align-items:center; gap:10px; padding:8px 10px; border:1px solid var(--line); background:#fbf7ef; }
+    .step .badge { min-width:98px; text-align:center; }
+    .step.first-failure { border-color:var(--red); border-width:2px; background:#f6e6e3; }
+    .step-passed .badge { color:var(--green); background:#e4f1e8; }
+    .step-failed .badge { color:var(--red); background:#f6e6e3; }
+    .step-not-executed .badge { color:var(--muted); background:#eee5d7; }
+    @media (max-width:680px) {
+      .grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>Daily Stylist service seam review</h1><p>Every trust step, in exact order, before any answer is trusted.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This synthetic route cannot read a live account, session, profile, closet, or provider and cannot store, track, publish, message, or act externally.</p>
+      <a class="button" href="?ww_daily_stylist_service_seam=1">Open the service seam review</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> every scenario below is a
+        closed, synthetic session/request/private-service fixture — never a real account. The
+        seam composes the accepted private-access security policy, the fixture private
+        profile/wardrobe service, the Daily Outfit Intent contract, and the Grounded Daily
+        Outfit Stylist adapter unchanged. This page never reranks, breaks a tie, fills missing
+        context, rewrites uncertainty, or bypasses authentication, authorization, consent,
+        reference resolution, or freshness checks — it only renders their exact result.</section>
+      <section class="panel">
+        <h2>Choose a review scenario</h2>
+        <label for="scenario">Service seam scenario</label>
+        <select id="scenario">
+          <option value="ready-success">Ready success</option>
+          <option value="missing-session">Missing session</option>
+          <option value="expired-session">Expired session</option>
+          <option value="missing-personalization-scope">Missing personalization scope</option>
+          <option value="cross-account-access">Cross-account access</option>
+          <option value="revoked-consent">Revoked consent</option>
+          <option value="unresolved-profile">Unresolved profile</option>
+          <option value="unresolved-wardrobe-snapshot">Unresolved wardrobe snapshot</option>
+          <option value="stale-snapshot">Stale wardrobe snapshot</option>
+          <option value="insufficient-candidates">Insufficient fixture candidates</option>
+          <option value="unknown-context-review">Unknown-context review</option>
+          <option value="contradictory-context-abstention">Contradictory-context abstention</option>
+          <option value="exact-selection-boundary-tie">Exact selection-boundary tie</option>
+        </select>
+        <p id="scenario-summary" class="meta"></p>
+        <div class="actions">
+          <button id="run" type="button">Run service seam</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No live session, account, profile, closet, provider, network, tracking, or commerce action will run.</p>
+      </section>
+      <section class="panel">
+        <h2>Resolution step trace</h2>
+        <p class="meta">Steps run in this exact order. The first failed step is outlined; every step after it never executed.</p>
+        <ol id="steps" class="steps"></ol>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="response-outcome" class="badge"></span></p>
+        <h2 id="response-title"></h2>
+        <p id="response-summary"></p>
+        <div class="grid">
+          <article class="detail"><strong>Selected outfits</strong><ul id="selected"></ul></article>
+          <article class="detail"><strong>Tied outfits</strong><ul id="tied"></ul></article>
+          <article class="detail"><strong>Qualified outfits</strong><ul id="qualified"></ul></article>
+          <article class="detail"><strong>Reason codes</strong><ul id="reason-codes"></ul></article>
+          <article class="detail"><strong>Uncertainty</strong><div id="uncertainty"></div></article>
+          <article class="detail"><strong>Next step</strong><p id="next-step" class="meta"></p></article>
+        </div>
+        <h3>Citations</h3>
+        <div id="citations" class="grid"></div>
+        <h3>Limitations</h3>
+        <ul id="limitations"></ul>
+        <h3>Safety policy</h3>
+        <div id="policy" class="grid"></div>
+      </section>
+      <section id="stopped-notice" class="panel notice" hidden>
+        <h2>Stopped before a response</h2>
+        <p id="stopped-reason"></p>
+        <p class="meta">No later step ever executed, so no response, candidate, or evidence exists for this scenario.</p>
+      </section>
+      <p class="meta"><strong>External actions:</strong> unavailable. This fixture cannot
+        access a live session, account, provider, real profile, or real closet, persist data,
+        track, redirect, buy, publish, message, or change an account.</p>
+    </section>
+  </main>
+  <script type="module">
+    import { createDailyStylistServiceSeamJourney } from './scripts/daily-stylist-service-seam-journey.mjs';
+
+    const enabled = new URLSearchParams(location.search)
+      .get('ww_daily_stylist_service_seam') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+
+    if (enabled) {
+      const journey = createDailyStylistServiceSeamJourney();
+      const scenario = document.querySelector('#scenario');
+      const resultPanel = document.querySelector('#result');
+      const stoppedNotice = document.querySelector('#stopped-notice');
+      const status = document.querySelector('#status');
+
+      function listItems(values) {
+        return (values?.length ? values : ['None']).map((value) => {
+          const item = document.createElement('li');
+          item.textContent = value;
+          return item;
+        });
+      }
+
+      function detail(label, value) {
+        const card = document.createElement('article');
+        card.className = 'detail';
+        const heading = document.createElement('strong');
+        heading.textContent = label;
+        const copy = document.createElement('p');
+        copy.className = 'meta';
+        copy.textContent = String(value);
+        card.append(heading, copy);
+        return card;
+      }
+
+      function citationCard(citation) {
+        return detail(
+          citation.citationId,
+          `${citation.type} · ${citation.schemaVersion} · ${citation.state}`,
+        );
+      }
+
+      function renderSteps(view) {
+        const rows = view.steps;
+        const firstFailureIndex = rows.findIndex((row) => row.status === 'failed');
+        document.querySelector('#steps').replaceChildren(
+          ...rows.map((row, index) => {
+            const item = document.createElement('li');
+            item.className = `step step-${row.status}${index === firstFailureIndex ? ' first-failure' : ''}`;
+            const badge = document.createElement('span');
+            badge.className = 'badge';
+            badge.textContent = row.status;
+            const label = document.createElement('span');
+            label.textContent = row.reasonCode ? `${row.step} — ${row.reasonCode}` : row.step;
+            item.append(badge, label);
+            return item;
+          }),
+        );
+      }
+
+      function render(view) {
+        document.querySelector('#scenario-summary').textContent = view.scenarioSummary;
+        renderSteps(view);
+        const response = view.result?.response ?? null;
+        resultPanel.hidden = !response;
+        stoppedNotice.hidden = !view.result || response;
+        if (!view.result) return;
+        if (!response) {
+          document.querySelector('#stopped-reason').textContent =
+            `Stopped at "${view.result.stoppedAtStep}" — ${view.result.reasonCode}.`;
+          return;
+        }
+        const badge = document.querySelector('#response-outcome');
+        badge.textContent = response.outcome;
+        badge.className = `badge ${response.outcome === 'answer' ? 'good' : 'warn'}`;
+        document.querySelector('#response-title').textContent = response.title;
+        document.querySelector('#response-summary').textContent = response.summary;
+        document.querySelector('#selected').replaceChildren(...listItems(response.selectedOutfitIds));
+        document.querySelector('#tied').replaceChildren(...listItems(response.tiedOutfitIds));
+        document.querySelector('#qualified').replaceChildren(...listItems(response.qualifiedOutfitIds));
+        document.querySelector('#reason-codes').replaceChildren(...listItems(response.reasonCodes));
+        document.querySelector('#uncertainty').replaceChildren(
+          detail('Level', response.uncertainty.level),
+          detail('Value', response.uncertainty.value),
+          detail('Reason codes', response.uncertainty.reasonCodes.join(', ')),
+        );
+        document.querySelector('#next-step').textContent = response.nextStep;
+        document.querySelector('#citations').replaceChildren(
+          ...response.citations.map(citationCard),
+        );
+        document.querySelector('#limitations').replaceChildren(
+          ...listItems(response.limitations),
+        );
+        document.querySelector('#policy').replaceChildren(
+          ...Object.entries(response.policy).map(([key, value]) => detail(key, value)),
+        );
+      }
+
+      render(journey.getView());
+      scenario.addEventListener('change', () => {
+        journey.selectScenario(scenario.value);
+        render(journey.getView());
+        status.textContent = 'Scenario changed. Prior result cleared. Run again for a current trace.';
+      });
+      document.querySelector('#run').addEventListener('click', () => {
+        const outcome = journey.run();
+        if (!outcome.ok) {
+          resultPanel.hidden = true;
+          stoppedNotice.hidden = true;
+          status.textContent = `Fixture failed safely: ${outcome.error}.`;
+          return;
+        }
+        render(outcome.view);
+        status.textContent = 'Review complete. Step trace, outcome, and reason codes are visible.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        scenario.value = reset.view.scenario;
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior result remains.';
+        scenario.focus();
+      });
+    }
+  </script>
+</body>
+</html>
