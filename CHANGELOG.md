@@ -2,6 +2,60 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fixture authenticated Daily Stylist service seam (issue #162)
+### Added
+- `scripts/daily-stylist-service-seam.mjs` (`runDailyStylistServiceSeam`,
+  `serializeDailyStylistServiceSeamResult`) — one deterministic, fixture-only
+  seam that executes the Issue #159 eight-step `RESOLUTION_STEPS` order end
+  to end by composing four already-accepted contracts: the private-access
+  security policy (`validatePrivateSession`), the fixture private
+  profile/wardrobe service (`getPersonalizationReferences`), the Daily
+  Outfit Intent contract, and the Grounded Daily Outfit Stylist adapter.
+- Step 1 authenticates the session. Steps 2–5 (ownership, consent, profile
+  resolution, snapshot freshness) resolve from a single call to the private
+  service's existing `getPersonalizationReferences`, whose one returned
+  error code is mapped back onto the resolution step it came from instead of
+  being re-derived; earlier steps that its fixed internal order implies must
+  have already passed are back-filled into the trace. Step 6 derives
+  synthetic outfit candidates from only the resolved wardrobe snapshot's
+  item count, never its content. Steps 7–8 delegate the exact explicit
+  context and candidates unchanged to Daily Outfit Intent and then the
+  Grounded Stylist adapter.
+- The seam returns a minimized `{ ok, schemaVersion, requestId, outcome,
+  stoppedAtStep, reasonCode, trace, response }` result. `trace` is an
+  ordered `{ step, outcome, reasonCode }` list proving exactly which steps
+  ran; `response` is the unmodified accepted Grounded Stylist response, or
+  `null` when stopped.
+- `docs/DAILY_STYLIST_SERVICE_SEAM_V1.md` documents adapter responsibilities
+  and data ownership, failure propagation and step attribution, revocation
+  timing, stale-snapshot behavior, minimized candidate derivation, client
+  trust boundaries, and the later production gates.
+### Safety
+- The seam stops at the first failing step with that step's exact
+  fail-closed reason code from Issue #159; no later step (candidate
+  derivation, Daily Outfit Intent, Grounded Stylist adaptation) ever runs
+  once any earlier step fails, and a stopped result always carries
+  `response: null`.
+- Ready, review-required, tie, insufficiency, and abstention outcomes remain
+  entirely owned by the accepted Daily Outfit Intent and Grounded Stylist
+  contracts; the seam never reranks, breaks a tie, fills context, or
+  rewrites uncertainty.
+- The minimized result never carries the session, raw profile, wardrobe
+  payload, consent record, Style DNA, Fit DNA, sizes, measurements, photos,
+  notes, or adapter internals — verified by scanning the serialized result
+  for the fixture's actual private values and pinning its exact key shape.
+- No route, endpoint, provider, database, account, session, real user
+  record, collection flow, network call, Chrome permission, personalized
+  image, commerce action, or external action is created.
+### Validation
+- 894/894 deterministic repository tests passed (20 new).
+- `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
+  `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
+  `compare-legacy-adapter.mjs` all ran clean against this change (all
+  reported warnings are pre-existing, unrelated to this contract, and
+  unchanged from the prior baseline — this change touches no product/guide
+  content data).
+
 ## Unreleased (2026-07-26) — Minimum production Daily Stylist data boundary (issue #159)
 ### Added
 - `docs/DAILY_STYLIST_PRODUCTION_BOUNDARY_V1.md` and

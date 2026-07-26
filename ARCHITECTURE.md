@@ -945,6 +945,67 @@ profile, wardrobe snapshot, or candidate, and never executes the plan. No
 route, endpoint, provider, database, account, session, real user record,
 collection flow, or production access is created.
 
+## Decision — a fixture authenticated Daily Stylist service seam (issue #162)
+
+**Problem:** issue #159 defined the exact eight-step server-side resolution
+order and stop reasons a future authenticated server must follow, but nothing
+proved that order actually executes correctly end to end, fails closed at the
+first untrusted step, and still delegates ranking/tie/uncertainty/abstention
+decisions to the already-accepted Daily Outfit Intent and Grounded Daily
+Outfit Stylist contracts — without first standing up a real endpoint, account,
+database, or provider.
+
+**Decision:** `scripts/daily-stylist-service-seam.mjs`
+(`runDailyStylistServiceSeam`) composes four already-accepted fixture
+adapters in the exact `RESOLUTION_STEPS` order instead of duplicating any of
+their policy:
+
+1. It first calls `planDailyStylistProductionRequest`
+   (`scripts/daily-stylist-production-boundary-contract.mjs`); an invalid or
+   unsupported request fails closed before any resolution step runs.
+2. Step 1 (authenticate session) calls `validatePrivateSession`
+   (`scripts/private-access-security-policy.mjs`).
+3. Steps 2–5 (authorize same-account ownership, verify active personalization
+   consent, resolve the profile reference, verify the wardrobe snapshot is
+   current) call `getPersonalizationReferences` on a fixture private
+   profile/wardrobe service instance
+   (`scripts/private-profile-service-contract.mjs`) exactly once. That
+   function already enforces this same four-step order internally, so the
+   seam maps its single returned error code back onto the step it came from
+   (`access-denied` → ownership, `personalization-consent-required` →
+   consent, `private-context-not-found` → profile resolution,
+   `stale-wardrobe-snapshot` → snapshot freshness) and back-fills a `passed`
+   trace entry for every earlier step in that order the failure implies must
+   have already succeeded, instead of re-deriving the check itself.
+4. Step 6 (derive minimized outfit candidates) turns only the **count** of
+   resolved wardrobe-snapshot items into synthetic capsule candidates — never
+   their identity or content — so real wardrobe data is never inspected past
+   this point. Fewer than two derivable candidates fails closed.
+5. Steps 7–8 delegate the exact explicit context and minimized candidates to
+   `evaluateDailyOutfitIntent` and then `adaptDailyOutfitStylistResponse`
+   unchanged; ready, review-required, tie, insufficiency, and abstention
+   outcomes remain entirely owned by those two contracts.
+
+The seam returns only a minimized `{ outcome, stoppedAtStep, reasonCode,
+trace, response }` result — `trace` is an ordered list of
+`{ step, outcome, reasonCode }` entries proving exactly which steps ran and in
+what order, and `response` is the unmodified accepted Grounded Stylist
+response or `null` when stopped. The session, raw profile, wardrobe payload,
+consent record, Style DNA, Fit DNA, sizes, measurements, photos, notes, and
+adapter internals never appear in that result.
+
+**Boundary:** every adapter this seam calls is the existing deterministic
+fixture already accepted by issues #97/#99/#143/#148/#159 — there is still no
+real endpoint, account, session, provider, database, migration, network call,
+Chrome permission, personalized image, commerce action, or external action.
+`scripts/__tests__/daily-stylist-service-seam.test.mjs` proves success, the
+exact step order, the invalid-request short-circuit, every fail-closed step
+(missing/expired session, cross-account access, revoked consent, an
+unresolved profile reference, a stale snapshot, insufficient candidates),
+that review-required/abstention/tie outcomes pass through unmodified, byte
+stability, and that the minimized result carries no private payload or
+commercial/external-action field.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

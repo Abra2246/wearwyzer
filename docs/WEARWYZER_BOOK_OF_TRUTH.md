@@ -1040,6 +1040,21 @@ references, and owner.
   provider, database, account, session, real user record, collection flow,
   or production access exists. Current pre-PR validation baseline: 874
   tests.
+- Issue #162 proves the Issue #159 resolution order actually executes:
+  `runDailyStylistServiceSeam` composes the accepted private-access security
+  policy, fixture private profile/wardrobe service, Daily Outfit Intent
+  contract, and Grounded Daily Outfit Stylist adapter in the fixed eight-step
+  order, stopping at the first failing step with that step's exact reason
+  code and a minimized `{ step, outcome, reasonCode }` trace proving no later
+  step ever ran. Steps 2–5 are resolved by one call to the private service's
+  existing `getPersonalizationReferences`, whose single error code is mapped
+  back onto the step it came from rather than re-derived. Step 6 derives
+  synthetic candidates from only the resolved wardrobe snapshot's item count,
+  never its content. Steps 7–8 delegate unchanged, so ready, review-required,
+  tie, insufficiency, and abstention outcomes remain entirely owned by the
+  two accepted contracts. No route, endpoint, account, session, database,
+  provider, or real private record exists. Current pre-PR validation
+  baseline: 894 tests.
 
 ## Final north-star statement
 
