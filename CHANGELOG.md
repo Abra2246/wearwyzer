@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Daily Outfit Intent fixture journey (issue #145)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route for ready two/three
+  outfit contexts, unknown weather, ambiguous dress code, stale availability,
+  context conflicts, an Outfit Set boundary tie, and insufficiency.
+- Explicit context, stable reasons, safety policy, selected/tied/qualified
+  outfit IDs, and minimized candidate evaluations when context is coherent.
+### Safety
+- The page delegates every decision to the accepted Daily Outfit Intent
+  contract and does not recreate context or Outfit Set policy in the UI.
+- It accesses no live location, weather, calendar, itinerary, account, real
+  closet, persistence, analytics, network, affiliate, retailer, purchase,
+  publishing, or external action.
+### Validation
+- 816/816 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Minimized Daily Outfit Intent (issue #143)
 ### Added
 - A closed, versioned fixture boundary that translates explicit occasion,

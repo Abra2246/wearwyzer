@@ -40,3 +40,23 @@ contacts, exact address, itinerary text, health/body data, full profile or
 wardrobe, prices, retailers, affiliate status, commission, analytics,
 credentials, network calls, persistence, purchasing, and every external
 action.
+
+## Fixture review journey
+
+The unlinked, `noindex` route
+`daily-outfit-fixture.dc.html?ww_daily_outfit=1` makes the boundary reviewable
+without expanding it. Nine deterministic modes cover:
+
+- ready two- and three-outfit recommendations;
+- unknown weather;
+- ambiguous dress code;
+- stale availability;
+- weather/season and dress-code/occasion conflicts;
+- an Outfit Set selection-boundary tie; and
+- insufficient trustworthy candidates.
+
+The UI delegates every decision to this contract and only renders explicit
+context, stable reasons, safety policy, and the minimized Outfit Set evidence.
+Changing a mode clears the prior result. Reset returns to the two-outfit
+default and restores focus. No live context, real profile or closet, storage,
+network, analytics, commerce, or external action is available.

@@ -14,7 +14,7 @@ Feed run `30186351248`, and Ops Status run `30186351266`. Issue #145 is ready.
 ## Queued execution
 
 1. **Issue #145 — Daily Outfit Intent fixture journey**
-   - Status: ready; no implementation branch or review PR exists yet.
+   - Status: in progress on `codex/issue-145-daily-outfit-journey`.
    - Scope: make the accepted Daily Outfit Intent contract reviewable across
      coherent recommendations, unknown weather, ambiguous dress code, stale
      availability, contradictory context, Outfit Set ties, and insufficiency.
