@@ -1053,6 +1053,81 @@ exact-flag/`noindex`/unlinked/absent-from-sitemap route contract, and that no
 session, raw profile, wardrobe payload, consent record, or commercial/
 external-action field ever appears in the journey's output.
 
+## Decision — the signed-in web transport boundary for Daily Stylist (issue #168)
+
+**Problem:** issues #159 and #162 defined and proved the exact eight-step
+server-side resolution order a future authenticated server must follow, but
+neither specified how a signed-in **web** client actually reaches that seam
+— what a trusted web server's own middleware may resolve (method, media
+type, origin, CSRF, request-ID evidence) versus what must remain entirely
+inside the seam, or what shape a browser is allowed to see back. Without
+that boundary, a future web implementation could reach for a shortcut (an
+ad hoc status code, a leaked internal reason string, a re-derived
+authorization check) that either duplicates the seam's own policy or opens a
+new existence oracle the seam's step design already closed.
+
+**Decision:** `docs/DAILY_STYLIST_WEB_TRANSPORT_BOUNDARY_V1.md` and
+`scripts/daily-stylist-web-transport-boundary.mjs`
+(`runDailyStylistWebTransportBoundary`) define one closed, versioned
+`daily-stylist-web-transport-context-v1` transport context — method, media
+type, same-origin result, CSRF result, and request-ID/idempotency evidence,
+all resolved by trusted middleware, never by the browser directly — plus one
+closed `daily-stylist-web-transport-response-v1` client response. The
+boundary performs exactly two jobs and nothing else:
+
+1. It rejects a non-`POST` method, a non-JSON media type, an unverified
+   same-origin result, a failed CSRF result, a request ID that does not
+   match the accepted body, or an unsupported/unknown transport-context
+   field as one closed check (`closed-web-transport-context-required`) —
+   entirely before the service seam runs. It then reuses
+   `planDailyStylistProductionRequest` (issue #159) directly, rather than
+   re-implementing it, so an unsupported schema version, an unknown field, a
+   credential, a private payload, a live-context field, a commercial field,
+   an external-action field, or a client-asserted authorization/consent/
+   ranking field also fails closed before the seam runs.
+2. Once both checks pass, it calls `runDailyStylistServiceSeam` (issue #162)
+   unchanged, then renames the seam's own outcome into one closed client
+   response: `ready`/`review-required`/`abstained` for the three completed
+   outcomes (carrying the unmodified accepted Grounded Stylist response),
+   and `unauthenticated`/`unauthorized`/`consent-required`/
+   `unresolved-context`/`stale-snapshot`/`insufficient-candidates`/
+   `service-unavailable` for the seam's eight resolution steps
+   (`response: null`). `unauthorized` intentionally covers both cross-account
+   access and a missing required scope because the seam already resolves
+   both at its single `authorize-same-account-ownership` step; this boundary
+   does not split them apart or re-derive why either failed.
+
+Rejected requests echo only the bounded request ID resolved by trusted
+middleware. The browser-provided request body is never used as a reflection
+source. An `insufficient-candidates` result directs the client to review the
+available wardrobe evidence; it does not infer that the wardrobe is too
+small or encourage the user to add or buy clothing.
+
+`docs/DAILY_STYLIST_WEB_TRANSPORT_BOUNDARY_V1.md` also records a production
+decision packet naming ten still-unresolved production choices (auth/session
+provider, cookie architecture, hosting, storage, retention, privacy/legal
+review, monitoring, rate limiting, abuse prevention, incident response) that
+this fixture deliberately does not choose.
+
+**Boundary:** this boundary authenticates nothing, authorizes nothing,
+resolves no real private record, and ranks nothing — every one of those
+remains the seam's delegated responsibility, called unchanged. The session
+is accepted only as an opaque, server-resolved reference through a separate
+argument, never embedded in the request body or serialized into the client
+response. The client response carries only `{ schemaVersion, requestId,
+status, nextStep, response }` — no step trace, no session, no raw profile/
+wardrobe/consent data, no adapter internals, and no provider error.
+`scripts/__tests__/daily-stylist-web-transport-boundary.test.mjs` proves
+every transport and representative envelope rejection happens before the
+seam runs (using a private-service stand-in that throws if touched), every
+completed and stopped client status, the closed five-key response shape,
+byte stability, byte-identical responses across two different unresolved
+profile references (no existence oracle), and the absence of any commercial,
+credential, or external-action field. No route, endpoint, authentication
+provider, account, database, session, cookie, real user record, network
+call, Chrome permission, personalized image, commerce action, or external
+action is created.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

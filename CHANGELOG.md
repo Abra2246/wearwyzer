@@ -2,6 +2,76 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Signed-in web transport boundary for Daily Stylist (issue #168)
+### Added
+- `scripts/daily-stylist-web-transport-boundary.mjs`
+  (`runDailyStylistWebTransportBoundary`, `validateWebTransportContext`,
+  `serializeDailyStylistWebTransportResponse`) — one deterministic transport
+  boundary between a signed-in web client, trusted middleware, and the
+  accepted Daily Stylist service seam (issue #162). It accepts a closed
+  `daily-stylist-web-transport-context-v1` transport context (method, media
+  type, same-origin result, CSRF result, request-ID/idempotency evidence)
+  resolved entirely by trusted middleware, plus the accepted
+  `daily-stylist-production-boundary-v1` request body and an opaque
+  server-resolved session reference through a separate argument.
+- A non-`POST` method, a non-JSON media type, an unverified same-origin
+  result, a failed CSRF result, a mismatched request ID, or an unsupported/
+  unknown transport-context field fails one closed check
+  (`closed-web-transport-context-required`) before the service seam runs.
+  The request body reuses `planDailyStylistProductionRequest` (issue #159)
+  directly, so an unsupported schema version, an unknown field, a
+  credential, a private payload, a live-context field, a commercial field,
+  an external-action field, or a client-asserted authorization/consent/
+  ranking field also fails closed before the seam runs.
+- Once both checks pass, the accepted request delegates unchanged to
+  `runDailyStylistServiceSeam` (issue #162). Its result is renamed into one
+  closed client response, `{ schemaVersion, requestId, status, nextStep,
+  response }`: `ready`/`review-required`/`abstained` for the three completed
+  outcomes (carrying the unmodified accepted Grounded Stylist response), and
+  `unauthenticated`/`unauthorized`/`consent-required`/`unresolved-context`/
+  `stale-snapshot`/`insufficient-candidates`/`service-unavailable` for the
+  seam's eight resolution steps (`response: null`).
+- `docs/DAILY_STYLIST_WEB_TRANSPORT_BOUNDARY_V1.md` documents the trust
+  ownership table, the transport context and client response schemas, the
+  status-mapping table, the no-existence-oracle argument, and a production
+  decision packet naming ten still-unresolved production choices (auth/
+  session provider, cookie architecture, hosting, storage, retention,
+  privacy/legal review, monitoring, rate limiting, abuse prevention,
+  incident response).
+### Safety
+- This boundary authenticates nothing, authorizes nothing, resolves no real
+  private record, and ranks nothing — every one of those remains the seam's
+  delegated responsibility, called unchanged. The session is accepted only
+  as an opaque, server-resolved reference, never embedded in the request
+  body or serialized into the client response. `unauthorized` intentionally
+  covers both cross-account access and a missing required scope because the
+  seam already resolves both at its single `authorize-same-account-ownership`
+  step; this boundary does not split them apart or re-derive why either
+  failed. No route, endpoint, authentication provider, account, database,
+  session, cookie, real user record, network call, Chrome permission,
+  personalized image, commerce action, or external action is created.
+- Rejected requests echo only a bounded request ID resolved by trusted
+  middleware; an invalid browser-provided request ID is never reflected.
+  `insufficient-candidates` directs the client to review available wardrobe
+  evidence rather than implying that the user should add or buy clothing.
+### Validation
+- 951/951 deterministic repository tests passed (41 new).
+- `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
+  `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
+  `compare-legacy-adapter.mjs` all ran clean against this change (all
+  reported warnings are pre-existing, unrelated to this boundary, and
+  unchanged from the prior baseline — this change touches no product/guide
+  content data or page).
+- `scripts/__tests__/daily-stylist-web-transport-boundary.test.mjs` proves
+  every transport-context rejection, every representative envelope
+  rejection, that a poisoned private-service stand-in that throws on any
+  access is never touched after a pre-seam rejection, every completed and
+  stopped client status, trusted-only request-ID reflection, the closed
+  five-key response shape with no trace/
+  session/reason-code leakage, byte stability, byte-identical responses for
+  two different unresolved profile references, and the absence of any
+  commercial, credential, or external-action field.
+
 ## Unreleased (2026-07-26) — Fixture Daily Stylist service-seam review journey (issue #165)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated (`ww_daily_stylist_service_seam=1`)
