@@ -703,6 +703,25 @@ qualified outfit becomes `none-qualified`. Full private payloads, prices,
 retailers, affiliate economics, popularity, accounts, analytics, network,
 purchasing, and external actions remain excluded.
 
+## Decision — Outfit Compatibility is reviewable before integration (issue #137)
+
+**Problem:** a correct contract is not enough if future clients cannot show
+where a score came from, distinguish missing evidence from incompatibility, or
+preserve comparison ties and abstention.
+
+**Decision:** the default-off fixture route
+`outfit-compatibility-fixture.dc.html?ww_outfit_compatibility=1` delegates to
+the accepted Outfit Compatibility contract and exposes eight deterministic
+review states. It renders every score component, evidence coverage,
+confidence, reason, hard incompatibility, missing-evidence code, target, and
+minimized item reference with ownership, product-evidence, and fit status.
+Changing modes invalidates prior results; reset restores deterministic defaults
+and focus.
+
+**Boundary:** the journey is unlinked, `noindex`, fixture-only, and read-only.
+It stores nothing and has no profile, wardrobe, account, analytics, network,
+commerce, affiliate, retailer, purchase, or external-action capability.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

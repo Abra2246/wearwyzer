@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Outfit Compatibility Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:980px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); }
+    .notice { border-left:5px solid var(--gold); }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .warn { color:var(--red); background:#f6e6e3; }
+    .score { font-size:clamp(54px,12vw,96px); font-weight:900; line-height:1; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .metric,.detail,.evaluation { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .metric strong { display:block; font-size:24px; }
+    .meta { color:var(--muted); font-size:13px; }
+    ol,ul { padding-left:22px; }
+    [hidden] { display:none !important; }
+    @media (max-width:680px) {
+      .grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>An outfit should explain itself.</h1><p>Product truth, fit, ownership, and preference—kept separate.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This private route uses synthetic local evidence and cannot access a real closet, shop, track, or change an account.</p>
+      <a class="button" href="?ww_outfit_compatibility=1">Open synthetic Outfit Compatibility</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> missing evidence lowers
+        confidence, not compatibility. Explicit incompatibilities block. Product truth and
+        verified fit outrank preference. Commercial influence is unavailable.</section>
+      <section class="panel">
+        <h2>Choose a review case</h2>
+        <label for="mode">Outfit evidence state</label>
+        <select id="mode">
+          <option value="compatible">Compatible owned-first outfit</option>
+          <option value="missing-evidence">Unknown fit requires review</option>
+          <option value="explicit-style-block">Explicit style preference blocks outfit</option>
+          <option value="conflicting-fit">Conflicting fit evidence blocks outfit</option>
+          <option value="missing-required-role">A required item is missing</option>
+          <option value="comparison-leader">Comparison has a clear leader</option>
+          <option value="comparison-tie">Comparison remains an exact tie</option>
+          <option value="none-qualified">No compared outfit qualifies</option>
+        </select>
+        <div class="actions">
+          <button id="review" type="button">Review compatibility</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No private data, network, tracking, or commerce action will run.</p>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="result-status" class="badge"></span></p>
+        <div id="score" class="score"></div>
+        <h2 id="result-title">Outfit compatibility</h2>
+        <p id="mode-summary" class="meta"></p>
+        <p id="comparison" class="detail" hidden></p>
+        <div id="parts" class="grid"></div>
+        <h3>Evidence exceptions</h3>
+        <div class="grid">
+          <article class="detail"><strong>Hard incompatibilities</strong><ul id="hard"></ul></article>
+          <article class="detail"><strong>Missing evidence</strong><ul id="missing"></ul></article>
+        </div>
+        <h3>Owned, prospective, and missing items</h3>
+        <div id="items" class="grid"></div>
+        <h3>Reason codes</h3>
+        <ul id="reasons"></ul>
+        <div id="evaluations" class="grid"></div>
+        <p class="meta"><strong>External actions:</strong> unavailable. This fixture cannot
+          access a real closet, persist data, track, redirect, buy, or change an account.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { createOutfitCompatibilityJourney } from './scripts/outfit-compatibility-journey.mjs';
+    const enabled = new URLSearchParams(location.search).get('ww_outfit_compatibility') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+    if (enabled) {
+      const journey = createOutfitCompatibilityJourney();
+      const mode = document.querySelector('#mode');
+      const panel = document.querySelector('#result');
+      const status = document.querySelector('#status');
+      function listItems(values) {
+        return (values.length ? values : ['None']).map((value) => {
+          const item = document.createElement('li');
+          item.textContent = value;
+          return item;
+        });
+      }
+      function metric(label, value) {
+        const card = document.createElement('article');
+        card.className = 'metric';
+        const name = document.createElement('span');
+        name.textContent = label;
+        const score = document.createElement('strong');
+        score.textContent = value === null ? 'Unavailable' : value;
+        card.append(name, score);
+        return card;
+      }
+      function itemCard(item) {
+        const card = document.createElement('article');
+        card.className = 'detail';
+        const heading = document.createElement('strong');
+        heading.textContent = `${item.role}: ${item.productId}`;
+        const copy = document.createElement('p');
+        copy.className = 'meta';
+        copy.textContent = `${item.ownership} · product evidence ${item.evidenceState} · fit ${item.fitStatus}`;
+        card.append(heading, copy);
+        return card;
+      }
+      function evaluationCard(evaluation) {
+        const card = document.createElement('article');
+        card.className = 'evaluation';
+        const heading = document.createElement('strong');
+        heading.textContent = evaluation.outfitId;
+        const copy = document.createElement('p');
+        copy.className = 'meta';
+        copy.textContent = `${evaluation.status} · score ${evaluation.score ?? 'unavailable'} · ${evaluation.confidence} confidence`;
+        card.append(heading, copy);
+        return card;
+      }
+      function renderEvaluation(evaluation) {
+        document.querySelector('#score').textContent = evaluation.score ?? '—';
+        document.querySelector('#parts').replaceChildren(...Object.entries(evaluation.parts)
+          .map(([key, value]) => metric(key.replaceAll(/([A-Z])/g, ' $1'), value)));
+        document.querySelector('#hard').replaceChildren(...listItems(evaluation.hardIncompatibilities));
+        document.querySelector('#missing').replaceChildren(...listItems(evaluation.missingEvidence));
+        document.querySelector('#items').replaceChildren(...evaluation.items.map(itemCard));
+        document.querySelector('#reasons').replaceChildren(...listItems(evaluation.reasonCodes));
+      }
+      function render(view) {
+        panel.hidden = !view.result;
+        if (!view.result) return;
+        const isComparison = view.result.kind === 'comparison';
+        const data = view.result.data;
+        const evaluation = isComparison ? data.evaluations[0] : data;
+        const displayStatus = isComparison ? data.status : evaluation.status;
+        const badge = document.querySelector('#result-status');
+        badge.textContent = displayStatus;
+        badge.className = `badge ${['compatible', 'selected'].includes(displayStatus) ? 'good' : 'warn'}`;
+        document.querySelector('#result-title').textContent =
+          isComparison ? 'Outfit comparison' : 'Outfit compatibility';
+        document.querySelector('#mode-summary').textContent = view.modeSummary;
+        const comparison = document.querySelector('#comparison');
+        comparison.hidden = !isComparison;
+        comparison.textContent = isComparison
+          ? `Top score: ${data.topScore ?? 'unavailable'} · selected: ${data.selectedOutfitIds.join(', ') || 'none'}`
+          : '';
+        renderEvaluation(evaluation);
+        document.querySelector('#evaluations').replaceChildren(...(
+          isComparison ? data.evaluations.map(evaluationCard) : []
+        ));
+      }
+      mode.addEventListener('change', () => {
+        journey.selectMode(mode.value);
+        render(journey.getView());
+        status.textContent = 'Evidence changed. Review again to create a current result.';
+      });
+      document.querySelector('#review').addEventListener('click', () => {
+        const result = journey.run();
+        if (!result.ok) {
+          panel.hidden = true;
+          status.textContent = `Fixture failed safely: ${result.error}.`;
+          return;
+        }
+        render(result.view);
+        status.textContent = 'Review complete. Scores, confidence, exceptions, ownership, and comparison evidence are visible.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        mode.value = reset.view.mode;
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior compatibility result remains.';
+        mode.focus();
+      });
+    }
+  </script>
+</body>
+</html>

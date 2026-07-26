@@ -926,6 +926,15 @@ references, and owner.
   Full private payloads, commerce, accounts, analytics, network, purchasing,
   and external actions remain outside the result. Current pre-PR validation
   baseline: 758 tests.
+- Issue #137 makes Outfit Compatibility reviewable as a default-off fixture
+  journey. Compatible, missing-evidence, explicit-style-block,
+  conflicting-fit, missing-role, comparison-leader, tie, and none-qualified
+  states keep decomposed score parts, evidence coverage, confidence, hard
+  incompatibilities, missing evidence, reasons, target context, and ownership
+  labels visible. Changing evidence clears prior results; reset restores
+  deterministic defaults and focus. The route collects and stores nothing and
+  exposes no account, network, analytics, tracking, affiliate, retailer,
+  purchase, or external action. Current pre-PR validation baseline: 770 tests.
 
 ## Final north-star statement
 
