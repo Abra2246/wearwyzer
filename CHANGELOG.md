@@ -2,6 +2,23 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Grounded AI Stylist contract (issue #101)
+### Added
+- `scripts/ai-stylist-contract.mjs`: provider-agnostic intent and evidence
+  allowlists, material-claim citation validation, ownership/product-fact
+  grounding, abstention, correction, minimization, and invalidation.
+- `docs/AI_STYLIST_CONTRACT_V1.md` with the conversational trust boundary and
+  production gates.
+### Safety
+- No live model/provider call, paid spend, real account, production storage,
+  calendar/location access, camera/photo workflow, affiliate credential,
+  Chrome permission, external action, publishing, or likeness generation.
+### Validation
+- 579/579 repository tests pass.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  validators pass; the one pre-existing graph-eligibility warning remains
+  non-blocking.
+
 ## Unreleased (2026-07-26) — Outfit calendar and packing contract (issue #99)
 ### Added
 - `scripts/outfit-packing-contract.mjs`: versioned private fixture requests,

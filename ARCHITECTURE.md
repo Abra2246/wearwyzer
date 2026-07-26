@@ -439,6 +439,26 @@ location, messaging, or production-account access.
 **Deferred:** production storage, calendar credentials, live weather/location,
 travel integrations, analytics, notifications, and automatic scheduling.
 
+## Decision — evidence-validating AI Stylist boundary (issue #101)
+
+**Problem:** a conversational stylist can make WearWyzer easier to use, but an
+unconstrained model could invent ownership, product, price, fit, availability,
+or affiliate facts and undermine the product's trust advantage.
+
+**Decision:** the first Stylist boundary validates proposed material claims
+against exact, versioned, allowlisted evidence. Every claim has a fact,
+derived-signal, or editorial-guidance type; cites supplied evidence; and carries
+confidence and opposing evidence. Fact claims must match a supplied fact.
+Owned-item claims must resolve through an accepted wardrobe snapshot. Stale,
+ambiguous, conflicting, missing, or insufficient evidence produces abstention.
+
+**Benefit:** website, app, and future extension surfaces can share a
+conversational experience without making a language model the source of product
+or wardrobe truth.
+
+**Deferred:** live provider selection, production storage, paid calls,
+prompt/model evaluation, external actions, Chrome permissions, and publishing.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
