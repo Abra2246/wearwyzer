@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Onboarding &amp; Wardrobe Intake — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#ddd3c3; --gold:#c8941e; --muted:#68645d; --green:#2e7d46; --red:#b3261e; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; background:var(--paper); color:var(--ink); }
+    header { background:var(--ink); color:var(--paper); padding:24px 18px; }
+    header div,main { max-width:980px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(28px,6vw,52px); text-transform:uppercase; letter-spacing:.02em; }
+    header p { color:#b7b0a2; margin:8px 0 0; }
+    main { padding:24px 16px 80px; }
+    .panel { background:var(--card); border:1px solid var(--line); padding:18px; margin-bottom:16px; }
+    .notice { border-left:5px solid var(--gold); }
+    .warning { border-left:5px solid var(--red); }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .grid.three { grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .row { display:flex; align-items:center; justify-content:space-between; gap:12px; border:1px solid var(--line); padding:12px; margin-top:8px; background:#fbf7ef; }
+    label { display:block; font-size:13px; font-weight:700; margin-bottom:5px; }
+    input,select { width:100%; font:inherit; border:1px solid var(--line); background:white; padding:10px; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font:inherit; font-weight:700; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button.danger { background:transparent; color:var(--red); border-color:var(--red); }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .meta { color:var(--muted); font-size:13px; }
+    .badge { display:inline-block; padding:3px 8px; font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.05em; background:#eee5d7; }
+    .badge.good { color:var(--green); background:#e4f1e8; }
+    .badge.bad { color:var(--red); background:#f6e6e3; }
+    progress { width:100%; height:18px; accent-color:var(--gold); }
+    ul,ol { padding-left:20px; }
+    code { background:#ece5d8; padding:2px 5px; word-break:break-word; }
+    [hidden] { display:none !important; }
+    @media (max-width:620px) {
+      .grid,.grid.three { grid-template-columns:1fr; }
+      .row { align-items:flex-start; flex-direction:column; }
+      .row button { width:100%; }
+      .actions button,.actions a { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Build Your WearWyzer</h1>
+      <p>Fixture-only onboarding · app-first wardrobe · minimized shopping decisions</p>
+    </div>
+  </header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Prototype is off</h2>
+      <p>This private route is deliberately disabled by default. It creates no account, collects no real
+        personal data, and sends nothing to a server.</p>
+      <a class="button" href="?ww_onboarding=1">Open the fixture journey</a>
+    </section>
+
+    <section id="enabled" hidden>
+      <section class="panel notice">
+        <strong>Future-surface boundary:</strong> wardrobe inventory is app-first. The website and future
+        extension receive versioned references and the minimum outfit evidence needed for one decision—not
+        the full profile or closet. Everything here is deterministic, synthetic, and stored only on this device.
+      </section>
+
+      <section class="panel">
+        <h2>1. Consent by purpose</h2>
+        <p class="meta">Each purpose is independent. Revocation blocks its dependent save or evaluation immediately.</p>
+        <div id="consents" class="grid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>2. Style, fit, and size profile</h2>
+        <p class="meta">All submitted values are explicit signals with confidence 1.0. No behavior is inferred here.</p>
+        <form id="profile-form">
+          <div class="grid">
+            <div><label for="brands">Preferred brands</label><input id="brands" name="favoriteBrands" value="adidas, Dickies, Uniqlo" required></div>
+            <div><label for="colors">Preferred colors</label><input id="colors" name="preferredColors" value="navy, cream, olive" required></div>
+            <div><label for="aesthetics">Aesthetics</label><input id="aesthetics" name="preferredAesthetics" value="minimal, smart-casual, workwear" required></div>
+            <div><label for="occasions">Lifestyle and occasions</label><input id="occasions" name="commonOccasions" value="everyday, office, date night" required></div>
+          </div>
+          <h3>Budget posture</h3>
+          <div class="grid three">
+            <div><label for="footwear-budget">Footwear</label><input id="footwear-budget" name="footwearBudget" type="number" min="0" value="160" required></div>
+            <div><label for="pants-budget">Pants</label><input id="pants-budget" name="pantsBudget" type="number" min="0" value="120" required></div>
+            <div><label for="tops-budget">Tops</label><input id="tops-budget" name="topsBudget" type="number" min="0" value="90" required></div>
+          </div>
+          <h3>Fit preferences</h3>
+          <div class="grid three">
+            <div><label for="top-fit">Tops</label><select id="top-fit" name="topFit"><option>relaxed</option><option>regular</option><option>slim</option></select></div>
+            <div><label for="bottom-fit">Bottoms</label><select id="bottom-fit" name="bottomFit"><option>straight</option><option>relaxed</option><option>tapered</option></select></div>
+            <div><label for="footwear-fit">Footwear</label><select id="footwear-fit" name="footwearFit"><option>true-to-size</option><option>half-size-up</option><option>half-size-down</option></select></div>
+          </div>
+          <h3>Fixture sizes</h3>
+          <div class="grid three">
+            <div><label for="footwear-size">Footwear</label><input id="footwear-size" name="footwearSize" value="US 10" required></div>
+            <div><label for="top-size">Tops</label><input id="top-size" name="topSize" value="M" required></div>
+            <div><label for="pants-size">Pants</label><input id="pants-size" name="pantsSize" value="32x30" required></div>
+          </div>
+          <div class="actions"><button type="submit">Save explicit profile</button></div>
+        </form>
+        <p><strong>Profile completeness</strong></p>
+        <progress id="profile-progress" max="100" value="0"></progress>
+        <p id="profile-completeness" class="meta">0% complete</p>
+      </section>
+
+      <section class="panel">
+        <h2>3. Add what you own</h2>
+        <p class="meta">Search uses the existing canonical catalog. Similar, ambiguous, and unknown items remain
+          explicit and cannot be silently added as exact products.</p>
+        <form id="search-form" role="search">
+          <label for="product-search">Canonical product search</label>
+          <div class="actions">
+            <input id="product-search" name="query" value="Samba" aria-describedby="search-help">
+            <button type="submit">Search</button>
+          </div>
+          <p id="search-help" class="meta">Try Samba, Dickies, Birkenstock, Gap overshirt, Levi's, New Balance, Cream Tee, or Barrel Pants.</p>
+        </form>
+        <div id="search-results"></div>
+        <h3>Your fixture wardrobe</h3>
+        <p id="wardrobe-summary" class="meta">0 of 5 minimum items · snapshot v1</p>
+        <div id="wardrobe-items"></div>
+      </section>
+
+      <section class="panel">
+        <h2>4. Evaluate a prospective purchase</h2>
+        <p>Ask whether the verified adidas Samba OG B75806 works with this fixture wardrobe. The evaluator
+          receives only a profile ID and wardrobe snapshot ID, then returns active outfit evidence.</p>
+        <div class="actions"><button id="evaluate" type="button">Evaluate the adidas Samba OG</button></div>
+        <div id="evaluation" hidden>
+          <p><span id="recommendation" class="badge"></span> <span id="confidence" class="meta"></span></p>
+          <p id="scores"></p>
+          <ol id="outfits"></ol>
+          <p class="meta">Request refs: <code id="request-refs"></code></p>
+        </div>
+      </section>
+
+      <section id="deletion-panel" class="panel">
+        <h2>5. Export, deletion, and reset</h2>
+        <div class="actions">
+          <button id="export" class="secondary" type="button">Export fixture journey</button>
+          <button id="request-deletion" class="danger" type="button">Request deletion</button>
+          <button id="complete-deletion" class="danger" type="button" disabled>Complete deletion</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="deletion-state" class="meta">Deletion not requested.</p>
+      </section>
+
+      <p id="status" role="status" aria-live="polite">Ready. Grant consent before saving or adding items.</p>
+    </section>
+  </main>
+  <script type="module">
+    import { products } from './data/products.js';
+    import {
+      createOnboardingWardrobeStore,
+      MINIMUM_WARDROBE_ITEMS,
+      REQUIRED_EVALUATION_CONSENTS,
+    } from './scripts/onboarding-wardrobe-store.mjs';
+
+    const enabled = new URLSearchParams(location.search).get('ww_onboarding');
+    if (enabled !== '1') {
+      document.querySelector('#disabled').hidden = false;
+    } else {
+      document.querySelector('#disabled').hidden = true;
+      document.querySelector('#enabled').hidden = false;
+      run();
+    }
+
+    function run() {
+      const store = createOnboardingWardrobeStore(localStorage);
+      const byId = Object.fromEntries(products.map((product) => [product.id, product]));
+      const status = document.querySelector('#status');
+      const announce = (message) => { status.textContent = message; };
+      const consentLabels = {
+        personalization: 'Personalization & wardrobe',
+        'style-learning': 'Style preferences',
+        'fit-guidance': 'Fit & size guidance',
+        'wardrobe-photos': 'Wardrobe photos (not used)',
+        'personalized-images': 'Personalized images (not used)',
+      };
+
+      function errorCopy(error) {
+        const messages = {
+          'personalization-consent-required': 'Grant personalization consent before saving wardrobe items or evaluating.',
+          'style-learning-consent-required': 'Grant style-learning consent before saving style preferences.',
+          'fit-guidance-consent-required': 'Grant fit-guidance consent before saving fit and size preferences.',
+          'duplicate-wardrobe-item': 'That exact product is already in this fixture wardrobe.',
+          'ambiguous-product-match': 'That search has multiple exact-looking variants. Choose a more specific canonical item.',
+          'exact-product-required': 'This is a similar option, not a verified exact item, so it was not added.',
+          'insufficient-wardrobe': `Add at least ${MINIMUM_WARDROBE_ITEMS} exact products before evaluation.`,
+          'incomplete-profile': 'Complete and save every profile section before evaluation.',
+          'stale-wardrobe-snapshot': 'The wardrobe snapshot is stale. Add or remove an item to create a fresh version.',
+        };
+        return messages[error] || error.replaceAll('-', ' ');
+      }
+
+      function render() {
+        const snapshot = store.getSnapshot();
+        document.querySelector('#profile-progress').value = snapshot.completeness.percent;
+        document.querySelector('#profile-completeness').textContent =
+          `${snapshot.completeness.percent}% complete · ${snapshot.completeness.missing.length
+            ? `missing ${snapshot.completeness.missing.join(', ')}`
+            : `profile ${snapshot.profile.profileId} · explicit confidence 1.0`}`;
+        document.querySelector('#wardrobe-summary').textContent =
+          `${snapshot.wardrobeSnapshot.items.length} of ${MINIMUM_WARDROBE_ITEMS} minimum items · `
+          + `snapshot v${snapshot.wardrobeSnapshot.version} · `
+          + `${snapshot.wardrobeSnapshot.stale ? 'stale' : 'fresh'}`;
+        document.querySelector('#consents').replaceChildren(...snapshot.consents.map((consent) => {
+          const card = document.createElement('div');
+          card.className = 'row';
+          const info = document.createElement('div');
+          const label = document.createElement('strong');
+          label.textContent = consentLabels[consent.purpose] || consent.purpose;
+          const badge = document.createElement('span');
+          badge.className = `badge ${consent.status === 'granted' ? 'good' : 'bad'}`;
+          badge.textContent = consent.status;
+          info.append(label, document.createElement('br'), badge);
+          const button = document.createElement('button');
+          const next = consent.status === 'granted' ? 'revoked' : 'granted';
+          button.type = 'button';
+          button.className = next === 'revoked' ? 'danger' : 'secondary';
+          button.textContent = next === 'revoked' ? 'Revoke' : 'Grant';
+          button.disabled = snapshot.account.status !== 'active';
+          button.addEventListener('click', () => {
+            const result = store.setConsent(consent.purpose, next);
+            announce(result.ok ? `${consentLabels[consent.purpose]} consent ${next}.` : errorCopy(result.error));
+            document.querySelector('#evaluation').hidden = true;
+            render();
+          });
+          card.append(info, button);
+          return card;
+        }));
+        document.querySelector('#wardrobe-items').replaceChildren(
+          ...(snapshot.wardrobeSnapshot.items.length ? snapshot.wardrobeSnapshot.items.map((item) => {
+            const row = document.createElement('div');
+            row.className = 'row';
+            const copy = document.createElement('div');
+            const strong = document.createElement('strong');
+            strong.textContent = byId[item.productId]?.name || item.productId;
+            const meta = document.createElement('span');
+            meta.className = 'meta';
+            meta.textContent = `Exact · canonical search · ${item.productId}`;
+            copy.append(strong, document.createElement('br'), meta);
+            const remove = document.createElement('button');
+            remove.type = 'button';
+            remove.className = 'danger';
+            remove.textContent = 'Remove';
+            remove.addEventListener('click', () => {
+              const result = store.removeProduct(item.productId);
+              announce(result.ok ? `${strong.textContent} removed; snapshot version advanced.` : errorCopy(result.error));
+              document.querySelector('#evaluation').hidden = true;
+              render();
+            });
+            row.append(copy, remove);
+            return row;
+          }) : [Object.assign(document.createElement('p'), { textContent: 'No exact products added yet.' })])
+        );
+        const deletion = snapshot.deletion;
+        document.querySelector('#deletion-state').textContent = deletion
+          ? `Deletion ${deletion.state}${deletion.completedAtIso ? ` at ${deletion.completedAtIso}` : ''}.`
+          : 'Deletion not requested.';
+        document.querySelector('#request-deletion').disabled = snapshot.account.status !== 'active';
+        document.querySelector('#complete-deletion').disabled = deletion?.state !== 'pending';
+      }
+
+      document.querySelector('#profile-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const result = store.saveProfile(Object.fromEntries(new FormData(event.currentTarget)));
+        announce(result.ok ? `Profile ${result.profile.profileId} saved with explicit provenance.` : errorCopy(result.error));
+        document.querySelector('#evaluation').hidden = true;
+        render();
+      });
+
+      document.querySelector('#search-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const results = store.searchProducts(new FormData(event.currentTarget).get('query'));
+        const container = document.querySelector('#search-results');
+        if (!results.length) {
+          container.replaceChildren(Object.assign(document.createElement('p'), {
+            textContent: 'Unknown product: no canonical match found. Nothing was added.',
+          }));
+          announce('Unknown product search remained unadded.');
+          return;
+        }
+        container.replaceChildren(...results.map((result) => {
+          const row = document.createElement('div');
+          row.className = 'row';
+          const copy = document.createElement('div');
+          const name = document.createElement('strong');
+          name.textContent = result.name;
+          const meta = document.createElement('span');
+          meta.className = 'meta';
+          meta.textContent = `${result.matchState} · confidence ${result.matchConfidence} · ${result.productId}`;
+          copy.append(name, document.createElement('br'), meta);
+          const add = document.createElement('button');
+          add.type = 'button';
+          add.className = 'secondary';
+          add.textContent = result.matchState === 'exact' ? 'Add exact item' : 'Cannot auto-add';
+          add.disabled = result.matchState !== 'exact';
+          add.addEventListener('click', () => {
+            const outcome = store.addProduct(result.productId);
+            announce(outcome.ok ? `${result.name} added; snapshot version advanced.` : errorCopy(outcome.error));
+            render();
+          });
+          row.append(copy, add);
+          return row;
+        }));
+        announce(`${results.length} canonical result${results.length === 1 ? '' : 's'} found.`);
+      });
+
+      document.querySelector('#evaluate').addEventListener('click', () => {
+        const result = store.evaluateCandidate('adidas-samba-og-b75806');
+        if (!result.ok) {
+          document.querySelector('#evaluation').hidden = true;
+          announce(`Evaluation blocked: ${errorCopy(result.error)}`);
+          return;
+        }
+        const response = result.response;
+        const badge = document.querySelector('#recommendation');
+        badge.className = `badge ${response.recommendation === 'buy' ? 'good' : 'bad'}`;
+        badge.textContent = response.recommendation.replace('-', ' ');
+        document.querySelector('#confidence').textContent = `${response.confidence} confidence`;
+        document.querySelector('#scores').textContent =
+          `Compatibility ${response.scores.compatibility.score}/100 · `
+          + `Outfit Unlocks ${response.scores.outfitUnlocks} · `
+          + `Purchase ROI ${response.scores.purchaseRoi}/100`;
+        document.querySelector('#outfits').replaceChildren(...response.outfits.map((outfit) => {
+          const item = document.createElement('li');
+          item.textContent = outfit.items.map((entry) =>
+            `${byId[entry.productId]?.name || entry.productId} (${entry.state})`
+          ).join(' + ');
+          return item;
+        }));
+        document.querySelector('#request-refs').textContent =
+          `${result.request.subject.profileId} + ${result.request.subject.wardrobeSnapshotId}`;
+        document.querySelector('#evaluation').hidden = false;
+        announce('Evaluation complete. Only versioned references and active outfit evidence crossed the boundary.');
+      });
+
+      document.querySelector('#export').addEventListener('click', () => {
+        const blob = new Blob([store.exportJson()], { type:'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'wearwyzer-onboarding-fixture.json';
+        link.click();
+        URL.revokeObjectURL(url);
+        announce('Complete fixture journey exported.');
+      });
+      document.querySelector('#request-deletion').addEventListener('click', () => {
+        const result = store.requestDeletion();
+        announce(result.ok ? 'Deletion pending. Complete it to remove all fixture records.' : errorCopy(result.error));
+        render();
+      });
+      document.querySelector('#complete-deletion').addEventListener('click', () => {
+        const result = store.completeDeletion();
+        announce(result.ok ? 'Deletion completed. Profile, fit, consent, and wardrobe records were removed.' : errorCopy(result.error));
+        document.querySelector('#evaluation').hidden = true;
+        render();
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        store.reset();
+        document.querySelector('#evaluation').hidden = true;
+        document.querySelector('#search-results').replaceChildren();
+        announce('Deterministic empty fixture restored.');
+        render();
+      });
+
+      render();
+      const missing = REQUIRED_EVALUATION_CONSENTS.join(', ');
+      announce(`Ready. Required evaluation consents: ${missing}.`);
+    }
+  </script>
+</body>
+</html>

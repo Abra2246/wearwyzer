@@ -718,6 +718,33 @@ references, and owner.
   pending-then-completed deletion, reset, a 375px mobile layout with no
   horizontal overflow, and keyboard-only activation — with zero console
   errors or warnings.
+- PR #88 merged the consent/correction center. Issue #89 then began the next
+  app-first journey: explicit profile preferences, fit/sizes, canonical
+  wardrobe intake, and one minimized prospective-product decision.
+- The hosted Issue #89 run finished after three permission denials without a
+  branch or PR. The same-run verifier correctly marked that attempt failed.
+- During the run, the handoff watchdog exposed a separate race: it escalated
+  the issue before the still-running implementation had time to create a
+  branch. PR #91 fixed that race by recognizing the current queued/in-progress
+  workflow as pending evidence. A production dry run against Issue #89 proved
+  the merged guard performs no mutation while work is active.
+- Direct recovery implements the fixture-only onboarding and wardrobe-intake
+  journey in `onboarding-wardrobe-intake.dc.html` and
+  `scripts/onboarding-wardrobe-store.mjs`. Every consent starts ungranted;
+  style/fit saves and wardrobe/evaluation actions fail closed by purpose;
+  profile and fit signals are explicit and versioned; only unambiguous exact
+  canonical products may be added; five owned items and fresh evidence are
+  required; and the existing personalization API receives only versioned
+  profile/snapshot references.
+- The initial prospective New Balance 530 choice was rejected by the existing
+  stale-source gate. The journey uses the recently verified adidas Samba OG
+  B75806 instead. This is intentional proof that product truth outranks a
+  convenient demo.
+- The implementation remains local, synthetic, unlinked, `noindex`, and
+  default-off. No real account, personal data, server storage, camera, browser
+  permission, affiliate credential, paid call, or likeness workflow is active.
+- `docs/ONBOARDING_WARDROBE_V1.md` is the canonical implementation boundary.
+  Current deterministic baseline: 539 tests plus all repository validators.
 
 ## Final north-star statement
 

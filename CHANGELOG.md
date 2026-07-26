@@ -2,6 +2,34 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fixture onboarding and wardrobe intake (issue #89)
+### Added
+- `onboarding-wardrobe-intake.dc.html`: an unlinked, `noindex`, default-off,
+  mobile-first fixture journey for independent consent, explicit style/fit/size
+  onboarding, canonical product search, a five-item wardrobe, and one
+  privacy-minimized prospective-purchase evaluation.
+- `scripts/onboarding-wardrobe-store.mjs`: browser-local fixture persistence
+  with versioned profile and wardrobe references, exact/similar/ambiguous/
+  unknown product handling, immediate consent revocation, snapshot freshness,
+  export, pending/completed deletion, and deterministic reset.
+- `docs/ONBOARDING_WARDROBE_V1.md`: surface ownership, fail-closed behavior,
+  verification, and production decision gates.
+- 18 deterministic store and route/privacy regression tests.
+### Changed
+- The prospective demo product is the recently verified adidas Samba OG
+  B75806. The initially considered New Balance 530 remains rejected because its
+  canonical source timestamp is stale.
+### Validation
+- 539/539 repository tests pass.
+- Content data, Knowledge Graph, hero-product, HTML metadata, static-site, and
+  diff validators pass. The single pre-existing Knowledge Graph eligibility
+  warning remains non-blocking.
+- Browser QA completed the default-off and full fixture journeys through
+  consent, profile save, five exact wardrobe additions, minimized evaluation,
+  immediate revocation, ambiguous/unknown search, export, deletion, and reset
+  with a clean console. Static regressions enforce the 375px overflow and
+  visible keyboard-focus invariants; physical-device review remains explicit.
+
 ## Unreleased (2026-07-26) — Watchdog active-run guard (issue #90)
 ### Fixed
 - The handoff watchdog no longer escalates an issue merely because its

@@ -329,6 +329,39 @@ permission note for this workflow specifically). Phase 3 (Guide Factory/renderer
 live wiring) and Phase 4 (CEO summary polish, dedicated mobile QA pass) are explicitly not
 part of this change — see `docs/OPS_DASHBOARD_V2.md` "What's deliberately deferred."
 
+## Decision — app-first wardrobe intake with minimized decision references (issue #89)
+
+**Current state:** the repository already has a deterministic personalization
+engine, a closed website/app/extension request boundary, a provider-agnostic
+private-service contract, threat-model rules, and a fixture consent/correction
+center. Those slices prove individual boundaries but do not yet demonstrate one
+user journey from onboarding through wardrobe intake to a purchase decision.
+
+**Problem:** building a production account, database, camera scanner, or Chrome
+extension now would force unresolved provider, privacy, legal, and browser-
+permission decisions. Building a second recommendation or wardrobe model inside
+the page would also create conflicting sources of truth.
+
+**Proposed solution:** add one unlinked, `noindex`, default-off,
+browser-local fixture journey. It writes explicit, versioned style/fit records;
+allows only unambiguous exact products from the canonical catalog into a
+versioned wardrobe snapshot; and calls the existing personalization boundary
+with only `profileId` and `wardrobeSnapshotId`. Wardrobe inventory is app-first;
+future website and extension clients consume minimized decisions rather than
+owning or receiving the full wardrobe.
+
+**Benefit:** the signature “should I buy this, and what can I wear it with?”
+experience becomes reviewable on a phone without authorizing real personal data.
+Every future surface can reuse the same contracts and fail-closed rules.
+
+**Migration effort:** additive. Productionization later replaces the local
+fixture adapter behind the accepted private-service boundary; it does not change
+the recommendation request/response shape.
+
+**Priority:** P1 dependency-safe personalization slice. Production account,
+storage, personal data, camera/photo access, Chrome permissions, and likeness
+generation remain explicit founder and privacy/legal gates.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
