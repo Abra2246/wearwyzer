@@ -5,30 +5,34 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #142. The Outfit Set journey
-passed 794 tests, all deterministic validators, browser QA, five GitHub checks,
-serialized Ops refreshes, Pages deployment run `30186227574`, and Deploy
-Health Check run `30186247815`. Issue #143 is active.
+**Evidence baseline:** `main` after merged PR #144. The Minimized Daily Outfit
+Intent contract passed 806 tests, all deterministic validators, five GitHub
+checks, serialized Ops refreshes, Pages deployment run `30186351272`, Deploy
+Health Check run `30186372235`, Content pipeline run `30186351255`, Ops Live
+Feed run `30186351248`, and Ops Status run `30186351266`. Issue #145 is ready.
 
-## Active review gates
+## Queued execution
 
-1. **Issue #143 — Minimized Daily Outfit Intent boundary**
-   - Active branch: `codex/issue-143-daily-outfit-intent`.
-   - Scope: translate explicit daily context into the accepted Outfit Set
-     contract without live location, calendar, or private-data expansion.
-   - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
-     No full private payload, commerce, account, analytics, network, purchase,
-     persistence, or external action exists.
+1. **Issue #145 — Daily Outfit Intent fixture journey**
+   - Status: ready; no implementation branch or review PR exists yet.
+   - Scope: make the accepted Daily Outfit Intent contract reviewable across
+     coherent recommendations, unknown weather, ambiguous dress code, stale
+     availability, contradictory context, Outfit Set ties, and insufficiency.
+   - Boundary: exact flag `ww_daily_outfit=1`, fixture-only, deterministic,
+     provider-neutral, default-off, unlinked, and read-only. No live location,
+     calendar, itinerary, private wardrobe payload, commerce, account,
+     analytics, network, purchase, persistence, or external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #143**
-   - Outcome: establish one minimized “what should I wear?” request boundary
-     shared by future website, app, extension, and AI Stylist clients.
-2. **Build the fixture Daily Outfit Intent review journey**
-   - Dependency: merged Issue #143.
+1. **Complete and review Issue #145**
    - Outcome: make coherent context, unknown/ambiguous review, contradiction,
      Outfit Set tie, insufficiency, and abstention visible before integration.
+2. **Reassess the first product-facing daily-style vertical slice**
+   - Dependency: merged Issue #145 with browser QA and production evidence.
+   - Outcome: choose the smallest default-off, synthetic integration that lets
+     a person review an explainable daily outfit without collecting a private
+     wardrobe, location, calendar, or purchase signal.
 3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -48,6 +52,15 @@ Health Check run `30186247815`. Issue #143 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #143 / PR #144:** merged after 806 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refreshes, Pages run
+  `30186351272`, Deploy Health Check run `30186372235`, Content pipeline run
+  `30186351255`, Ops Live Feed run `30186351248`, and Ops Status run
+  `30186351266`. Coherent explicit context delegates to the accepted Outfit
+  Set contract; unknown or stale evidence requires review; contradictions
+  abstain; ties and insufficiency remain unresolved. No live location,
+  calendar, itinerary, private wardrobe payload, commerce, network,
+  persistence, or external action was introduced.
 - **Issue #141 / PR #142:** merged after 794 tests, every deterministic
   validator, browser QA, five passing GitHub checks, serialized Ops refreshes,
   Pages run `30186227574`, and Deploy Health Check run `30186247815`. Eight
