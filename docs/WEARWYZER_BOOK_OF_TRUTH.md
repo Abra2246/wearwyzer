@@ -806,6 +806,14 @@ references, and owner.
   both abstention paths, citation and opposing-evidence rendering, response
   invalidation, reset/focus behavior, visible focus, layout containment, and a
   clean console.
+- Issue #102 keeps the operating substrate trustworthy by pinning every active
+  and staged first-party GitHub action to an officially verified Node 24 major.
+  Pages keeps `.nojekyll` through the supported
+  `upload-pages-artifact@v5` hidden-file input. Permissions, triggers,
+  concurrency, serialized Ops writers, bounded regeneration, and no-force-push
+  behavior remain unchanged, and deterministic tests prevent version or input
+  drift. Pre-PR validation baseline: 603 tests plus every deterministic
+  repository validator.
 
 ## Final north-star statement
 

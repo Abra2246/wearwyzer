@@ -5,28 +5,31 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #105. The Stylist evaluation
-harness passed 589 tests, all six 100% trust metrics, five GitHub checks,
-serialized Ops refreshes, Pages deployment, and health check. Issue #106 is
-active.
+**Evidence baseline:** `main` after merged PR #107. The default-off AI Stylist
+fixture passed 600 tests, all deterministic validators, browser QA, five GitHub
+checks, serialized Ops refreshes, Pages deployment, and Deploy Health Check
+run `30183222739`. Issue #102 is active.
 
 ## Active review gates
 
-1. **Issue #106 — default-off fixture AI Stylist journey**
-   - Active branch: `codex/issue-106-ai-stylist-journey`.
-   - Scope: six intents, grounded answers, citations, opposing evidence,
-     abstention, uncertainty, reset, accessibility, and mobile browser QA.
-   - Boundary: unlinked, `noindex`, flag-gated, provider-free, and synthetic;
-     no external actions, live model, real data, or production storage.
+1. **Issue #102 — GitHub Actions runtime and Pages artifact hygiene**
+   - Active branch: `codex/issue-102-actions-hygiene`.
+   - Scope: officially verified Node 24 action majors, supported Pages
+     hidden-file input, deterministic workflow-contract tests, and production
+     annotation proof.
+   - Boundary: no permission, trigger, concurrency, Ops serialization,
+     generated-file, retry, or force-push behavior change.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #106**
-   - Outcome: a visible, trustworthy synthetic Stylist experience across all
-     six intents plus honest abstention and inspectable evidence.
-2. **Complete Issue #102 workflow hygiene**
+1. **Complete and review Issue #102 workflow hygiene**
    - Outcome: remove deprecated action-runtime and invalid Pages-input warnings
      using verified official migration guidance.
+2. **Define the next provider-neutral AI Stylist experiment gate**
+   - Dependency: deterministic trust thresholds stay at 100%; any live
+     provider, credentials, or spend requires explicit approval.
+   - Outcome: compare provider output only against the accepted fixture harness
+     without weakening abstention, citations, privacy, or action safety.
 3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
@@ -41,6 +44,10 @@ active.
 
 ## Closed or blocked with evidence
 
+- **Issue #106 / PR #107:** merged after 600 tests, every deterministic
+  validator, browser QA across all six intent and both abstention paths, five
+  passing GitHub checks, serialized Ops refresh, successful Pages deployment,
+  and Deploy Health Check run `30183222739`.
 - **Issue #104 / PR #105:** merged after 589 tests, a 15-scenario portfolio
   scoring 100% across all six trust metrics, five GitHub checks, serialized Ops
   refresh, successful Pages deployment, and health check.

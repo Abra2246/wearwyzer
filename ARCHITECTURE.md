@@ -496,6 +496,21 @@ introduced.
 **Deferred:** live provider/model, production authentication/storage, real
 prompts and wardrobes, analytics, external actions, and public navigation.
 
+## Decision — current Node 24 GitHub action majors (issue #102)
+
+**Problem:** successful CI, Ops, Pages, and health workflows emitted Node 20
+runtime deprecation warnings. The Pages build also passed
+`include-hidden-files` to an action major that did not own that input.
+
+**Decision:** use the officially verified Node 24 majors for checkout,
+setup-node, configure-pages, upload-pages-artifact, and deploy-pages across
+active and staged workflows. Keep `include-hidden-files` on
+`upload-pages-artifact@v5`, where it is a supported input.
+
+**Invariant:** permissions, triggers, concurrency, serialized Ops writers,
+bounded regeneration, generated-file protections, and no-force-push behavior
+do not change. A deterministic contract test prevents action-major drift.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
