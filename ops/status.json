@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T06:26:40.478Z",
+  "generatedAtIso": "2026-07-26T08:43:01.631Z",
   "overallHealth": "yellow",
-  "automationState": "queued",
+  "automationState": "idle",
   "activeWork": null,
   "queue": {
-    "depth": 1,
-    "readyCount": 1,
+    "depth": 0,
+    "readyCount": 0,
     "blockedCount": 2
   },
   "ci": {
