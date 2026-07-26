@@ -1,21 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T05:53:53.981Z",
+  "generatedAtIso": "2026-07-26T05:57:31.061Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "activeWorkSummary": "#171 \"Add the fixture signed-in Daily Stylist web transport review journey\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T05:53:53.981Z",
+      "lastUpdatedIso": "2026-07-26T05:57:31.061Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 171,
+          "title": "Add the fixture signed-in Daily Stylist web transport review journey",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/171",
+          "updatedIso": "2026-07-26T05:57:28Z"
+        },
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -31,8 +36,8 @@
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-26T05:53:42Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30190114462",
+          "latestRunIso": "2026-07-26T05:57:20Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30190211499",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T05:53:53.981Z",
+      "lastUpdatedIso": "2026-07-26T05:57:31.061Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "e9c753e",
-        "lastDeployIso": "2026-07-26T05:37:44Z",
-        "ageMinutes": 16,
+        "lastHealthyShaShort": "a66a260",
+        "lastDeployIso": "2026-07-26T05:54:21Z",
+        "ageMinutes": 3,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +64,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T05:53:53.981Z",
+      "lastUpdatedIso": "2026-07-26T05:57:31.061Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T05:53:53.981Z",
+      "lastUpdatedIso": "2026-07-26T05:57:31.061Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,34 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:171",
+      "timestampIso": "2026-07-26T05:57:28Z",
+      "type": "issue-started",
+      "summary": "Issue #171 \"Add the fixture signed-in Daily Stylist web transport review journey\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/171"
+    },
+    {
+      "key": "ci-run:30190211499",
+      "timestampIso": "2026-07-26T05:57:20Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30190211499"
+    },
+    {
+      "key": "pr-merged:172",
+      "timestampIso": "2026-07-26T05:57:01Z",
+      "type": "pr-merged",
+      "summary": "PR #172 \"Sync queue after Daily Stylist transport boundary\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/172"
+    },
+    {
+      "key": "deploy:a66a260",
+      "timestampIso": "2026-07-26T05:54:21Z",
+      "type": "deployed",
+      "summary": "Deployed build a66a260 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "ci-run:30190114462",
       "timestampIso": "2026-07-26T05:53:42Z",
@@ -446,34 +479,6 @@
       "timestampIso": "2026-07-26T03:39:25Z",
       "type": "deployed",
       "summary": "Deployed build ce71af0 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "deploy:2026-07-26T03:37:20Z",
-      "timestampIso": "2026-07-26T03:37:20Z",
-      "type": "deploy-failed",
-      "summary": "Deployment failed its health checks.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30186445039",
-      "timestampIso": "2026-07-26T03:37:08Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30186445039"
-    },
-    {
-      "key": "pr-merged:146",
-      "timestampIso": "2026-07-26T03:36:48Z",
-      "type": "pr-merged",
-      "summary": "PR #146 \"Refresh living execution queue after Daily Outfit Intent\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/146"
-    },
-    {
-      "key": "deploy:2026-07-26T03:33:45Z",
-      "timestampIso": "2026-07-26T03:33:45Z",
-      "type": "deploy-failed",
-      "summary": "Deployment failed its health checks.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
