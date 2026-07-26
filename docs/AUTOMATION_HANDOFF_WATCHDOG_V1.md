@@ -60,11 +60,18 @@ For every open issue labeled both `in-progress` and `automation-managed`:
    the exact files is posted and the issue gets `needs-human`. This check fires regardless of
    the grace period or PR state, because leaving a promotion step silently undiscovered is
    precisely the issue #17 failure mode.
-5. **Grace period.** If there's a branch, no PR, and no staged files needing an immediate flag,
+5. **Active-run guard.** Before a branch exists, the watchdog reads the latest durable
+   `Automation dispatch record` comment and the recent `claude.yml` workflow-dispatch history.
+   A matching queued or in-progress run is `pending` evidence and cannot remove `in-progress`
+   or add failure labels. Older runs that predate the dispatch comment are ignored. If Actions
+   history is temporarily unavailable, the dispatch timestamp receives the same bounded startup
+   grace period. This prevents the Issue #89 regression where the watchdog escalated less than
+   a minute into a still-running implementation.
+6. **Grace period.** If there's a branch, no PR, and no staged files needing an immediate flag,
    the watchdog waits `GRACE_PERIOD_MINUTES` (15, matching the issue's acceptance criterion)
    from the branch's last commit before treating it as stalled — this avoids racing an
    implementation that is still actively pushing commits.
-6. **Repair.** Once the grace period elapses with still no PR, the watchdog opens a **draft**
+7. **Repair.** Once the grace period elapses with still no PR, the watchdog opens a **draft**
    PR itself (`head` = the discovered branch, `base` = `main`, body containing `Closes #N`),
    labels it `automation-managed` + the issue's risk label, and moves the issue from
    `in-progress` to `review` — reflecting that a maintainer now has something to look at, even
@@ -105,9 +112,10 @@ asked for: `issueNumber`, `branch`, `lastActivityAt` (the branch's last commit t
   — in practice every PR this queue's issues produce is opened from a `claude/issue-<N>-*`
   branch, so this hasn't been a gap, but it is a real limitation if that convention ever
   changes.
-- `listWorkflowRunsForBranch` is enrichment only; if the Actions API call fails for any reason
-  (permissions, a renamed workflow file), the watchdog proceeds without that metadata rather
-  than failing the whole pass.
+- Before a branch exists, workflow-run discovery is best-effort and is bounded by the durable
+  dispatch timestamp. If the Actions API call fails, the startup grace period prevents an
+  immediate false escalation; after that grace period, missing branch/PR/blocker evidence still
+  fails visibly.
 - The watchdog does not attempt to open a PR for a branch that lives in a fork — this repo's
   automation only ever produces same-repository branches, so that scope note in the issue is
   satisfied trivially rather than by an explicit fork check.

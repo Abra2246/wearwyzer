@@ -24,6 +24,8 @@ import {
   branchPrefixForIssue,
   GRACE_PERIOD_MINUTES,
   MARKERS,
+  latestDispatchStartedAtIso,
+  selectImplementationRun,
 } from './handoff-watchdog-rules.mjs';
 import { buildStatusEvent } from './status-log.mjs';
 import { appendEvent } from './record-status-event.mjs';
@@ -106,10 +108,13 @@ function buildStatusDetail({ issue, branch, linkedPrs, plan, workflowRun }) {
 export async function evaluateIssue(client, issue, { nowIso, dryRun = false, gracePeriodMinutes = GRACE_PERIOD_MINUTES }) {
   const events = [];
   const branch = await resolveBranch(client, issue.number);
-  const [issueComments, linkedPrs] = await Promise.all([
+  const [issueComments, linkedPrs, workflowRuns] = await Promise.all([
     client.listIssueComments(issue.number),
     branch ? client.listOpenPullRequestsForBranch(branch.name) : Promise.resolve([]),
+    branch ? Promise.resolve([]) : client.listWorkflowRunsForWorkflow(CLAUDE_WORKFLOW_FILE),
   ]);
+  const dispatchStartedAtIso = latestDispatchStartedAtIso(issueComments);
+  const implementationRun = branch ? null : selectImplementationRun(workflowRuns, dispatchStartedAtIso);
   const changedFiles =
     branch && linkedPrs.length === 0
       ? await client.compareCommits(BASE_BRANCH, branch.name).catch(() => [])
@@ -123,13 +128,15 @@ export async function evaluateIssue(client, issue, { nowIso, dryRun = false, gra
     linkedPrs,
     changedFiles,
     issueComments,
+    implementationRun,
+    dispatchStartedAtIso,
     nowIso,
     gracePeriodMinutes,
   });
 
   const workflowRun = branch
     ? (await client.listWorkflowRunsForBranch(branch.name, CLAUDE_WORKFLOW_FILE))[0]
-    : undefined;
+    : implementationRun || undefined;
   const detail = buildStatusDetail({ issue, branch, linkedPrs, plan, workflowRun });
 
   if (plan.type === 'escalate-no-branch') {

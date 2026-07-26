@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Watchdog active-run guard (issue #90)
+### Fixed
+- The handoff watchdog no longer escalates an issue merely because its
+  implementation branch has not appeared yet. A relevant queued or
+  `in_progress` Claude workflow is now explicit pending evidence.
+- The watchdog derives the current run from the durable queue-dispatch comment
+  and ignores older workflow-dispatch runs from prior issues.
+- If Actions history is temporarily unavailable, a newly dispatched issue gets
+  the existing bounded startup grace period before no-branch escalation.
+- Completed runs without a branch, PR, or structured blocker still escalate,
+  and completed quiet branches still receive the existing draft-PR repair.
+### Validation
+- Added deterministic coverage for Issue #89's exact false-escalation shape,
+  queued runs, unavailable Actions history during startup, and completed
+  no-evidence handoffs.
+
 ## Unreleased (2026-07-26) — Fixture-only consent and correction center (issue #87)
 ### Added
 - `consent-correction-center.dc.html` — a default-off, non-indexed, unlinked prototype route where a

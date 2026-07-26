@@ -5,36 +5,40 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #86 (Issue #85 threat model) and
-direct implementation of Issue #87 on `claude/issue-87-consent-correction-center`.
+**Evidence baseline:** `main` after merged PR #88 (Issue #87 consent/correction
+center), active Issue #89 implementation run `30180672688`, and the reproduced
+watchdog false escalation captured in Issue #90.
 
 ## Active review gates
 
-1. **Issue #87 — fixture-only consent and correction center**
-   - Active branch: `claude/issue-87-consent-correction-center`.
-   - Scope: default-off, noindex, unlinked `consent-correction-center.dc.html`
-     over the Issue #83/#84 private-service contract — purpose-specific
-     consent with fail-closed dependent evaluation, editable Style DNA/Fit DNA
-     with explicit-over-inferred correction, wardrobe snapshot freshness,
-     versioned export, pending/completed deletion with dependent-store
-     evidence, and a deterministic reset.
-   - Human gate: architecture/privacy review only. No provider, production
-     account, database, personal data, photos, or browser permission is
-     authorized.
+1. **Issue #89 — fixture-only onboarding and wardrobe intake**
+   - Active workflow run: `30180672688`.
+   - Scope: mobile-first profile preferences, consented Style/Fit DNA,
+     canonical five-item wardrobe intake, minimized personalization
+     references, explainable prospective-product evaluation, export,
+     deletion, and reset.
+   - Human gate: product/privacy review only. No provider, production account,
+     database, personal data, photos, or browser permission is authorized.
+2. **Issue #90 — watchdog active-run guard**
+   - Active branch: `codex/watchdog-active-run-guard`.
+   - Scope: prevent no-branch escalation while the relevant queued or
+     in-progress Claude workflow is still running, without weakening completed
+     no-evidence escalation or quiet-branch PR repair.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #87**
-   - Outcome: 513/513 repository tests pass (21 new), all five validators
-     pass, and headless-browser QA covered default-off, consent revoke,
-     correction override, export, deletion, reset, mobile layout, keyboard
-     operation, and a clean console.
-2. **Establish the first verifiable affiliate merchant path**
+1. **Complete and review Issue #90**
+   - Outcome: Issue #89's exact false-escalation shape remains pending while
+     its implementation workflow is active; completed no-evidence handoffs
+     still fail visibly.
+2. **Complete and review Issue #89**
+   - Outcome: one coherent fixture-only onboarding-to-recommendation journey.
+3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-3. **Reconcile and import remaining style-guide sources when real files exist**
+4. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -43,6 +47,8 @@ direct implementation of Issue #87 on `claude/issue-87-consent-correction-center
 
 ## Closed or blocked with evidence
 
+- **Issue #87 / PR #88:** merged after 513 tests, five passing GitHub checks,
+  independent browser review, and successful post-merge Pages/health checks.
 - **Issue #85 / PR #86:** merged after 492 tests and passing GitHub checks. The
   private-data threat model, threat register, and executable fail-closed
   session/extension-message/deletion policies are now repository evidence.

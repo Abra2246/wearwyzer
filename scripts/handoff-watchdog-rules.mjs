@@ -63,6 +63,31 @@ export function hasMarker(comments, marker) {
   return (comments || []).some((c) => (c.body || '').includes(marker));
 }
 
+export function latestDispatchStartedAtIso(comments) {
+  const dispatches = (comments || [])
+    .filter((comment) => (comment.body || '').includes('**Automation dispatch record**'))
+    .map((comment) => comment.created_at || comment.createdAt)
+    .filter(Boolean)
+    .sort((a, b) => new Date(b).getTime() - new Date(a).getTime());
+  return dispatches[0] || null;
+}
+
+export function selectImplementationRun(runs, dispatchStartedAtIso) {
+  const dispatchTime = dispatchStartedAtIso ? new Date(dispatchStartedAtIso).getTime() : null;
+  return (runs || [])
+    .filter((run) => run.event === 'workflow_dispatch')
+    .filter((run) => {
+      if (dispatchTime === null) return true;
+      const createdAt = run.created_at || run.createdAt;
+      return createdAt && new Date(createdAt).getTime() >= dispatchTime;
+    })
+    .sort((a, b) => {
+      const aTime = new Date(a.created_at || a.createdAt || 0).getTime();
+      const bTime = new Date(b.created_at || b.createdAt || 0).getTime();
+      return bTime - aTime;
+    })[0] || null;
+}
+
 /**
  * Core decision function for one automation-managed issue. `branch` is
  * `{ name, lastCommitIso } | null` — the caller already resolved this via
@@ -96,6 +121,8 @@ export function planWatchdogAction({
   linkedPrs = [],
   changedFiles = [],
   issueComments = [],
+  implementationRun = null,
+  dispatchStartedAtIso = null,
   nowIso,
   gracePeriodMinutes = GRACE_PERIOD_MINUTES,
 }) {
@@ -110,6 +137,25 @@ export function planWatchdogAction({
   if (!branch) {
     if (linkedPrs.length > 0) {
       return { type: 'noop', reason: `PR #${linkedPrs[0].number} already exists for this issue` };
+    }
+    if (implementationRun && ['queued', 'in_progress'].includes(implementationRun.status)) {
+      return {
+        type: 'pending',
+        reason: `implementation workflow run ${implementationRun.id} is ${implementationRun.status}`,
+        workflowRun: implementationRun,
+      };
+    }
+    if (dispatchStartedAtIso) {
+      const elapsedMinutes = minutesBetween(dispatchStartedAtIso, nowIso);
+      if (elapsedMinutes < gracePeriodMinutes) {
+        return {
+          type: 'pending',
+          reason:
+            `implementation was dispatched ${elapsedMinutes.toFixed(1)}m ago with no branch yet — ` +
+            `within the ${gracePeriodMinutes}m startup grace period`,
+          elapsedMinutes,
+        };
+      }
     }
     if (hasMarker(issueComments, MARKERS.escalatedNoBranch)) {
       return { type: 'noop', reason: 'already escalated: no usable branch or PR' };
