@@ -1,0 +1,293 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Daily Outfit Stylist Composer Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:1040px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); overflow-wrap:anywhere; }
+    .notice { border-left:5px solid var(--gold); }
+    label { display:block; margin-top:10px; font-weight:700; }
+    label:first-of-type { margin-top:0; }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .fields { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .warn { color:var(--red); background:#f6e6e3; }
+    .clarify { border-left:5px solid var(--red); background:#f6e6e3; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .detail,.evidence { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .meta { color:var(--muted); font-size:13px; }
+    ol,ul { padding-left:22px; }
+    [hidden] { display:none !important; }
+    @media (max-width:680px) {
+      .fields,.grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>Compose today's outfit</h1><p>Choose your own explicit context. Get a cited outfit answer—or an honest non-answer—out.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This synthetic route cannot read live context, private data, accounts, or a real closet and cannot call a provider, shop, track, save, publish, message, or act externally.</p>
+      <a class="button" href="?ww_daily_stylist_composer=1">Open Daily Outfit Stylist composer</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> every field below is
+        allowlisted and explicit — there is no free text and no hidden collection. The
+        composer delegates context and outfit decisions to the accepted Daily Outfit Intent
+        contract, then delegates wording and evidence projection to the accepted Grounded
+        Daily Outfit Stylist adapter. Candidates come from a fixed, closed set of four
+        synthetic outfits — not your real wardrobe. The page does not rank, break ties,
+        invent context, or authorize action.</section>
+      <section class="panel">
+        <h2>Your explicit context</h2>
+        <div class="fields">
+          <div>
+            <label for="occasion">Occasion</label>
+            <select id="occasion">
+              <option value="everyday">Everyday</option>
+              <option value="work">Work</option>
+              <option value="dinner">Dinner</option>
+              <option value="travel">Travel</option>
+              <option value="weekend">Weekend</option>
+              <option value="event">Event</option>
+            </select>
+          </div>
+          <div>
+            <label for="seasonClass">Season</label>
+            <select id="seasonClass">
+              <option value="warm">Warm</option>
+              <option value="cold">Cold</option>
+              <option value="transitional">Transitional</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </div>
+          <div>
+            <label for="weatherClass">Weather</label>
+            <select id="weatherClass">
+              <option value="dry">Dry</option>
+              <option value="rain">Rain</option>
+              <option value="heat">Heat</option>
+              <option value="cold">Cold</option>
+              <option value="variable">Variable</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </div>
+          <div>
+            <label for="dressCode">Dress code</label>
+            <select id="dressCode">
+              <option value="casual">Casual</option>
+              <option value="smart-casual">Smart casual</option>
+              <option value="business-casual">Business casual</option>
+              <option value="formal">Formal</option>
+              <option value="ambiguous">Ambiguous</option>
+            </select>
+          </div>
+          <div>
+            <label for="availabilityWindow">Item availability</label>
+            <select id="availabilityWindow">
+              <option value="now">Now</option>
+              <option value="today">Today</option>
+              <option value="this-week">This week</option>
+              <option value="stale">Stale</option>
+              <option value="unknown">Unknown</option>
+            </select>
+          </div>
+          <div>
+            <label for="desiredCount">Outfit count</label>
+            <select id="desiredCount">
+              <option value="2">Two outfits</option>
+              <option value="3">Three outfits</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="generate" type="button">Generate my daily outfits</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No live context, private data, provider, network, tracking, commerce, or external action will run.</p>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="response-outcome" class="badge"></span></p>
+        <h2 id="response-title"></h2>
+        <p id="response-summary"></p>
+        <section id="clarification" class="panel clarify" hidden>
+          <strong>What to do next</strong>
+          <p id="clarification-prompt"></p>
+        </section>
+        <div class="grid">
+          <article class="detail"><strong>Selected outfits</strong><ul id="selected"></ul></article>
+          <article class="detail"><strong>Tied outfits</strong><ul id="tied"></ul></article>
+          <article class="detail"><strong>Qualified outfits</strong><ul id="qualified"></ul></article>
+          <article class="detail"><strong>Reason codes</strong><ul id="reason-codes"></ul></article>
+          <article class="detail"><strong>Uncertainty</strong><div id="uncertainty"></div></article>
+          <article class="detail"><strong>Next step</strong><p id="next-step" class="meta"></p></article>
+        </div>
+        <h3>Citations</h3>
+        <div id="citations" class="grid"></div>
+        <h3>Limitations</h3>
+        <ul id="limitations"></ul>
+        <h3>Safety policy</h3>
+        <div id="policy" class="grid"></div>
+        <h3>Minimized per-outfit evidence</h3>
+        <div id="outfit-evidence" class="grid"></div>
+        <p class="meta"><strong>Candidate pool:</strong> <span id="pool-note"></span></p>
+        <p class="meta"><strong>External actions:</strong> unavailable. This fixture cannot
+          access a provider or live context, read a real profile or closet, persist data,
+          track, redirect, buy, publish, message, or change an account.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import {
+      createDailyOutfitStylistComposer,
+    } from './scripts/daily-outfit-stylist-composer.mjs';
+
+    const enabled = new URLSearchParams(location.search)
+      .get('ww_daily_stylist_composer') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+
+    if (enabled) {
+      const composer = createDailyOutfitStylistComposer();
+      const fields = ['occasion', 'seasonClass', 'weatherClass', 'dressCode', 'availabilityWindow', 'desiredCount']
+        .map((id) => document.querySelector(`#${id}`));
+      const resultPanel = document.querySelector('#result');
+      const status = document.querySelector('#status');
+
+      function listItems(values) {
+        return (values?.length ? values : ['None']).map((value) => {
+          const item = document.createElement('li');
+          item.textContent = value;
+          return item;
+        });
+      }
+
+      function detail(label, value) {
+        const card = document.createElement('article');
+        card.className = 'detail';
+        const heading = document.createElement('strong');
+        heading.textContent = label;
+        const copy = document.createElement('p');
+        copy.className = 'meta';
+        copy.textContent = String(value);
+        card.append(heading, copy);
+        return card;
+      }
+
+      function citationCard(citation) {
+        return detail(
+          citation.citationId,
+          `${citation.type} · ${citation.schemaVersion} · ${citation.state}`,
+        );
+      }
+
+      function evidenceCard(evidence) {
+        const state = evidence.selected
+          ? 'selected'
+          : evidence.tied
+            ? 'tied'
+            : evidence.qualified
+              ? 'qualified'
+              : 'excluded';
+        return detail(
+          evidence.outfitId,
+          `${state} · ${evidence.status} · score ${evidence.score ?? 'not scored'} · coverage ${evidence.evidenceCoverage}% · confidence ${evidence.confidence} · ${evidence.reasonCodes.join(', ')}`,
+        );
+      }
+
+      function renderFields(view) {
+        for (const field of fields) {
+          field.value = String(view.context[field.id]);
+        }
+      }
+
+      function render(view) {
+        renderFields(view);
+        resultPanel.hidden = !view.response;
+        document.querySelector('#pool-note').textContent =
+          `${view.candidatePoolSize} closed, deterministic synthetic outfits (not your real wardrobe).`;
+        if (!view.response) return;
+        const response = view.response;
+        const badge = document.querySelector('#response-outcome');
+        badge.textContent = response.outcome;
+        badge.className = `badge ${response.outcome === 'answer' ? 'good' : 'warn'}`;
+        document.querySelector('#response-title').textContent = response.title;
+        document.querySelector('#response-summary').textContent = response.summary;
+        const clarification = document.querySelector('#clarification');
+        clarification.hidden = !view.clarificationPrompt;
+        document.querySelector('#clarification-prompt').textContent = view.clarificationPrompt || '';
+        document.querySelector('#selected').replaceChildren(...listItems(response.selectedOutfitIds));
+        document.querySelector('#tied').replaceChildren(...listItems(response.tiedOutfitIds));
+        document.querySelector('#qualified').replaceChildren(...listItems(response.qualifiedOutfitIds));
+        document.querySelector('#reason-codes').replaceChildren(...listItems(response.reasonCodes));
+        document.querySelector('#uncertainty').replaceChildren(
+          detail('Level', response.uncertainty.level),
+          detail('Value', response.uncertainty.value),
+          detail('Reason codes', response.uncertainty.reasonCodes.join(', ')),
+        );
+        document.querySelector('#next-step').textContent = response.nextStep;
+        document.querySelector('#citations').replaceChildren(
+          ...response.citations.map(citationCard),
+        );
+        document.querySelector('#limitations').replaceChildren(
+          ...listItems(response.limitations),
+        );
+        document.querySelector('#policy').replaceChildren(
+          ...Object.entries(response.policy).map(([key, value]) => detail(key, value)),
+        );
+        document.querySelector('#outfit-evidence').replaceChildren(
+          ...(response.outfitEvidence.length
+            ? response.outfitEvidence.map(evidenceCard)
+            : [detail('Outfit evidence', 'Not evaluated because current context was unresolved.')]),
+        );
+      }
+
+      render(composer.getView());
+      for (const field of fields) {
+        field.addEventListener('change', () => {
+          const value = field.id === 'desiredCount' ? Number(field.value) : field.value;
+          composer.selectField(field.id, value);
+          render(composer.getView());
+          status.textContent = 'Context changed. Generate again for a current response.';
+        });
+      }
+      document.querySelector('#generate').addEventListener('click', () => {
+        const generated = composer.run();
+        if (!generated.ok) {
+          resultPanel.hidden = true;
+          status.textContent = `Fixture failed safely: ${generated.error}.`;
+          return;
+        }
+        render(generated.view);
+        status.textContent = 'Response ready. Outcome, reasons, uncertainty, citations, limitations, policy, and minimized outfit evidence are visible.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = composer.reset();
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior response remains.';
+        fields[0].focus();
+      });
+    }
+  </script>
+</body>
+</html>

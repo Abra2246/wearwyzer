@@ -1002,6 +1002,21 @@ references, and owner.
   analytics, network, affiliate/retailer action, purchase, publishing,
   messaging, likeness generation, or external action. Current pre-PR
   validation baseline: 836 tests.
+- Issue #154 adds the first explicit-context Daily Outfit Stylist composer.
+  Six allowlisted selects — occasion, season class, weather class, dress
+  code, availability window, and desired outfit count of two or three —
+  contain no free text or hidden field. Every selection delegates unchanged
+  to the accepted Daily Outfit Intent contract against one closed,
+  deterministic pool of four synthetic outfits, then to the accepted
+  Grounded Daily Outfit Stylist adapter. A derived clarification sentence
+  built only from the accepted next-step code and reason codes accompanies
+  review-required and abstained non-answers without altering ranking, ties,
+  uncertainty, or abstention. Changing a field clears the prior response;
+  reset restores deterministic defaults and focus. The route reads no live
+  context or private data, stores nothing, and exposes no provider, account,
+  analytics, network, commerce, affiliate, retailer, purchase, publishing,
+  messaging, or external action. Current pre-PR validation baseline: 857
+  tests.
 
 ## Final north-star statement
 

@@ -2,6 +2,33 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Explicit-context Daily Outfit Stylist composer (issue #154)
+### Added
+- An unlinked, `noindex`, exact-flag-gated (`ww_daily_stylist_composer=1`)
+  fixture route where a person composes their own explicit context — occasion,
+  season class, weather class, dress code, availability window, and desired
+  outfit count of two or three — instead of replaying a curated scenario.
+- Six allowlisted selects with no free text and no hidden collection field,
+  delegated unchanged to the accepted Daily Outfit Intent contract against one
+  closed, deterministic pool of four synthetic outfits, then to the accepted
+  Grounded Daily Outfit Stylist adapter.
+- A concise, human-readable clarification prompt derived only from the
+  accepted next-step code and reason codes for review-required and abstained
+  non-answers.
+### Safety
+- The clarification helper is presentational only — it does not alter
+  ranking, ties, uncertainty, or abstention policy.
+- The route enables no model/provider, live context, private data, account,
+  storage, camera, network, analytics, commerce, affiliate/retailer action,
+  purchase, publishing, messaging, likeness generation, or external action.
+- Changing any field clears the prior response; reset restores deterministic
+  defaults and keyboard focus.
+### Validation
+- 857/857 deterministic repository tests passed (19 new).
+- `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
+  `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
+  `compare-legacy-adapter.mjs` all ran clean against this change.
+
 ## Unreleased (2026-07-26) — Claude workflow file-tool repair (issue #156)
 ### Fixed
 - Queue-dispatched, non-interactive Claude runs now explicitly allow `Read`,

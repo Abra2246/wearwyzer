@@ -870,6 +870,35 @@ read-only. It accesses no live context, private profile/closet, account,
 storage, camera, analytics, network, commerce, affiliate or retailer action,
 purchase, publishing, messaging, personalized likeness, or external action.
 
+## Decision — the first explicit-context Daily Stylist composer (issue #154)
+
+**Problem:** every prior Daily Outfit Intent and Grounded Daily Outfit Stylist
+review route lets a reviewer replay nine curated scenarios, but no route lets
+a person actually compose their own explicit context and see what the
+accepted contracts do with it — the smallest real demonstration of daily
+styling utility without collecting live or private data.
+
+**Decision:** the default-off fixture route
+`daily-outfit-stylist-composer-fixture.dc.html?ww_daily_stylist_composer=1`
+exposes six independent allowlisted selects — occasion, season class, weather
+class, dress code, availability window, and desired outfit count of two or
+three — with no free text and no hidden field. Every selection is delegated
+unchanged to the accepted Daily Outfit Intent contract against one closed,
+deterministic pool of four synthetic outfits (clearly not the person's real
+wardrobe), then to the accepted Grounded Daily Outfit Stylist adapter. A small
+presentational helper turns the accepted `nextStep` code and `reasonCodes`
+into one concise clarification sentence for non-answers; it does not alter
+ranking, ties, uncertainty, or abstention. Changing any field clears the
+prior response; reset restores deterministic defaults and keyboard focus.
+
+**Boundary:** the page does not rank, break ties, invent context, or
+recreate abstention policy — it only composes accepted contracts and renders
+their exact output plus a derived clarification sentence. It is unlinked,
+`noindex`, fixture-only, provider-free, and read-only. It accesses no live
+context, private profile/closet, account, storage, camera, analytics,
+network, commerce, affiliate or retailer action, purchase, publishing,
+messaging, personalized likeness, or external action.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

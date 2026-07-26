@@ -80,6 +80,28 @@ Without the exact query flag the fixture controls remain hidden. The route is
 not linked from any other site page and contains no network/provider call,
 live/private input, persistence, analytics, commerce, or external action.
 
+## Fixture composer
+
+The unlinked, `noindex` route
+`daily-outfit-stylist-composer-fixture.dc.html?ww_daily_stylist_composer=1`
+lets a person compose their own explicit context instead of replaying a
+curated mode. Six independent allowlisted selects — occasion, season class,
+weather class, dress code, availability window, and desired outfit count of
+two or three — contain no free text and no hidden field. Every selection is
+delegated unchanged to the accepted Daily Outfit Intent contract against one
+closed, deterministic pool of four synthetic outfits, then to this adapter.
+The page renders only the adapter output plus one concise clarification
+sentence, derived only from the accepted `nextStep` code and `reasonCodes`,
+for review-required and abstained non-answers. The clarification helper does
+not alter ranking, ties, uncertainty, or abstention.
+
+Changing any field clears the previous response; reset restores the
+deterministic default context (`everyday` / `transitional` / `dry` /
+`smart-casual` / `today` / two outfits) and keyboard focus. Without the exact
+query flag the composer controls remain hidden. The route is not linked from
+any other site page and contains no network/provider call, live/private
+input, persistence, analytics, commerce, or external action.
+
 ## Production gates
 
 No model or provider call, live context access, production account/storage,
