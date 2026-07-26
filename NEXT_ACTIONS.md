@@ -5,33 +5,36 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #100. The outfit-planning slice
-passed 568 tests, five GitHub checks, both serialized Ops feed refreshes, Pages
-deployment, and post-deploy health check. Issue #101 is active.
+**Evidence baseline:** `main` after merged PR #103. The grounded Stylist
+contract passed 579 tests, five GitHub checks, serialized Ops refreshes, Pages
+deployment, and post-deploy health check. Issue #104 is active.
 
 ## Active review gates
 
-1. **Issue #101 — first grounded AI Stylist tool contract**
-   - Active branch: `codex/issue-101-ai-stylist-contract`.
-   - Scope: read-only intent taxonomy, evidence allowlists, citations,
-     opposing evidence, uncertainty, abstention, and minimized responses.
-   - Boundary: no live model/provider call, paid spend, real account, external
-     action, Chrome permission, or production storage.
+1. **Issue #104 — fixture AI Stylist evaluation harness**
+   - Active branch: `codex/issue-104-ai-stylist-evals`.
+   - Scope: all six intents, adversarial trust cases, deterministic metrics,
+     fail-closed thresholds, exact reports, and repeatability.
+   - Boundary: provider-free, network-free fixtures only; no live model, paid
+     spend, real data, external action, or production storage.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #101**
-   - Outcome: a read-only conversational contract grounded in accepted
-     wardrobe, Wear DNA, product, purchase, and planning evidence.
-2. **Build a fixture AI Stylist evaluation harness**
-   - Outcome: regression prompts for owned-item styling, occasion planning,
-     purchase evaluation, gaps, comparisons, explanations, and abstention.
-3. **Establish the first verifiable affiliate merchant path**
+1. **Complete and review Issue #104**
+   - Outcome: a measurable regression gate for grounding, citations,
+     abstention, privacy, external-action safety, and deterministic output.
+2. **Build a default-off fixture AI Stylist journey**
+   - Outcome: demonstrate grounded questions and cited answers over synthetic
+     wardrobe evidence without a live model or real user data.
+3. **Complete Issue #102 workflow hygiene**
+   - Outcome: remove deprecated action-runtime and invalid Pages-input warnings
+     using verified official migration guidance.
+4. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-4. **Reconcile and import remaining style-guide sources when real files exist**
+5. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -40,6 +43,8 @@ deployment, and post-deploy health check. Issue #101 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #101 / PR #103:** merged after 579 tests, five passing GitHub checks,
+  serialized Ops refresh, successful Pages deployment, and health check.
 - **Issue #99 / PR #100:** merged after 568 tests, five passing GitHub checks,
   serialized Ops refresh, successful Pages deployment, and health check.
 - **Issue #97 / PR #98:** merged after 558 tests, five passing GitHub checks,
