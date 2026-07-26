@@ -875,6 +875,14 @@ references, and owner.
   inference, photos, prices, retailers, or affiliate incentives. Current
   pre-PR validation baseline: 687 tests plus every deterministic repository
   validator.
+- Issue #125 makes Fit Intelligence reviewable as a default-off fixture
+  journey. Verified transfer, correction precedence, low confidence,
+  staleness, conflicting corrections, and unavailable sizes remain distinct.
+  Changing evidence clears prior guidance; reset restores deterministic
+  defaults and focus. The route collects no sensitive input and offers no
+  shopping, account, network, tracking, or external action. Current pre-PR
+  validation baseline: 698 tests, every deterministic validator, and browser
+  QA.
 
 ## Final north-star statement
 
