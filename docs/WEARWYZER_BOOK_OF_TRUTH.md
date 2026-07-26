@@ -779,6 +779,15 @@ references, and owner.
   dates, private notes, location, measurements, prices, fit notes, or ledgers.
   Current validation baseline: 568 tests plus every deterministic repository
   validator.
+- Issue #101 establishes the first trustworthy conversational boundary. The AI
+  Stylist supports only explicit read-only intents and validates every material
+  claim against versioned allowlisted evidence. Facts must match supplied facts;
+  owned-item claims must resolve through an accepted wardrobe snapshot; and
+  stale, ambiguous, conflicting, missing, or insufficient evidence produces
+  abstention. Minimized clients receive claims, citation metadata, uncertainty,
+  opposing evidence, and a non-mutating next step—not private prompts or raw
+  profile and wardrobe evidence. Current validation baseline: 579 tests plus
+  every deterministic repository validator.
 
 ## Final north-star statement
 
