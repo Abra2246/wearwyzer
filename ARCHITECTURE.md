@@ -682,6 +682,27 @@ correction precedence and reversal, temporary exploration, and the fixed
 user-control policy reviewable without collecting or storing real profile,
 wardrobe, behavior, account, commerce, or analytics data.
 
+## Decision — outfit compatibility keeps evidence sources separate (issue #135)
+
+**Problem:** a single opaque “match” score can hide whether an outfit is weak
+because of product truth, fit, ownership, context, missing evidence, or a soft
+style preference. That makes the result difficult to trust or correct.
+
+**Decision:** the fixture Outfit Compatibility contract keeps canonical
+product facts, owned/prospective/missing state, Fit Intelligence, Style DNA,
+target occasion/season, and outfit composition distinct. Palette, silhouette,
+formality, material, occasion, layering, verified fit, and owned pairing are
+decomposed. Missing components are excluded from the weighted score and lower
+evidence confidence instead of becoming zero.
+
+**Hard and commercial boundaries:** conflicting fit, a missing required role,
+unsupported target context, and an explicit negative style match remain hard
+incompatibilities. Inferred negatives cannot hard-block. Product truth and
+verified fit outrank preference. Equal outfit leaders remain tied, and no
+qualified outfit becomes `none-qualified`. Full private payloads, prices,
+retailers, affiliate economics, popularity, accounts, analytics, network,
+purchasing, and external actions remain excluded.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

@@ -5,26 +5,26 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #132. Style DNA passed 734 tests,
-all deterministic validators, five GitHub checks, serialized Ops refreshes,
-Pages deployment run `30185473810`, and Deploy Health Check run `30185498913`.
-Issue #133 is active.
+**Evidence baseline:** `main` after merged PR #134. The Style DNA journey passed
+746 tests, all deterministic validators, browser QA, five GitHub checks,
+serialized Ops refreshes, Pages deployment run `30185614976`, and Deploy
+Health Check run `30185637707`. Issue #135 is active.
 
 ## Active review gates
 
-1. **Issue #133 — fixture Style DNA review journey**
-   - Active branch: `codex/issue-133-style-dna-journey`.
-   - Scope: make provenance, contradiction, confidence decay, weak/stale
-     exclusion, corrections, reversal, exploration, and policy reviewable.
-   - Boundary: exact-flag-gated, unlinked, `noindex`, fixture-only, local, and
-     read-only. No real profile, wardrobe, behavior collection, persistence,
-     account, network, analytics, commerce, or external action exists.
+1. **Issue #135 — Style DNA-aware Outfit Compatibility contract**
+   - Active branch: `codex/issue-135-outfit-compatibility-contract`.
+   - Scope: keep product, ownership, fit, Style DNA, context, and composition
+     evidence distinct while decomposing compatibility and preserving ties.
+   - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
+     No full private payload, commerce, account, analytics, network, purchase,
+     persistence, or external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #133**
-   - Outcome: let future users understand and control the style evidence behind
-     recommendations before real account or profile persistence exists.
+1. **Complete and review Issue #135**
+   - Outcome: provide one explainable outfit-quality boundary that future
+     website, app, extension, and AI Stylist clients can share.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -44,6 +44,12 @@ Issue #133 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #133 / PR #134:** merged after 746 tests, every deterministic
+  validator, browser QA, five passing GitHub checks, serialized Ops refreshes,
+  Pages run `30185614976`, and Deploy Health Check run `30185637707`. Seven
+  modes make Style DNA provenance, conflict, decay, exclusion, corrections,
+  exploration, and user-control policy reviewable without collection,
+  persistence, accounts, tracking, or commerce.
 - **Issue #131 / PR #132:** merged after 734 tests, every deterministic
   validator, five passing GitHub checks, serialized Ops refreshes, Pages run
   `30185473810`, and Deploy Health Check run `30185498913`. Explicit choices

@@ -917,6 +917,15 @@ references, and owner.
   and stores nothing and exposes no account, network, analytics, tracking,
   affiliate, retailer, purchase, or external action. Current pre-PR validation
   baseline: 746 tests.
+- Issue #135 defines Style DNA-aware Outfit Compatibility without an opaque
+  match score. Product facts, ownership, fit, Style DNA, target context, and
+  composition remain separate; eight evidence parts are decomposed; missing
+  evidence lowers confidence; hard incompatibilities remain explicit. Inferred
+  negatives cannot hard-block, product truth and verified fit outrank
+  preference, equal leaders remain tied, and no qualified outfit stays honest.
+  Full private payloads, commerce, accounts, analytics, network, purchasing,
+  and external actions remain outside the result. Current pre-PR validation
+  baseline: 758 tests.
 
 ## Final north-star statement
 
