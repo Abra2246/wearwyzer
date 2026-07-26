@@ -2,6 +2,21 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Style DNA intelligence contract (issue #131)
+### Added
+- A closed, versioned fixture contract for aesthetic, palette, silhouette,
+  formality, layering, material, occasion, and fashion-risk signals.
+- Explicit and inferred provenance, deterministic confidence decay, versioned
+  corrections, review conflicts, temporary exploration, and minimized output.
+### Safety
+- Explicit choices and corrections outrank inference. Low-confidence, stale,
+  future-dated, duplicate, private, unknown, and commercial evidence cannot
+  silently become canonical Style DNA.
+- Exploration never mutates the canonical profile, and commercial influence is
+  prohibited.
+### Validation
+- 734/734 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Brand Preference and Fit Memory fixture journey (issue #129)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route for explicit and
