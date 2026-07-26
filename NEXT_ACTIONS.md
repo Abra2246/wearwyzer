@@ -5,16 +5,19 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #150. The Grounded Daily Outfit
-Stylist response adapter passed 826 tests, all deterministic validators, five
-GitHub checks, Pages deployment run `30186843341`, Deploy Health Check run
-`30186865046`, Content pipeline run `30186843351`, Ops Live Feed run
-`30186884078`, and Ops Status run `30186844538`. Issue #151 is ready.
+**Evidence baseline:** implementation branch
+`codex/issue-151-grounded-daily-stylist-journey`. The queue-dispatched run
+`30186961673` failed its handoff check after eight tool permission denials and
+correctly left no branch or PR. Local takeover now implements the bounded
+fixture journey; focused validation passes 30/30 and full repository,
+browser, CI, deployment, and production evidence remain required before
+completion.
 
 ## Queued execution
 
 1. **Issue #151 — Grounded Daily Outfit Stylist fixture journey**
-   - Status: ready; no implementation branch or review PR exists yet.
+   - Status: implementation in progress after evidence-backed automation
+     handoff failure.
    - Scope: make accepted ready, review, contradiction, tie, and insufficiency
      responses visibly explainable.
    - Boundary: exact flag `ww_grounded_daily_stylist=1`, fixture-only,

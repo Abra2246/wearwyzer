@@ -980,6 +980,19 @@ references, and owner.
   provider, live context, private record, persistence, account, network,
   commerce, publishing, messaging, or external action exists. Current pre-PR
   validation baseline: 826 tests.
+- Issue #151 makes the grounded Daily Outfit Stylist response reviewable as a
+  default-off, exact-flag-gated fixture journey. It composes the accepted Daily
+  Outfit Intent journey with the accepted response adapter across ready,
+  context-review, contradiction, boundary-tie, and insufficiency states.
+  Outcome, deterministic copy, explicit context, selected/tied/qualified IDs,
+  reasons, uncertainty, citations, limitations, safe next step, policy, and
+  minimized per-outfit evidence remain visible without recreating context,
+  ranking, tie, uncertainty, or abstention policy. Mode changes clear prior
+  responses; reset restores deterministic defaults and focus. The route
+  accesses no provider, live context, private data, account, storage, camera,
+  analytics, network, affiliate/retailer action, purchase, publishing,
+  messaging, likeness generation, or external action. Current pre-PR
+  validation baseline: 836 tests.
 
 ## Final north-star statement
 

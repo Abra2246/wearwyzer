@@ -827,6 +827,29 @@ model call, raw profile/closet, live location/weather/calendar, account,
 persistence, analytics, credentials, network, commerce, purchase, publishing,
 messaging, or external-action authority.
 
+## Decision — grounded Daily Stylist responses are reviewable before integration (issue #151)
+
+**Problem:** the accepted response adapter is trustworthy in code, but product
+and editorial review still need to verify that answers, honest non-answers,
+ties, uncertainty, citations, limitations, and candidate evidence remain clear
+when rendered for a person.
+
+**Decision:** the default-off fixture route
+`grounded-daily-outfit-stylist-fixture.dc.html?ww_grounded_daily_stylist=1`
+composes the accepted Daily Outfit Intent journey with the accepted Grounded
+Daily Outfit Stylist adapter across the same nine deterministic states. The UI
+renders only the adapter projection: outcome, deterministic copy, explicit
+context, selected/tied/qualified IDs, reasons, uncertainty, citations,
+limitations, safe next step, policy, and minimized per-outfit evidence. Mode
+changes invalidate prior responses; reset restores deterministic defaults and
+keyboard focus.
+
+**Boundary:** the page does not recreate context, ranking, tie, uncertainty, or
+abstention policy. It is unlinked, `noindex`, fixture-only, provider-free, and
+read-only. It accesses no live context, private profile/closet, account,
+storage, camera, analytics, network, commerce, affiliate or retailer action,
+purchase, publishing, messaging, personalized likeness, or external action.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
