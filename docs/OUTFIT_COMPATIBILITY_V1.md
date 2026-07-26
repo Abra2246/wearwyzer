@@ -68,3 +68,12 @@ It excludes full profile or wardrobe payloads, private notes, browsing,
 purchase/return history, prices, retailer preference, affiliate status,
 commission, popularity, account data, analytics, network calls, purchasing,
 and every other external action.
+
+## Review journey
+
+The unlinked, default-off route
+`outfit-compatibility-fixture.dc.html?ww_outfit_compatibility=1` makes the
+contract reviewable across compatible, missing-evidence, hard-block, and
+comparison outcomes. The UI delegates evaluation and comparison to this
+contract; it does not own a second scoring policy. See
+`docs/OUTFIT_COMPATIBILITY_JOURNEY_V1.md` for the complete fixture boundary.

@@ -2,6 +2,21 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Outfit Compatibility fixture journey (issue #137)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route for compatible,
+  missing-evidence, explicit-style-block, conflicting-fit, missing-role,
+  comparison-leader, tie, and none-qualified states.
+- Decomposed score parts, evidence coverage, confidence, reasons, hard
+  incompatibilities, missing evidence, target context, and ownership labels.
+### Safety
+- The route delegates every result to the accepted Outfit Compatibility
+  contract and does not recreate scoring or comparison policy in the UI.
+- It collects and stores nothing and exposes no account, network, analytics,
+  tracking, affiliate, retailer, purchase, or external action.
+### Validation
+- 770/770 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Style DNA-aware Outfit Compatibility (issue #135)
 ### Added
 - A closed, versioned fixture contract that keeps canonical product facts,

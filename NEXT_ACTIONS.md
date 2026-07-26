@@ -5,37 +5,43 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #134. The Style DNA journey passed
-746 tests, all deterministic validators, browser QA, five GitHub checks,
-serialized Ops refreshes, Pages deployment run `30185614976`, and Deploy
-Health Check run `30185637707`. Issue #135 is active.
+**Evidence baseline:** `main` after merged PR #136. The Outfit Compatibility
+contract passed 758 tests, all deterministic validators, five GitHub checks,
+serialized Ops refreshes, Pages deployment run `30185757766`, and Deploy
+Health Check run `30185781621`. Issue #137 is active.
 
 ## Active review gates
 
-1. **Issue #135 — Style DNA-aware Outfit Compatibility contract**
-   - Active branch: `codex/issue-135-outfit-compatibility-contract`.
-   - Scope: keep product, ownership, fit, Style DNA, context, and composition
-     evidence distinct while decomposing compatibility and preserving ties.
+1. **Issue #137 — Outfit Compatibility fixture journey**
+   - Active branch: `codex/issue-137-outfit-compatibility-journey`.
+   - Scope: make compatible, missing-evidence, hard-block, leader, tie, and
+     none-qualified outcomes reviewable without recreating contract policy.
    - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
      No full private payload, commerce, account, analytics, network, purchase,
      persistence, or external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #135**
-   - Outcome: provide one explainable outfit-quality boundary that future
-     website, app, extension, and AI Stylist clients can share.
-2. **Founder decision: authorize or defer one live provider experiment**
+1. **Complete and review Issue #137**
+   - Outcome: prove the shared outfit-quality boundary is understandable and
+     correct before any real profile, wardrobe, app, extension, or AI Stylist
+     integration.
+2. **Define personalized outfit-set recommendation**
+   - Dependency: merged Issues #135 and #137.
+   - Outcome: assemble multiple qualified outfits for one intent while
+     preserving ownership labels, fit/product truth, Style DNA, diversity,
+     comparison ties, and honest abstention.
+3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
    - Outcome if approved: one bounded, non-production synthetic comparison;
      otherwise remain offline with no loss of production functionality.
-3. **Establish the first verifiable affiliate merchant path**
+4. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-4. **Reconcile and import remaining style-guide sources when real files exist**
+5. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -44,6 +50,12 @@ Health Check run `30185637707`. Issue #135 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #135 / PR #136:** merged after 758 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refreshes, Pages run
+  `30185757766`, and Deploy Health Check run `30185781621`. Product facts,
+  ownership, fit, Style DNA, target, and composition remain separate; equal
+  leaders stay tied; missing evidence lowers confidence; commercial influence
+  remains excluded.
 - **Issue #133 / PR #134:** merged after 746 tests, every deterministic
   validator, browser QA, five passing GitHub checks, serialized Ops refreshes,
   Pages run `30185614976`, and Deploy Health Check run `30185637707`. Seven
