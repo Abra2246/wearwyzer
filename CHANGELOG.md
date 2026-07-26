@@ -2,6 +2,25 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Founder-gated AI provider experiment protocol (issue #113)
+### Added
+- A closed, provider-neutral experiment manifest over the accepted synthetic
+  Stylist corpus with opaque candidates and hard request, retry, timeout, and
+  cost ceilings.
+- A sanitized founder decision packet with explicit authorization, evidence
+  completeness, trust, editorial, limit, stop-reason, and review states.
+### Safety
+- Planning manifests are unauthorized by default and cannot contain provider,
+  model, prompt, credential, request, response, profile, or wardrobe data.
+- Missing approval/evidence stays explicit; trust failure stops before
+  editorial review; limits and declared failure conditions stop the experiment.
+- This milestone performs no network call, reads no credential, and authorizes
+  no external processing or spend.
+### Validation
+- 636/636 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted eligibility warning remains non-blocking.
+
 ## Unreleased (2026-07-26) — AI Stylist editorial rubric (issue #111)
 ### Added
 - A closed, versioned fixture review record with anchored 1–5 scores and

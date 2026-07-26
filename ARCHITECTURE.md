@@ -543,6 +543,25 @@ removed from the aggregate. No real reviewer account, candidate payload,
 provider, prompt, personal data, analytics, or automated preference learning
 is introduced.
 
+## Decision — external AI experiments require a separate founder gate (issue #113)
+
+**Problem:** the accepted offline trust and editorial gates do not themselves
+authorize an external provider, credential, data transfer, or spend. Treating a
+merged evaluator as permission to run a model would collapse product review,
+privacy review, and budget approval into an unsafe implicit action.
+
+**Decision:** every proposed external Stylist comparison begins with a closed,
+zero-authority manifest over the complete synthetic corpus. It predeclares
+opaque candidate IDs and hard request, retry, timeout, and cost ceilings.
+Provider/model configuration stays private. A separate founder approval record
+is required before any execution, and the resulting decision packet is
+incomplete without provenance, spend, and output evidence.
+
+**Safety boundary:** trust is evaluated before editorial preference. Safety
+failure, evidence loss, provider error, schema drift, nondeterminism, or a
+request/cost limit breach stops the experiment. This contract performs no
+network call, reads no credential, and authorizes no spend.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

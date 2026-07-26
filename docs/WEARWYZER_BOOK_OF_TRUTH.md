@@ -829,6 +829,15 @@ references, and owner.
   selection, and equal results remain tied. Reviewer aliases and raw review
   counts stay out of the sanitized evidence artifact. Current pre-PR validation
   baseline: 621 tests plus every deterministic repository validator.
+- Issue #113 makes provider experimentation an explicit founder boundary. A
+  closed manifest may plan only the complete synthetic corpus, opaque
+  candidates, and hard request/retry/timeout/spend ceilings; every permission
+  defaults to false. External processing requires separate founder approval,
+  and any resulting packet remains incomplete without provenance, cost, and
+  output evidence. Trust runs before editorial preference, and no preference
+  score can repair a safety failure. The protocol itself performs no network
+  call, reads no credential, and authorizes no spend. Current pre-PR validation
+  baseline: 636 tests plus every deterministic repository validator.
 
 ## Final north-star statement
 
