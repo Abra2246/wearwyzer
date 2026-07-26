@@ -599,6 +599,11 @@ review, or correct owned evidence. There is no default buy action, and no
 affiliate, commission, price, private note, exact date, or raw lifecycle ledger
 enters the minimized result.
 
+The Issue #121 fixture journey exposes this score only behind the exact
+`ww_closet_health=1` query flag on an unlinked, `noindex` page. It makes
+complete, missing, care-needed, redundancy, and unresolved evidence reviewable
+without introducing a commerce, account, tracking, or network surface.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

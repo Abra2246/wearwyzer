@@ -5,25 +5,25 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #118. The fixture Purchase
-Simulator journey passed 654 tests, all deterministic validators, five GitHub
-checks, serialized Ops refreshes, Pages deployment run `30184294698`, and
-Deploy Health Check run `30184317829`. Issue #119 is active.
+**Evidence baseline:** `main` after merged PR #120. The fixture Closet Health
+Score passed 664 tests, all deterministic validators, five GitHub checks,
+serialized Ops refreshes, Pages deployment run `30184494956`, and Deploy
+Health Check run `30184517788`. Issue #121 is active.
 
 ## Active review gates
 
-1. **Issue #119 — fixture Closet Health Score**
-   - Active branch: `codex/issue-119-closet-health-score`.
-   - Scope: explain wardrobe balance, versatility, redundancy, neglect, gaps,
-     evidence confidence, and the best owned-first next actions.
-   - Boundary: fixture-only and deterministic. No invented wear/value evidence,
-     real tracking, account, network, purchase, or publication.
+1. **Issue #121 — fixture Closet Health journey**
+   - Active branch: `codex/issue-121-closet-health-journey`.
+   - Scope: make score decomposition, evidence confidence, gaps, redundancy,
+     neglected-item evidence, and owned-first actions reviewable end to end.
+   - Boundary: exact-flag-gated, unlinked, `noindex`, synthetic, browser-local,
+     and read-only. No commerce, network, account, analytics, or publication.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #119**
-   - Outcome: help a user improve what they already own before recommending
-     another purchase.
+1. **Complete and review Issue #121**
+   - Outcome: prove the owned-first Closet Health experience before any account
+     or real wardrobe data is considered.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -43,6 +43,11 @@ Deploy Health Check run `30184317829`. Issue #119 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #119 / PR #120:** merged after 664 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refresh, and Pages run
+  `30184494956`. Missing Wear DNA lowers confidence instead of closet quality;
+  impossible lifecycle combinations fail closed; no buying incentive enters
+  the score.
 - **Issue #117 / PR #118:** merged after 654 tests, every deterministic
   validator, browser QA, five passing GitHub checks, serialized Ops refresh,
   Pages run `30184294698`, and Deploy Health Check run `30184317829`.

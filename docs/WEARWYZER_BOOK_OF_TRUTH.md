@@ -859,6 +859,13 @@ references, and owner.
   The score cannot recommend buying by default or use affiliate incentives.
   Current pre-PR validation baseline: 664 tests plus every deterministic
   repository validator.
+- Issue #121 makes Closet Health reviewable as a default-off fixture journey.
+  Complete, missing, care-needed, redundant, and unresolved evidence states
+  remain visibly distinct. Changing evidence clears the prior result; reset
+  restores deterministic defaults and focus. The route renders only minimized
+  score output and offers no shopping, tracking, account, or external action.
+  Current pre-PR validation baseline: 676 tests, every deterministic validator,
+  and browser QA.
 
 ## Final north-star statement
 
