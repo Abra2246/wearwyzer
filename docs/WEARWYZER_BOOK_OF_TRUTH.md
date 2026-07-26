@@ -1038,7 +1038,7 @@ references, and owner.
   reason codes only; it resolves no real account, session, profile,
   wardrobe snapshot, or candidate, and executes nothing. No route, endpoint,
   provider, database, account, session, real user record, collection flow,
-  or production access exists. Current pre-PR validation baseline: 872
+  or production access exists. Current pre-PR validation baseline: 874
   tests.
 
 ## Final north-star statement

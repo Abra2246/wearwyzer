@@ -9,6 +9,7 @@ import {
 
 function baseRequest(overrides = {}) {
   return {
+    schemaVersion: DAILY_STYLIST_PRODUCTION_BOUNDARY_VERSION,
     requestId: 'req-fixture-01',
     requestedAtIso: '2026-07-26T12:00:00.000Z',
     profileReference: 'fixture-profile-01',
@@ -59,6 +60,18 @@ test('a desired count outside two or three fails closed', () => {
     const planned = planDailyStylistProductionRequest(baseRequest({ desiredCount }));
     assert.equal(planned.ok, false);
     assert.equal(planned.error, 'closed-minimized-request-envelope-required');
+  }
+});
+
+test('the request itself requires the exact supported schema version', () => {
+  for (const schemaVersion of [undefined, '', 'daily-stylist-production-boundary-v0']) {
+    const request = baseRequest();
+    if (schemaVersion === undefined) delete request.schemaVersion;
+    else request.schemaVersion = schemaVersion;
+    assert.deepEqual(
+      planDailyStylistProductionRequest(request),
+      { ok: false, error: 'closed-minimized-request-envelope-required' },
+    );
   }
 });
 
@@ -194,5 +207,19 @@ test('a missing request ID, timestamp, profile reference, or wardrobe snapshot r
     const planned = planDailyStylistProductionRequest(baseRequest(override));
     assert.equal(planned.ok, false);
     assert.equal(planned.error, 'closed-minimized-request-envelope-required');
+  }
+});
+
+test('request and private-record references must remain bounded opaque identifiers', () => {
+  for (const override of [
+    { requestId: 'free text request' },
+    { profileReference: '{"profile":{"name":"Fixture Person"}}' },
+    { wardrobeSnapshotReference: 'https://example.com/private/wardrobe' },
+    { profileReference: `p${'x'.repeat(128)}` },
+  ]) {
+    assert.deepEqual(
+      planDailyStylistProductionRequest(baseRequest(override)),
+      { ok: false, error: 'closed-minimized-request-envelope-required' },
+    );
   }
 });

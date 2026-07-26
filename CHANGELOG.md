@@ -38,7 +38,7 @@ All notable changes to this project are recorded here.
   database, account, session, real user record, collection flow, or
   production access is created.
 ### Validation
-- 872/872 deterministic repository tests passed (13 new).
+- 874/874 deterministic repository tests passed (15 new).
 - `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
   `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
   `compare-legacy-adapter.mjs` all ran clean against this change (all

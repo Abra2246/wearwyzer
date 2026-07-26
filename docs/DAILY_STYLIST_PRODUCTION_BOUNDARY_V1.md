@@ -34,10 +34,11 @@ facts, so a client cannot smuggle one in.
 
 ## Request envelope (`daily-stylist-production-boundary-v1`)
 
-The envelope is closed: exactly these ten fields, no more, no fewer.
+The envelope is closed: exactly these eleven fields, no more, no fewer.
 
 | Field | Type | Constraint |
 | --- | --- | --- |
+| `schemaVersion` | string | exactly `daily-stylist-production-boundary-v1` |
 | `requestId` | string | non-empty |
 | `requestedAtIso` | string | valid ISO timestamp |
 | `profileReference` | string | non-empty stable reference; never an embedded profile |
@@ -68,8 +69,10 @@ fail the single closed-key check and the whole request fails closed with
 exception for any of these; closing the key set is the entire enforcement
 mechanism, so it cannot be bypassed field-by-field.
 
-The envelope is versioned (`schemaVersion: "daily-stylist-production-boundary-v1"`)
-and byte-stable: `serializeDailyStylistProductionPlan` (stable-key JSON,
+The request itself must carry the exact supported version; missing, older, or
+unknown versions fail closed. Request IDs and private-record references are
+bounded opaque identifiers rather than URLs, JSON, or free text. The accepted
+plan is byte-stable: `serializeDailyStylistProductionPlan` (stable-key JSON,
 reused from `scripts/ai-stylist-evaluator.mjs`) produces the same string for
 the same accepted request every time.
 

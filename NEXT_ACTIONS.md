@@ -32,7 +32,7 @@ can complete the intended issue-to-PR handoff.
      accepted Grounded Stylist response), each with an explicit fail-closed
      reason code. `scripts/daily-outfit-intent-contract.mjs` now exports its
      context allowlists so the boundary reuses them by reference.
-   - Evidence: 872/872 deterministic tests (13 new), and
+   - Evidence: 874/874 deterministic tests (15 new), and
      `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
      `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
      `compare-legacy-adapter.mjs` all ran clean (no new warnings).

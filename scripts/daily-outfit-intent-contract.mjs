@@ -78,7 +78,7 @@ export function evaluateDailyOutfitIntent(input) {
     || !WEATHER.has(input.weatherClass)
     || !DRESS_CODES.has(input.dressCode)
     || !AVAILABILITY.has(input.availabilityWindow)
-    || ![2, 3].includes(input.desiredCount)
+    || !DESIRED_COUNTS.has(input.desiredCount)
     || !Array.isArray(input.candidates)) {
     return { ok: false, error: 'valid-minimized-daily-outfit-intent-required' };
   }

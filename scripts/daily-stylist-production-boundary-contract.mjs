@@ -8,6 +8,7 @@ import { GROUNDED_DAILY_OUTFIT_STYLIST_VERSION } from './grounded-daily-outfit-s
 export const DAILY_STYLIST_PRODUCTION_BOUNDARY_VERSION = 'daily-stylist-production-boundary-v1';
 
 const ENVELOPE_KEYS = new Set([
+  'schemaVersion',
   'requestId',
   'requestedAtIso',
   'profileReference',
@@ -90,6 +91,11 @@ function nonempty(value) {
   return typeof value === 'string' && value.trim().length > 0;
 }
 
+function stableReference(value) {
+  return typeof value === 'string'
+    && /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(value);
+}
+
 function isIso(value) {
   return typeof value === 'string' && !Number.isNaN(new Date(value).getTime());
 }
@@ -97,10 +103,11 @@ function isIso(value) {
 export function planDailyStylistProductionRequest(input) {
   if (
     !exactKeys(input, ENVELOPE_KEYS)
-    || !nonempty(input.requestId)
+    || input.schemaVersion !== DAILY_STYLIST_PRODUCTION_BOUNDARY_VERSION
+    || !stableReference(input.requestId)
     || !isIso(input.requestedAtIso)
-    || !nonempty(input.profileReference)
-    || !nonempty(input.wardrobeSnapshotReference)
+    || !stableReference(input.profileReference)
+    || !stableReference(input.wardrobeSnapshotReference)
     || !OCCASIONS.has(input.occasion)
     || !SEASONS.has(input.seasonClass)
     || !WEATHER.has(input.weatherClass)
