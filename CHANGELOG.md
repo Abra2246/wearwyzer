@@ -2,6 +2,21 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Brand Preference and Fit Memory fixture journey (issue #129)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route for explicit and
+  inferred roles, correction precedence and reversal, avoidance, conflicts,
+  low-confidence exclusion, minimized fit memory, and recommendation policy.
+- Deterministic mode changes, stale-result invalidation, reset/focus
+  restoration, provenance, confidence, evidence codes, and influence limits.
+### Safety
+- The route delegates every result to the accepted Brand Preference and Fit
+  Memory contract and never recreates ranking or correction rules in the UI.
+- It collects no behavior and provides no account, analytics, network,
+  tracking, commerce, affiliate, retailer, or external action.
+### Validation
+- 722/722 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Brand Preference and Fit Memory (issue #127)
 ### Added
 - A closed, versioned fixture contract for explicit favorite, avoided,

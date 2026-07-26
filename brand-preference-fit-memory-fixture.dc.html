@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Brand Preference and Fit Memory Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:980px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); }
+    .notice { border-left:5px solid var(--gold); }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .warn { color:var(--red); background:#f6e6e3; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .brand,.detail { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .brand h3 { margin:0 0 8px; text-transform:capitalize; }
+    .brand ul { margin-bottom:0; }
+    .meta { color:var(--muted); font-size:13px; }
+    ol,ul { padding-left:22px; }
+    [hidden] { display:none !important; }
+    @media (max-width:680px) {
+      .grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>Your brands. Your fit. Your control.</h1><p>Personalization that never outranks a better recommendation.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This private route uses only synthetic local evidence and cannot observe browsing, shop, track, or change an account.</p>
+      <a class="button" href="?ww_brand_memory=1">Open synthetic Brand Memory</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> explicit choices and
+        corrections outrank inference. Preference may break only an otherwise equal tie
+        after styling quality, usefulness, editorial credibility, and verified fit.</section>
+      <section class="panel">
+        <h2>Choose a review case</h2>
+        <label for="mode">Brand-memory evidence state</label>
+        <select id="mode">
+          <option value="explicit-and-inferred">Explicit choices + accepted inference</option>
+          <option value="corrected-avoidance">Correction removes avoidance</option>
+          <option value="reversed-correction">Later correction reverses an earlier role</option>
+          <option value="avoided-brand">Avoided brand stays excluded</option>
+          <option value="review-required">Avoidance conflicts with a positive role</option>
+          <option value="low-confidence">Low-confidence inference is ignored</option>
+        </select>
+        <div class="actions">
+          <button id="review" type="button">Review brand memory</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No behavior collection, network, tracking, or commerce action will run.</p>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="result-status" class="badge"></span></p>
+        <h2>Accepted brand memory</h2>
+        <p id="mode-summary" class="meta"></p>
+        <div id="brands" class="grid"></div>
+        <p id="empty" class="detail" hidden>No brand role was accepted from this evidence state.</p>
+        <h3>Conflicts requiring user review</h3>
+        <ul id="conflicts"></ul>
+        <h3>Recommendation priority</h3>
+        <ol id="policy"></ol>
+        <p class="meta"><strong>Influence limit:</strong> brand preference is tie-break-only.
+          Commercial influence, affiliate economics, popularity, and retailer preference are unavailable.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { createBrandPreferenceFitMemoryJourney } from './scripts/brand-preference-fit-memory-journey.mjs';
+    const enabled = new URLSearchParams(location.search).get('ww_brand_memory') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+    if (enabled) {
+      const journey = createBrandPreferenceFitMemoryJourney();
+      const mode = document.querySelector('#mode');
+      const panel = document.querySelector('#result');
+      const status = document.querySelector('#status');
+      function brandCard(brand) {
+        const card = document.createElement('article');
+        card.className = 'brand';
+        const heading = document.createElement('h3');
+        heading.textContent = brand.brandId.replaceAll('-', ' ');
+        const badge = document.createElement('span');
+        badge.className = `badge ${brand.status === 'eligible' ? 'good' : 'warn'}`;
+        badge.textContent = brand.status;
+        const confidence = document.createElement('p');
+        confidence.className = 'meta';
+        confidence.textContent = `Role confidence: ${brand.confidence}% · influence: ${brand.recommendationInfluence}`;
+        const roles = document.createElement('ul');
+        roles.replaceChildren(...brand.roles.map((role) => {
+          const item = document.createElement('li');
+          item.textContent = `${role.role} — ${role.source}, ${Math.round(role.confidence * 100)}%, ${role.evidenceCodes.join(', ')}`;
+          return item;
+        }));
+        const fit = document.createElement('p');
+        fit.className = 'meta';
+        fit.textContent = brand.fitMemory.length
+          ? `Fit memory: ${brand.fitMemory.map((memory) => `${memory.itemId}, ${memory.size}, ${memory.outcome}, ${memory.source}`).join('; ')}`
+          : 'Fit memory: none accepted';
+        card.append(heading, badge, confidence, roles, fit);
+        return card;
+      }
+      function render(view) {
+        panel.hidden = !view.result;
+        if (!view.result) return;
+        const memory = view.result;
+        const resultStatus = document.querySelector('#result-status');
+        resultStatus.textContent = memory.status;
+        resultStatus.className = `badge ${memory.status === 'ready' ? 'good' : 'warn'}`;
+        document.querySelector('#mode-summary').textContent = view.modeSummary;
+        document.querySelector('#brands').replaceChildren(...memory.brands.map(brandCard));
+        document.querySelector('#empty').hidden = memory.brands.length > 0;
+        document.querySelector('#conflicts').replaceChildren(...(
+          memory.conflicts.length
+            ? memory.conflicts.map((conflict) => {
+              const item = document.createElement('li');
+              item.textContent = `${conflict.brandId}: ${conflict.code} (${conflict.roles.join(', ')})`;
+              return item;
+            })
+            : [Object.assign(document.createElement('li'), { textContent: 'None' })]
+        ));
+        document.querySelector('#policy').replaceChildren(...memory.policy.precedence.map((step) => {
+          const item = document.createElement('li');
+          item.textContent = step.replaceAll('-', ' ');
+          return item;
+        }));
+      }
+      mode.addEventListener('change', () => {
+        journey.selectMode(mode.value);
+        render(journey.getView());
+        status.textContent = 'Evidence changed. Review again to create current brand memory.';
+      });
+      document.querySelector('#review').addEventListener('click', () => {
+        const result = journey.run();
+        if (!result.ok) {
+          panel.hidden = true;
+          status.textContent = `Fixture failed safely: ${result.error}.`;
+          return;
+        }
+        render(result.view);
+        status.textContent = 'Review complete. Provenance, confidence, fit evidence, conflicts, and influence are visible.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        mode.value = reset.view.mode;
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior brand memory remains.';
+        mode.focus();
+      });
+    }
+  </script>
+</body>
+</html>

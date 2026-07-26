@@ -52,3 +52,15 @@ preferences, affiliate status, commission, and popularity.
 No real user data, account, analytics, browsing collection, production storage,
 retailer integration, purchase, network call, paid generation, Chrome
 permission, publication, or likeness workflow is introduced.
+
+## Review journey
+
+Issue #129 makes the contract reviewable at
+`brand-preference-fit-memory-fixture.dc.html?ww_brand_memory=1`.
+
+The route is unlinked, `noindex`, default-off, fixture-only, and local. It
+shows explicit and inferred provenance, correction precedence and reversal,
+avoidance, conflict, low-confidence exclusion, minimized fit memory, and the
+fixed recommendation priority. Changing evidence clears stale results, and
+reset restores deterministic defaults and focus. The journey introduces no
+behavior collection, account, network, tracking, analytics, or commerce action.

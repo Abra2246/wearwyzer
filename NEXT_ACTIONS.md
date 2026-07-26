@@ -5,27 +5,27 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #126. The fixture Fit Intelligence
-journey passed 698 tests, all deterministic validators, browser QA, five GitHub
-checks, serialized Ops refreshes, Pages deployment run `30184929735`, and
-Deploy Health Check run `30184955745`. Issue #127 is active.
+**Evidence baseline:** `main` after merged PR #128. Brand Preference and Fit
+Memory passed 710 tests, all deterministic validators, five GitHub checks,
+serialized Ops refreshes, Pages deployment run `30185153291`, and Deploy
+Health Check run `30185174745`. Issue #129 is active.
 
 ## Active review gates
 
-1. **Issue #127 — fixture Brand Preference and Fit Memory intelligence**
-   - Active branch: `codex/issue-127-brand-preference-fit-memory`.
-   - Scope: distinguish explicit favorite, avoided, best-fitting, most-worn,
-     and aspirational brands from inferred behavior; apply corrections and
-     preserve minimized known-brand fit outcomes.
-   - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
-     Preference may break only an otherwise equal recommendation tie; affiliate
-     economics, popularity, and retailer preference remain excluded.
+1. **Issue #129 — fixture Brand Preference and Fit Memory journey**
+   - Active branch: `codex/issue-129-brand-memory-journey`.
+   - Scope: make explicit and inferred roles, corrections and reversals,
+     avoidance, conflicts, low-confidence exclusion, minimized fit memory, and
+     recommendation priority reviewable.
+   - Boundary: exact-flag-gated, unlinked, `noindex`, fixture-only, local, and
+     read-only. No behavior collection, account, network, tracking, analytics,
+     affiliate, retailer, purchase, or external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #127**
-   - Outcome: let future recommendations understand which brands a user truly
-     prefers and fits well without turning preference into paid placement.
+1. **Complete and review Issue #129**
+   - Outcome: let future website, app, and extension clients explain how brand
+     memory works without exposing real user data or enabling commerce.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -45,6 +45,12 @@ Deploy Health Check run `30184955745`. Issue #127 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #127 / PR #128:** merged after 710 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refreshes, Pages run
+  `30185153291`, and Deploy Health Check run `30185174745`. Explicit input and
+  corrections outrank inference, avoidance blocks influence, low-confidence
+  evidence stays absent, and preference remains tie-break-only after quality
+  and fit.
 - **Issue #125 / PR #126:** merged after 698 tests, every deterministic
   validator, browser QA, five passing GitHub checks, serialized Ops refresh,
   Pages run `30184929735`, and Deploy Health Check run `30184955745`. Six
