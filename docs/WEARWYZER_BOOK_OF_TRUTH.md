@@ -909,6 +909,14 @@ references, and owner.
   protected-attribute, commerce, analytics, network, credential, and external
   action data remain outside the result. Current pre-PR validation baseline:
   734 tests.
+- Issue #133 makes Style DNA reviewable as a default-off fixture journey.
+  Explicit/inferred provenance, contradiction, confidence decay, stale/weak
+  exclusion, correction precedence and reversal, temporary exploration, and
+  user-control policy remain visibly distinct. Changing evidence clears prior
+  results; reset restores deterministic defaults and focus. The route collects
+  and stores nothing and exposes no account, network, analytics, tracking,
+  affiliate, retailer, purchase, or external action. Current pre-PR validation
+  baseline: 746 tests.
 
 ## Final north-star statement
 

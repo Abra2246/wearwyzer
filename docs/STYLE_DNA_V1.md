@@ -71,3 +71,16 @@ popularity, analytics, credentials, network calls, or external actions.
 Real accounts, persistence, collection, model training, production
 personalization, and commerce integration require later authenticated,
 consented, and separately approved work.
+
+## Review journey
+
+Issue #133 makes the contract reviewable at
+`style-dna-fixture.dc.html?ww_style_dna=1`.
+
+The route is unlinked, `noindex`, default-off, fixture-only, and local. It
+shows explicit and inferred provenance, contradiction, confidence decay,
+weak/stale exclusion, correction precedence and reversal, temporary
+exploration, and user-control policy. Changing evidence clears stale results;
+reset restores deterministic defaults and focus. No real profile, wardrobe,
+behavior, account, persistence, network, analytics, tracking, or commerce
+surface is introduced.

@@ -2,6 +2,21 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Style DNA fixture journey (issue #133)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route for explicit/inferred
+  provenance, contradiction, confidence decay, weak/stale exclusion,
+  correction/reversal, and temporary exploration.
+- Deterministic mode changes, stale-result invalidation, reset/focus
+  restoration, ignored-inference counts, conflicts, and user-control policy.
+### Safety
+- The route delegates every result to the accepted Style DNA contract and
+  never recreates inference, decay, correction, or exploration rules in the UI.
+- It collects and stores nothing and exposes no account, network, analytics,
+  tracking, commerce, affiliate, retailer, or external action.
+### Validation
+- 746/746 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Style DNA intelligence contract (issue #131)
 ### Added
 - A closed, versioned fixture contract for aesthetic, palette, silhouette,
