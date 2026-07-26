@@ -1,21 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:03:07.756Z",
+  "generatedAtIso": "2026-07-26T02:05:17.268Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "activeWorkSummary": "#115 \"Build the fixture personalized Purchase Simulator\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:03:07.756Z",
+      "lastUpdatedIso": "2026-07-26T02:05:17.268Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 115,
+          "title": "Build the fixture personalized Purchase Simulator",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/115",
+          "updatedIso": "2026-07-26T02:04:34Z"
+        },
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -30,8 +35,8 @@
         },
         "pr": null,
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-26T02:02:58Z",
+          "status": "passing",
+          "latestRunIso": "2026-07-26T02:03:10Z",
           "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30183898745",
           "recentFailureCount": 0
         },
@@ -45,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:03:07.756Z",
+      "lastUpdatedIso": "2026-07-26T02:05:17.268Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "719c17d",
-        "lastDeployIso": "2026-07-26T01:58:11Z",
-        "ageMinutes": 5,
+        "lastHealthyShaShort": "f19d9d8",
+        "lastDeployIso": "2026-07-26T02:03:42Z",
+        "ageMinutes": 2,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +64,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:03:07.756Z",
+      "lastUpdatedIso": "2026-07-26T02:05:17.268Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:03:07.756Z",
+      "lastUpdatedIso": "2026-07-26T02:05:17.268Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:115",
+      "timestampIso": "2026-07-26T02:04:34Z",
+      "type": "issue-started",
+      "summary": "Issue #115 \"Build the fixture personalized Purchase Simulator\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/115"
+    },
+    {
+      "key": "deploy:f19d9d8",
+      "timestampIso": "2026-07-26T02:03:42Z",
+      "type": "deployed",
+      "summary": "Deployed build f19d9d8 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30183898745",
+      "timestampIso": "2026-07-26T02:03:10Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30183898745"
+    },
     {
       "key": "pr-merged:114",
       "timestampIso": "2026-07-26T02:02:51Z",
@@ -454,27 +480,6 @@
       "type": "ci-passed",
       "summary": "Content data validation passed on main.",
       "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30179517480"
-    },
-    {
-      "key": "pr-merged:84",
-      "timestampIso": "2026-07-25T23:30:07Z",
-      "type": "pr-merged",
-      "summary": "PR #84 \"Define the private profile service boundary\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/84"
-    },
-    {
-      "key": "deploy:ba7bd11",
-      "timestampIso": "2026-07-25T23:26:49Z",
-      "type": "deployed",
-      "summary": "Deployed build ba7bd11 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "pr-merged:82",
-      "timestampIso": "2026-07-25T23:25:51Z",
-      "type": "pr-merged",
-      "summary": "PR #82 \"Define the personalization API boundary\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/82"
     }
   ]
 }
