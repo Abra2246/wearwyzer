@@ -1,21 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T03:06:05.229Z",
+  "generatedAtIso": "2026-07-26T03:11:38.769Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "activeWorkSummary": "#137 \"Add fixture Outfit Compatibility review journey\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:06:05.229Z",
+      "lastUpdatedIso": "2026-07-26T03:11:38.769Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 137,
+          "title": "Add fixture Outfit Compatibility review journey",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/137",
+          "updatedIso": "2026-07-26T03:11:29Z"
+        },
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -30,9 +35,9 @@
         },
         "pr": null,
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-26T03:05:56Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30185614972",
+          "status": "passing",
+          "latestRunIso": "2026-07-26T03:11:25Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30185757774",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:06:05.229Z",
+      "lastUpdatedIso": "2026-07-26T03:11:38.769Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "073771a",
-        "lastDeployIso": "2026-07-26T03:01:56Z",
-        "ageMinutes": 4,
+        "lastHealthyShaShort": "efb6018",
+        "lastDeployIso": "2026-07-26T03:06:42Z",
+        "ageMinutes": 5,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +64,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:06:05.229Z",
+      "lastUpdatedIso": "2026-07-26T03:11:38.769Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:06:05.229Z",
+      "lastUpdatedIso": "2026-07-26T03:11:38.769Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,34 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:137",
+      "timestampIso": "2026-07-26T03:11:29Z",
+      "type": "issue-started",
+      "summary": "Issue #137 \"Add fixture Outfit Compatibility review journey\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/137"
+    },
+    {
+      "key": "ci-run:30185757774",
+      "timestampIso": "2026-07-26T03:11:25Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30185757774"
+    },
+    {
+      "key": "pr-merged:136",
+      "timestampIso": "2026-07-26T03:11:06Z",
+      "type": "pr-merged",
+      "summary": "PR #136 \"Define Style DNA-aware Outfit Compatibility\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/136"
+    },
+    {
+      "key": "deploy:efb6018",
+      "timestampIso": "2026-07-26T03:06:42Z",
+      "type": "deployed",
+      "summary": "Deployed build efb6018 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "pr-merged:134",
       "timestampIso": "2026-07-26T03:05:49Z",
@@ -447,34 +480,6 @@
       "type": "pr-merged",
       "summary": "PR #108 \"Modernize GitHub Actions runtime hygiene\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/108"
-    },
-    {
-      "key": "deploy:6564015",
-      "timestampIso": "2026-07-26T01:38:27Z",
-      "type": "deployed",
-      "summary": "Deployed build 6564015 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "pr-merged:107",
-      "timestampIso": "2026-07-26T01:37:33Z",
-      "type": "pr-merged",
-      "summary": "PR #107 \"Build default-off fixture AI Stylist journey\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/107"
-    },
-    {
-      "key": "issue-started:106",
-      "timestampIso": "2026-07-26T01:26:15Z",
-      "type": "issue-started",
-      "summary": "Issue #106 \"Build the default-off fixture AI Stylist journey\" started.",
-      "url": "https://github.com/Abra2246/wearwyzer/issues/106"
-    },
-    {
-      "key": "deploy:d0aa164",
-      "timestampIso": "2026-07-26T01:25:27Z",
-      "type": "deployed",
-      "summary": "Deployed build d0aa164 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
