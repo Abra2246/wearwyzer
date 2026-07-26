@@ -119,6 +119,17 @@ No vendor is selected by this document.
 The fixture contains no real person, network request, database, secret, camera
 input, paid call, or deployed endpoint.
 
+## Fixture consent and correction center
+
+`scripts/consent-correction-store.mjs` composes `createFixturePrivateService`
+(read-only/versioned, unmodified) with Web Storage persistence for
+`consent-correction-center.dc.html` — a default-off, noindex, unlinked
+route (Issue #87). It adds purpose-specific consent gating for corrections,
+an inferred Fit DNA correction path the base contract's generic
+`applyProfileCorrection` does not implement, and a deterministic reset. No
+production account, database, real personal data, or browser permission is
+created.
+
 ## Next implementation boundary
 
 After review:
@@ -127,6 +138,5 @@ After review:
 2. review the provider-agnostic threat model in
    `docs/PRIVATE_DATA_THREAT_MODEL_V1.md`;
 3. implement local or ephemeral end-to-end account flows before real users;
-4. add user-facing consent and correction interfaces;
-5. add secure server-side resolution for the merged personalization API;
-6. approve Chrome permissions separately before any extension proof.
+4. add secure server-side resolution for the merged personalization API;
+5. approve Chrome permissions separately before any extension proof.

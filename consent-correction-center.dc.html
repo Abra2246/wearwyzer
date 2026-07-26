@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Consent &amp; Correction Center — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme: light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d8cfbf; --gold:#c8941e; --green:#2e7d46; --red:#b3261e; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; background:var(--paper); color:var(--ink); }
+    header { background:var(--ink); color:var(--paper); padding:22px 18px; }
+    header div, main { max-width:920px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(24px,5vw,40px); text-transform:uppercase; letter-spacing:.02em; }
+    header p { color:#b7b0a2; margin:8px 0 0; }
+    main { padding:24px 18px 80px; }
+    section.panel { background:var(--card); border:1px solid var(--line); padding:18px; margin-bottom:16px; }
+    h2 { font-size:18px; margin:0 0 10px; }
+    .notice { border-left:5px solid var(--gold); }
+    .warning { border-left:5px solid var(--red); }
+    button, a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font:inherit; font-size:14px; font-weight:700; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button.danger { background:transparent; color:var(--red); border-color:var(--red); }
+    button:disabled { opacity:.45; cursor:not-allowed; }
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible { outline:3px solid var(--gold); outline-offset:2px; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+    .row { display:flex; flex-wrap:wrap; align-items:center; gap:10px; justify-content:space-between; border:1px solid var(--line); padding:12px; background:#fbf7ef; }
+    .row strong { display:block; }
+    .row span.meta { color:#68645d; font-size:12px; }
+    .badge { display:inline-block; padding:3px 8px; font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; }
+    .badge.granted { background:#e4f1e8; color:var(--green); }
+    .badge.revoked, .badge.not-granted { background:#f6e6e3; color:var(--red); }
+    ul { padding-left:20px; margin:8px 0; }
+    li { margin-bottom:6px; }
+    form.correction-form { display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; align-items:center; }
+    form.correction-form select, form.correction-form input { font:inherit; padding:8px; border:1px solid var(--line); background:white; }
+    code { background:#ece5d8; padding:2px 5px; word-break:break-word; }
+    pre { background:#ece5d8; padding:10px; overflow-x:auto; white-space:pre-wrap; word-break:break-word; }
+    [hidden] { display:none !important; }
+    @media (max-width:520px) {
+      form.correction-form { flex-direction:column; align-items:stretch; }
+      .row { flex-direction:column; align-items:flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Consent &amp; Correction Center</h1>
+      <p>Fixture-only privacy prototype · local device storage · no production account or network storage</p>
+    </div>
+  </header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Prototype is off</h2>
+      <p>This route is deliberately disabled by default, unlinked from navigation, and not indexed. It does not
+        create a real account, collect real personal data, or send anything to a server.</p>
+      <a class="button" href="?ww_consent=1">Open the fixture demo</a>
+    </section>
+
+    <section id="enabled" hidden>
+      <section class="panel notice">
+        <strong>Prototype boundary:</strong> the account, Style DNA, Fit DNA, wardrobe snapshot, and consent
+        records below are deterministic fixture data for one local test user (<code>fixture-account-01</code>).
+        Everything lives in this browser's local storage — nothing is sent to a server, and no browser
+        extension, camera, or personalized-image generation exists in this prototype.
+      </section>
+
+      <section id="deletion-banner" class="panel warning" hidden></section>
+
+      <section class="panel">
+        <h2>Consent, by purpose</h2>
+        <p>One grant never implies another. Revoking <strong>personalization</strong> blocks the next
+          personalization evaluation immediately — try it below.</p>
+        <div id="consents" class="grid"></div>
+      </section>
+
+      <section class="panel">
+        <h2>Personalization access check</h2>
+        <p>This is the entire minimized reference a personalization request receives — never the full
+          wardrobe or profile. Product pages and the fixture extension boundary never receive more than this.</p>
+        <button id="check-access" type="button">Check personalization access</button>
+        <pre id="access-result">Not checked yet.</pre>
+      </section>
+
+      <section class="panel">
+        <h2>Wardrobe snapshot</h2>
+        <p id="wardrobe-freshness"></p>
+        <ul id="wardrobe-items"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Style DNA</h2>
+        <p>Explicit corrections outrank inferred signals. Confidence shown is 1.0 for every explicit value.</p>
+        <ul id="style-signals"></ul>
+        <form id="style-correction-form" class="correction-form">
+          <label for="style-field">Signal</label>
+          <select id="style-field" name="field" required></select>
+          <label for="style-value">Correct to</label>
+          <input id="style-value" name="value" type="text" required placeholder="e.g. tailored-outerwear">
+          <button type="submit">Apply correction</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Fit DNA</h2>
+        <p>Fit observations follow the same rule: an explicit correction always outranks an inferred one.</p>
+        <ul id="fit-observations"></ul>
+        <form id="fit-correction-form" class="correction-form">
+          <label for="fit-category">Category</label>
+          <select id="fit-category" name="category" required></select>
+          <label for="fit-value">Correct to</label>
+          <input id="fit-value" name="value" type="text" required placeholder="e.g. true-to-size">
+          <button type="submit">Apply correction</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Correction history</h2>
+        <ul id="corrections-log"><li>No corrections yet.</li></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Export, deletion, and reset</h2>
+        <div class="row" style="margin-bottom:10px">
+          <div>
+            <strong>Versioned export</strong>
+            <span class="meta">Downloads the complete fixture record as machine-readable JSON.</span>
+          </div>
+          <button id="export" class="secondary" type="button">Export my data</button>
+        </div>
+        <div class="row" style="margin-bottom:10px">
+          <div>
+            <strong>Deletion</strong>
+            <span class="meta" id="deletion-meta">Not requested.</span>
+          </div>
+          <span>
+            <button id="request-deletion" class="danger" type="button">Request deletion</button>
+            <button id="complete-deletion" class="danger" type="button" disabled>Complete deletion</button>
+          </span>
+        </div>
+        <div class="row">
+          <div>
+            <strong>Reset</strong>
+            <span class="meta">Restores only deterministic fixture data — never real data.</span>
+          </div>
+          <button id="reset" class="secondary" type="button">Reset to fixture defaults</button>
+        </div>
+      </section>
+
+      <p id="status" role="status" aria-live="polite">Ready.</p>
+    </section>
+  </main>
+  <script type="module">
+    import { createConsentCenterStore } from './scripts/consent-correction-store.mjs';
+    import { products } from './data/products.js';
+
+    const PURPOSE_LABELS = {
+      'personalization': 'Personalization',
+      'style-learning': 'Style learning',
+      'fit-guidance': 'Fit guidance',
+      'wardrobe-photos': 'Wardrobe photos',
+      'personalized-images': 'Personalized images',
+    };
+
+    const enabled = new URLSearchParams(location.search).get('ww_consent');
+    if (enabled !== '1') {
+      document.querySelector('#disabled').hidden = false;
+    } else {
+      document.querySelector('#disabled').hidden = true;
+      document.querySelector('#enabled').hidden = false;
+      run();
+    }
+
+    function run() {
+      const store = createConsentCenterStore(localStorage);
+      const byProductId = Object.fromEntries(products.map((p) => [p.id, p]));
+      const statusEl = document.querySelector('#status');
+      function announce(text) { statusEl.textContent = text; }
+
+      function renderDeletionBanner(snapshot) {
+        const banner = document.querySelector('#deletion-banner');
+        const meta = document.querySelector('#deletion-meta');
+        const completeBtn = document.querySelector('#complete-deletion');
+        const requestBtn = document.querySelector('#request-deletion');
+        if (snapshot.account?.status === 'deleted') {
+          banner.hidden = false;
+          banner.textContent = 'Deletion completed. Profile, Fit DNA, wardrobe snapshot, consent, and '
+            + 'correction records for this fixture account have been removed from local storage.';
+          meta.textContent = `Completed at ${snapshot.deletion?.completedAtIso ?? ''}.`;
+          requestBtn.disabled = true;
+          completeBtn.disabled = true;
+        } else if (snapshot.deletion?.state === 'pending') {
+          banner.hidden = false;
+          banner.textContent = 'Deletion pending. Dependent private records (profile, Fit DNA, wardrobe '
+            + 'snapshot, consent, corrections) will be removed when completion is confirmed below.';
+          meta.textContent = `Requested at ${snapshot.deletion.requestedAtIso}.`;
+          requestBtn.disabled = true;
+          completeBtn.disabled = false;
+        } else {
+          banner.hidden = true;
+          meta.textContent = 'Not requested.';
+          requestBtn.disabled = snapshot.account?.status !== 'active';
+          completeBtn.disabled = true;
+        }
+      }
+
+      function renderConsents(snapshot) {
+        const container = document.querySelector('#consents');
+        container.replaceChildren(...snapshot.consents.map((consent) => {
+          const card = document.createElement('div');
+          card.className = 'row';
+          const info = document.createElement('div');
+          const label = document.createElement('strong');
+          label.textContent = PURPOSE_LABELS[consent.purpose] || consent.purpose;
+          const badge = document.createElement('span');
+          badge.className = `badge ${consent.status}`;
+          badge.textContent = consent.status.replace('-', ' ');
+          info.append(label, document.createElement('br'), badge);
+          const action = document.createElement('button');
+          action.type = 'button';
+          const nextStatus = consent.status === 'granted' ? 'revoked' : 'granted';
+          action.textContent = nextStatus === 'revoked' ? 'Revoke' : 'Grant';
+          action.className = nextStatus === 'revoked' ? 'danger' : 'secondary';
+          action.disabled = snapshot.account?.status !== 'active';
+          action.addEventListener('click', () => {
+            const result = store.setConsent(consent.purpose, nextStatus);
+            if (!result.ok) announce(`Blocked: ${result.error}`);
+            else announce(`${PURPOSE_LABELS[consent.purpose] || consent.purpose} consent ${nextStatus}.`);
+            render();
+          });
+          card.append(info, action);
+          return card;
+        }));
+      }
+
+      function renderWardrobe(snapshot) {
+        const freshnessEl = document.querySelector('#wardrobe-freshness');
+        const listEl = document.querySelector('#wardrobe-items');
+        if (!snapshot.wardrobeSnapshot) {
+          freshnessEl.textContent = 'No wardrobe snapshot — deleted or not yet created.';
+          listEl.replaceChildren();
+          return;
+        }
+        const { ageDays, maxAgeDays, stale, items } = snapshot.wardrobeSnapshot;
+        freshnessEl.textContent = stale
+          ? `Stale: this snapshot is ${ageDays.toFixed(1)} days old (max ${maxAgeDays}). `
+            + 'Personalization requests using it must fail closed rather than use it silently.'
+          : `Fresh: this snapshot is ${ageDays.toFixed(1)} days old (max ${maxAgeDays}).`;
+        const photoConsentGranted = snapshot.consents.find((c) => c.purpose === 'wardrobe-photos')?.status === 'granted';
+        listEl.replaceChildren(...items.map((item) => {
+          const li = document.createElement('li');
+          const product = byProductId[item.productId];
+          const photoRef = photoConsentGranted
+            ? `fixture-thumbnail-${item.wardrobeItemId}.svg (placeholder)`
+            : 'hidden — wardrobe-photos consent revoked';
+          li.textContent = `${product?.name || item.productId} — match: ${item.matchState}, photo: ${photoRef}`;
+          return li;
+        }));
+      }
+
+      function renderStyleDna(snapshot) {
+        const listEl = document.querySelector('#style-signals');
+        const fieldSelect = document.querySelector('#style-field');
+        if (!snapshot.profile) {
+          listEl.replaceChildren();
+          fieldSelect.replaceChildren();
+          return;
+        }
+        listEl.replaceChildren(...snapshot.profile.signals.map((signal) => {
+          const li = document.createElement('li');
+          const value = Array.isArray(signal.value) ? signal.value.join(', ') : String(signal.value);
+          li.textContent = `${signal.key}: ${value} (${signal.provenance}, confidence ${signal.confidence})`;
+          return li;
+        }));
+        const previousSelection = fieldSelect.value;
+        fieldSelect.replaceChildren(...snapshot.profile.signals.map((signal) => {
+          const option = document.createElement('option');
+          option.value = signal.key;
+          option.textContent = signal.key;
+          return option;
+        }));
+        const inferredSignal = snapshot.profile.signals.find((s) => s.provenance === 'inferred');
+        fieldSelect.value = snapshot.profile.signals.some((s) => s.key === previousSelection)
+          ? previousSelection
+          : (inferredSignal?.key ?? snapshot.profile.signals[0]?.key ?? '');
+      }
+
+      function renderFitDna(snapshot) {
+        const listEl = document.querySelector('#fit-observations');
+        const categorySelect = document.querySelector('#fit-category');
+        if (!snapshot.fitProfile) {
+          listEl.replaceChildren();
+          categorySelect.replaceChildren();
+          return;
+        }
+        listEl.replaceChildren(...snapshot.fitProfile.observations.map((observation) => {
+          const li = document.createElement('li');
+          const brand = observation.brand ? `${observation.brand} ` : '';
+          li.textContent = `${observation.category}: ${brand}${observation.value} `
+            + `(${observation.provenance}, confidence ${observation.confidence})`;
+          return li;
+        }));
+        const previousSelection = categorySelect.value;
+        categorySelect.replaceChildren(...snapshot.fitProfile.observations.map((observation) => {
+          const option = document.createElement('option');
+          option.value = observation.category;
+          option.textContent = observation.category;
+          return option;
+        }));
+        const inferredObservation = snapshot.fitProfile.observations.find((o) => o.provenance === 'inferred');
+        categorySelect.value = snapshot.fitProfile.observations.some((o) => o.category === previousSelection)
+          ? previousSelection
+          : (inferredObservation?.category ?? snapshot.fitProfile.observations[0]?.category ?? '');
+      }
+
+      function renderCorrections(snapshot) {
+        const listEl = document.querySelector('#corrections-log');
+        if (!snapshot.corrections.length) {
+          listEl.replaceChildren(Object.assign(document.createElement('li'), { textContent: 'No corrections yet.' }));
+          return;
+        }
+        listEl.replaceChildren(...snapshot.corrections.map((correction) => {
+          const li = document.createElement('li');
+          li.textContent = `${correction.targetType} · ${correction.field} → ${correction.value} `
+            + `(${correction.createdAtIso})`;
+          return li;
+        }));
+      }
+
+      function render() {
+        const snapshot = store.getSnapshot();
+        renderDeletionBanner(snapshot);
+        renderConsents(snapshot);
+        renderWardrobe(snapshot);
+        renderStyleDna(snapshot);
+        renderFitDna(snapshot);
+        renderCorrections(snapshot);
+        return snapshot;
+      }
+
+      document.querySelector('#check-access').addEventListener('click', () => {
+        const result = store.evaluatePersonalization();
+        document.querySelector('#access-result').textContent = JSON.stringify(result, null, 2);
+        announce(result.ok
+          ? 'Personalization access allowed — minimized reference only.'
+          : `Personalization access blocked: ${result.error}`);
+        render();
+      });
+
+      document.querySelector('#style-correction-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const field = document.querySelector('#style-field').value;
+        const value = document.querySelector('#style-value').value.trim();
+        if (!field || !value) return;
+        const result = store.applyStyleCorrection({ field, value });
+        announce(result.ok
+          ? `Style DNA "${field}" corrected to an explicit value.`
+          : `Blocked: ${result.error}`);
+        event.target.reset();
+        render();
+      });
+
+      document.querySelector('#fit-correction-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const category = document.querySelector('#fit-category').value;
+        const value = document.querySelector('#fit-value').value.trim();
+        if (!category || !value) return;
+        const result = store.applyFitCorrection({ category, value });
+        announce(result.ok
+          ? `Fit DNA "${category}" corrected to an explicit value.`
+          : `Blocked: ${result.error}`);
+        event.target.reset();
+        render();
+      });
+
+      document.querySelector('#export').addEventListener('click', () => {
+        const json = store.exportJson();
+        if (!json) { announce('Export blocked — account is not active.'); return; }
+        const blob = new Blob([json], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = 'wearwyzer-consent-correction-center.json';
+        link.click();
+        URL.revokeObjectURL(url);
+        announce('Fixture export downloaded.');
+      });
+
+      document.querySelector('#request-deletion').addEventListener('click', () => {
+        const result = store.requestDeletion();
+        announce(result.ok ? 'Deletion requested — pending.' : `Blocked: ${result.error}`);
+        render();
+      });
+
+      document.querySelector('#complete-deletion').addEventListener('click', () => {
+        const result = store.completeDeletion();
+        announce(result.ok ? 'Deletion completed — dependent records removed.' : `Blocked: ${result.error}`);
+        render();
+      });
+
+      document.querySelector('#reset').addEventListener('click', () => {
+        store.reset();
+        document.querySelector('#access-result').textContent = 'Not checked yet.';
+        announce('Reset to deterministic fixture defaults.');
+        render();
+      });
+
+      render();
+    }
+  </script>
+</body>
+</html>
