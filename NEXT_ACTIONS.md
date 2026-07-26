@@ -5,26 +5,26 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #112. The editorial preference
-gate passed 621 tests, all deterministic validators, five GitHub checks,
-serialized Ops refreshes, Pages deployment, and Deploy Health Check run
-`30183758886`. Issue #113 is active.
+**Evidence baseline:** `main` after merged PR #114. The founder-gated provider
+experiment protocol passed 636 tests, all deterministic validators, five GitHub
+checks, serialized Ops refreshes, Pages deployment run `30183898749`, and
+Deploy Health Check run `30183923195`. Issue #115 is active.
 
 ## Active review gates
 
-1. **Issue #113 — founder-gated AI Stylist provider experiment protocol**
-   - Active branch: `codex/issue-113-provider-experiment-protocol`.
-   - Scope: closed, provider-neutral experiment manifest, hard request/spend
-     ceilings, stop conditions, evidence retention, and a sanitized founder
-     decision packet.
-   - Boundary: specification only. No network, provider choice, credential,
-     real data, paid call, automated selection, external action, or publication.
+1. **Issue #115 — fixture personalized Purchase Simulator**
+   - Active branch: `codex/issue-115-purchase-simulator`.
+   - Scope: compare two or three canonical products against one accepted
+     profile and wardrobe snapshot; select the strongest wardrobe investment,
+     preserve ties, or recommend buying none.
+   - Boundary: fixture-only, deterministic, editorial-first, and read-only. No
+     network, affiliate influence, real data, account, purchase, or publication.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #113**
-   - Outcome: make a future external comparison bounded, auditable, and
-     impossible to authorize implicitly. Trust must run before preference.
+1. **Complete and review Issue #115**
+   - Outcome: deliver the core “which item is smartest for my wardrobe?”
+     decision with explicit evidence, ties, and a `buy-none` result.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -44,6 +44,11 @@ serialized Ops refreshes, Pages deployment, and Deploy Health Check run
 
 ## Closed or blocked with evidence
 
+- **Issue #113 / PR #114:** merged after 636 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refresh, Pages run
+  `30183898749`, and Deploy Health Check run `30183923195`. Planning has zero
+  authority; any external processing, credential, or spend requires separate
+  founder approval.
 - **Issue #111 / PR #112:** merged after 621 tests, every deterministic
   validator, five passing GitHub checks, serialized Ops refresh, Pages, and
   Deploy Health Check run `30183758886`. Editorial preference applies only to
