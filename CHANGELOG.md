@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Closet Health Score (issue #119)
+### Added
+- A versioned, decomposed fixture score for role balance, versatility,
+  redundancy health, and evidence-backed wear utilization.
+- Evidence coverage, confidence, exact owned references, confirmed gaps, and
+  prioritized repair/rediscovery/rotation/correction actions.
+### Safety
+- Missing lifecycle evidence lowers confidence instead of closet quality.
+- No wear, condition, price, value, gap, or product identity is invented.
+- Affiliate status, commission, and buying are absent from score and actions.
+### Validation
+- 664/664 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted recommendation-eligibility warning remains
+  non-blocking.
+
 ## Unreleased (2026-07-26) — Purchase Simulator fixture journey (issue #117)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route for selected, tie,

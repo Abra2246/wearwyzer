@@ -5,25 +5,25 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #116. The fixture Purchase
-Simulator passed 644 tests, all deterministic validators, five GitHub checks,
-serialized Ops refreshes, Pages deployment run `30184046501`, and Deploy Health
-Check run `30184076337`. Issue #117 is active.
+**Evidence baseline:** `main` after merged PR #118. The fixture Purchase
+Simulator journey passed 654 tests, all deterministic validators, five GitHub
+checks, serialized Ops refreshes, Pages deployment run `30184294698`, and
+Deploy Health Check run `30184317829`. Issue #119 is active.
 
 ## Active review gates
 
-1. **Issue #117 — default-off fixture Purchase Simulator journey**
-   - Active branch: `codex/issue-117-purchase-simulator-journey`.
-   - Scope: make selected, tie, `buy-none`, and excluded-candidate evidence
-     reviewable in the future website/app experience.
-   - Boundary: exact-flag-gated, unlinked, noindex, synthetic, and read-only. No
-     network, affiliate action, account, real data, purchase, or publication.
+1. **Issue #119 — fixture Closet Health Score**
+   - Active branch: `codex/issue-119-closet-health-score`.
+   - Scope: explain wardrobe balance, versatility, redundancy, neglect, gaps,
+     evidence confidence, and the best owned-first next actions.
+   - Boundary: fixture-only and deterministic. No invented wear/value evidence,
+     real tracking, account, network, purchase, or publication.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #117**
-   - Outcome: prove the core “which item is smartest for my wardrobe?” journey
-     end to end with evidence, ties, and an honest `buy-none` result.
+1. **Complete and review Issue #119**
+   - Outcome: help a user improve what they already own before recommending
+     another purchase.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -43,6 +43,9 @@ Check run `30184076337`. Issue #117 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #117 / PR #118:** merged after 654 tests, every deterministic
+  validator, browser QA, five passing GitHub checks, serialized Ops refresh,
+  Pages run `30184294698`, and Deploy Health Check run `30184317829`.
 - **Issue #115 / PR #116:** merged after 644 tests, every deterministic
   validator, five passing GitHub checks, serialized Ops refresh, Pages run
   `30184046501`, and Deploy Health Check run `30184076337`. Stale, unavailable,
