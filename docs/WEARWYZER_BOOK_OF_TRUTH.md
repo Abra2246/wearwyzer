@@ -822,6 +822,13 @@ references, and owner.
   failure evidence, and preserves ties instead of inventing a winner. Current
   validation baseline: 611 tests plus every deterministic repository
   validator.
+- Issue #111 separates non-negotiable trust from editorial preference. Only
+  100%-trusted candidates may be scored for usefulness, clarity, styling
+  quality, WearWyzer voice, and actionability. Anchored rationales are required,
+  one review cannot become consensus, material reviewer disagreement blocks
+  selection, and equal results remain tied. Reviewer aliases and raw review
+  counts stay out of the sanitized evidence artifact. Current pre-PR validation
+  baseline: 621 tests plus every deterministic repository validator.
 
 ## Final north-star statement
 

@@ -2,6 +2,24 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — AI Stylist editorial rubric (issue #111)
+### Added
+- A closed, versioned fixture review record with anchored 1–5 scores and
+  required rationales for usefulness, clarity, styling quality, WearWyzer
+  voice, and actionability.
+- Deterministic aggregation with explicit `needs-more-reviews`,
+  `review-required`, `tie`, and `selected` decisions.
+### Safety
+- Only candidates that already pass every trust metric at 100% can enter
+  editorial scoring.
+- Fewer than two reviews cannot become consensus; material disagreement blocks
+  selection; reviewer aliases and sensitive rationale content are excluded
+  from sanitized output.
+### Validation
+- 621/621 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted eligibility warning remains non-blocking.
+
 ## Unreleased (2026-07-26) — Offline AI Stylist replay gate (issue #109)
 ### Added
 - Closed, versioned fixture candidate envelopes containing drafts but no
