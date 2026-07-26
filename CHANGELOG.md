@@ -2,6 +2,23 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Style DNA-aware Outfit Compatibility (issue #135)
+### Added
+- A closed, versioned fixture contract that keeps canonical product facts,
+  owned/prospective/missing state, Fit Intelligence, Style DNA, target context,
+  and outfit composition distinct.
+- Decomposed palette, silhouette, formality, material, occasion, layering,
+  verified-fit, and owned-pairing evidence with coverage, confidence, hard
+  incompatibilities, missing evidence, reasons, and explicit comparison ties.
+### Safety
+- Missing evidence lowers confidence rather than compatibility. Explicit
+  negative signals may block; inferred negatives cannot. Product truth and
+  verified fit outrank preference.
+- Full profile/wardrobe payloads, commerce, popularity, accounts, analytics,
+  network, purchasing, and external actions remain excluded.
+### Validation
+- 758/758 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Style DNA fixture journey (issue #133)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route for explicit/inferred
