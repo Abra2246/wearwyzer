@@ -20,3 +20,30 @@ test('queue-dispatched runs enforce an immediate evidence-backed handoff postcon
   assert.match(workflow, /node scripts\/queue-pr-state\.mjs mark-failed/);
   assert.match(workflow, /automation-handoff:evidence-backed-blocker/);
 });
+
+test('Claude workflow allows the minimum ordinary repository file tools', () => {
+  const allowlist = workflow.match(/--allowed-tools\s+"([^"]+)"/)?.[1] ?? '';
+  for (const tool of ['Read', 'Edit', 'Write', 'Glob', 'Grep']) {
+    assert.ok(
+      allowlist.split(',').includes(tool),
+      `${tool} must be explicitly pre-approved for non-interactive implementation`,
+    );
+  }
+});
+
+test('Claude workflow keeps protected and destructive authority outside the allowlist', () => {
+  assert.match(
+    workflow,
+    /--disallowed-tools\s+"Edit\(\.github\/workflows\/\*\*\),Edit\(\.github\/actions\/\*\*\)"/,
+  );
+  for (const prohibited of [
+    'Bash(*)',
+    'Bash(rm ',
+    'Bash(git reset',
+    'Bash(git merge',
+    'Bash(git push --force',
+    'Bash(gh secret',
+    'Bash(gh workflow',
+    'Bash(gh pr merge',
+  ]) assert.equal(workflow.includes(prohibited), false);
+});

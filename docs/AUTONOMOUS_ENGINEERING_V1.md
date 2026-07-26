@@ -99,6 +99,26 @@ If none exists, the same workflow becomes failed, removes `in-progress`, adds
 denial count (or `unknown`). The execution output itself is never printed. The scheduled handoff
 watchdog remains a secondary repair layer for branch-without-PR cases.
 
+### Non-interactive implementation tool boundary
+
+Anthropic's CLI requires tools used by a non-interactive run to be explicitly
+pre-approved. The active Claude workflow therefore allows:
+
+- ordinary file operations: `Read`, `Edit`, `Write`, `Glob`, and `Grep`; and
+- the existing command-scoped validation, Git status/diff/branch/commit/push,
+  PR creation/check, issue, run-inspection, local HTTP, and repository-script
+  Bash patterns.
+
+It explicitly denies edits under `.github/workflows/**` and
+`.github/actions/**`. It does not allow unrestricted Bash, destructive
+filesystem/Git operations, secret management, force-push, PR merge, workflow
+dispatch/edit, deployment, or publication.
+
+This boundary was added after Issue #151 run `30186961673` recorded eight
+permission denials and produced no branch or PR despite a successful model
+process. The handoff verifier remains the final authority: permission changes
+do not make a process result sufficient evidence.
+
 ## Merge behavior
 - `risk-low`: auto-merge only when the PR is labeled `automation-managed` and `risk-low`, every required check succeeds, the PR is not draft, and protected paths are untouched.
 - `risk-medium`: stop in review.

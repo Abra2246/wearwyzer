@@ -612,6 +612,15 @@ references, and owner.
   reliability and metadata gates are stable.
 - PR #66 made current-run handoff evidence mandatory. A historical branch, unchanged PR head, or
   old blocker comment can no longer turn a new agent run green.
+- Issue #156 repairs the narrow non-interactive Claude tool boundary exposed
+  by Issue #151. The active workflow now pre-approves ordinary repository
+  `Read`, `Edit`, `Write`, `Glob`, and `Grep` tools while retaining
+  command-scoped Bash and explicitly denying edits under active workflow/action
+  paths. Runs still cannot manage secrets, use unrestricted/destructive
+  commands, force-push, merge, deploy, publish, or satisfy handoff without a
+  current branch, PR, or structured blocker. Issue #154 was safely returned to
+  `ready` until this protected-path repair is merged and tested by
+  re-dispatch.
 - PR #67 completed the HTML metadata gate with 431 passing tests and all 19 site pages covered.
 - Issue #62 then exercised the corrected dispatcher. The agent run left no fresh evidence and
   failed visibly, proving the postcondition works; direct execution continued instead of silently

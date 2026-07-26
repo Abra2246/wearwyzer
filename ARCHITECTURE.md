@@ -511,6 +511,26 @@ active and staged workflows. Keep `include-hidden-files` on
 bounded regeneration, generated-file protections, and no-force-push behavior
 do not change. A deterministic contract test prevents action-major drift.
 
+## Decision — queue agents need explicit ordinary file tools (issue #156)
+
+**Problem:** queue-dispatched Claude runs are non-interactive. The workflow
+pre-approved narrow validation and Git commands but omitted `Read`, `Edit`,
+`Write`, `Glob`, and `Grep`. Issue #151 therefore completed 58 reasoning turns
+with eight permission denials and no branch, diff, PR, or structured blocker.
+The handoff verifier correctly failed the run, but the agent could never
+perform the implementation it was asked to hand off.
+
+**Decision:** explicitly allow the five ordinary repository file tools in the
+active Claude workflow, as required by Anthropic's non-interactive CLI
+permission model. Keep every Bash permission command-scoped. Explicitly deny
+file edits under `.github/workflows/**` and `.github/actions/**`; workflow
+changes remain protected, medium-risk human-reviewed work.
+
+**Invariant:** no unrestricted Bash, destructive filesystem/Git command,
+secret management, force-push, merge, workflow dispatch/edit, deployment, or
+publication authority is added. The current-run branch/PR/structured-blocker
+postcondition remains mandatory.
+
 ## Decision — trusted-corpus offline Stylist replay gate (issue #109)
 
 **Problem:** a future model candidate must not be allowed to supply its own
