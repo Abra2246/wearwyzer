@@ -749,6 +749,26 @@ and reasons. Full profiles/wardrobes, private behavior, prices, retailers,
 affiliate economics, popularity, accounts, analytics, credentials, network,
 purchasing, and external actions remain excluded.
 
+## Decision — Outfit Set selection is reviewable before integration (issue #141)
+
+**Problem:** set-level rules such as formula diversity, comparable-quality
+owned preference, boundary ties, and honest insufficiency are difficult to
+trust when they exist only as serialized contract output.
+
+**Decision:** the default-off fixture route
+`outfit-set-fixture.dc.html?ww_outfit_set=1` delegates to the accepted Outfit
+Set Recommendation contract across eight deterministic modes. It renders
+selected, tied, qualified, and evaluated IDs; desired count; decision reasons;
+policy thresholds; and every candidate's compatibility score, coverage,
+confidence, ownership counts, formula, reasons, and compatibility reference.
+Mode changes invalidate prior results; reset restores deterministic defaults
+and focus.
+
+**Boundary:** the route is unlinked, `noindex`, fixture-only, and read-only. It
+stores nothing and has no profile/wardrobe, account, analytics, network,
+commerce, affiliate, retailer, purchase, persistence, or external-action
+capability.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

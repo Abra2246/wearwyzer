@@ -60,3 +60,12 @@ reason codes, and a stable compatibility-result reference.
 It excludes raw profile/wardrobe data, private notes or behavior, prices,
 retailers, affiliate status, commission, popularity, analytics, credentials,
 network calls, purchasing, and every external action.
+
+## Review journey
+
+The unlinked, default-off route
+`outfit-set-fixture.dc.html?ww_outfit_set=1` makes complete sets, owned-first
+preference, formula duplication, boundary ties, insufficiency, abstention, and
+stale evidence reviewable without duplicating contract policy. See
+`docs/OUTFIT_SET_RECOMMENDATION_JOURNEY_V1.md` for the complete fixture
+boundary.
