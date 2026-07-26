@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T05:57:31.061Z",
+  "generatedAtIso": "2026-07-26T06:02:19.294Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T05:57:31.061Z",
+      "lastUpdatedIso": "2026-07-26T06:02:19.294Z",
       "fetchOk": true,
       "data": {
         "automationState": "working",
@@ -22,10 +22,10 @@
           "updatedIso": "2026-07-26T05:57:28Z"
         },
         "queue": {
-          "depth": 0,
-          "readyCount": 0,
-          "labeledReadyCount": 0,
-          "eligibleReadyCount": 0,
+          "depth": 1,
+          "readyCount": 1,
+          "labeledReadyCount": 1,
+          "eligibleReadyCount": 1,
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
@@ -50,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T05:57:31.061Z",
+      "lastUpdatedIso": "2026-07-26T06:02:19.294Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "a66a260",
-        "lastDeployIso": "2026-07-26T05:54:21Z",
-        "ageMinutes": 3,
+        "lastHealthyShaShort": "33d96b8",
+        "lastDeployIso": "2026-07-26T05:57:52Z",
+        "ageMinutes": 4,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -64,7 +64,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T05:57:31.061Z",
+      "lastUpdatedIso": "2026-07-26T06:02:19.294Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T05:57:31.061Z",
+      "lastUpdatedIso": "2026-07-26T06:02:19.294Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -131,6 +131,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:33d96b8",
+      "timestampIso": "2026-07-26T05:57:52Z",
+      "type": "deployed",
+      "summary": "Deployed build 33d96b8 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "issue-started:171",
       "timestampIso": "2026-07-26T05:57:28Z",
@@ -473,13 +480,6 @@
       "type": "pr-merged",
       "summary": "PR #147 \"Add Daily Outfit Intent review journey\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/147"
-    },
-    {
-      "key": "deploy:ce71af0",
-      "timestampIso": "2026-07-26T03:39:25Z",
-      "type": "deployed",
-      "summary": "Deployed build ce71af0 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
