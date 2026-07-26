@@ -883,6 +883,15 @@ references, and owner.
   shopping, account, network, tracking, or external action. Current pre-PR
   validation baseline: 698 tests, every deterministic validator, and browser
   QA.
+- Issue #127 defines fixture Brand Preference and Fit Memory intelligence.
+  Explicit favorite, avoided, best-fitting, most-worn, and aspirational roles
+  remain distinct from inferred signals; strictly versioned corrections
+  outrank inference; coarse known-brand fit outcomes name stable owned-item
+  references. Avoidance conflicts require review. Brand preference can only
+  break a tie after styling quality, usefulness, editorial credibility, and
+  verified fit, and cannot use commercial incentives or popularity. Current
+  pre-PR validation baseline: 710 tests plus every deterministic repository
+  validator.
 
 ## Final north-star statement
 

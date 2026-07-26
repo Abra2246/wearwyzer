@@ -2,6 +2,26 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Brand Preference and Fit Memory (issue #127)
+### Added
+- A closed, versioned fixture contract for explicit favorite, avoided,
+  best-fitting, most-worn, and aspirational roles; minimized inferred signals;
+  corrections; and coarse owned-item fit memory.
+- Corrected brand profiles with role provenance, confidence, evidence codes,
+  conflicts, fit references, and a fixed recommendation-influence policy.
+### Safety
+- Explicit input and versioned corrections outrank inference. Duplicate or
+  low-confidence inferred evidence cannot silently win, and contradictory
+  avoidance requires review.
+- Brand preference is tie-break-only after quality, usefulness, editorial
+  credibility, and verified fit. Commerce, popularity, private behavior,
+  accounts, network, analytics, and external actions remain outside scope.
+### Validation
+- 710/710 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted recommendation-eligibility warning remains
+  non-blocking.
+
 ## Unreleased (2026-07-26) — Fit Intelligence fixture journey (issue #125)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route for verified transfer,
