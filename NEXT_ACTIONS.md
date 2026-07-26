@@ -5,27 +5,27 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #94. Production Ops runs
-`30181542882` and `30181542913` succeeded in serialized order with no generated
-commit ping-pong. Issue #95 is the active dependency-safe product slice.
+**Evidence baseline:** `main` after merged PR #96. The capture correction slice
+passed 549 tests, five GitHub checks, browser QA, Pages deployment, and health
+check. Issue #97 is the active contract slice.
 
 ## Active review gates
 
-1. **Issue #95 — fixture wardrobe capture normalization and correction**
-   - Active branch: `codex/issue-95-wardrobe-capture`.
-   - Scope: manual and simulated-camera review candidates, field provenance,
-     explicit correction, exact confirmation, rejection, export, and deletion.
-   - Boundary: no camera permission, image bytes, upload, provider, personal
-     data, or production storage.
+1. **Issue #97 — closet lifecycle and Wear DNA evidence contract**
+   - Active branch: `codex/issue-97-closet-lifecycle`.
+   - Scope: condition, acquisition, optional paid amount, fit notes, explicit
+     wear events, correction history, cost per wear, and forgotten-item state.
+   - Boundary: private fixture contract only; no analytics, retailer import,
+     real account, or production storage.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #95**
-   - Outcome: prove the private capture-to-canonical-item trust boundary with
-     deterministic tests and browser evidence.
-2. **Define closet item metadata and wear-history contracts**
-   - Outcome: versioned condition, purchase date, wear count, last worn, and
-     fit notes without real accounts, analytics, or production storage.
+1. **Complete and review Issue #97**
+   - Outcome: one privacy-minimized evidence base for Wear DNA, closet health,
+     forgotten-item discovery, and cost per wear.
+2. **Define the fixture outfit calendar and packing contract**
+   - Outcome: plan outfits from owned items and weather/occasion inputs without
+     calendar credentials, location tracking, or external messages.
 3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
@@ -40,6 +40,8 @@ commit ping-pong. Issue #95 is the active dependency-safe product slice.
 
 ## Closed or blocked with evidence
 
+- **Issue #95 / PR #96:** merged after 549 tests, five passing GitHub checks,
+  clean-console browser QA, successful Pages deployment, and health check.
 - **Issue #93 / PR #94:** merged after 539 tests and five passing GitHub checks.
   Production Live Feed and Status runs succeeded in serialized order; exactly
   one fresh commit per artifact reached `main`, with no cross-trigger loop.
