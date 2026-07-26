@@ -5,28 +5,27 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #92 (fixture onboarding and
-wardrobe intake). Post-merge Ops refresh run `30181324219` exposed a derived-feed
-writer race; Issue #93 is the active P0 reliability repair.
+**Evidence baseline:** `main` after merged PR #94. Production Ops runs
+`30181542882` and `30181542913` succeeded in serialized order with no generated
+commit ping-pong. Issue #95 is the active dependency-safe product slice.
 
 ## Active review gates
 
-1. **Issue #93 — serialize Ops feed writers**
-   - Active branch: `codex/issue-93-ops-refresh-race`.
-   - Scope: stop generated-artifact cross-triggering, serialize writers, and
-     regenerate derived JSON from current `main` after a rejected push.
-   - Completion gate: both production workflows succeed when dispatched
-     together, current snapshots reach `main`, and Pages/health pass.
+1. **Issue #95 — fixture wardrobe capture normalization and correction**
+   - Active branch: `codex/issue-95-wardrobe-capture`.
+   - Scope: manual and simulated-camera review candidates, field provenance,
+     explicit correction, exact confirmation, rejection, export, and deletion.
+   - Boundary: no camera permission, image bytes, upload, provider, personal
+     data, or production storage.
 
 ## Next executable tasks
 
-1. **Review, merge, and production-test Issue #93**
-   - Outcome: Mission Control refresh writers stay current without ping-pong
-     commits or same-file rebase failures.
-2. **Define the next dependency-safe app slice**
-   - Outcome: specify camera/manual intake normalization and correction without
-     requesting camera permission, selecting a production storage provider, or
-     collecting real photos.
+1. **Complete and review Issue #95**
+   - Outcome: prove the private capture-to-canonical-item trust boundary with
+     deterministic tests and browser evidence.
+2. **Define closet item metadata and wear-history contracts**
+   - Outcome: versioned condition, purchase date, wear count, last worn, and
+     fit notes without real accounts, analytics, or production storage.
 3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
@@ -41,6 +40,9 @@ writer race; Issue #93 is the active P0 reliability repair.
 
 ## Closed or blocked with evidence
 
+- **Issue #93 / PR #94:** merged after 539 tests and five passing GitHub checks.
+  Production Live Feed and Status runs succeeded in serialized order; exactly
+  one fresh commit per artifact reached `main`, with no cross-trigger loop.
 - **Issue #89 / PR #92:** merged after 539 tests, five passing GitHub checks,
   end-to-end browser review, and explicit product/privacy scope review. The
   route remains unlinked, `noindex`, default-off, and synthetic.

@@ -10,6 +10,11 @@ import {
   PRIVATE_EXPORT_VERSION,
   WARDROBE_SNAPSHOT_MAX_AGE_DAYS,
 } from './private-profile-service-contract.mjs';
+import {
+  classifyCanonicalProducts,
+  correctCaptureCandidate,
+  createCaptureCandidate,
+} from './wardrobe-capture-normalizer.mjs';
 
 export const ONBOARDING_WARDROBE_VERSION = 'onboarding-wardrobe-v1';
 export const ONBOARDING_STORAGE_KEY = 'wearwyzer.onboarding-wardrobe.v1';
@@ -24,10 +29,6 @@ const CANDIDATE_ID = 'adidas-samba-og-b75806';
 
 function clone(value) {
   return structuredClone(value);
-}
-
-function normalize(value) {
-  return String(value ?? '').trim().toLowerCase();
 }
 
 function list(value) {
@@ -53,9 +54,25 @@ function fixtureState(nowIso) {
       items: [],
       createdAtIso: nowIso,
     },
+    captureIntake: {
+      version: 1,
+      activeCandidateId: null,
+      records: [],
+    },
     deletion: null,
     updatedAtIso: nowIso,
   };
+}
+
+function hydrateState(state) {
+  if (!state.captureIntake) {
+    state.captureIntake = {
+      version: 1,
+      activeCandidateId: null,
+      records: [],
+    };
+  }
+  return state;
 }
 
 function profileCompleteness(state) {
@@ -133,7 +150,7 @@ export function createOnboardingWardrobeStore(
       if (parsed?.schemaVersion !== ONBOARDING_WARDROBE_VERSION || parsed?.fixtureOnly !== true) {
         return fixtureState(now());
       }
-      return parsed;
+      return hydrateState(parsed);
     } catch {
       return fixtureState(now());
     }
@@ -156,31 +173,30 @@ export function createOnboardingWardrobeStore(
   }
 
   function searchProducts(query) {
-    const term = normalize(query);
-    if (!term) return [];
-    const matches = products.filter((product) => {
-      const haystack = [product.id, product.name, product.brandId, product.categoryId, product.colorway]
-        .map(normalize)
-        .join(' ');
-      return haystack.includes(term);
-    });
-    const exactNameCounts = new Map();
-    for (const product of matches) {
-      const key = normalize(product.name);
-      exactNameCounts.set(key, (exactNameCounts.get(key) ?? 0) + 1);
+    return classifyCanonicalProducts(products, query);
+  }
+
+  function addCanonicalProduct(state, product, { provenance, captureId = null, fields = [] }) {
+    if (state.wardrobeSnapshot.items.some((item) => item.productId === product.id)) {
+      return { ok: false, error: 'duplicate-wardrobe-item' };
     }
-    return matches.slice(0, 12).map((product) => {
-      const ambiguous = exactNameCounts.get(normalize(product.name)) > 1;
-      const canonicalExact = product.matchType === 'Exact item';
-      return {
-        productId: product.id,
-        name: product.name,
-        brandId: product.brandId,
-        categoryId: product.categoryId,
-        matchState: ambiguous ? 'ambiguous' : canonicalExact ? 'exact' : 'similar',
-        matchConfidence: ambiguous ? 0.72 : canonicalExact ? 1 : 0.75,
-      };
+    const nowIso = now();
+    state.wardrobeSnapshot.version += 1;
+    state.wardrobeSnapshot.wardrobeSnapshotId =
+      `fixture-onboarding-wardrobe-v${state.wardrobeSnapshot.version}`;
+    state.wardrobeSnapshot.createdAtIso = nowIso;
+    state.wardrobeSnapshot.items.push({
+      id: `owned-${product.id}`,
+      productId: product.id,
+      wearCount: 0,
+      matchState: 'exact',
+      matchConfidence: 1,
+      provenance,
+      captureId,
+      confirmedFields: clone(fields),
+      createdAtIso: nowIso,
     });
+    return { ok: true, wardrobeSnapshot: clone(state.wardrobeSnapshot) };
   }
 
   return Object.freeze({
@@ -263,6 +279,93 @@ export function createOnboardingWardrobeStore(
 
     searchProducts,
 
+    beginCapture(input) {
+      const state = load();
+      const denied = requireActive(state) || requireConsent(state, 'personalization');
+      if (denied) return denied;
+      const sequence = state.captureIntake.version + 1;
+      const result = createCaptureCandidate({
+        ...input,
+        sequence,
+        nowIso: now(),
+        products,
+      });
+      if (!result.ok) return result;
+      state.captureIntake.version = sequence;
+      state.captureIntake.activeCandidateId = result.candidate.candidateId;
+      state.captureIntake.records.push(result.candidate);
+      persist(state);
+      return { ok: true, candidate: clone(result.candidate) };
+    },
+
+    correctCapture(candidateId, correction) {
+      const state = load();
+      const denied = requireActive(state) || requireConsent(state, 'personalization');
+      if (denied) return denied;
+      const index = state.captureIntake.records.findIndex((entry) => entry.candidateId === candidateId);
+      if (index < 0 || state.captureIntake.activeCandidateId !== candidateId) {
+        return { ok: false, error: 'capture-not-reviewable' };
+      }
+      const result = correctCaptureCandidate(
+        state.captureIntake.records[index],
+        correction,
+        products,
+        now(),
+      );
+      if (!result.ok) return result;
+      state.captureIntake.records[index] = result.candidate;
+      persist(state);
+      return { ok: true, candidate: clone(result.candidate), correction: clone(result.correction) };
+    },
+
+    rejectCapture(candidateId) {
+      const state = load();
+      const denied = requireActive(state) || requireConsent(state, 'personalization');
+      if (denied) return denied;
+      const candidate = state.captureIntake.records.find((entry) => entry.candidateId === candidateId);
+      if (!candidate || state.captureIntake.activeCandidateId !== candidateId) {
+        return { ok: false, error: 'capture-not-reviewable' };
+      }
+      candidate.status = 'rejected';
+      candidate.updatedAtIso = now();
+      state.captureIntake.activeCandidateId = null;
+      persist(state);
+      return { ok: true, candidate: clone(candidate) };
+    },
+
+    confirmCapture(candidateId) {
+      const state = load();
+      const denied = requireActive(state) || requireConsent(state, 'personalization');
+      if (denied) return denied;
+      const candidate = state.captureIntake.records.find((entry) => entry.candidateId === candidateId);
+      if (!candidate || state.captureIntake.activeCandidateId !== candidateId) {
+        return { ok: false, error: 'capture-not-reviewable' };
+      }
+      if (candidate.match.state !== 'exact' || !candidate.match.productId) {
+        return { ok: false, error: 'explicit-exact-correction-required' };
+      }
+      const product = products.find((entry) => entry.id === candidate.match.productId);
+      if (!product || product.matchType !== 'Exact item') {
+        return { ok: false, error: 'exact-product-required' };
+      }
+      const added = addCanonicalProduct(state, product, {
+        provenance: `confirmed-${candidate.source}`,
+        captureId: candidate.candidateId,
+        fields: candidate.fields,
+      });
+      if (!added.ok) return added;
+      candidate.status = 'confirmed';
+      candidate.confirmedAtIso = now();
+      candidate.updatedAtIso = candidate.confirmedAtIso;
+      state.captureIntake.activeCandidateId = null;
+      persist(state);
+      return {
+        ok: true,
+        candidate: clone(candidate),
+        wardrobeSnapshot: clone(state.wardrobeSnapshot),
+      };
+    },
+
     addProduct(productId) {
       const state = load();
       const denied = requireActive(state) || requireConsent(state, 'personalization');
@@ -272,23 +375,8 @@ export function createOnboardingWardrobeStore(
       const result = searchProducts(product.name).find((entry) => entry.productId === productId);
       if (!result || result.matchState === 'ambiguous') return { ok: false, error: 'ambiguous-product-match' };
       if (result.matchState !== 'exact') return { ok: false, error: 'exact-product-required' };
-      if (state.wardrobeSnapshot.items.some((item) => item.productId === productId)) {
-        return { ok: false, error: 'duplicate-wardrobe-item' };
-      }
-      const nowIso = now();
-      state.wardrobeSnapshot.version += 1;
-      state.wardrobeSnapshot.wardrobeSnapshotId =
-        `fixture-onboarding-wardrobe-v${state.wardrobeSnapshot.version}`;
-      state.wardrobeSnapshot.createdAtIso = nowIso;
-      state.wardrobeSnapshot.items.push({
-        id: `owned-${productId}`,
-        productId,
-        wearCount: 0,
-        matchState: 'exact',
-        matchConfidence: 1,
-        provenance: 'canonical-search',
-        createdAtIso: nowIso,
-      });
+      const added = addCanonicalProduct(state, product, { provenance: 'canonical-search' });
+      if (!added.ok) return added;
       persist(state);
       return { ok: true, wardrobeSnapshot: clone(state.wardrobeSnapshot) };
     },
@@ -373,6 +461,7 @@ export function createOnboardingWardrobeStore(
         profile: clone(state.profile),
         fitProfile: clone(state.fitProfile),
         wardrobeSnapshot: clone(state.wardrobeSnapshot),
+        captureIntake: clone(state.captureIntake),
         deletion: clone(state.deletion),
         exportedAtIso: now(),
       }, null, 2);

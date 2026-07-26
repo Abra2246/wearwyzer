@@ -40,14 +40,18 @@ likeness.
 3. Saved profile and fit signals are explicit, confidence `1.0`, and versioned.
 4. Canonical search distinguishes exact, similar, ambiguous, and unknown
    results. Only an unambiguous exact product may be added.
-5. Each wardrobe mutation advances the snapshot version and freshness time.
-6. Evaluation requires the three dependent consents, a complete profile, a
+5. Manual and simulated-camera capture candidates show field-level provenance
+   and confidence. Camera inference cannot become an exact item until the user
+   saves a versioned canonical correction and confirms it.
+6. Each confirmed wardrobe mutation advances the snapshot version and
+   freshness time.
+7. Evaluation requires the three dependent consents, a complete profile, a
    fresh snapshot, and at least five exact wardrobe items.
-7. The existing personalization API receives only `profileId` and
+8. The existing personalization API receives only `profileId` and
    `wardrobeSnapshotId` plus the prospective product identity.
-8. Export contains the complete local fixture journey. Deletion is visibly
+9. Export contains the complete local fixture journey. Deletion is visibly
    pending before completion removes profile, fit, consent, and wardrobe data.
-9. Reset restores the deterministic empty fixture.
+10. Reset restores the deterministic empty fixture.
 
 ## Fail-closed behavior
 
@@ -56,6 +60,7 @@ likeness.
 - Similar product: cannot be added as exact.
 - Duplicate canonical name across variants: marked ambiguous and cannot be
   auto-added.
+- Camera suggestion: cannot be confirmed without explicit canonical correction.
 - Unknown search: returns no canonical match and adds nothing.
 - Fewer than five owned items: evaluation is blocked.
 - Incomplete profile or stale snapshot: evaluation is blocked.
@@ -69,11 +74,11 @@ likeness.
 - 539 deterministic repository tests.
 - Content, Knowledge Graph, hero-page, metadata, and static-site validators.
 - Browser QA verified the default-off route, independent consent, profile save,
-  exact and ambiguous search, five-item intake, evaluation, immediate
-  revocation, export, pending/completed deletion, deterministic reset, and a
-  clean console. Static privacy/route tests enforce the 375px overflow and
-  visible keyboard-focus invariants; a physical-device pass remains part of the
-  review gate.
+  exact and ambiguous search, simulated capture correction/rejection, five-item
+  intake, evaluation, immediate revocation, export, pending/completed deletion,
+  deterministic reset, and a clean console. Static privacy/route tests enforce
+  the 375px overflow and visible keyboard-focus invariants; a physical-device
+  pass remains part of the review gate.
 
 ## Production gates
 

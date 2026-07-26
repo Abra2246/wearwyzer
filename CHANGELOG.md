@@ -2,6 +2,30 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fixture wardrobe capture correction (issue #95)
+### Added
+- `scripts/wardrobe-capture-normalizer.mjs`: deterministic manual and
+  simulated-camera candidate normalization with exact/similar/ambiguous/unknown
+  states, field-level provenance/confidence, and versioned explicit correction.
+- The default-off onboarding route now exposes a synthetic capture review,
+  canonical correction, confirmation, rejection, and capture-history journey.
+- Capture lifecycle coverage for consent, inference, correction, confirmation,
+  duplicate prevention, rejection, export, deletion, reset, and media exclusion.
+- `docs/WARDROBE_CAPTURE_V1.md` records the app-owned trust boundary and
+  production gates.
+### Safety
+- No camera/media API, file input, image bytes, upload, OCR/vision provider,
+  personal data, analytics, paid call, or browser permission is introduced.
+- Simulated camera suggestions cannot enter the wardrobe without explicit
+  canonical correction and separate confirmation.
+### Validation
+- 549/549 repository tests pass.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  validators pass; the one pre-existing graph-eligibility warning remains
+  non-blocking.
+- Browser QA verified suggestion → correction → confirmation, ambiguous
+  rejection, immediate consent revocation, and a clean console.
+
 ## Unreleased (2026-07-26) — Serialized Ops feed writers (issue #93)
 ### Fixed
 - The v1 status and v2 live-feed workflows now ignore both generated Ops JSON

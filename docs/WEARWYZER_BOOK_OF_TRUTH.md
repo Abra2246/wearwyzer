@@ -753,6 +753,15 @@ references, and owner.
   writers ignore both generated JSON files on push, share one serialized
   writer group, and regenerate only their owned artifact from current `main`
   inside a bounded retry. They never force-push or auto-resolve source changes.
+- Issue #95 begins the next app-first slice without requesting a camera. Manual
+  and simulated-camera inputs become review candidates with field-level
+  provenance and confidence. Inference can suggest, but only a versioned
+  explicit user correction may select an exact canonical product and only a
+  separate confirmation may advance the wardrobe snapshot. Raw capture and
+  correction history remain private; future website and extension surfaces
+  consume only confirmed canonical references. Current validation baseline:
+  549 tests, all deterministic repository validators, and clean-console browser
+  QA for confirm, reject, and consent-revocation paths.
 
 ## Final north-star statement
 

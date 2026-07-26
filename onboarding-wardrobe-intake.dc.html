@@ -113,6 +113,54 @@
         <h2>3. Add what you own</h2>
         <p class="meta">Search uses the existing canonical catalog. Similar, ambiguous, and unknown items remain
           explicit and cannot be silently added as exact products.</p>
+        <h3>Review a capture suggestion</h3>
+        <p class="meta">This simulates the future app intake boundary without requesting camera access or storing
+          an image. Camera output is untrusted until you select and confirm an exact canonical item.</p>
+        <form id="capture-form">
+          <div class="grid">
+            <div>
+              <label for="capture-source">Intake source</label>
+              <select id="capture-source" name="source">
+                <option value="manual-search">Manual search</option>
+                <option value="simulated-camera">Simulated camera</option>
+              </select>
+            </div>
+            <div>
+              <label for="capture-query">Manual product query</label>
+              <input id="capture-query" name="query" value="dickies-874-dark-navy">
+            </div>
+            <div>
+              <label for="camera-fixture">Synthetic camera result</label>
+              <select id="camera-fixture" name="fixtureId">
+                <option value="navy-work-pant">Navy work pant suggestion</option>
+                <option value="barrel-pant">Ambiguous barrel pant</option>
+                <option value="unknown-jacket">Unknown utility jacket</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions"><button type="submit">Create review candidate</button></div>
+        </form>
+        <div id="capture-review" class="panel notice" hidden>
+          <p><strong id="capture-title">Capture review</strong></p>
+          <p id="capture-meta" class="meta"></p>
+          <ul id="capture-fields"></ul>
+          <div class="grid">
+            <div>
+              <label for="capture-product">Exact canonical correction</label>
+              <select id="capture-product"></select>
+            </div>
+            <div><label for="capture-color">Confirmed color</label><input id="capture-color"></div>
+            <div><label for="capture-size">Confirmed size / fit</label><input id="capture-size"></div>
+          </div>
+          <div class="actions">
+            <button id="save-capture-correction" class="secondary" type="button">Save explicit correction</button>
+            <button id="confirm-capture" type="button">Confirm exact item</button>
+            <button id="reject-capture" class="danger" type="button">Reject suggestion</button>
+          </div>
+        </div>
+        <p id="capture-history" class="meta">No capture records yet.</p>
+        <hr>
+        <h3>Canonical search</h3>
         <form id="search-form" role="search">
           <label for="product-search">Canonical product search</label>
           <div class="actions">
@@ -195,6 +243,9 @@
           'insufficient-wardrobe': `Add at least ${MINIMUM_WARDROBE_ITEMS} exact products before evaluation.`,
           'incomplete-profile': 'Complete and save every profile section before evaluation.',
           'stale-wardrobe-snapshot': 'The wardrobe snapshot is stale. Add or remove an item to create a fresh version.',
+          'explicit-exact-correction-required': 'Select and save an exact canonical correction before confirming this capture.',
+          'capture-not-reviewable': 'That capture is no longer active for review.',
+          'unknown-camera-fixture': 'The selected synthetic camera fixture is unavailable.',
         };
         return messages[error] || error.replaceAll('-', ' ');
       }
@@ -244,7 +295,7 @@
             strong.textContent = byId[item.productId]?.name || item.productId;
             const meta = document.createElement('span');
             meta.className = 'meta';
-            meta.textContent = `Exact · canonical search · ${item.productId}`;
+            meta.textContent = `Exact · ${item.provenance} · ${item.productId}`;
             copy.append(strong, document.createElement('br'), meta);
             const remove = document.createElement('button');
             remove.type = 'button';
@@ -260,6 +311,46 @@
             return row;
           }) : [Object.assign(document.createElement('p'), { textContent: 'No exact products added yet.' })])
         );
+        const capture = snapshot.captureIntake.records.find((entry) =>
+          entry.candidateId === snapshot.captureIntake.activeCandidateId
+        );
+        const captureReview = document.querySelector('#capture-review');
+        captureReview.hidden = !capture;
+        if (capture) {
+          document.querySelector('#capture-title').textContent =
+            `${capture.source === 'simulated-camera' ? 'Simulated camera' : 'Manual'} candidate`;
+          document.querySelector('#capture-meta').textContent =
+            `${capture.match.state} · confidence ${capture.match.confidence} · `
+            + `correction v${capture.correctionVersion} · ${capture.candidateId}`;
+          document.querySelector('#capture-fields').replaceChildren(...capture.fields.map((entry) => {
+            const item = document.createElement('li');
+            item.textContent = `${entry.key}: ${entry.value || 'not confirmed'} · `
+              + `${entry.provenance} · confidence ${entry.confidence}`;
+            return item;
+          }));
+          const productSelect = document.querySelector('#capture-product');
+          productSelect.replaceChildren(...capture.match.options.map((option) => {
+            const element = document.createElement('option');
+            element.value = option.productId;
+            element.textContent = `${option.name} — ${option.colorway} (${option.matchState})`;
+            element.selected = option.productId === capture.match.productId;
+            return element;
+          }));
+          const color = capture.fields.find((entry) => entry.key === 'color')?.value || '';
+          const size = capture.fields.find((entry) => entry.key === 'size')?.value || '';
+          document.querySelector('#capture-color').value = color;
+          document.querySelector('#capture-size').value = size;
+          document.querySelector('#save-capture-correction').disabled = !capture.match.options.length;
+          document.querySelector('#confirm-capture').disabled = capture.match.state !== 'exact';
+        }
+        const captureCounts = snapshot.captureIntake.records.reduce((counts, record) => {
+          counts[record.status] = (counts[record.status] ?? 0) + 1;
+          return counts;
+        }, {});
+        document.querySelector('#capture-history').textContent = snapshot.captureIntake.records.length
+          ? `${snapshot.captureIntake.records.length} capture record(s) · `
+            + Object.entries(captureCounts).map(([key, value]) => `${key}: ${value}`).join(' · ')
+          : 'No capture records yet.';
         const deletion = snapshot.deletion;
         document.querySelector('#deletion-state').textContent = deletion
           ? `Deletion ${deletion.state}${deletion.completedAtIso ? ` at ${deletion.completedAtIso}` : ''}.`
@@ -273,6 +364,43 @@
         const result = store.saveProfile(Object.fromEntries(new FormData(event.currentTarget)));
         announce(result.ok ? `Profile ${result.profile.profileId} saved with explicit provenance.` : errorCopy(result.error));
         document.querySelector('#evaluation').hidden = true;
+        render();
+      });
+
+      document.querySelector('#capture-form').addEventListener('submit', (event) => {
+        event.preventDefault();
+        const input = Object.fromEntries(new FormData(event.currentTarget));
+        const result = store.beginCapture(input);
+        announce(result.ok
+          ? `${result.candidate.source} candidate created. Review provenance before confirming.`
+          : errorCopy(result.error));
+        render();
+      });
+      document.querySelector('#save-capture-correction').addEventListener('click', () => {
+        const snapshot = store.getSnapshot();
+        const candidateId = snapshot.captureIntake.activeCandidateId;
+        const result = store.correctCapture(candidateId, {
+          productId: document.querySelector('#capture-product').value,
+          color: document.querySelector('#capture-color').value,
+          size: document.querySelector('#capture-size').value,
+        });
+        announce(result.ok
+          ? `${result.correction.correctionId} saved; explicit values now outrank inference.`
+          : errorCopy(result.error));
+        render();
+      });
+      document.querySelector('#confirm-capture').addEventListener('click', () => {
+        const candidateId = store.getSnapshot().captureIntake.activeCandidateId;
+        const result = store.confirmCapture(candidateId);
+        announce(result.ok
+          ? 'Exact captured item confirmed; wardrobe snapshot version advanced.'
+          : errorCopy(result.error));
+        render();
+      });
+      document.querySelector('#reject-capture').addEventListener('click', () => {
+        const candidateId = store.getSnapshot().captureIntake.activeCandidateId;
+        const result = store.rejectCapture(candidateId);
+        announce(result.ok ? 'Capture suggestion rejected; nothing entered the wardrobe.' : errorCopy(result.error));
         render();
       });
 
