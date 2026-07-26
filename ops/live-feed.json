@@ -1,21 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:16:55.409Z",
+  "generatedAtIso": "2026-07-26T02:18:33.335Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "activeWorkSummary": "#119 \"Define the fixture Closet Health Score\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:16:55.409Z",
+      "lastUpdatedIso": "2026-07-26T02:18:33.335Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 119,
+          "title": "Define the fixture Closet Health Score",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/119",
+          "updatedIso": "2026-07-26T02:17:59Z"
+        },
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -45,21 +50,21 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:16:55.409Z",
+      "lastUpdatedIso": "2026-07-26T02:18:33.335Z",
       "fetchOk": true,
       "data": {
-        "status": "unknown",
-        "lastHealthyShaShort": null,
-        "lastDeployIso": "2026-07-26T02:16:55Z",
-        "ageMinutes": 0,
-        "pagesUrl": null
+        "status": "healthy",
+        "lastHealthyShaShort": "eacc1e9",
+        "lastDeployIso": "2026-07-26T02:17:15Z",
+        "ageMinutes": 1,
+        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
     },
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:16:55.409Z",
+      "lastUpdatedIso": "2026-07-26T02:18:33.335Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:16:55.409Z",
+      "lastUpdatedIso": "2026-07-26T02:18:33.335Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:119",
+      "timestampIso": "2026-07-26T02:17:59Z",
+      "type": "issue-started",
+      "summary": "Issue #119 \"Define the fixture Closet Health Score\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/119"
+    },
+    {
+      "key": "deploy:eacc1e9",
+      "timestampIso": "2026-07-26T02:17:15Z",
+      "type": "deployed",
+      "summary": "Deployed build eacc1e9 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:2026-07-26T02:16:55Z",
       "timestampIso": "2026-07-26T02:16:55Z",
@@ -461,20 +480,6 @@
       "type": "issue-started",
       "summary": "Issue #89 \"Build the fixture-only onboarding and wardrobe intake journey\" started.",
       "url": "https://github.com/Abra2246/wearwyzer/issues/89"
-    },
-    {
-      "key": "deploy:9c400cf",
-      "timestampIso": "2026-07-26T00:07:37Z",
-      "type": "deployed",
-      "summary": "Deployed build 9c400cf — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30180595154",
-      "timestampIso": "2026-07-26T00:06:57Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30180595154"
     }
   ]
 }
