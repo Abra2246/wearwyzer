@@ -814,6 +814,14 @@ references, and owner.
   behavior remain unchanged, and deterministic tests prevent version or input
   drift. Pre-PR validation baseline: 603 tests plus every deterministic
   repository validator.
+- Issue #109 adds the last safe boundary before provider experimentation. A
+  candidate may supply only minimized drafts for the complete trusted fixture
+  corpus; it cannot supply requests, evidence, facts, thresholds, or private
+  data. The offline gate replays those drafts through the accepted evaluator,
+  admits only candidates scoring 100% on every trust metric, exposes sanitized
+  failure evidence, and preserves ties instead of inventing a winner. Current
+  validation baseline: 611 tests plus every deterministic repository
+  validator.
 
 ## Final north-star statement
 

@@ -5,31 +5,30 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #107. The default-off AI Stylist
-fixture passed 600 tests, all deterministic validators, browser QA, five GitHub
-checks, serialized Ops refreshes, Pages deployment, and Deploy Health Check
-run `30183222739`. Issue #102 is active.
+**Evidence baseline:** `main` after merged PR #108. The workflow-hygiene change
+passed 603 tests, all deterministic validators, five GitHub checks, serialized
+Ops refreshes, Pages deployment, and Deploy Health Check run `30183382194`.
+Every production job reported zero annotations. Issue #109 is active.
 
 ## Active review gates
 
-1. **Issue #102 — GitHub Actions runtime and Pages artifact hygiene**
-   - Active branch: `codex/issue-102-actions-hygiene`.
-   - Scope: officially verified Node 24 action majors, supported Pages
-     hidden-file input, deterministic workflow-contract tests, and production
-     annotation proof.
-   - Boundary: no permission, trigger, concurrency, Ops serialization,
-     generated-file, retry, or force-push behavior change.
+1. **Issue #109 — offline AI Stylist candidate replay gate**
+   - Active branch: `codex/issue-109-stylist-replay-gate`.
+   - Scope: closed synthetic candidate envelopes, trusted-corpus replay,
+     sanitized comparison, 100% trust thresholds, and explicit ties.
+   - Boundary: no live provider, credentials, prompt experiment, real data,
+     network, paid call, production telemetry, or external action.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #102 workflow hygiene**
-   - Outcome: remove deprecated action-runtime and invalid Pages-input warnings
-     using verified official migration guidance.
-2. **Define the next provider-neutral AI Stylist experiment gate**
-   - Dependency: deterministic trust thresholds stay at 100%; any live
-     provider, credentials, or spend requires explicit approval.
-   - Outcome: compare provider output only against the accepted fixture harness
-     without weakening abstention, citations, privacy, or action safety.
+1. **Complete and review Issue #109**
+   - Outcome: compare synthetic candidate answers against the complete trusted
+     corpus without letting candidates control evidence or thresholds.
+2. **Define the human editorial preference rubric**
+   - Dependency: Issue #109 must preserve the non-negotiable trust gate.
+   - Outcome: score usefulness, clarity, styling quality, tone, and
+     actionability only after safety eligibility; never let preference override
+     grounding or privacy.
 3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
@@ -44,6 +43,10 @@ run `30183222739`. Issue #102 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #102 / PR #108:** merged after 603 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refresh, Pages, and
+  Deploy Health Check run `30183382194`. Ten production jobs returned zero
+  annotations; the Node and Pages input warnings are gone.
 - **Issue #106 / PR #107:** merged after 600 tests, every deterministic
   validator, browser QA across all six intent and both abstention paths, five
   passing GitHub checks, serialized Ops refresh, successful Pages deployment,
