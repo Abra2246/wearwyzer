@@ -5,35 +5,32 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #147. The Daily Outfit Intent
-fixture journey passed 816 tests, all deterministic validators, browser QA,
-five GitHub checks, serialized Ops refreshes, Pages deployment run
-`30186658320`, Deploy Health Check run `30186684859`, Content pipeline run
-`30186658314`, Ops Live Feed run `30186658318`, and Ops Status run
-`30186658322`. Issue #148 is ready.
+**Evidence baseline:** `main` after merged PR #150. The Grounded Daily Outfit
+Stylist response adapter passed 826 tests, all deterministic validators, five
+GitHub checks, Pages deployment run `30186843341`, Deploy Health Check run
+`30186865046`, Content pipeline run `30186843351`, Ops Live Feed run
+`30186884078`, and Ops Status run `30186844538`. Issue #151 is ready.
 
 ## Queued execution
 
-1. **Issue #148 — Grounded Daily Outfit Stylist response adapter**
-   - Status: in progress on
-     `codex/issue-148-grounded-daily-outfit-stylist`.
-   - Scope: translate accepted Daily Outfit Intent results into minimized,
-     cited, human-readable Stylist answers or honest non-answers.
-   - Boundary: deterministic, provider-neutral, closed-schema, and read-only.
-     No natural-language provider, live context, private payload, commerce,
-     account, analytics, network, purchase, persistence, publishing, message,
-     or external action exists.
+1. **Issue #151 — Grounded Daily Outfit Stylist fixture journey**
+   - Status: ready; no implementation branch or review PR exists yet.
+   - Scope: make accepted ready, review, contradiction, tie, and insufficiency
+     responses visibly explainable.
+   - Boundary: exact flag `ww_grounded_daily_stylist=1`, fixture-only,
+     deterministic, provider-neutral, default-off, unlinked, and read-only. No
+     model, live context, private data, commerce, account, analytics, network,
+     purchase, persistence, publishing, message, or external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #148**
-   - Outcome: establish one grounded response boundary that future website,
-     app, extension, and AI Stylist clients can share without a second ranking
-     policy.
-2. **Build the fixture grounded Daily Outfit Stylist journey**
-   - Dependency: merged Issue #148.
+1. **Complete and review Issue #151**
    - Outcome: make ready, review, contradiction, tie, and insufficiency
      responses visibly explainable before any provider or private integration.
+2. **Reassess the first user-facing daily Stylist integration**
+   - Dependency: merged Issue #151 with browser QA and production evidence.
+   - Outcome: choose the smallest default-off synthetic flow that demonstrates
+     daily styling utility without collecting private or live context.
 3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -53,6 +50,14 @@ five GitHub checks, serialized Ops refreshes, Pages deployment run
 
 ## Closed or blocked with evidence
 
+- **Issue #148 / PR #150:** merged after 826 tests, every deterministic
+  validator, five passing GitHub checks, Pages run `30186843341`, Deploy
+  Health Check run `30186865046`, Content pipeline run `30186843351`, Ops Live
+  Feed run `30186884078`, and Ops Status run `30186844538`. Accepted Daily
+  Outfit results now become grounded cited answers or honest non-answers while
+  preserving context, ties, insufficiency, coverage, confidence, exclusions,
+  and evidence references without providers, private data, commerce, or
+  external actions.
 - **Issue #145 / PR #147:** merged after 816 tests, every deterministic
   validator, browser QA across nine modes, five passing GitHub checks,
   serialized Ops refreshes, Pages run `30186658320`, Deploy Health Check run
