@@ -5,31 +5,31 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #138. The Outfit Compatibility
-journey passed 770 tests, all deterministic validators, browser QA, five GitHub
-checks, serialized Ops refreshes, Pages deployment run `30185926948`, and
-Deploy Health Check run `30185947279`. Issue #139 is active.
+**Evidence baseline:** `main` after merged PR #140. Personalized Outfit Set
+Recommendation passed 782 tests, all deterministic validators, five GitHub
+checks, serialized Ops refreshes, Pages deployment run `30186080121`, and
+Deploy Health Check run `30186104289`. Issue #141 is active.
 
 ## Active review gates
 
-1. **Issue #139 — Personalized Outfit Set Recommendation contract**
-   - Active branch: `codex/issue-139-outfit-set-recommendation`.
-   - Scope: assemble two or three trusted, meaningfully distinct outfits for
-     one intent from accepted compatibility evidence.
+1. **Issue #141 — Personalized Outfit Set fixture journey**
+   - Active branch: `codex/issue-141-outfit-set-journey`.
+   - Scope: make trusted sets, owned-first preference, duplicate exclusion,
+     boundary ties, insufficiency, abstention, and stale evidence reviewable.
    - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
      No full private payload, commerce, account, analytics, network, purchase,
      persistence, or external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #139**
-   - Outcome: establish one owned-first, diversity-aware outfit-set boundary
-     that future website, app, extension, and AI Stylist clients can share.
-2. **Build the fixture outfit-set review journey**
-   - Dependency: merged Issue #139.
-   - Outcome: make trusted selection, owned-first preference, duplicate-formula
-     exclusion, boundary tie, insufficiency, and abstention reviewable before
-     real wardrobe integration.
+1. **Complete and review Issue #141**
+   - Outcome: prove set-level selection is understandable before any real
+     profile, wardrobe, website, app, extension, or AI Stylist integration.
+2. **Define the personalized daily-outfit intent boundary**
+   - Dependency: merged Issues #139 and #141.
+   - Outcome: translate a bounded occasion, weather/season, dress-code, and
+     availability request into the shared outfit-set contract without
+     collecting location, calendar, or full private wardrobe data.
 3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -49,6 +49,12 @@ Deploy Health Check run `30185947279`. Issue #139 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #139 / PR #140:** merged after 782 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refreshes, Pages run
+  `30186080121`, and Deploy Health Check run `30186104289`. Trust gates,
+  five-part diversity, comparable-quality owned preference, exact ties,
+  insufficiency, and abstention now share one minimized, commerce-free
+  contract.
 - **Issue #137 / PR #138:** merged after 770 tests, every deterministic
   validator, browser QA, five passing GitHub checks, serialized Ops refreshes,
   Pages run `30185926948`, and Deploy Health Check run `30185947279`. Eight

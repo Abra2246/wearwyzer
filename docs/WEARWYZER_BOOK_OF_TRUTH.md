@@ -944,6 +944,15 @@ references, and owner.
   commercial influence, accounts, analytics, network, purchasing, credentials,
   and external actions remain outside the result. Current pre-PR validation
   baseline: 782 tests.
+- Issue #141 makes Personalized Outfit Set Recommendation reviewable as a
+  default-off fixture journey. Complete two/three-outfit sets, owned-first
+  preference, duplicate-formula exclusion, selection-boundary ties,
+  insufficiency, none-qualified, and stale-evidence states keep selection,
+  policy, compatibility, confidence, ownership, formula, and reason evidence
+  visible. Mode changes clear prior results; reset restores deterministic
+  defaults and focus. The route stores nothing and exposes no account, network,
+  analytics, tracking, affiliate, retailer, purchase, or external action.
+  Current pre-PR validation baseline: 794 tests.
 
 ## Final north-star statement
 

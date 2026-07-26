@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Outfit Set fixture journey (issue #141)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route for complete two- and
+  three-outfit sets, owned-first preference, duplicate-formula exclusion,
+  boundary ties, insufficiency, abstention, and stale evidence.
+- Selected/tied/qualified IDs, decision reasons, policy thresholds, and every
+  candidate's compatibility, coverage, confidence, ownership, formula, reasons,
+  and accepted-result reference.
+### Safety
+- The page delegates to the accepted Outfit Set contract and does not recreate
+  qualification, diversity, ranking, or tie policy.
+- It collects and stores nothing and exposes no account, network, analytics,
+  tracking, affiliate, retailer, purchase, or external action.
+### Validation
+- 794/794 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Personalized Outfit Set Recommendation (issue #139)
 ### Added
 - A closed, versioned fixture contract that converts accepted Outfit
