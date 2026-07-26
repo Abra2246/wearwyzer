@@ -1,16 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:18:55.015Z",
+  "generatedAtIso": "2026-07-26T02:24:23.537Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 119,
-    "title": "Define the fixture Closet Health Score",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/119",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-26T02:17:59Z"
-  },
+  "automationState": "idle",
+  "activeWork": null,
   "queue": {
     "depth": 0,
     "readyCount": 0,
@@ -18,8 +11,8 @@
   },
   "ci": {
     "status": "passing",
-    "lastRunIso": "2026-07-26T02:16:42Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184294681"
+    "lastRunIso": "2026-07-26T02:24:23Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184494960"
   },
   "deployment": {
     "status": "unknown",
@@ -59,6 +52,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-26T02:17:59.000Z",
+  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
   "staleAfterMinutes": 30
 }
