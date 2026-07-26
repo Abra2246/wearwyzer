@@ -866,6 +866,15 @@ references, and owner.
   score output and offers no shopping, tracking, account, or external action.
   Current pre-PR validation baseline: 676 tests, every deterministic validator,
   and browser QA.
+- Issue #123 defines the first fixture Fit Intelligence boundary for future
+  website, app, and extension clients. Explicit coarse size/fit preferences,
+  same-brand corrections, and current verified product evidence may support
+  guidance; stale, conflicting, ambiguous, unsupported, or unavailable
+  evidence produces no substitute guess. Results remain minimized and clearly
+  labeled as guidance—not guaranteed fit—and cannot use measurements, body
+  inference, photos, prices, retailers, or affiliate incentives. Current
+  pre-PR validation baseline: 687 tests plus every deterministic repository
+  validator.
 
 ## Final north-star statement
 
