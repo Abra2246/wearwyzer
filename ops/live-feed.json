@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:24:41.695Z",
+  "generatedAtIso": "2026-07-26T02:30:53.991Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:24:41.695Z",
+      "lastUpdatedIso": "2026-07-26T02:30:53.991Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -30,9 +30,9 @@
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-26T02:24:23Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184494960",
+          "status": "unknown",
+          "latestRunIso": "2026-07-26T02:30:43Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184671191",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,21 +45,21 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:24:41.695Z",
+      "lastUpdatedIso": "2026-07-26T02:30:53.991Z",
       "fetchOk": true,
       "data": {
-        "status": "unknown",
-        "lastHealthyShaShort": null,
-        "lastDeployIso": "2026-07-26T02:24:40Z",
-        "ageMinutes": 0,
-        "pagesUrl": null
+        "status": "healthy",
+        "lastHealthyShaShort": "bd2811f",
+        "lastDeployIso": "2026-07-26T02:24:59Z",
+        "ageMinutes": 6,
+        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
     },
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:24:41.695Z",
+      "lastUpdatedIso": "2026-07-26T02:30:53.991Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:24:41.695Z",
+      "lastUpdatedIso": "2026-07-26T02:30:53.991Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +126,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:122",
+      "timestampIso": "2026-07-26T02:30:35Z",
+      "type": "pr-merged",
+      "summary": "PR #122 \"Build fixture Closet Health journey\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/122"
+    },
+    {
+      "key": "deploy:bd2811f",
+      "timestampIso": "2026-07-26T02:24:59Z",
+      "type": "deployed",
+      "summary": "Deployed build bd2811f — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:2026-07-26T02:24:40Z",
       "timestampIso": "2026-07-26T02:24:40Z",
@@ -460,20 +474,6 @@
       "timestampIso": "2026-07-26T00:33:03Z",
       "type": "deployed",
       "summary": "Deployed build 856b100 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "pr-merged:92",
-      "timestampIso": "2026-07-26T00:32:04Z",
-      "type": "pr-merged",
-      "summary": "PR #92 \"Build fixture onboarding and wardrobe intake\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/92"
-    },
-    {
-      "key": "deploy:3364dca",
-      "timestampIso": "2026-07-26T00:17:29Z",
-      "type": "deployed",
-      "summary": "Deployed build 3364dca — health checks passed.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
