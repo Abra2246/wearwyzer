@@ -28,7 +28,7 @@ minutes, providing a second consecutive successful autonomous handoff.
      documents adapter responsibilities, data ownership, failure propagation,
      revocation timing, stale-snapshot behavior, client trust boundaries, and
      the later production gates.
-   - Evidence: 891/891 deterministic tests (17 new), and
+   - Evidence: 894/894 deterministic tests (20 new), and
      `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
      `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
      `compare-legacy-adapter.mjs` all ran clean (all reported warnings

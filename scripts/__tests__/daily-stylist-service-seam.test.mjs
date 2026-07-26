@@ -121,6 +121,16 @@ test('cross-account access stops at authorize-same-account-ownership after authe
   assert.equal(result.response, null);
 });
 
+test('a session without personalization scope stops at authorization', () => {
+  const result = run({ session: session({ scopes: ['profile:read'] }) });
+  assert.equal(result.stoppedAtStep, 'authorize-same-account-ownership');
+  assert.equal(result.reasonCode, 'cross-account-access-denied');
+  assert.deepEqual(result.trace.map((entry) => entry.step), [
+    'authenticate-session',
+    'authorize-same-account-ownership',
+  ]);
+});
+
 test('revoked personalization consent stops at verify-active-personalization-consent after ownership passes', () => {
   const service = fixtureService();
   const revoked = service.revokeConsent({ actorAccountId: ACCOUNT_ID, consentId: CONSENT_ID, nowIso: NOW });
@@ -149,6 +159,23 @@ test('an unresolved profile reference stops at resolve-profile-reference after o
   assert.equal(result.response, null);
 });
 
+test('an unresolved wardrobe snapshot stops at snapshot verification after the profile resolves', () => {
+  const result = run({
+    requestEnvelope: requestEnvelope({
+      wardrobeSnapshotReference: 'unknown-wardrobe-snapshot-01',
+    }),
+  });
+  assert.equal(result.stoppedAtStep, 'verify-wardrobe-snapshot-current');
+  assert.equal(result.reasonCode, 'wardrobe-snapshot-stale-or-unresolved');
+  assert.deepEqual(result.trace.map((entry) => entry.step), [
+    'authenticate-session',
+    'authorize-same-account-ownership',
+    'verify-active-personalization-consent',
+    'resolve-profile-reference',
+    'verify-wardrobe-snapshot-current',
+  ]);
+});
+
 test('a stale wardrobe snapshot stops at verify-wardrobe-snapshot-current after every earlier step passes', () => {
   const service = fixtureService();
   service.state.wardrobeSnapshots.get(FIXTURE_WARDROBE_SNAPSHOT_ID).createdAtIso = '2026-01-01T00:00:00.000Z';
@@ -165,11 +192,8 @@ test('a stale wardrobe snapshot stops at verify-wardrobe-snapshot-current after 
   assert.equal(result.response, null);
 });
 
-test('too few resolved wardrobe items stop at derive-minimized-outfit-candidates', () => {
-  const service = fixtureService();
-  service.state.wardrobeSnapshots.get(FIXTURE_WARDROBE_SNAPSHOT_ID).items =
-    service.state.wardrobeSnapshots.get(FIXTURE_WARDROBE_SNAPSHOT_ID).items.slice(0, 2);
-  const result = run({ privateService: service });
+test('insufficient closed fixture evidence stops at candidate derivation', () => {
+  const result = run({ fixtureCandidateMode: 'insufficient' });
   assert.equal(result.stoppedAtStep, 'derive-minimized-outfit-candidates');
   assert.equal(result.reasonCode, 'insufficient-minimized-candidates');
   assert.deepEqual(result.trace.map((entry) => entry.step), [
@@ -183,12 +207,22 @@ test('too few resolved wardrobe items stop at derive-minimized-outfit-candidates
   assert.equal(result.response, null);
 });
 
-test('an exact-zero-item wardrobe snapshot also fails closed at derive-minimized-outfit-candidates', () => {
+test('unsupported fixture candidate modes fail before service execution', () => {
+  assert.deepEqual(
+    run({ fixtureCandidateMode: 'live-wardrobe' }),
+    { ok: false, error: 'closed-fixture-candidate-mode-required' },
+  );
+});
+
+test('candidate derivation does not inspect wardrobe contents or item count', () => {
+  const first = run();
   const service = fixtureService();
   service.state.wardrobeSnapshots.get(FIXTURE_WARDROBE_SNAPSHOT_ID).items = [];
-  const result = run({ privateService: service });
-  assert.equal(result.stoppedAtStep, 'derive-minimized-outfit-candidates');
-  assert.equal(result.reasonCode, 'insufficient-minimized-candidates');
+  const second = run({ privateService: service });
+  assert.equal(
+    serializeDailyStylistServiceSeamResult(first),
+    serializeDailyStylistServiceSeamResult(second),
+  );
 });
 
 test('review-required context outcomes are preserved unchanged from Daily Outfit Intent', () => {
@@ -207,18 +241,10 @@ test('abstention outcomes from a conflicting context are preserved unchanged', (
 });
 
 test('an exact ranking tie across the selection boundary is preserved, not broken, by the seam', () => {
-  const service = fixtureService();
-  const snapshot = service.state.wardrobeSnapshots.get(FIXTURE_WARDROBE_SNAPSHOT_ID);
-  snapshot.items = Array.from({ length: 9 }, (_, index) => ({
-    wardrobeItemId: `tie-item-${index}`,
-    productId: `tie-product-${index}`,
-    matchState: 'exact',
-    matchConfidence: 1,
-    size: null,
-    fitNote: null,
-    createdAtIso: NOW,
-  }));
-  const result = run({ privateService: service, requestEnvelope: requestEnvelope({ desiredCount: 2 }) });
+  const result = run({
+    fixtureCandidateMode: 'tie',
+    requestEnvelope: requestEnvelope({ desiredCount: 2 }),
+  });
   assert.equal(result.outcome, 'completed');
   assert.equal(result.response.outcome, 'review-required');
   assert.equal(result.response.tiedOutfitIds.length, 3);

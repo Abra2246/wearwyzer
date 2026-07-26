@@ -1,5 +1,8 @@
 import { stableSerialize } from './ai-stylist-evaluator.mjs';
-import { validatePrivateSession } from './private-access-security-policy.mjs';
+import {
+  authorizePrivateAction,
+  validatePrivateSession,
+} from './private-access-security-policy.mjs';
 import { createFixturePrivateService } from './private-profile-service-contract.mjs';
 import {
   RESOLUTION_STEPS,
@@ -20,13 +23,9 @@ export const DAILY_STYLIST_SERVICE_SEAM_VERSION = 'daily-stylist-service-seam-v1
 const SEAM_EVIDENCE_VERSION = 1;
 const STYLE_DNA_VERSION = 'style-dna-v1';
 
-// One synthetic capsule per three resolved (but never inspected) wardrobe
-// items. Capsule content is entirely synthetic fixture evidence — the real
-// wardrobe items only gate *how many* capsules may be derived, never what
-// goes in them, so nothing private ever reaches a candidate.
-const CAPSULE_ITEM_ROLES = Object.freeze(['top', 'bottom', 'footwear']);
+const CAPSULE_ITEM_ROLES = Object.freeze(['top', 'bottom', 'footwear', 'outerwear']);
 const MIN_MINIMIZED_CANDIDATES = 2;
-const MAX_MINIMIZED_CANDIDATES = 4;
+const FIXTURE_CANDIDATE_MODES = new Set(['ready', 'tie', 'insufficient']);
 const CAPSULE_STYLE_SIGNALS = Object.freeze([
   Object.freeze({
     dimension: 'palette',
@@ -60,6 +59,14 @@ const CAPSULE_STYLE_SIGNALS = Object.freeze([
     confidence: 1,
     evidenceCode: 'fixture-minimized-capsule-signal',
   }),
+  Object.freeze({
+    dimension: 'layering',
+    value: 'outer-layer',
+    sentiment: 'positive',
+    source: 'explicit-user',
+    confidence: 1,
+    evidenceCode: 'fixture-minimized-capsule-signal',
+  }),
 ]);
 
 const STEP_REASON_CODES = Object.freeze(
@@ -83,7 +90,7 @@ const REFERENCE_ERROR_STEP = Object.freeze({
   'stale-wardrobe-snapshot': 'verify-wardrobe-snapshot-current',
 });
 
-function capsuleItem(capsuleId, role) {
+function capsuleItem(capsuleId, role, missingDimensions = []) {
   return {
     itemId: `${capsuleId}-${role}`,
     productId: `fixture-synthetic-${capsuleId}-${role}`,
@@ -91,26 +98,28 @@ function capsuleItem(capsuleId, role) {
     role,
     evidenceState: 'current',
     aesthetics: ['minimal'],
-    palette: ['navy'],
-    silhouette: 'relaxed',
-    formality: 'smart-casual',
-    materials: ['cotton'],
+    palette: [missingDimensions.includes('palette') ? 'coral' : 'navy'],
+    silhouette: missingDimensions.includes('silhouette') ? 'boxy' : 'relaxed',
+    formality: missingDimensions.includes('formality') ? 'formal' : 'smart-casual',
+    materials: [missingDimensions.includes('material') ? 'polyester' : 'cotton'],
     occasions: [...DAILY_OUTFIT_CONTEXT_ALLOWLISTS.occasions],
     seasons: ['transitional'],
-    layering: 'base',
+    layering: role === 'outerwear'
+      ? (missingDimensions.includes('layering') ? 'mid-layer' : 'outer-layer')
+      : 'base',
     riskLevel: 'balanced',
     fitStatus: 'verified',
   };
 }
 
-function minimizedCapsuleCandidate(capsuleId, occasion) {
+function minimizedCapsuleCandidate(capsuleId, occasion, missingDimensions = []) {
   const compatibility = evaluateOutfitCompatibility({
     outfitId: capsuleId,
     evidenceVersion: SEAM_EVIDENCE_VERSION,
     styleDnaVersion: STYLE_DNA_VERSION,
     styleSignals: CAPSULE_STYLE_SIGNALS,
     target: { occasion, season: 'transitional' },
-    items: CAPSULE_ITEM_ROLES.map((role) => capsuleItem(capsuleId, role)),
+    items: CAPSULE_ITEM_ROLES.map((role) => capsuleItem(capsuleId, role, missingDimensions)),
   });
   if (!compatibility.ok) return null;
   return {
@@ -126,20 +135,31 @@ function minimizedCapsuleCandidate(capsuleId, occasion) {
   };
 }
 
-// Derivation only ever consumes the *count* of resolved wardrobe items, never
-// their identity — the count is the sole trust signal for how many minimized
-// synthetic candidates may be derived.
-function deriveMinimizedCandidates(resolvedWardrobeItemCount, occasion) {
-  const capsuleCount = Math.max(0, Math.min(
-    Math.floor(resolvedWardrobeItemCount / CAPSULE_ITEM_ROLES.length),
-    MAX_MINIMIZED_CANDIDATES,
-  ));
-  const candidates = [];
-  for (let index = 1; index <= capsuleCount; index += 1) {
-    const candidate = minimizedCapsuleCandidate(`minimized-capsule-${index}`, occasion);
-    if (candidate) candidates.push(candidate);
-  }
-  return candidates;
+// This is a service-sequencing fixture, not a wardrobe-derived recommendation.
+// Candidate modes are closed synthetic evidence. The seam passes only the
+// already-authorized snapshot reference to this adapter and never reads the
+// snapshot's items, count, identity, size, or fit evidence.
+function deriveMinimizedCandidates(wardrobeSnapshotReference, occasion, mode) {
+  if (!wardrobeSnapshotReference || !FIXTURE_CANDIDATE_MODES.has(mode)) return [];
+  const plans = mode === 'tie'
+    ? [
+      ['minimized-capsule-1', []],
+      ['minimized-capsule-2', []],
+      ['minimized-capsule-3', []],
+    ]
+    : mode === 'insufficient'
+      ? [['minimized-capsule-1', []]]
+      : [
+        ['minimized-capsule-1', []],
+        ['minimized-capsule-2', ['layering']],
+        ['minimized-capsule-3', ['material']],
+        ['minimized-capsule-4', ['palette']],
+      ];
+  return plans
+    .map(([capsuleId, missingDimensions]) => (
+      minimizedCapsuleCandidate(capsuleId, occasion, missingDimensions)
+    ))
+    .filter(Boolean);
 }
 
 function freezeTrace(entries) {
@@ -150,6 +170,7 @@ export function runDailyStylistServiceSeam({
   session,
   requestEnvelope,
   privateService,
+  fixtureCandidateMode = 'ready',
   nowIso = new Date().toISOString(),
 } = {}) {
   const planned = planDailyStylistProductionRequest(requestEnvelope);
@@ -157,6 +178,9 @@ export function runDailyStylistServiceSeam({
     return { ok: false, error: planned.error };
   }
   const request = planned.result;
+  if (!FIXTURE_CANDIDATE_MODES.has(fixtureCandidateMode)) {
+    return { ok: false, error: 'closed-fixture-candidate-mode-required' };
+  }
   const service = privateService ?? createFixturePrivateService({ nowIso });
   const entries = [];
 
@@ -188,6 +212,21 @@ export function runDailyStylistServiceSeam({
   // Steps 2-5: ownership, consent, profile resolution, snapshot freshness —
   // composed from the accepted fixture private profile/wardrobe service in
   // the single order it already enforces internally.
+  const requestedProfile = service.state.profiles.get(request.profileReference);
+  const requestedSnapshot = service.state.wardrobeSnapshots
+    .get(request.wardrobeSnapshotReference);
+  const ownerAccountId = requestedProfile?.accountId ?? requestedSnapshot?.accountId;
+  const access = ownerAccountId
+    ? authorizePrivateAction({
+      session,
+      ownerAccountId,
+      requiredScope: 'personalization:evaluate',
+      mutation: false,
+      nowIso,
+    })
+    : { allowed: false };
+  if (!access.allowed) return stop('authorize-same-account-ownership');
+
   const references = service.getPersonalizationReferences({
     actorAccountId: session.accountId,
     profileId: request.profileReference,
@@ -195,7 +234,11 @@ export function runDailyStylistServiceSeam({
     nowIso,
   });
   if (!references.ok) {
-    const failedStep = REFERENCE_ERROR_STEP[references.error] ?? 'authorize-same-account-ownership';
+    const failedStep = references.error === 'private-context-not-found'
+      ? requestedProfile
+        ? 'verify-wardrobe-snapshot-current'
+        : 'resolve-profile-reference'
+      : REFERENCE_ERROR_STEP[references.error] ?? 'authorize-same-account-ownership';
     const failedIndex = REFERENCE_STEP_ORDER.indexOf(failedStep);
     for (let index = 0; index < failedIndex; index += 1) pass(REFERENCE_STEP_ORDER[index]);
     return stop(failedStep);
@@ -206,8 +249,11 @@ export function runDailyStylistServiceSeam({
   pass('verify-wardrobe-snapshot-current');
 
   // Step 6: derive-minimized-outfit-candidates
-  const wardrobeSnapshot = service.state.wardrobeSnapshots.get(references.wardrobeSnapshotId);
-  const candidates = deriveMinimizedCandidates(wardrobeSnapshot.items.length, request.context.occasion);
+  const candidates = deriveMinimizedCandidates(
+    references.wardrobeSnapshotId,
+    request.context.occasion,
+    fixtureCandidateMode,
+  );
   if (candidates.length < MIN_MINIMIZED_CANDIDATES) return stop('derive-minimized-outfit-candidates');
   pass('derive-minimized-outfit-candidates');
 

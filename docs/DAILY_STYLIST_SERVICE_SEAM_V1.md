@@ -26,8 +26,9 @@ re-derives any of their policy:
 | --- | --- | --- |
 | Envelope validation | `planDailyStylistProductionRequest` (`scripts/daily-stylist-production-boundary-contract.mjs`) | The closed request-envelope schema and the `RESOLUTION_STEPS` plan |
 | 1. Authenticate session | `validatePrivateSession` (`scripts/private-access-security-policy.mjs`) | Session shape, lifetime, expiry, CSRF |
+| 2. Authorize request | `authorizePrivateAction` (`scripts/private-access-security-policy.mjs`) | Same-account ownership and required personalization scope |
 | 2–5. Ownership, consent, profile, snapshot | `getPersonalizationReferences` (`scripts/private-profile-service-contract.mjs`) | Account/profile/wardrobe-snapshot/consent records |
-| 6. Derive candidates | this seam (new, synthetic-only) | Only the resolved wardrobe snapshot's item **count** |
+| 6. Derive candidates | this seam (new, synthetic-only) | The authorized wardrobe snapshot reference plus a closed fixture evidence mode |
 | 7. Delegate intent | `evaluateDailyOutfitIntent` (`scripts/daily-outfit-intent-contract.mjs`) | Context validation, ranking, ties, uncertainty, abstention |
 | 8. Adapt response | `adaptDailyOutfitStylistResponse` (`scripts/grounded-daily-outfit-stylist.mjs`) | Response wording, citations, minimized outfit evidence |
 
@@ -89,18 +90,18 @@ receives, exactly as `getPersonalizationReferences` already does.
 
 ## Minimized candidate derivation
 
-Step 6 turns only the **count** of items in the resolved wardrobe snapshot
-into synthetic three-item capsule candidates (`top`/`bottom`/`footwear`,
-`docs/OUTFIT_COMPATIBILITY_V1.md`'s minimum viable outfit) — one capsule per
-three resolved items, capped at four capsules. The real wardrobe items'
-identity, brand, size, or fit evidence is never read; the count is the only
-signal that passes from the private resolution step to derivation, so
-step 5 (verify snapshot) must always precede step 6 by construction, and
-nothing private can leak into a candidate. Fewer than two derivable capsules
-(`insufficient-minimized-candidates`) is a valid fail-closed stop, unreachable
-only in the sense that a person with too few catalogued wardrobe items will
-not get a Daily Stylist answer until they add more, exactly like the intent
-contract's own `insufficient-candidates` outcome one step later.
+Step 6 is deliberately a closed fixture adapter, not a wardrobe recommendation
+algorithm. It accepts only the already-authorized wardrobe snapshot reference
+plus one internal synthetic evidence mode (`ready`, `tie`, or `insufficient`).
+It never reads the snapshot's item contents, item count, identity, brand,
+size, or fit evidence. The closed modes produce deterministic synthetic
+four-item capsules (`top`/`bottom`/`footwear`/`outerwear`) solely to prove
+success, tie preservation, and first-failure stopping through the accepted
+contracts. An unsupported mode fails before service execution.
+
+Real candidate derivation remains a separate production gate: it must operate
+inside the authorized private service boundary, use minimized evidence, and
+must not infer outfit usefulness from wardrobe size alone.
 
 ## Client trust boundaries
 
@@ -131,9 +132,10 @@ accepted fixture input every time, for both completed and stopped outcomes.
 and `serializeDailyStylistServiceSeamResult`.
 `scripts/__tests__/daily-stylist-service-seam.test.mjs` covers: an accepted
 request executing every step in order; the invalid-request short-circuit; a
-missing and an expired session; cross-account denial; consent revocation;
-an unresolved profile reference; a stale snapshot; insufficient candidates
-(including the zero-item edge case); review-required and abstention context
+missing and an expired session; cross-account and missing-scope denial;
+consent revocation; unresolved profile and snapshot references; a stale
+snapshot; insufficient closed fixture evidence; proof that candidate
+derivation ignores wardrobe contents and count; review-required and abstention context
 outcomes passed through unmodified; an exact ranking tie preserved, not
 broken; byte stability for both completed and stopped outcomes; and the
 minimized-output privacy, shape, and commercial/external-action exclusions.

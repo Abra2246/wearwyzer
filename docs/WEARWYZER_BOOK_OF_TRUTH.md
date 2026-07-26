@@ -1054,7 +1054,7 @@ references, and owner.
   tie, insufficiency, and abstention outcomes remain entirely owned by the
   two accepted contracts. No route, endpoint, account, session, database,
   provider, or real private record exists. Current pre-PR validation
-  baseline: 891 tests.
+  baseline: 894 tests.
 
 ## Final north-star statement
 
