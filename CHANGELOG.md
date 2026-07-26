@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Serialized Ops feed writers (issue #93)
+### Fixed
+- The v1 status and v2 live-feed workflows now ignore both generated Ops JSON
+  files on push, eliminating their cross-trigger ping-pong loop.
+- Both writers share one non-cancelling concurrency group so a running writer
+  finishes before the next writer starts.
+- A rejected push no longer attempts to rebase an already-generated snapshot.
+  The bounded retry resets the isolated runner to current `origin/main`,
+  regenerates only its derived Ops JSON, and retries without force-pushing or
+  resolving source-code conflicts.
+- Active and staged workflow copies share the same guarded write behavior.
+### Validation
+- A deterministic workflow regression checks shared serialization,
+  cross-trigger suppression, regeneration from current `main`, bounded retries,
+  and the absence of rebase/force-push behavior.
+
 ## Unreleased (2026-07-26) — Fixture onboarding and wardrobe intake (issue #89)
 ### Added
 - `onboarding-wardrobe-intake.dc.html`: an unlinked, `noindex`, default-off,
