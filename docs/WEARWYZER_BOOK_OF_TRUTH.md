@@ -892,6 +892,14 @@ references, and owner.
   verified fit, and cannot use commercial incentives or popularity. Current
   pre-PR validation baseline: 710 tests plus every deterministic repository
   validator.
+- Issue #129 makes Brand Preference and Fit Memory reviewable as a default-off
+  fixture journey. Explicit and inferred evidence, correction precedence and
+  reversal, avoidance, conflict, low-confidence exclusion, minimized fit
+  outcomes, and the fixed recommendation priority remain visibly distinct.
+  Changing evidence clears prior results; reset restores deterministic
+  defaults and focus. The route collects no behavior and exposes no account,
+  network, tracking, analytics, affiliate, retailer, purchase, or external
+  action. Current pre-PR validation baseline: 722 tests.
 
 ## Final north-star statement
 

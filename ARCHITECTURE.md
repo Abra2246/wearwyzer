@@ -647,6 +647,13 @@ break an otherwise equal tie. The minimized result excludes browsing and raw
 wear/purchase history, private notes, account data, prices, retailers,
 commercial incentives, popularity, analytics, network, or external action.
 
+The Issue #129 fixture journey exposes this contract only behind the exact
+`ww_brand_memory=1` query flag on an unlinked, `noindex` page. It makes explicit
+and inferred evidence, correction precedence and reversal, avoidance,
+conflicts, low-confidence exclusion, minimized fit memory, and the fixed policy
+reviewable without observing behavior or introducing account, network,
+tracking, analytics, or commerce behavior.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
