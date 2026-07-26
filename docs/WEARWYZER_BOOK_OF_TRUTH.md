@@ -1020,6 +1020,26 @@ references, and owner.
   The closed synthetic evidence makes `travel` an exact boundary-tie review
   and `event` an insufficient-candidate abstention so these accepted
   non-answer paths remain visible without adding a scenario or hidden input.
+- Issue #159 defines the minimum production Daily Stylist data boundary: one
+  closed, versioned, byte-stable request envelope (request ID, stable
+  profile/wardrobe-snapshot references, the same six allowlisted explicit
+  context fields the composer already exposes, request timestamp) plus the
+  fixed eight-step required server-side resolution order — authenticate
+  session, authorize same-account ownership, verify active personalization
+  consent, resolve the profile reference, verify the wardrobe snapshot is
+  current, derive minimized outfit candidates, delegate to Daily Outfit
+  Intent, adapt the accepted Grounded Stylist response — with one explicit
+  fail-closed reason code per step. The envelope's closed key set rejects
+  every embedded profile/wardrobe/Style DNA/Fit DNA/size/measurement/photo/
+  note, live location/weather-provider/calendar/itinerary/browsing-history
+  value, credential, commerce/affiliate/purchase/notification/publishing
+  field, and client-asserted authorization/consent/freshness/ownership/
+  ranking/outcome field. The contract documents the resolution plan and
+  reason codes only; it resolves no real account, session, profile,
+  wardrobe snapshot, or candidate, and executes nothing. No route, endpoint,
+  provider, database, account, session, real user record, collection flow,
+  or production access exists. Current pre-PR validation baseline: 874
+  tests.
 
 ## Final north-star statement
 

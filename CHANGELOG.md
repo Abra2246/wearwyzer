@@ -2,6 +2,50 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Minimum production Daily Stylist data boundary (issue #159)
+### Added
+- `docs/DAILY_STYLIST_PRODUCTION_BOUNDARY_V1.md` and
+  `scripts/daily-stylist-production-boundary-contract.mjs` — one closed,
+  versioned, byte-stable `daily-stylist-production-boundary-v1` request
+  envelope: a request ID, stable profile/wardrobe-snapshot references, the
+  same six allowlisted explicit context fields the accepted Daily Outfit
+  Stylist composer already exposes (occasion, season class, weather class,
+  dress code, availability window, desired outfit count of two or three),
+  and a request timestamp.
+- The fixed, ordered eight-step required server-side resolution plan —
+  authenticate session, authorize same-account ownership, verify active
+  personalization consent, resolve the profile reference, verify the
+  wardrobe snapshot is current, derive minimized outfit candidates, delegate
+  to Daily Outfit Intent, adapt the accepted Grounded Stylist response —
+  with one explicit fail-closed reason code per step.
+- `scripts/daily-outfit-intent-contract.mjs` now exports
+  `DAILY_OUTFIT_CONTEXT_ALLOWLISTS` so the new boundary reuses the accepted
+  Daily Outfit Intent and Grounded Daily Outfit Stylist schemas by
+  reference, without recreating context validation, candidate ranking,
+  ties, uncertainty, abstention, or response wording.
+### Safety
+- The envelope's closed key set is the entire enforcement mechanism: an
+  embedded profile, wardrobe, Style DNA, Fit DNA, size, measurement, photo,
+  or note; an exact location, weather-provider payload, calendar,
+  itinerary, or browsing-history value; a credential; a commerce,
+  affiliate, purchase, notification, or publishing field; or a
+  client-asserted authorization, consent, snapshot-freshness, ownership,
+  ranking, or recommendation-outcome value all fail the same
+  `closed-minimized-request-envelope-required` check.
+- The contract produces the resolution plan and its reason codes only — it
+  never resolves a real account, session, profile, wardrobe snapshot, or
+  candidate, and never executes the plan. No route, endpoint, provider,
+  database, account, session, real user record, collection flow, or
+  production access is created.
+### Validation
+- 874/874 deterministic repository tests passed (15 new).
+- `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
+  `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
+  `compare-legacy-adapter.mjs` all ran clean against this change (all
+  reported warnings are pre-existing, unrelated to this contract, and
+  unchanged from the prior baseline — this change touches no product/guide
+  content data).
+
 ## Unreleased (2026-07-26) — Explicit-context Daily Outfit Stylist composer (issue #154)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated (`ww_daily_stylist_composer=1`)

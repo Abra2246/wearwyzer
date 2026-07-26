@@ -20,21 +20,31 @@ can complete the intended issue-to-PR handoff.
 ## Queued execution
 
 1. **Issue #159 — Minimum production Daily Stylist data boundary**
-   - Status: scoped; next safe queue-dispatched implementation.
-   - Scope: define one closed reference-only request envelope and required
-     server-side resolution order linking authenticated ownership, active
-     consent, current wardrobe evidence, minimized candidates, Daily Outfit
-     Intent, and the Grounded Stylist response.
+   - Status: implemented on branch `claude/issue-159-daily-stylist-production-boundary`;
+     PR #161 open for review (not yet merged).
+   - Scope delivered: `docs/DAILY_STYLIST_PRODUCTION_BOUNDARY_V1.md` and
+     `scripts/daily-stylist-production-boundary-contract.mjs` define the
+     closed, versioned, byte-stable request envelope and the fixed eight-step
+     required server-side resolution order (authenticate session, authorize
+     same-account ownership, verify active personalization consent, resolve
+     the profile reference, verify the wardrobe snapshot is current, derive
+     minimized outfit candidates, delegate to Daily Outfit Intent, adapt the
+     accepted Grounded Stylist response), each with an explicit fail-closed
+     reason code. `scripts/daily-outfit-intent-contract.mjs` now exports its
+     context allowlists so the boundary reuses them by reference.
+   - Evidence: 874/874 deterministic tests (15 new), and
+     `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
+     `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
+     `compare-legacy-adapter.mjs` all ran clean (no new warnings).
    - Boundary: contract and documentation only. No endpoint, provider,
      database, account, session, private record, collection, network, commerce,
      Chrome permission, personalized image, or external action is authorized.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #159**
-   - Outcome: specify the smallest consented profile/wardrobe/context
-     references future clients need, without implementing collection,
-     persistence, providers, or production access.
+1. **Review and merge PR #161 (Issue #159)**
+   - Outcome: independent review of the request envelope and resolution-plan
+     contract before it becomes the basis for any real server work.
 2. **Define the authenticated Daily Stylist service seam**
    - Dependency: merged Issue #159.
    - Outcome: specify how a future server resolves the accepted references and

@@ -19,6 +19,19 @@ const SEASONS = new Set(['warm', 'cold', 'transitional', 'unknown']);
 const WEATHER = new Set(['dry', 'rain', 'heat', 'cold', 'variable', 'unknown']);
 const DRESS_CODES = new Set(['casual', 'smart-casual', 'business-casual', 'formal', 'ambiguous']);
 const AVAILABILITY = new Set(['now', 'today', 'this-week', 'stale', 'unknown']);
+const DESIRED_COUNTS = new Set([2, 3]);
+
+// Exposed so other accepted boundaries (e.g. the production data boundary in
+// docs/DAILY_STYLIST_PRODUCTION_BOUNDARY_V1.md) can reuse the exact allowlists
+// by reference instead of recreating context validation.
+export const DAILY_OUTFIT_CONTEXT_ALLOWLISTS = Object.freeze({
+  occasions: Object.freeze([...OCCASIONS]),
+  seasonClasses: Object.freeze([...SEASONS]),
+  weatherClasses: Object.freeze([...WEATHER]),
+  dressCodes: Object.freeze([...DRESS_CODES]),
+  availabilityWindows: Object.freeze([...AVAILABILITY]),
+  desiredCounts: Object.freeze([...DESIRED_COUNTS]),
+});
 
 function exactKeys(value, keys) {
   return value
@@ -65,7 +78,7 @@ export function evaluateDailyOutfitIntent(input) {
     || !WEATHER.has(input.weatherClass)
     || !DRESS_CODES.has(input.dressCode)
     || !AVAILABILITY.has(input.availabilityWindow)
-    || ![2, 3].includes(input.desiredCount)
+    || !DESIRED_COUNTS.has(input.desiredCount)
     || !Array.isArray(input.candidates)) {
     return { ok: false, error: 'valid-minimized-daily-outfit-intent-required' };
   }

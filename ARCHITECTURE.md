@@ -903,6 +903,48 @@ context, private profile/closet, account, storage, camera, analytics,
 network, commerce, affiliate or retailer action, purchase, publishing,
 messaging, personalized likeness, or external action.
 
+## Decision — the minimum production Daily Stylist data boundary (issue #159)
+
+**Problem:** the accepted Daily Outfit Intent and Grounded Daily Outfit
+Stylist contracts assume an already-minimized request. Nothing yet specifies
+what a future authenticated website, app, or Chrome extension may actually
+send over the network to ask for a Daily Outfit Stylist answer, or the exact
+order a future server must resolve that request in — without that boundary,
+a future client implementation could reach for a convenient shortcut (an
+embedded profile, an asserted consent flag, a client-computed ranking) that
+silently reopens the private-data exposure the personalization platform
+otherwise closes.
+
+**Decision:** `docs/DAILY_STYLIST_PRODUCTION_BOUNDARY_V1.md` and
+`scripts/daily-stylist-production-boundary-contract.mjs` define one closed,
+versioned, byte-stable `daily-stylist-production-boundary-v1` request
+envelope — a request ID, stable profile/wardrobe-snapshot references, the
+same six allowlisted explicit context fields the accepted Daily Outfit
+Stylist composer already exposes, and a request timestamp — plus the fixed,
+ordered eight-step server-side resolution plan (authenticate session;
+authorize same-account ownership; verify active personalization consent;
+resolve the profile reference; verify the wardrobe snapshot is current;
+derive minimized outfit candidates; delegate to Daily Outfit Intent; adapt
+the accepted Grounded Stylist response) with one explicit fail-closed stop
+reason per step. `scripts/daily-outfit-intent-contract.mjs` now exports its
+context allowlists (`DAILY_OUTFIT_CONTEXT_ALLOWLISTS`) so this boundary
+reuses them by reference instead of recreating context validation, and the
+new contract cites the accepted Daily Outfit Intent and Grounded Daily
+Outfit Stylist schema versions rather than reimplementing ranking, ties,
+uncertainty, abstention, or response wording.
+
+**Boundary:** the envelope's closed key set is the entire enforcement
+mechanism — any embedded profile, wardrobe, Style DNA, Fit DNA, size,
+measurement, photo, note, exact location, weather-provider payload,
+calendar, itinerary, browsing history, credential, commerce/affiliate/
+purchase/notification/publishing field, or client-asserted authorization,
+consent, snapshot-freshness, ownership, ranking, or recommendation-outcome
+field fails the same closed check. The contract produces the resolution
+plan and its reason codes only; it never resolves a real account, session,
+profile, wardrobe snapshot, or candidate, and never executes the plan. No
+route, endpoint, provider, database, account, session, real user record,
+collection flow, or production access is created.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
