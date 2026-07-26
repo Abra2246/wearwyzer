@@ -1,9 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T01:57:59.305Z",
+  "generatedAtIso": "2026-07-26T01:59:58.558Z",
   "overallHealth": "yellow",
-  "automationState": "idle",
-  "activeWork": null,
+  "automationState": "working",
+  "activeWork": {
+    "issueNumber": 113,
+    "title": "Define the founder-gated AI Stylist provider experiment protocol",
+    "url": "https://github.com/Abra2246/wearwyzer/issues/113",
+    "prNumber": null,
+    "prUrl": null,
+    "lastActivityIso": "2026-07-26T01:59:10Z"
+  },
   "queue": {
     "depth": 0,
     "readyCount": 0,
@@ -52,6 +59,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
+  "lastMeaningfulActivityIso": "2026-07-26T01:59:10.000Z",
   "staleAfterMinutes": 30
 }
