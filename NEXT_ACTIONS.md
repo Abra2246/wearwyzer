@@ -11,14 +11,17 @@ non-interactive file tools. Issue #154 is implemented on branch
 repository tests pass (19 new) and `validate-content-data.mjs`,
 `qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
 `validate-hero-product-pages.mjs`, and `compare-legacy-adapter.mjs` all ran
-clean. A review PR is open; browser QA, GitHub checks, and production evidence
-remain required before merge.
+clean. Review PR #158 is open; interactive browser QA could not be run in
+this sandbox (no `curl`/browser binary in the permitted non-interactive
+command set, no `playwright`/`jsdom` dependency in this build-step-free
+repo), so PR #158 documents an explicit human browser-QA checklist. GitHub
+checks and production evidence also remain required before merge.
 
 ## Queued execution
 
 1. **Issue #154 — Explicit-context Daily Outfit Stylist composer fixture**
-   - Status: implemented; review PR open, awaiting browser QA, GitHub checks,
-     and human review before merge.
+   - Status: implemented; PR #158 open, awaiting human browser QA, GitHub
+     checks, and review before merge.
    - Scope: let a person choose allowlisted coarse context and receive the
      accepted grounded answer or honest non-answer from a deterministic
      synthetic candidate pool.
