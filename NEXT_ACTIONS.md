@@ -5,22 +5,36 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** Issue #165 merged via PR #167 after independent
-scenario, trace, privacy, accessibility, and browser review. 910/910
-deterministic tests, every repository validator, and five GitHub checks
-passed. Pages run `30189585511`, Content pipeline run `30189585497`, Ops Live
-Feed run `30189585506`, Ops Status run `30189585508`, and Deploy Health Check
-run `30189609522` succeeded; the live fixture route returns HTTP 200. Queue
-run `30189129107` created its branch and PR in thirteen minutes, providing a
-fourth consecutive successful autonomous handoff.
+**Evidence baseline:** implementation branch
+`claude/issue-168-daily-stylist-web-transport-boundary`. 949/949 deterministic
+tests (39 new), every repository validator (`validate-content-data.mjs`,
+`qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
+`validate-hero-product-pages.mjs`, `compare-legacy-adapter.mjs`) passed
+locally. PR pending open for review (not yet merged); full repository,
+deployment, and production evidence remain required before completion. Prior
+baseline: Issue #165 merged via PR #167 after independent scenario, trace,
+privacy, accessibility, and browser review, 910/910 deterministic tests,
+every repository validator, and five GitHub checks passed.
 
 ## Queued execution
 
 1. **Issue #168 — Signed-in web transport contract for Daily Stylist**
-   - Status: ready for autonomous implementation.
-   - Outcome: define the provider-neutral boundary between a signed-in web
-     client, trusted middleware, and the accepted service seam, including
-     client-safe stopped responses and a production decision packet.
+   - Status: implemented on branch
+     `claude/issue-168-daily-stylist-web-transport-boundary`; PR pending
+     open for review (not yet merged).
+   - Scope delivered: `scripts/daily-stylist-web-transport-boundary.mjs`
+     (`runDailyStylistWebTransportBoundary`) validates a closed transport
+     context (method, media type, same-origin result, CSRF result,
+     request-ID evidence) and the accepted request envelope before the
+     service seam ever runs, delegates unchanged to
+     `runDailyStylistServiceSeam` (issue #162), and renames its outcome into
+     one closed client response (`ready`/`review-required`/`abstained` with
+     the unmodified Grounded Stylist response, or seven client-safe stopped
+     categories with no response payload). Includes a production decision
+     packet naming ten still-unresolved production choices.
+   - Evidence: 949/949 deterministic tests (39 new), every repository
+     validator ran clean (pre-existing warnings only, unchanged from
+     baseline).
    - Boundary: deterministic fixture adapters only. No endpoint, auth/storage
      provider, cookie, database, production account/session, real private
      record, network, commerce, Chrome permission, personalized image, or
@@ -28,12 +42,12 @@ fourth consecutive successful autonomous handoff.
 
 ## Next executable tasks
 
-1. **Implement Issue #168 — signed-in web transport contract**
-   - Dependency: satisfied by merged Issues #159, #162, and #165.
-   - Outcome: validate only closed browser input, delegate unchanged to the
-     service seam, return client-safe results without an existence oracle,
-     and expose every unresolved production decision without choosing a
-     provider implicitly.
+1. **Independent review of Issue #168's PR**
+   - Dependency: PR opened for `claude/issue-168-daily-stylist-web-transport-boundary`.
+   - Outcome: confirm the transport/envelope rejection order, the client
+     status mapping (especially the no-existence-oracle property and the
+     absence of trace/session/reason-code leakage), byte stability, and the
+     production decision packet, then merge.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.

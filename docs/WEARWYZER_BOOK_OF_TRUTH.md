@@ -1074,6 +1074,32 @@ references, and owner.
   record, network call, persistence, commerce, or external action exists, and
   the route is absent from `sitemap.xml` and every other page's navigation.
   Current pre-PR validation baseline: 910 tests.
+- Issue #168 defines the signed-in web transport boundary between a browser,
+  trusted web middleware, and the Issue #162 service seam. A closed
+  `daily-stylist-web-transport-context-v1` transport context (method, media
+  type, same-origin result, CSRF result, request-ID/idempotency evidence,
+  all resolved by trusted middleware, never the browser) rejects a
+  non-`POST` method, a non-JSON media type, an unverified origin, a failed
+  CSRF result, or a mismatched request ID as one closed check before the
+  service seam runs; the accepted request body reuses the Issue #159
+  envelope validator directly, so unknown fields, credentials, private
+  payloads, live-context fields, commercial fields, external-action fields,
+  and client-asserted authorization/consent/ranking fields also fail closed
+  before the seam runs. An accepted request delegates unchanged to
+  `runDailyStylistServiceSeam`; its outcome is renamed into one closed
+  client response — `ready`/`review-required`/`abstained` with the
+  unmodified Grounded Stylist response, or `unauthenticated`/`unauthorized`/
+  `consent-required`/`unresolved-context`/`stale-snapshot`/
+  `insufficient-candidates`/`service-unavailable` with no response payload —
+  never re-deriving why a step failed. The session is accepted only as an
+  opaque server-resolved reference, never embedded in the request or
+  response. A production decision packet names ten still-unresolved choices
+  (auth/session provider, cookie architecture, hosting, storage, retention,
+  privacy/legal review, monitoring, rate limiting, abuse prevention,
+  incident response) that this fixture deliberately does not make. No route,
+  endpoint, authentication provider, account, database, session, cookie,
+  real user record, or external action exists. Current pre-PR validation
+  baseline: 949 tests.
 
 ## Final north-star statement
 
