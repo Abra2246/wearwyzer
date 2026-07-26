@@ -5,47 +5,35 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** implementation branch
-`claude/issue-165-daily-stylist-service-seam-journey`. 910/910 deterministic
-tests (16 new), every repository validator (`validate-content-data.mjs`,
-`qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
-`validate-hero-product-pages.mjs`, `compare-legacy-adapter.mjs`), and
-Playwright browser QA across all thirteen scenarios plus the default-off
-state passed locally. PR #167 is open for review (not yet merged); full
-repository, deployment, and production evidence remain required before
-completion.
+**Evidence baseline:** Issue #165 merged via PR #167 after independent
+scenario, trace, privacy, accessibility, and browser review. 910/910
+deterministic tests, every repository validator, and five GitHub checks
+passed. Pages run `30189585511`, Content pipeline run `30189585497`, Ops Live
+Feed run `30189585506`, Ops Status run `30189585508`, and Deploy Health Check
+run `30189609522` succeeded; the live fixture route returns HTTP 200. Queue
+run `30189129107` created its branch and PR in thirteen minutes, providing a
+fourth consecutive successful autonomous handoff.
 
 ## Queued execution
 
-1. **Issue #165 — Fixture Daily Stylist service-seam review journey**
-   - Status: implemented on branch
-     `claude/issue-165-daily-stylist-service-seam-journey`; PR #167 is open
-     for review (not yet merged).
-   - Scope delivered: `daily-stylist-service-seam-fixture.dc.html`
-     (`ww_daily_stylist_service_seam=1`) composes
-     `scripts/daily-stylist-service-seam-journey.mjs`
-     (`createDailyStylistServiceSeamJourney`) over the accepted
-     `runDailyStylistServiceSeam` (issue #162) across thirteen closed
-     scenarios covering authenticated success, every trust failure, unknown
-     and contradictory context, and an exact selection-boundary tie, with a
-     closed `RESOLUTION_STEPS` row list proving the first failed step and
-     every not-executed step after it.
-   - Evidence: 910/910 deterministic tests (16 new), every repository
-     validator ran clean (pre-existing warnings only, unchanged from
-     baseline), and Playwright browser QA confirmed a clean console, correct
-     step attribution for every scenario, scenario-change/reset/focus
-     behavior, no narrow-width overflow, and 44px controls.
+1. **Issue #168 — Signed-in web transport contract for Daily Stylist**
+   - Status: ready for autonomous implementation.
+   - Outcome: define the provider-neutral boundary between a signed-in web
+     client, trusted middleware, and the accepted service seam, including
+     client-safe stopped responses and a production decision packet.
    - Boundary: deterministic fixture adapters only. No endpoint, auth/storage
-     provider, database, production account/session, real private record,
-     network, commerce, Chrome permission, personalized image, or external
-     action is authorized.
+     provider, cookie, database, production account/session, real private
+     record, network, commerce, Chrome permission, personalized image, or
+     external action is authorized.
 
 ## Next executable tasks
 
-1. **Review and merge PR for Issue #165**
-   - Outcome: independent review of scenario coverage, step-trace fidelity,
-     and privacy exclusions before it becomes the reviewable proof of the
-     Issue #162 service seam.
+1. **Implement Issue #168 — signed-in web transport contract**
+   - Dependency: satisfied by merged Issues #159, #162, and #165.
+   - Outcome: validate only closed browser input, delegate unchanged to the
+     service seam, return client-safe results without an existence oracle,
+     and expose every unresolved production decision without choosing a
+     provider implicitly.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -65,6 +53,14 @@ completion.
 
 ## Closed or blocked with evidence
 
+- **Issue #165 / PR #167:** merged after 910 tests, every deterministic
+  validator, five passing GitHub checks, and browser QA across all thirteen
+  scenarios plus the default-off state. First-failure stopping, non-answer
+  preservation, reset focus, 360px containment, 44px controls, and a clean
+  console were verified. Pages run `30189585511`, Content pipeline run
+  `30189585497`, Ops Live Feed run `30189585506`, Ops Status run
+  `30189585508`, and Deploy Health Check run `30189609522` succeeded; the
+  live fixture route returns HTTP 200.
 - **Issue #162 / PR #164:** merged after 894 tests, every deterministic
   validator, five passing GitHub checks, and independent review. The seam now
   requires both same-account ownership and `personalization:evaluate` scope,
