@@ -5,51 +5,39 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** Issue #154 merged via PR #158 after 859/859
-deterministic tests, every repository validator, five passing GitHub checks,
-and independent browser QA across answers, context review, conflicts, an exact
-boundary tie, insufficiency, invalidation, reset/focus, control sizing,
-containment, and console behavior. Pages run `30188034359`, Content pipeline
-run `30188034367`, Ops Live Feed run `30188034343`, Ops Status run
-`30188034349`, and Deploy Health Check run `30188057881` succeeded; the live
-default-off route returns HTTP 200. The repaired Claude workflow also produced
-branch `claude/issue-154-daily-outfit-stylist-composer` and PR #158 from the
-queue-dispatched run `30187501015`, proving the restored file-tool allowlist
-can complete the intended issue-to-PR handoff.
+**Evidence baseline:** Issue #159 merged via PR #161 after independent
+versioning and opaque-reference review, 874/874 deterministic tests, every
+repository validator, and five passing GitHub checks. Pages run `30188393049`,
+Content pipeline run `30188393057`, Ops Live Feed run `30188393041`, Ops
+Status run `30188393063`, and Deploy Health Check run `30188419441` succeeded.
+The queue-dispatched Claude run `30188120561` created branch
+`claude/issue-159-daily-stylist-production-boundary` and PR #161 in eight
+minutes, providing a second consecutive successful autonomous handoff.
 
 ## Queued execution
 
-1. **Issue #159 — Minimum production Daily Stylist data boundary**
-   - Status: implemented on branch `claude/issue-159-daily-stylist-production-boundary`;
-     PR #161 open for review (not yet merged).
-   - Scope delivered: `docs/DAILY_STYLIST_PRODUCTION_BOUNDARY_V1.md` and
-     `scripts/daily-stylist-production-boundary-contract.mjs` define the
-     closed, versioned, byte-stable request envelope and the fixed eight-step
-     required server-side resolution order (authenticate session, authorize
-     same-account ownership, verify active personalization consent, resolve
-     the profile reference, verify the wardrobe snapshot is current, derive
-     minimized outfit candidates, delegate to Daily Outfit Intent, adapt the
-     accepted Grounded Stylist response), each with an explicit fail-closed
-     reason code. `scripts/daily-outfit-intent-contract.mjs` now exports its
-     context allowlists so the boundary reuses them by reference.
-   - Evidence: 874/874 deterministic tests (15 new), and
-     `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
-     `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
-     `compare-legacy-adapter.mjs` all ran clean (no new warnings).
-   - Boundary: contract and documentation only. No endpoint, provider,
-     database, account, session, private record, collection, network, commerce,
-     Chrome permission, personalized image, or external action is authorized.
+1. **Issue #162 — Fixture authenticated Daily Stylist service seam**
+   - Status: scoped; next safe queue-dispatched implementation.
+   - Scope: compose the accepted request boundary, private access policy,
+     fixture private profile/wardrobe service, Daily Outfit Intent, and
+     Grounded Stylist adapter in the fixed eight-step order with first-failure
+     stopping and a minimized trace.
+   - Boundary: deterministic fixture adapters only. No endpoint, auth/storage
+     provider, database, production account/session, real private record,
+     network, commerce, Chrome permission, personalized image, or external
+     action is authorized.
 
 ## Next executable tasks
 
-1. **Review and merge PR #161 (Issue #159)**
-   - Outcome: independent review of the request envelope and resolution-plan
-     contract before it becomes the basis for any real server work.
-2. **Define the authenticated Daily Stylist service seam**
-   - Dependency: merged Issue #159.
-   - Outcome: specify how a future server resolves the accepted references and
-     delegates to existing contracts without choosing infrastructure or
-     processing real data.
+1. **Complete and review Issue #162**
+   - Outcome: prove the accepted service order, failure propagation, and
+     minimized result with synthetic fixture adapters before any infrastructure
+     or real private data exists.
+2. **Build a fixture service-seam review journey**
+   - Dependency: merged Issue #162.
+   - Outcome: make success, each trust failure, and non-answer preservation
+     reviewable behind a default-off, unlinked route without adding collection,
+     persistence, providers, or actions.
 3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -69,6 +57,15 @@ can complete the intended issue-to-PR handoff.
 
 ## Closed or blocked with evidence
 
+- **Issue #159 / PR #161:** merged after 874 tests, every deterministic
+  validator, five passing GitHub checks, and independent schema review. The
+  request now requires its exact version and bounded opaque IDs/references;
+  wrong versions, URLs, embedded JSON, free text, raw private data, live
+  context, credentials, commercial fields, and client-asserted trust facts fail
+  closed. Pages run `30188393049`, Content pipeline run `30188393057`, Ops
+  Live Feed run `30188393041`, Ops Status run `30188393063`, and Deploy Health
+  Check run `30188419441` succeeded. Queue run `30188120561` created the branch
+  and PR in eight minutes.
 - **Issue #154 / PR #158:** merged after 859 tests, every deterministic
   validator, five passing GitHub checks, and real-browser review. Two- and
   three-outfit answers, unknown-context review, contradictions, exact ties,
