@@ -935,6 +935,15 @@ references, and owner.
   deterministic defaults and focus. The route collects and stores nothing and
   exposes no account, network, analytics, tracking, affiliate, retailer,
   purchase, or external action. Current pre-PR validation baseline: 770 tests.
+- Issue #139 defines Personalized Outfit Set Recommendation on top of accepted
+  Outfit Compatibility evidence. Every selected outfit passes explicit trust
+  gates; five formula dimensions prevent permutation inflation; owned-first
+  preference applies only within comparable quality bands. Exact
+  selection-boundary ties remain reviewable, while too few or zero trustworthy
+  candidates return honest insufficiency or abstention. Full private payloads,
+  commercial influence, accounts, analytics, network, purchasing, credentials,
+  and external actions remain outside the result. Current pre-PR validation
+  baseline: 782 tests.
 
 ## Final north-star statement
 

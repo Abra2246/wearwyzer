@@ -2,6 +2,23 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Personalized Outfit Set Recommendation (issue #139)
+### Added
+- A closed, versioned fixture contract that converts accepted Outfit
+  Compatibility results into two or three useful, distinct outfit
+  recommendations for one intent.
+- Explicit qualification thresholds, five-part formula diversity, owned-first
+  preference inside comparable quality bands, selection-boundary ties,
+  insufficient-candidate and none-qualified outcomes, and minimized evidence.
+### Safety
+- Duplicate formulas are excluded rather than counted as variety. Exact ties
+  are not broken, and fewer trustworthy candidates never become an inflated
+  recommendation set.
+- Private profile/wardrobe payloads, commerce, popularity, accounts, analytics,
+  network, purchasing, credentials, and external actions remain excluded.
+### Validation
+- 782/782 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Outfit Compatibility fixture journey (issue #137)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route for compatible,
