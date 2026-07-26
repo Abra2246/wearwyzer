@@ -5,27 +5,28 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #96. The capture correction slice
-passed 549 tests, five GitHub checks, browser QA, Pages deployment, and health
-check. Issue #97 is the active contract slice.
+**Evidence baseline:** `main` after merged PR #98. The lifecycle slice passed
+558 tests, five GitHub checks, both serialized Ops feed refreshes, Pages
+deployment, and post-deploy health check. Issue #99 is active.
 
 ## Active review gates
 
-1. **Issue #97 — closet lifecycle and Wear DNA evidence contract**
-   - Active branch: `codex/issue-97-closet-lifecycle`.
-   - Scope: condition, acquisition, optional paid amount, fit notes, explicit
-     wear events, correction history, cost per wear, and forgotten-item state.
-   - Boundary: private fixture contract only; no analytics, retailer import,
-     real account, or production storage.
+1. **Issue #99 — fixture outfit calendar and packing contract**
+   - Active branch: `codex/issue-99-outfit-packing-contract`.
+   - Scope: explicit planning inputs, deterministic owned-item outfits, repeat
+     and availability constraints, packing deduplication, gaps, and confidence.
+   - Boundary: no calendar credentials, location, live weather, messages, real
+     account, analytics, paid call, or production storage.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #97**
-   - Outcome: one privacy-minimized evidence base for Wear DNA, closet health,
-     forgotten-item discovery, and cost per wear.
-2. **Define the fixture outfit calendar and packing contract**
-   - Outcome: plan outfits from owned items and weather/occasion inputs without
-     calendar credentials, location tracking, or external messages.
+1. **Complete and review Issue #99**
+   - Outcome: prove useful outfit and packing planning from confirmed owned
+     items with honest gaps and a minimized response.
+2. **Define the first fixture AI Stylist tool contract**
+   - Outcome: a read-only conversational planner grounded in the accepted
+     wardrobe, Wear DNA, purchase, and packing contracts, with citations and
+     abstention rather than invented wardrobe facts.
 3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
@@ -40,6 +41,8 @@ check. Issue #97 is the active contract slice.
 
 ## Closed or blocked with evidence
 
+- **Issue #97 / PR #98:** merged after 558 tests, five passing GitHub checks,
+  serialized Ops refresh, successful Pages deployment, and health check.
 - **Issue #95 / PR #96:** merged after 549 tests, five passing GitHub checks,
   clean-console browser QA, successful Pages deployment, and health check.
 - **Issue #93 / PR #94:** merged after 539 tests and five passing GitHub checks.

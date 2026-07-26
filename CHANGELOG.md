@@ -2,6 +2,23 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Outfit calendar and packing contract (issue #99)
+### Added
+- `scripts/outfit-packing-contract.mjs`: versioned private fixture requests,
+  explicit correction, deterministic owned-item selection, honest gap
+  reporting, packing deduplication, privacy minimization, and invalidation.
+- `docs/OUTFIT_PACKING_CONTRACT_V1.md` with consumer boundaries and production
+  gates.
+### Safety
+- No real account, calendar credential, background location, weather provider,
+  booking/travel integration, external message, analytics, production storage,
+  paid call, affiliate credential, photo workflow, or public release.
+### Validation
+- 568/568 repository tests pass.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  validators pass; the one pre-existing graph-eligibility warning remains
+  non-blocking.
+
 ## Unreleased (2026-07-26) — Closet lifecycle and Wear DNA evidence (issue #97)
 ### Added
 - `scripts/closet-lifecycle-contract.mjs`: immutable, versioned private records
