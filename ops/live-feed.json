@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:18:33.335Z",
+  "generatedAtIso": "2026-07-26T02:24:41.695Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#119 \"Define the fixture Closet Health Score\" (no PR yet)"
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:18:33.335Z",
+      "lastUpdatedIso": "2026-07-26T02:24:41.695Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 119,
-          "title": "Define the fixture Closet Health Score",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/119",
-          "updatedIso": "2026-07-26T02:17:59Z"
-        },
+        "automationState": "idle",
+        "activeIssue": null,
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -36,8 +31,8 @@
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-26T02:16:42Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184294681",
+          "latestRunIso": "2026-07-26T02:24:23Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184494960",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -50,21 +45,21 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:18:33.335Z",
+      "lastUpdatedIso": "2026-07-26T02:24:41.695Z",
       "fetchOk": true,
       "data": {
-        "status": "healthy",
-        "lastHealthyShaShort": "eacc1e9",
-        "lastDeployIso": "2026-07-26T02:17:15Z",
-        "ageMinutes": 1,
-        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
+        "status": "unknown",
+        "lastHealthyShaShort": null,
+        "lastDeployIso": "2026-07-26T02:24:40Z",
+        "ageMinutes": 0,
+        "pagesUrl": null
       },
       "note": null
     },
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:18:33.335Z",
+      "lastUpdatedIso": "2026-07-26T02:24:41.695Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:18:33.335Z",
+      "lastUpdatedIso": "2026-07-26T02:24:41.695Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -131,6 +126,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:2026-07-26T02:24:40Z",
+      "timestampIso": "2026-07-26T02:24:40Z",
+      "type": "deploy-failed",
+      "summary": "Deployment failed its health checks.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30184494960",
+      "timestampIso": "2026-07-26T02:24:23Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30184494960"
+    },
+    {
+      "key": "pr-merged:120",
+      "timestampIso": "2026-07-26T02:24:05Z",
+      "type": "pr-merged",
+      "summary": "PR #120 \"Define fixture Closet Health Score\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/120"
+    },
     {
       "key": "issue-started:119",
       "timestampIso": "2026-07-26T02:17:59Z",
@@ -459,27 +475,6 @@
       "type": "deployed",
       "summary": "Deployed build 3364dca — health checks passed.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30180887495",
-      "timestampIso": "2026-07-26T00:16:55Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30180887495"
-    },
-    {
-      "key": "pr-merged:91",
-      "timestampIso": "2026-07-26T00:16:36Z",
-      "type": "pr-merged",
-      "summary": "PR #91 \"Prevent watchdog escalation during active runs\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/91"
-    },
-    {
-      "key": "issue-started:89",
-      "timestampIso": "2026-07-26T00:12:54Z",
-      "type": "issue-started",
-      "summary": "Issue #89 \"Build the fixture-only onboarding and wardrobe intake journey\" started.",
-      "url": "https://github.com/Abra2246/wearwyzer/issues/89"
     }
   ]
 }
