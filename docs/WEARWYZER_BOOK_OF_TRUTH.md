@@ -769,6 +769,16 @@ references, and owner.
   allowlisted Wear DNA evidence, never price, fit-note text, occasions, exact
   dates, or the private event ledger. Current validation baseline: 558 tests
   plus every deterministic repository validator.
+- Issue #99 turns that evidence into daily utility. A private versioned request
+  records explicit dates, occasion, climate, dress code, item availability,
+  repeat tolerance, laundry, and packing limits. The deterministic planner uses
+  only exact confirmed owned items, never schedules dirty or unavailable
+  pieces, deduplicates packing, and returns visible gaps instead of fabricating
+  a complete plan. Future surfaces receive a minimized plan with day indexes,
+  item references, reasons, opposing evidence, gaps, and confidence—not exact
+  dates, private notes, location, measurements, prices, fit notes, or ledgers.
+  Current validation baseline: 568 tests plus every deterministic repository
+  validator.
 
 ## Final north-star statement
 

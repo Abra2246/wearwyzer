@@ -418,6 +418,27 @@ the Chrome extension or public site into the wardrobe database.
 **Deferred:** production storage, analytics, retailer/receipt/email import,
 background activity, current/resale value, and real-user retention.
 
+## Decision — private planning request, minimized outfit plan (issue #99)
+
+**Problem:** daily outfit and packing utility requires dates, occasions, item
+availability, and repeat constraints, but distributing those private planning
+inputs to every surface would create an unnecessary personal-data boundary.
+
+**Decision:** keep the versioned request and corrections private. A
+deterministic fixture planner selects only exact confirmed owned items that
+match explicit climate, dress-code, item-state, repeat, and packing constraints.
+It returns honest gaps when the wardrobe cannot satisfy a requirement. Future
+consumers receive day indexes, used item references, reasons, opposing evidence,
+packing justifications, gaps, and confidence—not dates, notes, location,
+measurements, prices, fit notes, or private ledgers.
+
+**Benefit:** the app can prove “what should I wear?” and “what should I pack?”
+utility on trusted wardrobe evidence before requesting calendar, weather,
+location, messaging, or production-account access.
+
+**Deferred:** production storage, calendar credentials, live weather/location,
+travel integrations, analytics, notifications, and automatic scheduling.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
