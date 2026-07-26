@@ -1,17 +1,24 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:08:02.558Z",
+  "generatedAtIso": "2026-07-26T02:10:20.481Z",
   "overallHealth": "yellow",
-  "automationState": "idle",
-  "activeWork": null,
+  "automationState": "working",
+  "activeWork": {
+    "issueNumber": 117,
+    "title": "Build the default-off fixture Purchase Simulator journey",
+    "url": "https://github.com/Abra2246/wearwyzer/issues/117",
+    "prNumber": null,
+    "prUrl": null,
+    "lastActivityIso": "2026-07-26T02:09:31Z"
+  },
   "queue": {
     "depth": 0,
     "readyCount": 0,
     "blockedCount": 2
   },
   "ci": {
-    "status": "unknown",
-    "lastRunIso": "2026-07-26T02:07:53Z",
+    "status": "passing",
+    "lastRunIso": "2026-07-26T02:08:07Z",
     "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184046505"
   },
   "deployment": {
@@ -52,6 +59,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
+  "lastMeaningfulActivityIso": "2026-07-26T02:09:31.000Z",
   "staleAfterMinutes": 30
 }
