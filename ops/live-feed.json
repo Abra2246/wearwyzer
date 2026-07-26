@@ -1,21 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T01:16:29.569Z",
+  "generatedAtIso": "2026-07-26T01:18:00.069Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "activeWorkSummary": "#104 \"Build the fixture AI Stylist evaluation harness\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:16:29.569Z",
+      "lastUpdatedIso": "2026-07-26T01:18:00.069Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 104,
+          "title": "Build the fixture AI Stylist evaluation harness",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/104",
+          "updatedIso": "2026-07-26T01:17:01Z"
+        },
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -45,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:16:29.569Z",
+      "lastUpdatedIso": "2026-07-26T01:18:00.069Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "9733471",
         "lastDeployIso": "2026-07-26T01:16:19Z",
-        "ageMinutes": 0,
+        "ageMinutes": 2,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +64,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:16:29.569Z",
+      "lastUpdatedIso": "2026-07-26T01:18:00.069Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:16:29.569Z",
+      "lastUpdatedIso": "2026-07-26T01:18:00.069Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:104",
+      "timestampIso": "2026-07-26T01:17:01Z",
+      "type": "issue-started",
+      "summary": "Issue #104 \"Build the fixture AI Stylist evaluation harness\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/104"
+    },
     {
       "key": "deploy:9733471",
       "timestampIso": "2026-07-26T01:16:19Z",
@@ -468,13 +480,6 @@
       "type": "pr-merged",
       "summary": "PR #74 \"Refresh execution handoff after Mission Control Phase 3\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/74"
-    },
-    {
-      "key": "deploy:9b9699d",
-      "timestampIso": "2026-07-25T17:22:44Z",
-      "type": "deployed",
-      "summary": "Deployed build 9b9699d — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
