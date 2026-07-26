@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-25T23:43:36.217Z",
+  "generatedAtIso": "2026-07-26T00:06:56.437Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#87 \"Build the fixture-only consent and correction center\" (no PR yet)"
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:43:36.217Z",
+      "lastUpdatedIso": "2026-07-26T00:06:56.437Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 87,
-          "title": "Build the fixture-only consent and correction center",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/87",
-          "updatedIso": "2026-07-25T23:42:54Z"
-        },
+        "automationState": "idle",
+        "activeIssue": null,
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -35,9 +30,9 @@
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-25T23:42:32Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30179878442",
+          "status": "unknown",
+          "latestRunIso": "2026-07-26T00:06:46Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30180595154",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -50,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:43:36.217Z",
+      "lastUpdatedIso": "2026-07-26T00:06:56.437Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "2567871",
         "lastDeployIso": "2026-07-25T23:43:10Z",
-        "ageMinutes": 0,
+        "ageMinutes": 24,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -64,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:43:36.217Z",
+      "lastUpdatedIso": "2026-07-26T00:06:56.437Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-25T23:43:36.217Z",
+      "lastUpdatedIso": "2026-07-26T00:06:56.437Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -131,6 +126,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:88",
+      "timestampIso": "2026-07-26T00:06:39Z",
+      "type": "pr-merged",
+      "summary": "PR #88 \"Build the fixture-only consent and correction center\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/88"
+    },
     {
       "key": "deploy:2567871",
       "timestampIso": "2026-07-25T23:43:10Z",
@@ -473,13 +475,6 @@
       "type": "deployed",
       "summary": "Deployed build c6c1161 — health checks passed.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30038537364",
-      "timestampIso": "2026-07-23T19:35:01Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30038537364"
     }
   ]
 }
