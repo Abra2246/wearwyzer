@@ -675,6 +675,13 @@ and user-control policy. It excludes raw wardrobe, browsing, shopping,
 purchase, return, private-note, account, protected-attribute, commerce,
 analytics, network, credential, and external-action data.
 
+The Issue #133 fixture journey exposes this contract only behind the exact
+`ww_style_dna=1` query flag on an unlinked, `noindex` page. It makes explicit
+and inferred evidence, contradiction, confidence decay, stale/weak exclusion,
+correction precedence and reversal, temporary exploration, and the fixed
+user-control policy reviewable without collecting or storing real profile,
+wardrobe, behavior, account, commerce, or analytics data.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

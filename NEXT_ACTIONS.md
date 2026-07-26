@@ -5,26 +5,26 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #130. The Brand Preference and Fit
-Memory journey passed 722 tests, all deterministic validators, browser QA, five
-GitHub checks, serialized Ops refreshes, Pages deployment run `30185351915`,
-and Deploy Health Check run `30185370641`. Issue #131 is active.
+**Evidence baseline:** `main` after merged PR #132. Style DNA passed 734 tests,
+all deterministic validators, five GitHub checks, serialized Ops refreshes,
+Pages deployment run `30185473810`, and Deploy Health Check run `30185498913`.
+Issue #133 is active.
 
 ## Active review gates
 
-1. **Issue #131 — fixture Style DNA intelligence contract**
-   - Active branch: `codex/issue-131-style-dna-contract`.
-   - Scope: define explicit/inferred style dimensions, confidence decay,
-     reversible corrections, conflicts, and temporary exploration.
-   - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
-     Raw private behavior, identity, protected attributes, commerce, network,
-     analytics, credentials, persistence, and external actions remain excluded.
+1. **Issue #133 — fixture Style DNA review journey**
+   - Active branch: `codex/issue-133-style-dna-journey`.
+   - Scope: make provenance, contradiction, confidence decay, weak/stale
+     exclusion, corrections, reversal, exploration, and policy reviewable.
+   - Boundary: exact-flag-gated, unlinked, `noindex`, fixture-only, local, and
+     read-only. No real profile, wardrobe, behavior collection, persistence,
+     account, network, analytics, commerce, or external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #131**
-   - Outcome: give future website, app, and extension clients one transparent,
-     editable personalization vocabulary before real profile persistence.
+1. **Complete and review Issue #133**
+   - Outcome: let future users understand and control the style evidence behind
+     recommendations before real account or profile persistence exists.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -44,6 +44,12 @@ and Deploy Health Check run `30185370641`. Issue #131 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #131 / PR #132:** merged after 734 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refreshes, Pages run
+  `30185473810`, and Deploy Health Check run `30185498913`. Explicit choices
+  and corrections outrank inference; confidence decays deterministically;
+  weak/stale evidence stays absent; conflicts require review; exploration is
+  temporary; commercial influence remains prohibited.
 - **Issue #129 / PR #130:** merged after 722 tests, every deterministic
   validator, browser QA, five passing GitHub checks, serialized Ops refreshes,
   Pages run `30185351915`, and Deploy Health Check run `30185370641`. Six

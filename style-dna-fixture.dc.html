@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Style DNA Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:980px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); }
+    .notice { border-left:5px solid var(--gold); }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .warn { color:var(--red); background:#f6e6e3; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .signal,.detail { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .signal h3 { margin:0 0 8px; text-transform:capitalize; }
+    .meta { color:var(--muted); font-size:13px; }
+    ol,ul { padding-left:22px; }
+    [hidden] { display:none !important; }
+    @media (max-width:680px) {
+      .grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>Your style can evolve without becoming a black box.</h1><p>Editable preferences. Explainable inference. Temporary exploration.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This private route uses synthetic local evidence and cannot observe behavior, store a profile, shop, track, or change an account.</p>
+      <a class="button" href="?ww_style_dna=1">Open synthetic Style DNA</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> explicit choices and
+        corrections outrank inference. Weak and stale evidence stays out. Exploration is
+        temporary and never mutates canonical Style DNA.</section>
+      <section class="panel">
+        <h2>Choose a review case</h2>
+        <label for="mode">Style evidence state</label>
+        <select id="mode">
+          <option value="explicit-and-inferred">Explicit + accepted inferred signals</option>
+          <option value="explicit-conflict">Explicit choice conflicts with inference</option>
+          <option value="decayed-inference">Inference remains with reduced confidence</option>
+          <option value="stale-and-low-confidence">Stale and weak inference are ignored</option>
+          <option value="corrected-signal">Explicit correction replaces inference</option>
+          <option value="reversed-correction">Later correction removes earlier signal</option>
+          <option value="temporary-exploration">Temporary exploration stays separate</option>
+        </select>
+        <div class="actions">
+          <button id="review" type="button">Review Style DNA</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No behavior collection, persistence, network, tracking, or commerce action will run.</p>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="result-status" class="badge"></span></p>
+        <h2>Canonical Style DNA</h2>
+        <p id="mode-summary" class="meta"></p>
+        <div id="signals" class="grid"></div>
+        <p id="empty" class="detail" hidden>No canonical style signal was accepted from this evidence state.</p>
+        <h3>Inference summary</h3>
+        <p id="inference" class="detail"></p>
+        <h3>Conflicts requiring review</h3>
+        <ul id="conflicts"></ul>
+        <h3>Temporary exploration</h3>
+        <div id="exploration" class="detail"></div>
+        <h3>User-control policy</h3>
+        <ul id="policy"></ul>
+        <p class="meta"><strong>External actions:</strong> unavailable. This fixture cannot
+          observe behavior, persist a profile, track, redirect, buy, or change an account.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { createStyleDnaJourney } from './scripts/style-dna-journey.mjs';
+    const enabled = new URLSearchParams(location.search).get('ww_style_dna') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+    if (enabled) {
+      const journey = createStyleDnaJourney();
+      const mode = document.querySelector('#mode');
+      const panel = document.querySelector('#result');
+      const status = document.querySelector('#status');
+      function signalCard(signal) {
+        const card = document.createElement('article');
+        card.className = 'signal';
+        const heading = document.createElement('h3');
+        heading.textContent = `${signal.dimension}: ${signal.value}`;
+        const badge = document.createElement('span');
+        badge.className = `badge ${signal.sentiment === 'positive' ? 'good' : 'warn'}`;
+        badge.textContent = signal.sentiment;
+        const evidence = document.createElement('p');
+        evidence.className = 'meta';
+        evidence.textContent = `${signal.source} · ${Math.round(signal.confidence * 100)}% ${signal.confidenceBand} confidence · ${signal.evidenceCodes.join(', ')}`;
+        card.append(heading, badge, evidence);
+        return card;
+      }
+      function policyItem(label, value) {
+        const item = document.createElement('li');
+        item.textContent = `${label}: ${value ? 'yes' : 'no'}`;
+        return item;
+      }
+      function render(view) {
+        panel.hidden = !view.result;
+        if (!view.result) return;
+        const dna = view.result;
+        const resultStatus = document.querySelector('#result-status');
+        resultStatus.textContent = dna.status;
+        resultStatus.className = `badge ${dna.status === 'ready' ? 'good' : 'warn'}`;
+        document.querySelector('#mode-summary').textContent = view.modeSummary;
+        document.querySelector('#signals').replaceChildren(...dna.signals.map(signalCard));
+        document.querySelector('#empty').hidden = dna.signals.length > 0;
+        document.querySelector('#inference').textContent =
+          `${dna.inferenceSummary.acceptedCount} accepted · ${dna.inferenceSummary.ignoredLowConfidenceCount} ignored after confidence decay · ${dna.inferenceSummary.ignoredStaleCount} ignored as stale`;
+        document.querySelector('#conflicts').replaceChildren(...(
+          dna.conflicts.length
+            ? dna.conflicts.map((conflict) => {
+              const item = document.createElement('li');
+              item.textContent = `${conflict.dimension}: ${conflict.value} — ${conflict.code}; accepted source ${conflict.acceptedSource}`;
+              return item;
+            })
+            : [Object.assign(document.createElement('li'), { textContent: 'None' })]
+        ));
+        document.querySelector('#exploration').textContent = dna.exploration.enabled
+          ? `${dna.exploration.signals.map(({ dimension, value }) => `${dimension}: ${value}`).join(' · ')}. Affects canonical profile: no.`
+          : 'Off. No temporary direction is active.';
+        document.querySelector('#policy').replaceChildren(
+          policyItem('Explicit input outranks inference', dna.policy.explicitInputOutranksInference),
+          policyItem('Corrections are reversible', dna.policy.correctionsAreReversible),
+          policyItem('Stale inference is excluded', dna.policy.staleInferenceExcluded),
+          policyItem('Exploration is temporary', dna.policy.explorationIsTemporary),
+          policyItem('Commercial influence is allowed', dna.policy.commercialInfluenceAllowed),
+        );
+      }
+      mode.addEventListener('change', () => {
+        journey.selectMode(mode.value);
+        render(journey.getView());
+        status.textContent = 'Evidence changed. Review again to create current Style DNA.';
+      });
+      document.querySelector('#review').addEventListener('click', () => {
+        const result = journey.run();
+        if (!result.ok) {
+          panel.hidden = true;
+          status.textContent = `Fixture failed safely: ${result.error}.`;
+          return;
+        }
+        render(result.view);
+        status.textContent = 'Review complete. Provenance, confidence, ignored evidence, conflicts, exploration, and policy are visible.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        mode.value = reset.view.mode;
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior Style DNA remains.';
+        mode.focus();
+      });
+    }
+  </script>
+</body>
+</html>
