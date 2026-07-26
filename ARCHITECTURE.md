@@ -809,6 +809,24 @@ does not access live location, weather, calendar, itinerary, accounts, a real
 closet, persistence, analytics, network, commerce, affiliate or retailer
 actions, purchases, publishing, or any other external action.
 
+## Decision — Daily Outfit results adapt into grounded Stylist responses (issue #148)
+
+**Problem:** Daily Outfit decisions are structured and trustworthy, but future
+clients need human-readable answers. Letting each client or model reinterpret
+the result would create competing ranking, tie-breaking, and abstention rules.
+
+**Decision:** a closed, deterministic adapter accepts only a valid
+`daily-outfit-intent-v1` result and produces a versioned minimized Stylist
+response. Ready results become cited answers; review-required and abstained
+results remain non-answers with exact reasons and safe next-step codes. Outfit
+Set selections, ties, insufficiency, scores, evidence coverage, confidence,
+exclusions, and compatibility references are preserved rather than reranked.
+
+**Boundary:** the adapter is provider-neutral and read-only. It contains no
+model call, raw profile/closet, live location/weather/calendar, account,
+persistence, analytics, credentials, network, commerce, purchase, publishing,
+messaging, or external-action authority.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Grounded Daily Outfit Stylist response (issue #148)
+### Added
+- A closed, versioned adapter from accepted Daily Outfit Intent results to
+  minimized, cited, human-readable Stylist responses.
+- Preserved ready selections, context-review reasons, contradictions, Outfit
+  Set ties, insufficiency, scores, evidence coverage, confidence, exclusions,
+  compatibility references, uncertainty, and safe next steps.
+### Safety
+- The adapter never reranks, breaks a tie, fills missing context, or promotes a
+  review/abstention result into an answer.
+- Unknown, private, commercial, secret, and action-shaped data fails closed.
+  No provider, live context, private store, network, commerce, publishing,
+  messaging, or external action is enabled.
+### Validation
+- 826/826 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Daily Outfit Intent fixture journey (issue #145)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route for ready two/three

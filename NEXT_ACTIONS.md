@@ -15,7 +15,8 @@ five GitHub checks, serialized Ops refreshes, Pages deployment run
 ## Queued execution
 
 1. **Issue #148 — Grounded Daily Outfit Stylist response adapter**
-   - Status: ready; no implementation branch or review PR exists yet.
+   - Status: in progress on
+     `codex/issue-148-grounded-daily-outfit-stylist`.
    - Scope: translate accepted Daily Outfit Intent results into minimized,
      cited, human-readable Stylist answers or honest non-answers.
    - Boundary: deterministic, provider-neutral, closed-schema, and read-only.

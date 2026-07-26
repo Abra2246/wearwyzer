@@ -970,6 +970,16 @@ references, and owner.
   exposes no account, analytics, network, affiliate, retailer, purchase,
   publishing, or external action. Current pre-PR validation baseline: 816
   tests.
+- Issue #148 defines a grounded Daily Outfit Stylist response adapter. It
+  accepts only an exact, internally consistent Daily Outfit result; ready
+  decisions become cited answers while context review, contradictions, Outfit
+  Set ties, insufficiency, and abstention stay honest non-answers. The adapter
+  preserves selected/tied/qualified IDs, scores, coverage, confidence,
+  exclusions, and compatibility references without reranking. Unknown,
+  private, commercial, secret, and action-shaped fields fail closed. No
+  provider, live context, private record, persistence, account, network,
+  commerce, publishing, messaging, or external action exists. Current pre-PR
+  validation baseline: 826 tests.
 
 ## Final north-star statement
 
