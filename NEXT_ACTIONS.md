@@ -5,30 +5,31 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #110. The offline Stylist replay
-gate passed 611 tests, all deterministic validators, five GitHub checks,
+**Evidence baseline:** `main` after merged PR #112. The editorial preference
+gate passed 621 tests, all deterministic validators, five GitHub checks,
 serialized Ops refreshes, Pages deployment, and Deploy Health Check run
-`30183520282`. Issue #111 is active.
+`30183758886`. Issue #113 is active.
 
 ## Active review gates
 
-1. **Issue #111 — fixture AI Stylist editorial preference rubric**
-   - Active branch: `codex/issue-111-editorial-rubric`.
-   - Scope: post-trust-gate usefulness, clarity, styling quality, WearWyzer
-     voice, and actionability scoring with anchored rationales.
-   - Boundary: preference cannot override any 100% trust metric; no live
-     provider, credentials, real data, analytics, paid call, or publication.
+1. **Issue #113 — founder-gated AI Stylist provider experiment protocol**
+   - Active branch: `codex/issue-113-provider-experiment-protocol`.
+   - Scope: closed, provider-neutral experiment manifest, hard request/spend
+     ceilings, stop conditions, evidence retention, and a sanitized founder
+     decision packet.
+   - Boundary: specification only. No network, provider choice, credential,
+     real data, paid call, automated selection, external action, or publication.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #111**
-   - Outcome: score usefulness, clarity, styling quality, tone, and
-     actionability only after safety eligibility; never let preference override
-     grounding or privacy.
-2. **Specify the first founder-gated live provider experiment**
-   - Dependency: Issue #111 and explicit provider credential/spend approval.
-   - Outcome: one bounded, non-production comparison through the accepted trust
-     and editorial gates; no real user data or external action.
+1. **Complete and review Issue #113**
+   - Outcome: make a future external comparison bounded, auditable, and
+     impossible to authorize implicitly. Trust must run before preference.
+2. **Founder decision: authorize or defer one live provider experiment**
+   - Dependency: merged Issue #113 plus explicit provider, credential, data
+     processing, and spend approval.
+   - Outcome if approved: one bounded, non-production synthetic comparison;
+     otherwise remain offline with no loss of production functionality.
 3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
@@ -43,6 +44,10 @@ serialized Ops refreshes, Pages deployment, and Deploy Health Check run
 
 ## Closed or blocked with evidence
 
+- **Issue #111 / PR #112:** merged after 621 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refresh, Pages, and
+  Deploy Health Check run `30183758886`. Editorial preference applies only to
+  100%-trusted candidates and preserves disagreement and ties.
 - **Issue #109 / PR #110:** merged after 611 tests, every deterministic
   validator, five passing GitHub checks, serialized Ops refresh, Pages, and
   Deploy Health Check run `30183520282`. The gate admits only complete
