@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:10:06.581Z",
+  "generatedAtIso": "2026-07-26T02:16:55.409Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#117 \"Build the default-off fixture Purchase Simulator journey\" (no PR yet)"
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:10:06.581Z",
+      "lastUpdatedIso": "2026-07-26T02:16:55.409Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 117,
-          "title": "Build the default-off fixture Purchase Simulator journey",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/117",
-          "updatedIso": "2026-07-26T02:09:31Z"
-        },
+        "automationState": "idle",
+        "activeIssue": null,
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -36,8 +31,8 @@
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-26T02:08:07Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184046505",
+          "latestRunIso": "2026-07-26T02:16:42Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184294681",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -50,21 +45,21 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:10:06.581Z",
+      "lastUpdatedIso": "2026-07-26T02:16:55.409Z",
       "fetchOk": true,
       "data": {
-        "status": "healthy",
-        "lastHealthyShaShort": "8e40546",
-        "lastDeployIso": "2026-07-26T02:08:42Z",
-        "ageMinutes": 1,
-        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
+        "status": "unknown",
+        "lastHealthyShaShort": null,
+        "lastDeployIso": "2026-07-26T02:16:55Z",
+        "ageMinutes": 0,
+        "pagesUrl": null
       },
       "note": null
     },
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:10:06.581Z",
+      "lastUpdatedIso": "2026-07-26T02:16:55.409Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:10:06.581Z",
+      "lastUpdatedIso": "2026-07-26T02:16:55.409Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -131,6 +126,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:2026-07-26T02:16:55Z",
+      "timestampIso": "2026-07-26T02:16:55Z",
+      "type": "deploy-failed",
+      "summary": "Deployment failed its health checks.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30184294681",
+      "timestampIso": "2026-07-26T02:16:42Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30184294681"
+    },
+    {
+      "key": "pr-merged:118",
+      "timestampIso": "2026-07-26T02:16:23Z",
+      "type": "pr-merged",
+      "summary": "PR #118 \"Build fixture Purchase Simulator journey\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/118"
+    },
     {
       "key": "issue-started:117",
       "timestampIso": "2026-07-26T02:09:31Z",
@@ -459,27 +475,6 @@
       "type": "ci-passed",
       "summary": "Content data validation passed on main.",
       "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30180595154"
-    },
-    {
-      "key": "pr-merged:88",
-      "timestampIso": "2026-07-26T00:06:39Z",
-      "type": "pr-merged",
-      "summary": "PR #88 \"Build the fixture-only consent and correction center\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/88"
-    },
-    {
-      "key": "deploy:2567871",
-      "timestampIso": "2026-07-25T23:43:10Z",
-      "type": "deployed",
-      "summary": "Deployed build 2567871 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "issue-started:87",
-      "timestampIso": "2026-07-25T23:42:54Z",
-      "type": "issue-started",
-      "summary": "Issue #87 \"Build the fixture-only consent and correction center\" started.",
-      "url": "https://github.com/Abra2246/wearwyzer/issues/87"
     }
   ]
 }
