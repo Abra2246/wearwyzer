@@ -2,6 +2,27 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — GitHub Actions runtime hygiene (issue #102)
+### Changed
+- Updated every active and staged `actions/checkout` and `actions/setup-node`
+  reference to the officially verified Node 24 major.
+- Updated the Pages configure, upload, and deploy actions to their verified
+  Node 24 majors.
+- Kept `.nojekyll` preservation on
+  `actions/upload-pages-artifact@v5`, which supports
+  `include-hidden-files`, eliminating the prior invalid-input warning.
+### Safety
+- Workflow permissions, triggers, concurrency, serialized Ops writers,
+  bounded regeneration, generated-file protections, and no-force-push
+  behavior are unchanged.
+- A deterministic workflow-contract test scans active and staged workflow
+  copies for action-version drift and Pages input regression.
+### Validation
+- 603/603 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and
+  diff checks passed; the one accepted Knowledge Graph eligibility warning
+  remains non-blocking.
+
 ## Unreleased (2026-07-26) — Fixture AI Stylist journey (issue #106)
 ### Added
 - `ai-stylist-fixture.dc.html`: unlinked, `noindex`, default-off, mobile-first
