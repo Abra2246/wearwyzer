@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Minimized Daily Outfit Intent (issue #143)
+### Added
+- A closed, versioned fixture boundary that translates explicit occasion,
+  season, weather class, dress code, availability window, and desired set size
+  into the accepted Outfit Set Recommendation contract.
+- Review-required unknown/ambiguous/stale states, contradiction abstention, and
+  preserved Outfit Set ties, insufficiency, and none-qualified outcomes.
+### Safety
+- The boundary never invents missing context or creates a second outfit-ranking
+  policy.
+- Live location, calendar, itinerary, full private payloads, commerce,
+  analytics, credentials, network, persistence, and external actions remain
+  excluded.
+### Validation
+- 806/806 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Outfit Set fixture journey (issue #141)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route for complete two- and
