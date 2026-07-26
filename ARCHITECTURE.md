@@ -890,6 +890,10 @@ presentational helper turns the accepted `nextStep` code and `reasonCodes`
 into one concise clarification sentence for non-answers; it does not alter
 ranking, ties, uncertainty, or abstention. Changing any field clears the
 prior response; reset restores deterministic defaults and keyboard focus.
+The closed fixture evidence deliberately makes `travel` an exact
+selection-boundary tie and `event` an insufficient-candidate case so those
+accepted non-answer paths remain reviewable without a separate scenario
+control.
 
 **Boundary:** the page does not rank, break ties, invent context, or
 recreate abstention policy — it only composes accepted contracts and renders

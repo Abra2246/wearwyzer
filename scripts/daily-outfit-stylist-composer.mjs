@@ -95,12 +95,40 @@ function poolItem(candidateId, role, flags) {
     seasons: ['transitional'],
     layering: role === 'outerwear' ? (flags.layering ? 'outer-layer' : 'mid-layer') : 'base',
     riskLevel: 'balanced',
-    fitStatus: 'verified',
+    fitStatus: flags.conflictingFit ? 'conflicting' : 'verified',
   };
 }
 
-function poolCandidate({ candidateId, missingDimension }, occasion, evidenceVersion) {
-  const flags = { palette: true, silhouette: true, formality: true, material: true, layering: true };
+function candidatePlanFor(occasion) {
+  if (occasion === 'travel') {
+    return CANDIDATE_PLAN.map(({ candidateId }) => ({
+      candidateId,
+      missingDimension: null,
+      conflictingFit: false,
+    }));
+  }
+  if (occasion === 'event') {
+    return CANDIDATE_PLAN.map((plan, index) => ({
+      ...plan,
+      conflictingFit: index > 0,
+    }));
+  }
+  return CANDIDATE_PLAN.map((plan) => ({ ...plan, conflictingFit: false }));
+}
+
+function poolCandidate(
+  { candidateId, missingDimension, conflictingFit },
+  occasion,
+  evidenceVersion,
+) {
+  const flags = {
+    palette: true,
+    silhouette: true,
+    formality: true,
+    material: true,
+    layering: true,
+    conflictingFit,
+  };
   if (missingDimension) flags[missingDimension] = false;
   const items = ['top', 'bottom', 'footwear', 'outerwear'].map(
     (role) => poolItem(candidateId, role, flags),
@@ -133,7 +161,8 @@ function poolCandidate({ candidateId, missingDimension }, occasion, evidenceVers
 }
 
 function syntheticCandidatePool(occasion, evidenceVersion) {
-  return CANDIDATE_PLAN.map((plan) => poolCandidate(plan, occasion, evidenceVersion));
+  return candidatePlanFor(occasion)
+    .map((plan) => poolCandidate(plan, occasion, evidenceVersion));
 }
 
 function isValidField(field, value) {

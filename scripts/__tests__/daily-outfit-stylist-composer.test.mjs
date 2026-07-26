@@ -146,6 +146,30 @@ test('a coherent formal dinner selection still answers', () => {
   assert.equal(response.selectedOutfitIds.length, 2);
 });
 
+test('travel context preserves a selection-boundary tie for human review', () => {
+  const composer = createDailyOutfitStylistComposer();
+  composer.selectField('occasion', 'travel');
+  const run = composer.run();
+  const response = run.view.response;
+  assert.equal(response.outcome, 'review-required');
+  assert.equal(response.selectedOutfitIds.length, 0);
+  assert.equal(response.tiedOutfitIds.length, 4);
+  assert.equal(response.nextStep, 'review-tied-outfits');
+  assert.match(run.view.clarificationPrompt, /exactly tied/);
+});
+
+test('event context preserves insufficient trustworthy candidates as abstention', () => {
+  const composer = createDailyOutfitStylistComposer();
+  composer.selectField('occasion', 'event');
+  const run = composer.run();
+  const response = run.view.response;
+  assert.equal(response.outcome, 'abstain');
+  assert.equal(response.selectedOutfitIds.length, 0);
+  assert.equal(response.qualifiedOutfitIds.length, 1);
+  assert.equal(response.nextStep, 'confirm-more-current-available-outfits');
+  assert.match(run.view.clarificationPrompt, /Fewer trustworthy synthetic outfits/);
+});
+
 test('changing a field after a response invalidates the prior response', () => {
   const composer = createDailyOutfitStylistComposer();
   composer.run();

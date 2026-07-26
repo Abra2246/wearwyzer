@@ -15,6 +15,9 @@ All notable changes to this project are recorded here.
 - A concise, human-readable clarification prompt derived only from the
   accepted next-step code and reason codes for review-required and abstained
   non-answers.
+- Closed synthetic `travel` and `event` evidence states that preserve,
+  respectively, an exact selection-boundary tie and insufficient trustworthy
+  candidates as visible non-answers.
 ### Safety
 - The clarification helper is presentational only — it does not alter
   ranking, ties, uncertainty, or abstention policy.
@@ -24,7 +27,7 @@ All notable changes to this project are recorded here.
 - Changing any field clears the prior response; reset restores deterministic
   defaults and keyboard focus.
 ### Validation
-- 857/857 deterministic repository tests passed (19 new).
+- 859/859 deterministic repository tests passed (21 new).
 - `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
   `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
   `compare-legacy-adapter.mjs` all ran clean against this change.

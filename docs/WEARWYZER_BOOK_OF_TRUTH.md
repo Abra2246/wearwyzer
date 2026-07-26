@@ -1017,6 +1017,9 @@ references, and owner.
   analytics, network, commerce, affiliate, retailer, purchase, publishing,
   messaging, or external action. Current pre-PR validation baseline: 857
   tests.
+  The closed synthetic evidence makes `travel` an exact boundary-tie review
+  and `event` an insufficient-candidate abstention so these accepted
+  non-answer paths remain visible without adding a scenario or hidden input.
 
 ## Final north-star statement
 

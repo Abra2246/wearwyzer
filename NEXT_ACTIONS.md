@@ -7,8 +7,9 @@ action from current evidence.
 **Last verified:** July 26, 2026
 **Evidence baseline:** Issue #156 merged via PR #157, restoring the minimum
 non-interactive file tools. Issue #154 is implemented on branch
-`claude/issue-154-daily-outfit-stylist-composer`: 857/857 deterministic
-repository tests pass (19 new) and `validate-content-data.mjs`,
+`claude/issue-154-daily-outfit-stylist-composer`: 859/859 deterministic
+repository tests pass (21 new), including explicit boundary-tie and
+insufficient-candidate paths, and `validate-content-data.mjs`,
 `qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
 `validate-hero-product-pages.mjs`, and `compare-legacy-adapter.mjs` all ran
 clean. Review PR #158 is open; interactive browser QA could not be run in

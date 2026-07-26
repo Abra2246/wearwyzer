@@ -95,6 +95,12 @@ sentence, derived only from the accepted `nextStep` code and `reasonCodes`,
 for review-required and abstained non-answers. The clarification helper does
 not alter ranking, ties, uncertainty, or abstention.
 
+Within the closed synthetic evidence pool, `travel` deliberately produces an
+exact selection-boundary tie and `event` deliberately leaves fewer trustworthy
+candidates than requested. Those are fixture evidence states, not new
+ranking rules, and keep both required non-answer paths visible through the
+same six context fields.
+
 Changing any field clears the previous response; reset restores the
 deterministic default context (`everyday` / `transitional` / `dry` /
 `smart-casual` / `today` / two outfits) and keyboard focus. Without the exact
