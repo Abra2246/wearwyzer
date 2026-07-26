@@ -2,6 +2,28 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fixture AI Stylist journey (issue #106)
+### Added
+- `ai-stylist-fixture.dc.html`: unlinked, `noindex`, default-off, mobile-first
+  review journey for all six intents, grounded answers, citations, opposing
+  evidence, uncertainty, abstention, and reset.
+- `scripts/ai-stylist-journey.mjs`: stateless provider-free journey controller
+  over the accepted contract and evaluation fixtures.
+- `docs/AI_STYLIST_JOURNEY_V1.md` with the UX, privacy, and production boundary.
+### Safety
+- No local/server persistence, network, live model/provider, paid spend, real
+  data, analytics, calendar/location, photo workflow, affiliate credential,
+  Chrome permission, external action, publishing, or likeness generation.
+### Validation
+- 600/600 deterministic tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and
+  diff-scoped validators passed; the only Knowledge Graph warning remains the
+  accepted non-blocking eligibility warning.
+- Browser QA confirmed the default-off boundary, all six current-evidence
+  answers, stale and insufficient abstention, citation rendering, stale-answer
+  clearing, deterministic reset and focus restoration, visible keyboard focus,
+  no horizontal overflow at the available viewport, and a clean console.
+
 ## Unreleased (2026-07-26) — AI Stylist evaluation harness (issue #104)
 ### Added
 - `scripts/ai-stylist-evaluator.mjs`: deterministic scenario execution,

@@ -478,6 +478,24 @@ failure reasons before spend or real data is introduced.
 **Deferred:** live provider/model selection, prompt comparisons, production
 telemetry, human preference evaluation, and paid evaluation.
 
+## Decision — stateless default-off Stylist fixture (issue #106)
+
+**Problem:** contract and evaluator tests prove safety but do not prove the
+grounded answer, citation, uncertainty, opposing-evidence, and abstention model
+is understandable and usable on a real screen.
+
+**Decision:** expose a synthetic, unlinked, `noindex`, exact-flag-gated route
+that renders only minimized deterministic output. It supports every read-only
+intent plus current, stale, and insufficient evidence modes; keeps no state
+outside memory; and provides no external-action control.
+
+**Benefit:** editorial and product review can evaluate the signature Stylist
+experience before a model, account, storage provider, or real wardrobe is
+introduced.
+
+**Deferred:** live provider/model, production authentication/storage, real
+prompts and wardrobes, analytics, external actions, and public navigation.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

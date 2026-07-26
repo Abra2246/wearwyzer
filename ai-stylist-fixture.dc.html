@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Grounded AI Stylist Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#2e7d46; --red:#b3261e; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:24px 18px; }
+    header div,main { width:100%; max-width:920px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,54px); line-height:1; text-transform:uppercase; letter-spacing:.02em; }
+    header p { margin:10px 0 0; color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); }
+    .notice { border-left:5px solid var(--gold); }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    label { display:block; margin-bottom:6px; font-size:13px; font-weight:800; }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; border:1px solid var(--line); background:white; padding:10px; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible,summary:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; letter-spacing:.06em; }
+    .badge.good { background:#e4f1e8; color:var(--green); }
+    .badge.bad { background:#f6e6e3; color:var(--red); }
+    .claim { margin-top:10px; padding:14px; border:1px solid var(--line); background:#fbf7ef; }
+    .claim p { margin:8px 0; }
+    .meta { color:var(--muted); font-size:13px; }
+    code { overflow-wrap:anywhere; background:#ece5d8; padding:2px 5px; }
+    details { margin-top:10px; border-top:1px solid var(--line); padding-top:10px; }
+    summary { cursor:pointer; font-weight:800; }
+    ul { padding-left:20px; }
+    [hidden] { display:none !important; }
+    @media (max-width:620px) {
+      .grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>Ask WearWyzer</h1>
+      <p>Grounded fixture answers · inspectable evidence · honest abstention</p>
+    </div>
+  </header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This private route is disabled by default. It calls no model, loads no real wardrobe,
+        stores nothing, and cannot take an external action.</p>
+      <a class="button" href="?ww_stylist=1">Open the synthetic Stylist</a>
+    </section>
+
+    <section id="enabled" hidden>
+      <section class="panel notice">
+        <strong>Trust boundary:</strong> every visible claim comes from deterministic synthetic
+        evidence. The citation catalog shows evidence type, version, and state. Private prompts
+        and raw profile or wardrobe facts are never displayed.
+      </section>
+
+      <section class="panel">
+        <h2>Choose a question</h2>
+        <div class="grid">
+          <div>
+            <label for="intent">Stylist intent</label>
+            <select id="intent"></select>
+          </div>
+          <div>
+            <label for="evidence-mode">Evidence condition</label>
+            <select id="evidence-mode">
+              <option value="current">Current accepted evidence</option>
+              <option value="stale">Stale product evidence</option>
+              <option value="insufficient">Insufficient evidence</option>
+            </select>
+          </div>
+        </div>
+        <div class="actions">
+          <button id="ask" type="button">Generate grounded fixture answer</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No model or network request will run.</p>
+      </section>
+
+      <section id="result" class="panel" hidden>
+        <p><span id="outcome" class="badge"></span> <span id="uncertainty" class="meta"></span></p>
+        <h2 id="result-title">Stylist answer</h2>
+        <div id="claims"></div>
+        <section>
+          <h3>Opposing evidence and limitations</h3>
+          <ul id="opposing"></ul>
+        </section>
+        <details>
+          <summary>Inspect evidence citations</summary>
+          <ul id="citations"></ul>
+        </details>
+        <p class="meta"><strong>Next step:</strong> <span id="next-step"></span></p>
+        <p class="meta"><strong>External actions:</strong> unavailable. This fixture cannot buy,
+          message, post, book, publish, or change an account.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { createStylistJourneyState } from './scripts/ai-stylist-journey.mjs';
+
+    const fixtureEnabled = new URLSearchParams(location.search).get('ww_stylist') === '1';
+    document.querySelector('#disabled').hidden = fixtureEnabled;
+    document.querySelector('#enabled').hidden = !fixtureEnabled;
+
+    if (fixtureEnabled) {
+      const journey = createStylistJourneyState();
+      const intent = document.querySelector('#intent');
+      const evidenceMode = document.querySelector('#evidence-mode');
+      const resultPanel = document.querySelector('#result');
+      const status = document.querySelector('#status');
+      const intentLabels = {
+        'style-owned-item': 'Style an owned item',
+        'plan-occasion': 'Plan for an occasion',
+        'evaluate-purchase': 'Evaluate a potential purchase',
+        'identify-gap': 'Identify a wardrobe gap',
+        'compare-options': 'Compare two options',
+        'explain-recommendation': 'Explain a recommendation',
+      };
+
+      for (const supportedIntent of journey.getView().supportedIntents) {
+        const option = document.createElement('option');
+        option.value = supportedIntent;
+        option.textContent = intentLabels[supportedIntent];
+        intent.append(option);
+      }
+
+      function renderResponse(view) {
+        const response = view.result;
+        resultPanel.hidden = !response;
+        if (!response) return;
+        const answered = response.outcome === 'answer';
+        const outcome = document.querySelector('#outcome');
+        outcome.textContent = response.outcome;
+        outcome.className = `badge ${answered ? 'good' : 'bad'}`;
+        document.querySelector('#uncertainty').textContent =
+          `${Math.round(response.uncertainty * 100)}% uncertainty`;
+        document.querySelector('#result-title').textContent =
+          answered ? 'Grounded Stylist answer' : 'WearWyzer abstained';
+        document.querySelector('#claims').replaceChildren(
+          ...response.claims.map((claim) => {
+            const card = document.createElement('article');
+            card.className = 'claim';
+            const badge = document.createElement('span');
+            badge.className = 'badge';
+            badge.textContent = claim.claimType;
+            const copy = document.createElement('p');
+            copy.textContent = claim.text;
+            const citations = document.createElement('p');
+            citations.className = 'meta';
+            citations.textContent = `Citations: ${claim.citations.join(', ')}`;
+            card.append(badge, copy, citations);
+            return card;
+          })
+        );
+        const opposing = response.opposingEvidence.length
+          ? response.opposingEvidence
+          : ['No opposing evidence supplied by this fixture.'];
+        document.querySelector('#opposing').replaceChildren(
+          ...opposing.map((copy) => Object.assign(document.createElement('li'), {
+            textContent: copy,
+          }))
+        );
+        document.querySelector('#citations').replaceChildren(
+          ...Object.values(response.citationCatalog).map((citation) => {
+            const item = document.createElement('li');
+            item.textContent =
+              `${citation.evidenceId} · ${citation.type} · v${citation.version} · ${citation.state}`;
+            return item;
+          })
+        );
+        document.querySelector('#next-step').textContent =
+          response.nextStep || 'No next step supported by current evidence.';
+      }
+
+      intent.addEventListener('change', () => {
+        journey.selectIntent(intent.value);
+        renderResponse(journey.getView());
+        status.textContent = 'Intent changed. Generate a new fixture answer.';
+      });
+      evidenceMode.addEventListener('change', () => {
+        journey.selectEvidenceMode(evidenceMode.value);
+        renderResponse(journey.getView());
+        status.textContent = 'Evidence condition changed. Generate a new fixture answer.';
+      });
+      document.querySelector('#ask').addEventListener('click', () => {
+        const evaluated = journey.run();
+        if (!evaluated.ok) {
+          status.textContent = `Fixture failed safely: ${evaluated.error}.`;
+          resultPanel.hidden = true;
+          return;
+        }
+        renderResponse(evaluated.view);
+        status.textContent = evaluated.view.result.outcome === 'answer'
+          ? 'Grounded fixture answer ready. Inspect its claim types and citations.'
+          : 'WearWyzer abstained because the selected evidence is not sufficient and current.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        intent.value = reset.view.intent;
+        evidenceMode.value = reset.view.evidenceMode;
+        renderResponse(reset.view);
+        status.textContent = 'Fixture reset. No prior answer or private state remains.';
+        intent.focus();
+      });
+    }
+  </script>
+</body>
+</html>

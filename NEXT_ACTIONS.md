@@ -5,36 +5,34 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #103. The grounded Stylist
-contract passed 579 tests, five GitHub checks, serialized Ops refreshes, Pages
-deployment, and post-deploy health check. Issue #104 is active.
+**Evidence baseline:** `main` after merged PR #105. The Stylist evaluation
+harness passed 589 tests, all six 100% trust metrics, five GitHub checks,
+serialized Ops refreshes, Pages deployment, and health check. Issue #106 is
+active.
 
 ## Active review gates
 
-1. **Issue #104 — fixture AI Stylist evaluation harness**
-   - Active branch: `codex/issue-104-ai-stylist-evals`.
-   - Scope: all six intents, adversarial trust cases, deterministic metrics,
-     fail-closed thresholds, exact reports, and repeatability.
-   - Boundary: provider-free, network-free fixtures only; no live model, paid
-     spend, real data, external action, or production storage.
+1. **Issue #106 — default-off fixture AI Stylist journey**
+   - Active branch: `codex/issue-106-ai-stylist-journey`.
+   - Scope: six intents, grounded answers, citations, opposing evidence,
+     abstention, uncertainty, reset, accessibility, and mobile browser QA.
+   - Boundary: unlinked, `noindex`, flag-gated, provider-free, and synthetic;
+     no external actions, live model, real data, or production storage.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #104**
-   - Outcome: a measurable regression gate for grounding, citations,
-     abstention, privacy, external-action safety, and deterministic output.
-2. **Build a default-off fixture AI Stylist journey**
-   - Outcome: demonstrate grounded questions and cited answers over synthetic
-     wardrobe evidence without a live model or real user data.
-3. **Complete Issue #102 workflow hygiene**
+1. **Complete and review Issue #106**
+   - Outcome: a visible, trustworthy synthetic Stylist experience across all
+     six intents plus honest abstention and inspectable evidence.
+2. **Complete Issue #102 workflow hygiene**
    - Outcome: remove deprecated action-runtime and invalid Pages-input warnings
      using verified official migration guidance.
-4. **Establish the first verifiable affiliate merchant path**
+3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-5. **Reconcile and import remaining style-guide sources when real files exist**
+4. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -43,6 +41,9 @@ deployment, and post-deploy health check. Issue #104 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #104 / PR #105:** merged after 589 tests, a 15-scenario portfolio
+  scoring 100% across all six trust metrics, five GitHub checks, serialized Ops
+  refresh, successful Pages deployment, and health check.
 - **Issue #101 / PR #103:** merged after 579 tests, five passing GitHub checks,
   serialized Ops refresh, successful Pages deployment, and health check.
 - **Issue #99 / PR #100:** merged after 568 tests, five passing GitHub checks,
