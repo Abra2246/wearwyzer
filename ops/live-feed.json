@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T03:37:23.013Z",
+  "generatedAtIso": "2026-07-26T03:45:06.563Z",
   "overallState": "live",
   "ceo": {
-    "headline": "Ready-labeled work is not dispatchable.",
-    "requiredAction": "Fix issue #145: malformed: missing required section(s): scope, exclusions",
-    "activeWorkSummary": "No eligible issue can enter the engineering queue."
+    "headline": "Everything is healthy — no action needed.",
+    "requiredAction": null,
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:37:23.013Z",
+      "lastUpdatedIso": "2026-07-26T03:45:06.563Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -19,28 +19,20 @@
         "queue": {
           "depth": 0,
           "readyCount": 0,
-          "labeledReadyCount": 1,
+          "labeledReadyCount": 0,
           "eligibleReadyCount": 0,
-          "malformedCount": 1,
+          "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
           "blockedCount": 2,
           "stalledSinceIso": null,
-          "rejections": [
-            {
-              "issueNumber": 145,
-              "category": "malformed",
-              "reasons": [
-                "malformed: missing required section(s): scope, exclusions"
-              ]
-            }
-          ]
+          "rejections": []
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-26T03:37:08Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186445039",
+          "status": "unknown",
+          "latestRunIso": "2026-07-26T03:44:59Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186658314",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -53,21 +45,21 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:37:23.013Z",
+      "lastUpdatedIso": "2026-07-26T03:45:06.563Z",
       "fetchOk": true,
       "data": {
-        "status": "unknown",
-        "lastHealthyShaShort": null,
-        "lastDeployIso": "2026-07-26T03:37:20Z",
-        "ageMinutes": 0,
-        "pagesUrl": null
+        "status": "healthy",
+        "lastHealthyShaShort": "ce71af0",
+        "lastDeployIso": "2026-07-26T03:39:25Z",
+        "ageMinutes": 6,
+        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
     },
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:37:23.013Z",
+      "lastUpdatedIso": "2026-07-26T03:45:06.563Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -94,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:37:23.013Z",
+      "lastUpdatedIso": "2026-07-26T03:45:06.563Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -134,6 +126,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:147",
+      "timestampIso": "2026-07-26T03:44:52Z",
+      "type": "pr-merged",
+      "summary": "PR #147 \"Add Daily Outfit Intent review journey\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/147"
+    },
+    {
+      "key": "deploy:ce71af0",
+      "timestampIso": "2026-07-26T03:39:25Z",
+      "type": "deployed",
+      "summary": "Deployed build ce71af0 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:2026-07-26T03:37:20Z",
       "timestampIso": "2026-07-26T03:37:20Z",
@@ -469,20 +475,6 @@
       "type": "issue-started",
       "summary": "Issue #117 \"Build the default-off fixture Purchase Simulator journey\" started.",
       "url": "https://github.com/Abra2246/wearwyzer/issues/117"
-    },
-    {
-      "key": "deploy:8e40546",
-      "timestampIso": "2026-07-26T02:08:42Z",
-      "type": "deployed",
-      "summary": "Deployed build 8e40546 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30184046505",
-      "timestampIso": "2026-07-26T02:08:07Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30184046505"
     }
   ]
 }
