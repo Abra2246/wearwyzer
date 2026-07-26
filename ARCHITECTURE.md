@@ -789,6 +789,26 @@ profiles/wardrobes, prices, retailers, affiliate economics, analytics,
 credentials, network, persistence, purchasing, and external actions remain
 excluded.
 
+## Decision — Daily Outfit Intent is reviewable before integration (issue #145)
+
+**Problem:** a minimized contract is not enough for editorial and product
+review. People need to see why coherent context produces an outfit set, why
+uncertainty pauses it, why contradictions abstain, and how Outfit Set ties or
+insufficiency remain unresolved.
+
+**Decision:** the default-off fixture route
+`daily-outfit-fixture.dc.html?ww_daily_outfit=1` delegates nine deterministic
+review modes to the accepted Daily Outfit Intent contract. It renders explicit
+context, status, reason codes, safety policy, selected/tied/qualified IDs, and
+minimized Outfit Set candidate evaluations when context is coherent. Mode
+changes invalidate prior results; reset restores deterministic defaults and
+keyboard focus.
+
+**Boundary:** the route is unlinked, `noindex`, fixture-only, and read-only. It
+does not access live location, weather, calendar, itinerary, accounts, a real
+closet, persistence, analytics, network, commerce, affiliate or retailer
+actions, purchases, publishing, or any other external action.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

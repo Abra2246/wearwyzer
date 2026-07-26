@@ -960,6 +960,16 @@ references, and owner.
   Live location, calendar, itinerary, health/body facts, full private payloads,
   commerce, analytics, credentials, network, persistence, and external actions
   remain outside the result. Current pre-PR validation baseline: 806 tests.
+- Issue #145 makes Daily Outfit Intent reviewable through a default-off,
+  exact-flag-gated fixture journey. Two/three-outfit ready states, unknown
+  weather, ambiguous dress code, stale availability, context contradictions,
+  an Outfit Set boundary tie, and insufficiency keep explicit context, reasons,
+  safety policy, selection IDs, and minimized candidate evaluations visible.
+  Mode changes clear prior results; reset restores deterministic defaults and
+  focus. The route reads no live context or private data, stores nothing, and
+  exposes no account, analytics, network, affiliate, retailer, purchase,
+  publishing, or external action. Current pre-PR validation baseline: 816
+  tests.
 
 ## Final north-star statement
 

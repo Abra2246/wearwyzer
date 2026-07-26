@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Daily Outfit Intent Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:980px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); }
+    .notice { border-left:5px solid var(--gold); }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .warn { color:var(--red); background:#f6e6e3; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .detail,.evaluation { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .meta { color:var(--muted); font-size:13px; }
+    ol,ul { padding-left:22px; }
+    [hidden] { display:none !important; }
+    @media (max-width:680px) {
+      .grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>What should I wear today?</h1><p>Explicit context, trusted outfit sets, and honest uncertainty.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This synthetic route cannot read location, weather, calendar, account, or closet data and cannot shop, track, save, or act externally.</p>
+      <a class="button" href="?ww_daily_outfit=1">Open synthetic Daily Outfit review</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> context is explicit,
+        minimized, and local. Unknown or stale evidence requires review, contradictions
+        abstain, and only the accepted Outfit Set contract may select outfits.</section>
+      <section class="panel">
+        <h2>Choose a review case</h2>
+        <label for="mode">Daily outfit evidence state</label>
+        <select id="mode">
+          <option value="ready-two">Ready with two outfits</option>
+          <option value="ready-three">Ready with three outfits</option>
+          <option value="unknown-weather">Unknown weather</option>
+          <option value="ambiguous-dress-code">Ambiguous dress code</option>
+          <option value="stale-availability">Stale item availability</option>
+          <option value="weather-season-conflict">Weather and season conflict</option>
+          <option value="dress-code-occasion-conflict">Dress code and occasion conflict</option>
+          <option value="outfit-set-boundary-tie">Outfit Set boundary tie</option>
+          <option value="insufficient-candidates">Insufficient trustworthy outfits</option>
+        </select>
+        <div class="actions">
+          <button id="review" type="button">Review daily outfit</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No live context, private data, network, tracking, or commerce action will run.</p>
+      </section>
+      <section class="panel">
+        <h2>Explicit context</h2>
+        <div id="context" class="grid"></div>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="result-status" class="badge"></span></p>
+        <h2>Daily outfit decision</h2>
+        <p id="mode-summary" class="meta"></p>
+        <div class="grid">
+          <article class="detail"><strong>Reason codes</strong><ul id="reason-codes"></ul></article>
+          <article class="detail"><strong>Selected outfits</strong><ul id="selected"></ul></article>
+          <article class="detail"><strong>Tied outfits</strong><ul id="tied"></ul></article>
+          <article class="detail"><strong>Qualified outfits</strong><ul id="qualified"></ul></article>
+        </div>
+        <h3>Safety policy</h3>
+        <div id="policy" class="grid"></div>
+        <h3>Minimized Outfit Set evidence</h3>
+        <div id="set-evidence" class="grid"></div>
+        <h3>Candidate evaluations</h3>
+        <div id="evaluations" class="grid"></div>
+        <p class="meta"><strong>External actions:</strong> unavailable. This fixture cannot
+          access live context or a real closet, persist data, track, redirect, buy, publish,
+          or change an account.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { createDailyOutfitIntentJourney } from './scripts/daily-outfit-intent-journey.mjs';
+    const enabled = new URLSearchParams(location.search).get('ww_daily_outfit') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+    if (enabled) {
+      const journey = createDailyOutfitIntentJourney();
+      const mode = document.querySelector('#mode');
+      const panel = document.querySelector('#result');
+      const status = document.querySelector('#status');
+      function listItems(values) {
+        return (values?.length ? values : ['None']).map((value) => {
+          const item = document.createElement('li');
+          item.textContent = value;
+          return item;
+        });
+      }
+      function detail(label, value) {
+        const card = document.createElement('article');
+        card.className = 'detail';
+        const heading = document.createElement('strong');
+        heading.textContent = label;
+        const copy = document.createElement('p');
+        copy.className = 'meta';
+        copy.textContent = String(value);
+        card.append(heading, copy);
+        return card;
+      }
+      function evaluationCard(evaluation) {
+        const card = document.createElement('article');
+        card.className = 'evaluation';
+        const heading = document.createElement('strong');
+        heading.textContent = evaluation.outfitId;
+        const summary = document.createElement('p');
+        summary.className = 'meta';
+        summary.textContent = `${evaluation.status} · score ${evaluation.score ?? 'unavailable'} · coverage ${evaluation.evidenceCoverage}% · ${evaluation.confidence} confidence`;
+        const reasons = document.createElement('ul');
+        reasons.replaceChildren(...listItems(evaluation.reasonCodes));
+        card.append(heading, summary, reasons);
+        return card;
+      }
+      function renderContext(view) {
+        document.querySelector('#context').replaceChildren(
+          ...Object.entries(view.context).map(([key, value]) => detail(key, value)),
+        );
+      }
+      function render(view) {
+        renderContext(view);
+        panel.hidden = !view.result;
+        if (!view.result) return;
+        const data = view.result;
+        const set = data.outfitSet;
+        const badge = document.querySelector('#result-status');
+        badge.textContent = data.status;
+        badge.className = `badge ${data.status === 'ready' ? 'good' : 'warn'}`;
+        document.querySelector('#mode-summary').textContent = view.modeSummary;
+        document.querySelector('#reason-codes').replaceChildren(...listItems(data.reasonCodes));
+        document.querySelector('#selected').replaceChildren(...listItems(set?.selectedOutfitIds));
+        document.querySelector('#tied').replaceChildren(...listItems(set?.tiedOutfitIds));
+        document.querySelector('#qualified').replaceChildren(...listItems(set?.qualifiedOutfitIds));
+        document.querySelector('#policy').replaceChildren(
+          ...Object.entries(data.policy).map(([key, value]) => detail(key, value)),
+        );
+        document.querySelector('#set-evidence').replaceChildren(
+          detail('Outfit Set status', set?.status ?? 'not evaluated'),
+          detail('Desired outfit count', set?.desiredCount ?? data.context.desiredCount ?? view.context.desiredCount),
+          detail('Evaluated candidate count', set?.evaluations?.length ?? 0),
+          detail('Outfit Set reason codes', set?.decisionReasonCodes?.join(', ') || 'None'),
+        );
+        document.querySelector('#evaluations').replaceChildren(
+          ...(set?.evaluations?.map(evaluationCard) ?? [detail('Evaluation', 'Not run because context was unresolved.')]),
+        );
+      }
+      render(journey.getView());
+      mode.addEventListener('change', () => {
+        journey.selectMode(mode.value);
+        render(journey.getView());
+        status.textContent = 'Context changed. Review again to create a current result.';
+      });
+      document.querySelector('#review').addEventListener('click', () => {
+        const result = journey.run();
+        if (!result.ok) {
+          panel.hidden = true;
+          status.textContent = `Fixture failed safely: ${result.error}.`;
+          return;
+        }
+        render(result.view);
+        status.textContent = 'Review complete. Context, reasons, safety policy, and minimized Outfit Set evidence are visible.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        mode.value = reset.view.mode;
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior Daily Outfit result remains.';
+        mode.focus();
+      });
+    }
+  </script>
+</body>
+</html>
