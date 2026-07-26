@@ -5,28 +5,27 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #98. The lifecycle slice passed
-558 tests, five GitHub checks, both serialized Ops feed refreshes, Pages
-deployment, and post-deploy health check. Issue #99 is active.
+**Evidence baseline:** `main` after merged PR #100. The outfit-planning slice
+passed 568 tests, five GitHub checks, both serialized Ops feed refreshes, Pages
+deployment, and post-deploy health check. Issue #101 is active.
 
 ## Active review gates
 
-1. **Issue #99 — fixture outfit calendar and packing contract**
-   - Active branch: `codex/issue-99-outfit-packing-contract`.
-   - Scope: explicit planning inputs, deterministic owned-item outfits, repeat
-     and availability constraints, packing deduplication, gaps, and confidence.
-   - Boundary: no calendar credentials, location, live weather, messages, real
-     account, analytics, paid call, or production storage.
+1. **Issue #101 — first grounded AI Stylist tool contract**
+   - Active branch: `codex/issue-101-ai-stylist-contract`.
+   - Scope: read-only intent taxonomy, evidence allowlists, citations,
+     opposing evidence, uncertainty, abstention, and minimized responses.
+   - Boundary: no live model/provider call, paid spend, real account, external
+     action, Chrome permission, or production storage.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #99**
-   - Outcome: prove useful outfit and packing planning from confirmed owned
-     items with honest gaps and a minimized response.
-2. **Define the first fixture AI Stylist tool contract**
-   - Outcome: a read-only conversational planner grounded in the accepted
-     wardrobe, Wear DNA, purchase, and packing contracts, with citations and
-     abstention rather than invented wardrobe facts.
+1. **Complete and review Issue #101**
+   - Outcome: a read-only conversational contract grounded in accepted
+     wardrobe, Wear DNA, product, purchase, and planning evidence.
+2. **Build a fixture AI Stylist evaluation harness**
+   - Outcome: regression prompts for owned-item styling, occasion planning,
+     purchase evaluation, gaps, comparisons, explanations, and abstention.
 3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
@@ -41,6 +40,8 @@ deployment, and post-deploy health check. Issue #99 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #99 / PR #100:** merged after 568 tests, five passing GitHub checks,
+  serialized Ops refresh, successful Pages deployment, and health check.
 - **Issue #97 / PR #98:** merged after 558 tests, five passing GitHub checks,
   serialized Ops refresh, successful Pages deployment, and health check.
 - **Issue #95 / PR #96:** merged after 549 tests, five passing GitHub checks,
