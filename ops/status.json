@@ -1,24 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T06:09:12.547Z",
+  "generatedAtIso": "2026-07-26T06:26:40.478Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 171,
-    "title": "Add the fixture signed-in Daily Stylist web transport review journey",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/171",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-26T05:57:28Z"
-  },
+  "automationState": "queued",
+  "activeWork": null,
   "queue": {
     "depth": 1,
     "readyCount": 1,
     "blockedCount": 2
   },
   "ci": {
-    "status": "unknown",
-    "lastRunIso": "2026-07-26T06:09:07Z",
+    "status": "passing",
+    "lastRunIso": "2026-07-26T06:09:17Z",
     "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30190562235"
   },
   "deployment": {
@@ -59,6 +52,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-26T05:57:28.000Z",
+  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
   "staleAfterMinutes": 30
 }
