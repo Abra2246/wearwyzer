@@ -1,25 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T05:37:29.199Z",
+  "generatedAtIso": "2026-07-26T05:53:40.288Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 168,
-    "title": "Define the signed-in web transport contract for Daily Stylist",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/168",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-26T05:37:14Z"
-  },
+  "automationState": "idle",
+  "activeWork": null,
   "queue": {
     "depth": 0,
     "readyCount": 0,
     "blockedCount": 2
   },
   "ci": {
-    "status": "passing",
-    "lastRunIso": "2026-07-26T05:37:12Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30189665268"
+    "status": "unknown",
+    "lastRunIso": "2026-07-26T05:53:31Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30190114462"
   },
   "deployment": {
     "status": "unknown",
@@ -59,6 +52,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-26T05:37:14.000Z",
+  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
   "staleAfterMinutes": 30
 }
