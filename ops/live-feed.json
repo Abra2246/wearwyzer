@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T01:27:15.816Z",
+  "generatedAtIso": "2026-07-26T01:37:51.616Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#106 \"Build the default-off fixture AI Stylist journey\" (no PR yet)"
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:27:15.816Z",
+      "lastUpdatedIso": "2026-07-26T01:37:51.616Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 106,
-          "title": "Build the default-off fixture AI Stylist journey",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/106",
-          "updatedIso": "2026-07-26T01:26:15Z"
-        },
+        "automationState": "idle",
+        "activeIssue": null,
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -35,9 +30,9 @@
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-26T01:24:52Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30182838717",
+          "status": "unknown",
+          "latestRunIso": "2026-07-26T01:37:46Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30183197897",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -50,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:27:15.816Z",
+      "lastUpdatedIso": "2026-07-26T01:37:51.616Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "d0aa164",
         "lastDeployIso": "2026-07-26T01:25:27Z",
-        "ageMinutes": 2,
+        "ageMinutes": 12,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -64,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:27:15.816Z",
+      "lastUpdatedIso": "2026-07-26T01:37:51.616Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:27:15.816Z",
+      "lastUpdatedIso": "2026-07-26T01:37:51.616Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -131,6 +126,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:107",
+      "timestampIso": "2026-07-26T01:37:33Z",
+      "type": "pr-merged",
+      "summary": "PR #107 \"Build default-off fixture AI Stylist journey\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/107"
+    },
     {
       "key": "issue-started:106",
       "timestampIso": "2026-07-26T01:26:15Z",
@@ -473,13 +475,6 @@
       "type": "deployed",
       "summary": "Deployed build c8d806f — health checks passed.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30170155673",
-      "timestampIso": "2026-07-25T18:42:34Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30170155673"
     }
   ]
 }
