@@ -2,6 +2,25 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fixture Fit Intelligence contract (issue #123)
+### Added
+- A closed, versioned Fit Intelligence boundary over explicit coarse
+  preferences, known-brand outcomes, and verified alpha-size evidence.
+- Explainable size guidance with confidence, silhouette, likely issues, reason
+  codes, supplied conversions, and minimized owned-item comparisons.
+### Safety
+- Explicit same-brand corrections outrank defaults; conflicting, stale,
+  ambiguous, missing, unsupported, and unavailable evidence never becomes a
+  substitute guess.
+- Fit remains guidance, never a promise. Measurements, body inference, photos,
+  private notes/history, commerce, affiliate incentives, and external actions
+  remain outside the result and implementation.
+### Validation
+- 687/687 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted recommendation-eligibility warning remains
+  non-blocking.
+
 ## Unreleased (2026-07-26) — Closet Health fixture journey (issue #121)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route for complete, missing,

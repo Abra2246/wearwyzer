@@ -604,6 +604,25 @@ The Issue #121 fixture journey exposes this score only behind the exact
 complete, missing, care-needed, redundancy, and unresolved evidence reviewable
 without introducing a commerce, account, tracking, or network surface.
 
+## Decision — Fit Intelligence is evidence-backed guidance, not a promise (issue #123)
+
+**Problem:** transferring a familiar size across brands can look authoritative
+even when product evidence is stale, ambiguous, conflicting, or unavailable.
+Guessing here would undermine trust and could turn personalization into sales
+pressure.
+
+**Decision:** the fixture Fit Intelligence boundary accepts only an explicit
+coarse preference, corrected/inferred known-brand outcomes, and current
+verified alpha-size evidence. Explicit same-brand corrections outrank defaults.
+Conflicts, stale/non-current evidence, unsupported systems, and unavailable
+evidence-backed sizes abstain rather than substitute another size.
+
+**Privacy and commerce boundary:** the minimized response contains guidance,
+confidence, expected silhouette, likely-issue/reason codes, supplied regional
+conversions, and stable owned-item comparisons. It contains no measurements,
+body or protected-attribute inference, photos, private notes, full history,
+price, retailer preference, affiliate incentive, account, or guarantee.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
