@@ -511,6 +511,21 @@ active and staged workflows. Keep `include-hidden-files` on
 bounded regeneration, generated-file protections, and no-force-push behavior
 do not change. A deterministic contract test prevents action-major drift.
 
+## Decision — trusted-corpus offline Stylist replay gate (issue #109)
+
+**Problem:** a future model candidate must not be allowed to supply its own
+evidence, expected outcomes, trust thresholds, or private request data.
+
+**Decision:** candidate envelopes contain only a synthetic provider alias,
+fixture version, and drafts keyed to the complete trusted scenario corpus. The
+gate owns the request/evidence fixtures and evaluator, rejects unknown or
+private fields, and returns a minimized comparison report.
+
+**Selection rule:** a candidate must score 100% on every existing trust metric.
+Failed candidates are never promoted; multiple passing candidates remain an
+explicit tie. No live provider, credential, paid call, or hidden preference
+weight is present.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

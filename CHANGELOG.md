@@ -2,6 +2,23 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Offline AI Stylist replay gate (issue #109)
+### Added
+- Closed, versioned fixture candidate envelopes containing drafts but no
+  request evidence, profile, wardrobe, prompt, credential, or provider SDK.
+- Deterministic replay through the accepted 15-scenario Stylist trust corpus.
+- Sanitized comparison reports with explicit selected, tie, or
+  no-trusted-candidate outcomes.
+### Safety
+- Candidates below any 100% trust threshold cannot be promoted.
+- The gate rejects incomplete/unknown scenario portfolios, unknown fields,
+  private evidence, secrets, external-action attempts, grounding failures, and
+  non-repeatable results.
+### Validation
+- 611/611 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted eligibility warning remains non-blocking.
+
 ## Unreleased (2026-07-26) — GitHub Actions runtime hygiene (issue #102)
 ### Changed
 - Updated every active and staged `actions/checkout` and `actions/setup-node`
