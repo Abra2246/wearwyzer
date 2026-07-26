@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T04:15:45.115Z",
+  "generatedAtIso": "2026-07-26T04:35:59.797Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#154 \"Build explicit-context Daily Outfit Stylist composer fixture\" (no PR yet)"
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:15:45.115Z",
+      "lastUpdatedIso": "2026-07-26T04:35:59.797Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 154,
-          "title": "Build explicit-context Daily Outfit Stylist composer fixture",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/154",
-          "updatedIso": "2026-07-26T04:15:42Z"
-        },
+        "automationState": "idle",
+        "activeIssue": null,
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -35,9 +30,9 @@
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-26T04:15:25Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30187485223",
+          "status": "unknown",
+          "latestRunIso": "2026-07-26T04:35:59Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30188034367",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -50,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:15:45.115Z",
+      "lastUpdatedIso": "2026-07-26T04:35:59.797Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "0674517",
-        "lastDeployIso": "2026-07-26T04:11:03Z",
-        "ageMinutes": 5,
+        "lastHealthyShaShort": "c4c8bd3",
+        "lastDeployIso": "2026-07-26T04:16:07Z",
+        "ageMinutes": 20,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -64,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:15:45.115Z",
+      "lastUpdatedIso": "2026-07-26T04:35:59.797Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:15:45.115Z",
+      "lastUpdatedIso": "2026-07-26T04:35:59.797Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -131,6 +126,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:158",
+      "timestampIso": "2026-07-26T04:35:46Z",
+      "type": "pr-merged",
+      "summary": "PR #158 \"Add explicit-context Daily Outfit Stylist composer fixture\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/158"
+    },
+    {
+      "key": "deploy:c4c8bd3",
+      "timestampIso": "2026-07-26T04:16:07Z",
+      "type": "deployed",
+      "summary": "Deployed build c4c8bd3 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "issue-started:154",
       "timestampIso": "2026-07-26T04:15:42Z",
@@ -466,20 +475,6 @@
       "type": "issue-started",
       "summary": "Issue #127 \"Define fixture Brand Preference and Fit Memory intelligence\" started.",
       "url": "https://github.com/Abra2246/wearwyzer/issues/127"
-    },
-    {
-      "key": "ci-run:30184929727",
-      "timestampIso": "2026-07-26T02:40:39Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30184929727"
-    },
-    {
-      "key": "pr-merged:126",
-      "timestampIso": "2026-07-26T02:40:18Z",
-      "type": "pr-merged",
-      "summary": "PR #126 \"Build fixture Fit Intelligence journey\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/126"
     }
   ]
 }
