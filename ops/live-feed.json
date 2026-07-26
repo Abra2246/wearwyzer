@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T03:54:48.930Z",
+  "generatedAtIso": "2026-07-26T04:06:50.370Z",
   "overallState": "live",
   "ceo": {
-    "headline": "Ready-labeled work is not dispatchable.",
-    "requiredAction": "Fix issue #151: malformed: missing required section(s): scope, exclusions",
-    "activeWorkSummary": "No eligible issue can enter the engineering queue."
+    "headline": "Everything is healthy — no action needed.",
+    "requiredAction": null,
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:54:48.930Z",
+      "lastUpdatedIso": "2026-07-26T04:06:50.370Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -19,28 +19,20 @@
         "queue": {
           "depth": 0,
           "readyCount": 0,
-          "labeledReadyCount": 1,
+          "labeledReadyCount": 0,
           "eligibleReadyCount": 0,
-          "malformedCount": 1,
+          "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
           "blockedCount": 2,
           "stalledSinceIso": null,
-          "rejections": [
-            {
-              "issueNumber": 151,
-              "category": "malformed",
-              "reasons": [
-                "malformed: missing required section(s): scope, exclusions"
-              ]
-            }
-          ]
+          "rejections": []
         },
         "pr": null,
         "ci": {
           "status": "unknown",
-          "latestRunIso": "2026-07-26T03:54:39Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186915613",
+          "latestRunIso": "2026-07-26T04:06:45Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30187254822",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -53,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:54:48.930Z",
+      "lastUpdatedIso": "2026-07-26T04:06:50.370Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "98245f7",
-        "lastDeployIso": "2026-07-26T03:52:42Z",
-        "ageMinutes": 2,
+        "lastHealthyShaShort": "3122236",
+        "lastDeployIso": "2026-07-26T03:55:26Z",
+        "ageMinutes": 11,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -67,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:54:48.930Z",
+      "lastUpdatedIso": "2026-07-26T04:06:50.370Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -94,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:54:48.930Z",
+      "lastUpdatedIso": "2026-07-26T04:06:50.370Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -134,6 +126,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:153",
+      "timestampIso": "2026-07-26T04:06:34Z",
+      "type": "pr-merged",
+      "summary": "PR #153 \"Add grounded Daily Outfit Stylist fixture journey\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/153"
+    },
+    {
+      "key": "deploy:3122236",
+      "timestampIso": "2026-07-26T03:55:26Z",
+      "type": "deployed",
+      "summary": "Deployed build 3122236 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "pr-merged:152",
       "timestampIso": "2026-07-26T03:54:36Z",
@@ -469,20 +475,6 @@
       "type": "deploy-failed",
       "summary": "Deployment failed its health checks.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30184494960",
-      "timestampIso": "2026-07-26T02:24:23Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30184494960"
-    },
-    {
-      "key": "pr-merged:120",
-      "timestampIso": "2026-07-26T02:24:05Z",
-      "type": "pr-merged",
-      "summary": "PR #120 \"Define fixture Closet Health Score\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/120"
     }
   ]
 }
