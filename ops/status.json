@@ -1,25 +1,18 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:05:36.510Z",
+  "generatedAtIso": "2026-07-26T02:08:02.558Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 115,
-    "title": "Build the fixture personalized Purchase Simulator",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/115",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-26T02:04:34Z"
-  },
+  "automationState": "idle",
+  "activeWork": null,
   "queue": {
     "depth": 0,
     "readyCount": 0,
     "blockedCount": 2
   },
   "ci": {
-    "status": "passing",
-    "lastRunIso": "2026-07-26T02:03:10Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30183898745"
+    "status": "unknown",
+    "lastRunIso": "2026-07-26T02:07:53Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30184046505"
   },
   "deployment": {
     "status": "unknown",
@@ -59,6 +52,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-26T02:04:34.000Z",
+  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
   "staleAfterMinutes": 30
 }
