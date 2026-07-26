@@ -2,6 +2,24 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Grounded Daily Outfit Stylist fixture journey (issue #151)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route that composes accepted
+  Daily Outfit Intent decisions with the accepted Grounded Daily Outfit
+  Stylist response adapter across all nine deterministic evidence states.
+- Human-readable outcome, title, summary, explicit context,
+  selected/tied/qualified IDs, reasons, uncertainty, citations, limitations,
+  next step, safety policy, and minimized per-outfit evidence.
+### Safety
+- The journey delegates context, ranking, ties, uncertainty, abstention, and
+  response projection to accepted contracts instead of recreating policy in
+  the page.
+- It enables no model/provider, live context, private data, account, storage,
+  camera, network, analytics, commerce, affiliate/retailer action, purchase,
+  publishing, messaging, likeness generation, or external action.
+### Validation
+- 836/836 deterministic repository tests passed.
+
 ## Unreleased (2026-07-26) — Grounded Daily Outfit Stylist response (issue #148)
 ### Added
 - A closed, versioned adapter from accepted Daily Outfit Intent results to

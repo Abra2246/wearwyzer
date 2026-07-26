@@ -58,6 +58,28 @@ It contains no raw profile or closet, location, calendar, itinerary, account,
 prices, retailers, affiliate economics, credentials, provider payload,
 analytics, persistence, purchasing, publishing, messaging, or external action.
 
+## Fixture review journey
+
+The unlinked, `noindex` route
+`grounded-daily-outfit-stylist-fixture.dc.html?ww_grounded_daily_stylist=1`
+makes the accepted response understandable without adding a second policy
+layer. It covers:
+
+- ready responses with two and three selected outfits;
+- unknown weather, ambiguous dress code, and stale availability;
+- weather/season and dress-code/occasion contradictions;
+- an Outfit Set selection-boundary tie; and
+- insufficient trustworthy candidates.
+
+The journey first delegates to the accepted Daily Outfit Intent fixture, then
+passes that exact accepted result into this adapter. The page renders only the
+adapter output. Changing modes clears the previous response, and reset restores
+the deterministic `ready-two` default and keyboard focus.
+
+Without the exact query flag the fixture controls remain hidden. The route is
+not linked from any other site page and contains no network/provider call,
+live/private input, persistence, analytics, commerce, or external action.
+
 ## Production gates
 
 No model or provider call, live context access, production account/storage,
