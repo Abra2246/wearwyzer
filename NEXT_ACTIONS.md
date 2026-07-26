@@ -5,35 +5,36 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** implementation branch
-`codex/issue-151-grounded-daily-stylist-journey`. The queue-dispatched run
-`30186961673` failed its handoff check after eight tool permission denials and
-correctly left no branch or PR. Local takeover now implements the bounded
-fixture journey; focused validation passes 30/30 and full repository,
-browser, CI, deployment, and production evidence remain required before
-completion.
+**Evidence baseline:** `main` after merged PR #153. The Grounded Daily Outfit
+Stylist fixture journey passed 836 tests, every deterministic validator,
+browser QA across all nine modes, five GitHub checks, Pages deployment run
+`30187254783`, Content pipeline run `30187254822`, Ops Live Feed run
+`30187254794`, Ops Status run `30187254791`, and Deploy Health Check run
+`30187277683`. Issue #154 is ready.
 
 ## Queued execution
 
-1. **Issue #151 — Grounded Daily Outfit Stylist fixture journey**
-   - Status: implementation in progress after evidence-backed automation
-     handoff failure.
-   - Scope: make accepted ready, review, contradiction, tie, and insufficiency
-     responses visibly explainable.
-   - Boundary: exact flag `ww_grounded_daily_stylist=1`, fixture-only,
+1. **Issue #154 — Explicit-context Daily Outfit Stylist composer fixture**
+   - Status: ready; no implementation branch or review PR exists yet.
+   - Scope: let a person choose allowlisted coarse context and receive the
+     accepted grounded answer or honest non-answer from a deterministic
+     synthetic candidate pool.
+   - Boundary: exact flag `ww_daily_stylist_composer=1`, fixture-only,
      deterministic, provider-neutral, default-off, unlinked, and read-only. No
-     model, live context, private data, commerce, account, analytics, network,
-     purchase, persistence, publishing, message, or external action exists.
+     free text, model, live context, real profile/closet, storage, commerce,
+     account, analytics, network, purchase, publishing, message, likeness, or
+     external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #151**
-   - Outcome: make ready, review, contradiction, tie, and insufficiency
-     responses visibly explainable before any provider or private integration.
-2. **Reassess the first user-facing daily Stylist integration**
-   - Dependency: merged Issue #151 with browser QA and production evidence.
-   - Outcome: choose the smallest default-off synthetic flow that demonstrates
-     daily styling utility without collecting private or live context.
+1. **Complete and review Issue #154**
+   - Outcome: demonstrate the first explicit user-shaped Daily Stylist flow
+     without collecting live or private context.
+2. **Define the minimum production Daily Stylist data boundary**
+   - Dependency: merged Issue #154 with browser QA and production evidence.
+   - Outcome: specify the smallest consented profile/wardrobe/context
+     references future clients need, without implementing collection,
+     persistence, providers, or production access.
 3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -53,6 +54,16 @@ completion.
 
 ## Closed or blocked with evidence
 
+- **Issue #151 / PR #153:** merged after 836 tests, every deterministic
+  validator, browser QA across all nine modes, five passing GitHub checks,
+  Pages run `30187254783`, Content pipeline run `30187254822`, Ops Live Feed
+  run `30187254794`, Ops Status run `30187254791`, and Deploy Health Check run
+  `30187277683`. The queue-dispatched Claude run failed its handoff after eight
+  tool permission denials; the watchdog rejected the false success, local
+  takeover restored the branch/PR lifecycle, and the stale failure labels were
+  removed after merge. The live default-off route composes accepted Daily
+  Outfit Intent and Grounded Stylist contracts without providers, live
+  context, private data, commerce, persistence, or external actions.
 - **Issue #148 / PR #150:** merged after 826 tests, every deterministic
   validator, five passing GitHub checks, Pages run `30186843341`, Deploy
   Health Check run `30186865046`, Content pipeline run `30186843351`, Ops Live
