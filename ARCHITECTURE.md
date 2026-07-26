@@ -562,6 +562,22 @@ failure, evidence loss, provider error, schema drift, nondeterminism, or a
 request/cost limit breach stops the experiment. This contract performs no
 network call, reads no credential, and authorizes no spend.
 
+## Decision — compare purchases through shared wardrobe evidence (issue #115)
+
+**Problem:** separate single-item evaluations force users to reconcile scores
+and may encourage a purchase even when no option is good enough.
+
+**Decision:** compare two or three canonical candidates against the exact same
+profile and wardrobe snapshot. Only current, available products with a
+confident `buy` evaluation enter ranking. Purchase ROI is the deterministic
+comparison score because it already combines compatibility, versatility, gap
+coverage, Outfit Unlocks, and inverse redundancy. Equal leaders remain tied;
+when none qualifies, the answer is `buy-none`.
+
+**Commerce boundary:** affiliate status, commission, popularity, and retailer
+preference never enter ranking. The minimized response contains no full profile,
+wardrobe, or private fit data and performs no purchase or other external action.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

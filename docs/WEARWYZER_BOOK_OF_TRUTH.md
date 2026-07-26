@@ -838,6 +838,13 @@ references, and owner.
   score can repair a safety failure. The protocol itself performs no network
   call, reads no credential, and authorizes no spend. Current pre-PR validation
   baseline: 636 tests plus every deterministic repository validator.
+- Issue #115 turns the single-product evaluation into a direct shopping
+  decision. Two or three canonical products are evaluated against the same
+  profile and wardrobe snapshot; only current, available, confident `buy`
+  outcomes may rank. Purchase ROI provides the explainable ordering, ties stay
+  tied, and `buy-none` is a first-class success outcome. Affiliate status and
+  commission never influence the result. Current pre-PR validation baseline:
+  644 tests plus every deterministic repository validator.
 
 ## Final north-star statement
 

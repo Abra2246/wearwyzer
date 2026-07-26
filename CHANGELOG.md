@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Personalized Purchase Simulator (issue #115)
+### Added
+- Deterministic comparison of two or three canonical products against one
+  accepted profile and wardrobe snapshot.
+- Explicit selected, tie, and `buy-none` outcomes with minimized scores,
+  evidence codes, and source state.
+### Safety
+- Unknown, stale, unavailable, and weakly recommended products remain visible
+  but cannot win.
+- Affiliate eligibility and commission are absent from ranking; no private
+  profile, full wardrobe, network, purchase, or external action is exposed.
+### Validation
+- 644/644 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted eligibility warning remains non-blocking.
+
 ## Unreleased (2026-07-26) — Founder-gated AI provider experiment protocol (issue #113)
 ### Added
 - A closed, provider-neutral experiment manifest over the accepted synthetic
