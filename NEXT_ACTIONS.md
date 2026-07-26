@@ -5,32 +5,31 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #136. The Outfit Compatibility
-contract passed 758 tests, all deterministic validators, five GitHub checks,
-serialized Ops refreshes, Pages deployment run `30185757766`, and Deploy
-Health Check run `30185781621`. Issue #137 is active.
+**Evidence baseline:** `main` after merged PR #138. The Outfit Compatibility
+journey passed 770 tests, all deterministic validators, browser QA, five GitHub
+checks, serialized Ops refreshes, Pages deployment run `30185926948`, and
+Deploy Health Check run `30185947279`. Issue #139 is active.
 
 ## Active review gates
 
-1. **Issue #137 — Outfit Compatibility fixture journey**
-   - Active branch: `codex/issue-137-outfit-compatibility-journey`.
-   - Scope: make compatible, missing-evidence, hard-block, leader, tie, and
-     none-qualified outcomes reviewable without recreating contract policy.
+1. **Issue #139 — Personalized Outfit Set Recommendation contract**
+   - Active branch: `codex/issue-139-outfit-set-recommendation`.
+   - Scope: assemble two or three trusted, meaningfully distinct outfits for
+     one intent from accepted compatibility evidence.
    - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
      No full private payload, commerce, account, analytics, network, purchase,
      persistence, or external action exists.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #137**
-   - Outcome: prove the shared outfit-quality boundary is understandable and
-     correct before any real profile, wardrobe, app, extension, or AI Stylist
-     integration.
-2. **Define personalized outfit-set recommendation**
-   - Dependency: merged Issues #135 and #137.
-   - Outcome: assemble multiple qualified outfits for one intent while
-     preserving ownership labels, fit/product truth, Style DNA, diversity,
-     comparison ties, and honest abstention.
+1. **Complete and review Issue #139**
+   - Outcome: establish one owned-first, diversity-aware outfit-set boundary
+     that future website, app, extension, and AI Stylist clients can share.
+2. **Build the fixture outfit-set review journey**
+   - Dependency: merged Issue #139.
+   - Outcome: make trusted selection, owned-first preference, duplicate-formula
+     exclusion, boundary tie, insufficiency, and abstention reviewable before
+     real wardrobe integration.
 3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -50,6 +49,12 @@ Health Check run `30185781621`. Issue #137 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #137 / PR #138:** merged after 770 tests, every deterministic
+  validator, browser QA, five passing GitHub checks, serialized Ops refreshes,
+  Pages run `30185926948`, and Deploy Health Check run `30185947279`. Eight
+  review modes keep scores, confidence, coverage, hard incompatibilities,
+  missing evidence, reasons, target, and ownership visible without exposing
+  private data, commerce, persistence, or external actions.
 - **Issue #135 / PR #136:** merged after 758 tests, every deterministic
   validator, five passing GitHub checks, serialized Ops refreshes, Pages run
   `30185757766`, and Deploy Health Check run `30185781621`. Product facts,

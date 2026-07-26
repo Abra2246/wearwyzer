@@ -722,6 +722,33 @@ and focus.
 It stores nothing and has no profile, wardrobe, account, analytics, network,
 commerce, affiliate, retailer, purchase, or external-action capability.
 
+## Decision — outfit sets require trust and meaningful variety (issue #139)
+
+**Problem:** independently compatible outfits do not automatically form a
+useful recommendation set. Naive ranking can inflate variety with trivial
+permutations, reward prospective purchases, hide missing evidence, or break
+ties arbitrarily.
+
+**Decision:** the fixture Personalized Outfit Set Recommendation contract
+accepts only minimized results from the accepted Outfit Compatibility contract.
+Every selected outfit must pass explicit score, coverage, confidence,
+fit/product-evidence, role, and intent gates. Five formula dimensions—
+silhouette, palette, layering, formality, and occasion execution—must differ as
+a complete signature. Duplicate formulas are excluded.
+
+**Ranking and abstention:** candidates are ranked by five-point compatibility
+quality band, then owned-item count, then exact compatibility score. This makes
+owned-first preference a comparable-quality tie-break rather than permission
+to lower outfit quality. An exact tie crossing the selection boundary becomes
+`tie-review`; fewer than the requested candidates becomes
+`insufficient-candidates`; zero becomes `none-qualified`.
+
+**Boundary:** the minimized result contains only selected/evaluated IDs,
+compatibility references, ownership counts, formulas, confidence, coverage,
+and reasons. Full profiles/wardrobes, private behavior, prices, retailers,
+affiliate economics, popularity, accounts, analytics, credentials, network,
+purchasing, and external actions remain excluded.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
