@@ -45,3 +45,9 @@ test('mobile styling prevents horizontal overflow and supports visible keyboard 
   assert.match(page, /focus-visible/);
   assert.match(page, /@media\s*\(max-width:\s*620px\)/);
 });
+
+test('camera journey is synthetic and cannot request or upload real media', () => {
+  assert.match(page, /Simulated camera/);
+  assert.doesNotMatch(page, /getUserMedia|mediaDevices|type="file"|<input[^>]+\scapture(?:\s|=|>)/i);
+  assert.doesNotMatch(page, /FileReader|readAsDataURL|canvas\.toDataURL/i);
+});

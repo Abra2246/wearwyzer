@@ -380,6 +380,25 @@ force-push is allowed.
 advancing `main` results in a current regenerated snapshot rather than a failed
 or stale rebase.
 
+## Decision — inference suggests; explicit correction confirms wardrobe capture (issue #95)
+
+**Problem:** a camera or search result is probabilistic evidence, not proof that
+the user owns one exact product. Treating inference as inventory truth would
+pollute recommendations, sizing, Outfit Unlocks, and future extension decisions.
+
+**Decision:** normalize both manual and simulated-camera intake into a local
+review candidate with field-level provenance and confidence. Camera output never
+receives an exact product reference automatically. Only a versioned explicit
+user correction may select a canonical exact product, and only a separate
+confirmation may advance the wardrobe snapshot.
+
+**Boundary:** raw capture references and correction history stay in the private
+app-owned record. Website and extension consumers receive only the confirmed
+canonical item through the existing versioned wardrobe reference.
+
+**Deferred:** real media permission, upload, vision provider, retention,
+production storage, and photo/likeness privacy decisions.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
