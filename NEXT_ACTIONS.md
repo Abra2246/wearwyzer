@@ -5,30 +5,30 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #108. The workflow-hygiene change
-passed 603 tests, all deterministic validators, five GitHub checks, serialized
-Ops refreshes, Pages deployment, and Deploy Health Check run `30183382194`.
-Every production job reported zero annotations. Issue #109 is active.
+**Evidence baseline:** `main` after merged PR #110. The offline Stylist replay
+gate passed 611 tests, all deterministic validators, five GitHub checks,
+serialized Ops refreshes, Pages deployment, and Deploy Health Check run
+`30183520282`. Issue #111 is active.
 
 ## Active review gates
 
-1. **Issue #109 — offline AI Stylist candidate replay gate**
-   - Active branch: `codex/issue-109-stylist-replay-gate`.
-   - Scope: closed synthetic candidate envelopes, trusted-corpus replay,
-     sanitized comparison, 100% trust thresholds, and explicit ties.
-   - Boundary: no live provider, credentials, prompt experiment, real data,
-     network, paid call, production telemetry, or external action.
+1. **Issue #111 — fixture AI Stylist editorial preference rubric**
+   - Active branch: `codex/issue-111-editorial-rubric`.
+   - Scope: post-trust-gate usefulness, clarity, styling quality, WearWyzer
+     voice, and actionability scoring with anchored rationales.
+   - Boundary: preference cannot override any 100% trust metric; no live
+     provider, credentials, real data, analytics, paid call, or publication.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #109**
-   - Outcome: compare synthetic candidate answers against the complete trusted
-     corpus without letting candidates control evidence or thresholds.
-2. **Define the human editorial preference rubric**
-   - Dependency: Issue #109 must preserve the non-negotiable trust gate.
+1. **Complete and review Issue #111**
    - Outcome: score usefulness, clarity, styling quality, tone, and
      actionability only after safety eligibility; never let preference override
      grounding or privacy.
+2. **Specify the first founder-gated live provider experiment**
+   - Dependency: Issue #111 and explicit provider credential/spend approval.
+   - Outcome: one bounded, non-production comparison through the accepted trust
+     and editorial gates; no real user data or external action.
 3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
@@ -43,6 +43,10 @@ Every production job reported zero annotations. Issue #109 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #109 / PR #110:** merged after 611 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refresh, Pages, and
+  Deploy Health Check run `30183520282`. The gate admits only complete
+  100%-trusted candidates and preserves ties.
 - **Issue #102 / PR #108:** merged after 603 tests, every deterministic
   validator, five passing GitHub checks, serialized Ops refresh, Pages, and
   Deploy Health Check run `30183382194`. Ten production jobs returned zero

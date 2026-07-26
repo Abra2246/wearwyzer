@@ -526,6 +526,23 @@ Failed candidates are never promoted; multiple passing candidates remain an
 explicit tie. No live provider, credential, paid call, or hidden preference
 weight is present.
 
+## Decision — editorial preference follows trust (issue #111)
+
+**Problem:** two candidates may be equally safe while differing materially in
+usefulness and editorial quality. A subjective score must not weaken the trust
+boundary or masquerade as consensus.
+
+**Decision:** score usefulness, clarity, styling quality, WearWyzer voice, and
+actionability only for candidates that already passed every trust metric at
+100%. Every 1–5 score requires a rationale and shared anchor. At least two
+reviews are required; material disagreement blocks selection; equal results
+remain tied.
+
+**Privacy boundary:** reviewer aliases prove fixture independence but are
+removed from the aggregate. No real reviewer account, candidate payload,
+provider, prompt, personal data, analytics, or automated preference learning
+is introduced.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
