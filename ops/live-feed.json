@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T03:53:37.869Z",
+  "generatedAtIso": "2026-07-26T03:54:48.930Z",
   "overallState": "live",
   "ceo": {
     "headline": "Ready-labeled work is not dispatchable.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:53:37.869Z",
+      "lastUpdatedIso": "2026-07-26T03:54:48.930Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -38,9 +38,9 @@
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-26T03:52:13Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186843351",
+          "status": "unknown",
+          "latestRunIso": "2026-07-26T03:54:39Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186915613",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -53,13 +53,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:53:37.869Z",
+      "lastUpdatedIso": "2026-07-26T03:54:48.930Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "98245f7",
         "lastDeployIso": "2026-07-26T03:52:42Z",
-        "ageMinutes": 1,
+        "ageMinutes": 2,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -67,7 +67,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:53:37.869Z",
+      "lastUpdatedIso": "2026-07-26T03:54:48.930Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -94,7 +94,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:53:37.869Z",
+      "lastUpdatedIso": "2026-07-26T03:54:48.930Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -134,6 +134,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:152",
+      "timestampIso": "2026-07-26T03:54:36Z",
+      "type": "pr-merged",
+      "summary": "PR #152 \"Advance queue to grounded Daily Stylist journey\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/152"
+    },
     {
       "key": "deploy:98245f7",
       "timestampIso": "2026-07-26T03:52:42Z",
@@ -476,13 +483,6 @@
       "type": "pr-merged",
       "summary": "PR #120 \"Define fixture Closet Health Score\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/120"
-    },
-    {
-      "key": "issue-started:119",
-      "timestampIso": "2026-07-26T02:17:59Z",
-      "type": "issue-started",
-      "summary": "Issue #119 \"Define the fixture Closet Health Score\" started.",
-      "url": "https://github.com/Abra2246/wearwyzer/issues/119"
     }
   ]
 }
