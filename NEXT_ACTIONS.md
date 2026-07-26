@@ -5,43 +5,41 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** Issue #156 merged via PR #157, restoring the minimum
-non-interactive file tools. Issue #154 is implemented on branch
-`claude/issue-154-daily-outfit-stylist-composer`: 859/859 deterministic
-repository tests pass (21 new), including explicit boundary-tie and
-insufficient-candidate paths, and `validate-content-data.mjs`,
-`qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
-`validate-hero-product-pages.mjs`, and `compare-legacy-adapter.mjs` all ran
-clean. Review PR #158 is open; interactive browser QA could not be run in
-this sandbox (no `curl`/browser binary in the permitted non-interactive
-command set, no `playwright`/`jsdom` dependency in this build-step-free
-repo), so PR #158 documents an explicit human browser-QA checklist. GitHub
-checks and production evidence also remain required before merge.
+**Evidence baseline:** Issue #154 merged via PR #158 after 859/859
+deterministic tests, every repository validator, five passing GitHub checks,
+and independent browser QA across answers, context review, conflicts, an exact
+boundary tie, insufficiency, invalidation, reset/focus, control sizing,
+containment, and console behavior. Pages run `30188034359`, Content pipeline
+run `30188034367`, Ops Live Feed run `30188034343`, Ops Status run
+`30188034349`, and Deploy Health Check run `30188057881` succeeded; the live
+default-off route returns HTTP 200. The repaired Claude workflow also produced
+branch `claude/issue-154-daily-outfit-stylist-composer` and PR #158 from the
+queue-dispatched run `30187501015`, proving the restored file-tool allowlist
+can complete the intended issue-to-PR handoff.
 
 ## Queued execution
 
-1. **Issue #154 — Explicit-context Daily Outfit Stylist composer fixture**
-   - Status: implemented; PR #158 open, awaiting human browser QA, GitHub
-     checks, and review before merge.
-   - Scope: let a person choose allowlisted coarse context and receive the
-     accepted grounded answer or honest non-answer from a deterministic
-     synthetic candidate pool.
-   - Boundary: exact flag `ww_daily_stylist_composer=1`, fixture-only,
-     deterministic, provider-neutral, default-off, unlinked, and read-only. No
-     free text, model, live context, real profile/closet, storage, commerce,
-     account, analytics, network, purchase, publishing, message, likeness, or
-     external action exists.
+1. **Issue #159 — Minimum production Daily Stylist data boundary**
+   - Status: scoped; next safe queue-dispatched implementation.
+   - Scope: define one closed reference-only request envelope and required
+     server-side resolution order linking authenticated ownership, active
+     consent, current wardrobe evidence, minimized candidates, Daily Outfit
+     Intent, and the Grounded Stylist response.
+   - Boundary: contract and documentation only. No endpoint, provider,
+     database, account, session, private record, collection, network, commerce,
+     Chrome permission, personalized image, or external action is authorized.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #154**
-   - Outcome: demonstrate the first explicit user-shaped Daily Stylist flow
-     without collecting live or private context.
-2. **Define the minimum production Daily Stylist data boundary**
-   - Dependency: merged Issue #154 with browser QA and production evidence.
+1. **Complete and review Issue #159**
    - Outcome: specify the smallest consented profile/wardrobe/context
      references future clients need, without implementing collection,
      persistence, providers, or production access.
+2. **Define the authenticated Daily Stylist service seam**
+   - Dependency: merged Issue #159.
+   - Outcome: specify how a future server resolves the accepted references and
+     delegates to existing contracts without choosing infrastructure or
+     processing real data.
 3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -61,6 +59,16 @@ checks and production evidence also remain required before merge.
 
 ## Closed or blocked with evidence
 
+- **Issue #154 / PR #158:** merged after 859 tests, every deterministic
+  validator, five passing GitHub checks, and real-browser review. Two- and
+  three-outfit answers, unknown-context review, contradictions, exact ties,
+  insufficiency, stale-result invalidation, deterministic reset/focus, 44px
+  controls, containment, and clean console behavior were verified. Pages run
+  `30188034359`, Content pipeline run `30188034367`, Ops Live Feed run
+  `30188034343`, Ops Status run `30188034349`, and Deploy Health Check run
+  `30188057881` succeeded, and the live route returns HTTP 200. The queue run
+  `30187501015` created its branch and PR after Issue #156 restored the
+  minimum file tools, proving the mandatory automation handoff is functional.
 - **Issue #156 / PR #157:** merged after 838 tests, a focused 45/45
   automation-permissions suite, and every content/Knowledge Graph/hero-product/
   metadata/static-site/diff validator. Non-interactive Claude runs now
