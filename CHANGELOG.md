@@ -2,6 +2,37 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fixture-only consent and correction center (issue #87)
+### Added
+- `consent-correction-center.dc.html` — a default-off, non-indexed, unlinked prototype route where a
+  local fixture user can inspect and exercise private-data rights before any production account or
+  storage exists: purpose-specific consent (personalization, style learning, fit guidance, wardrobe
+  photos, personalized images) with independent grant/revoke; an immediate fail-closed check showing
+  a revoked personalization consent blocks the next personalization evaluation; editable Style DNA
+  and Fit DNA signals with explicit/inferred provenance and confidence, where a correction visibly
+  outranks an inferred signal; wardrobe snapshot freshness against the 30-day fixture boundary and the
+  minimized personalization reference an evaluation actually receives; a versioned JSON export
+  download; pending-then-completed fixture deletion with dependent-store evidence; and a reset that
+  restores only deterministic fixture data.
+- `scripts/consent-correction-store.mjs` — composes the existing, unmodified
+  `createFixturePrivateService` (issue #83/#84) with Web Storage persistence, adding purpose-specific
+  consent gating for corrections and an inferred-Fit-DNA correction path the base contract's generic
+  `applyProfileCorrection` does not implement.
+- 21 new deterministic tests covering store state/consent/correction/export/deletion/reset behavior
+  and the page's disabled-by-default, unlinked, non-indexed, and no-URL-payload posture.
+### Validation
+- 513/513 repository tests pass (`node --test scripts/__tests__/*.test.mjs`).
+- `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
+  and `validate-hero-product-pages.mjs` all pass; `compare-legacy-adapter.mjs` (report-only) shows only
+  its pre-existing documented differences.
+- Headless-browser QA (Playwright over Chromium) verified: the route is off by default and only renders
+  with `?ww_consent=1`; consent revoke/re-grant per purpose; personalization evaluation fails closed
+  immediately after revoking personalization consent; Style DNA and Fit DNA corrections turn an inferred
+  signal into an explicit one; export triggers a real file download; deletion moves from pending to
+  completed with dependent-store evidence shown; reset restores fixture defaults; a 375px mobile
+  viewport has no horizontal overflow; keyboard focus and Enter activate a control; and the browser
+  console stayed empty throughout.
+
 ## Unreleased (2026-07-23) — HTML metadata QA (issue #11)
 ### Added
 - A dependency-free validator for titles, indexable-page descriptions, language declarations, and

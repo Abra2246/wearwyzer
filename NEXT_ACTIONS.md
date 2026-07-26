@@ -4,36 +4,37 @@ This is the executable handoff queue. The Book of Truth owns product direction,
 GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
-**Last verified:** July 25, 2026
-**Evidence baseline:** `main` after merged PR #84, the failed hosted Issue #85
-handoff with seven permission denials, and direct recovery on
-`codex/private-data-threat-model-v1`.
+**Last verified:** July 26, 2026
+**Evidence baseline:** `main` after merged PR #86 (Issue #85 threat model) and
+direct implementation of Issue #87 on `claude/issue-87-consent-correction-center`.
 
 ## Active review gates
 
-1. **Issue #85 — private-data threat model**
-   - Active branch: `codex/private-data-threat-model-v1`.
-   - Scope: sessions, authorization, CSRF, hostile extension pages/messages,
-     export, deletion, photos/measurements, logs, backups, service roles, and
-     provider-selection security requirements.
-   - Human gate: architecture review only. No provider, production account,
-     database, personal data, or browser permission is authorized.
+1. **Issue #87 — fixture-only consent and correction center**
+   - Active branch: `claude/issue-87-consent-correction-center`.
+   - Scope: default-off, noindex, unlinked `consent-correction-center.dc.html`
+     over the Issue #83/#84 private-service contract — purpose-specific
+     consent with fail-closed dependent evaluation, editable Style DNA/Fit DNA
+     with explicit-over-inferred correction, wardrobe snapshot freshness,
+     versioned export, pending/completed deletion with dependent-store
+     evidence, and a deterministic reset.
+   - Human gate: architecture/privacy review only. No provider, production
+     account, database, personal data, photos, or browser permission is
+     authorized.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #85**
-   - Outcome: turn the private-service invariants into a threat register and
-     executable fail-closed session, extension-message, and deletion policies.
+1. **Complete and review Issue #87**
+   - Outcome: 513/513 repository tests pass (21 new), all five validators
+     pass, and headless-browser QA covered default-off, consent revoke,
+     correction override, export, deletion, reset, mobile layout, keyboard
+     operation, and a clean console.
 2. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-3. **Build a fixture-only consent and correction center**
-   - Dependency: Issue #85 review.
-   - Outcome: let a test user inspect, revoke, correct, export, and delete
-     prototype records without production auth or storage.
-4. **Reconcile and import remaining style-guide sources when real files exist**
+3. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -42,6 +43,9 @@ handoff with seven permission denials, and direct recovery on
 
 ## Closed or blocked with evidence
 
+- **Issue #85 / PR #86:** merged after 492 tests and passing GitHub checks. The
+  private-data threat model, threat register, and executable fail-closed
+  session/extension-message/deletion policies are now repository evidence.
 - **Issue #54:** closed as not planned. Its exact New Balance 9060 is sold out
   and inside the 60-day hero cooldown; Issue #62 supersedes the pilot.
 - **Issue #57 / PR #80:** merged after review. The fixture-only personalized

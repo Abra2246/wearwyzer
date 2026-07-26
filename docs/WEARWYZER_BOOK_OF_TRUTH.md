@@ -697,6 +697,27 @@ references, and owner.
   assets, trust boundaries, a threat register, provider requirements, and
   executable fail-closed policies for sessions, scopes, CSRF, extension
   messages, sensitive payloads, and deletion completion.
+- PR #86 merged the private-data threat model after 492 tests and passing
+  GitHub checks.
+- Issue #87 is the fixture-only consent and correction center: a default-off,
+  noindex, unlinked route where a local test user can inspect purpose-specific
+  consent, revoke it and see dependent personalization evaluation fail closed
+  immediately, correct an inferred Style DNA or Fit DNA signal to an explicit
+  one, see wardrobe snapshot freshness and the minimized personalization
+  reference, download a versioned export, and request/complete fixture
+  deletion with dependent-store evidence.
+- Direct implementation on `claude/issue-87-consent-correction-center` composes
+  the Issue #83/#84 private-service contract (kept read-only/versioned) with a
+  new persistence layer and UI. It does not create a production account,
+  database, real personal data, browser-extension permission, camera access,
+  or personalized-image generation.
+- 513/513 repository tests pass (21 new) and all five validators pass.
+  Headless-browser QA (Playwright over Chromium) covered the default-off
+  gate, consent revoke/re-grant, fail-closed personalization evaluation,
+  Style/Fit DNA correction overriding an inferred signal, export download,
+  pending-then-completed deletion, reset, a 375px mobile layout with no
+  horizontal overflow, and keyboard-only activation — with zero console
+  errors or warnings.
 
 ## Final north-star statement
 
