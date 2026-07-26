@@ -1,9 +1,16 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T01:48:55.680Z",
+  "generatedAtIso": "2026-07-26T01:51:15.545Z",
   "overallHealth": "yellow",
-  "automationState": "idle",
-  "activeWork": null,
+  "automationState": "working",
+  "activeWork": {
+    "issueNumber": 111,
+    "title": "Define the fixture AI Stylist editorial preference rubric",
+    "url": "https://github.com/Abra2246/wearwyzer/issues/111",
+    "prNumber": null,
+    "prUrl": null,
+    "lastActivityIso": "2026-07-26T01:50:05Z"
+  },
   "queue": {
     "depth": 0,
     "readyCount": 0,
@@ -52,6 +59,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
+  "lastMeaningfulActivityIso": "2026-07-26T01:50:05.000Z",
   "staleAfterMinutes": 30
 }
