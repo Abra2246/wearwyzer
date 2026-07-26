@@ -2,6 +2,27 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Closet Health fixture journey (issue #121)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route for complete, missing,
+  care-needed, redundant, and unresolved synthetic wardrobe evidence.
+- Deterministic mode changes, stale-result invalidation, reset/focus
+  restoration, score decomposition, confidence, findings, and owned-first
+  actions.
+### Safety
+- The route delegates all scoring to the accepted Closet Health contract and
+  never reinterprets missing evidence as poor closet quality.
+- No private profile, raw lifecycle record, commerce action, affiliate
+  redirect, account mutation, network request, analytics, or external action
+  exists in the fixture.
+### Validation
+- 676/676 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted recommendation-eligibility warning remains
+  non-blocking.
+- Browser QA passed every mode, result invalidation, reset/focus restoration,
+  390px containment, 44px visible controls, and console cleanliness.
+
 ## Unreleased (2026-07-26) — Closet Health Score (issue #119)
 ### Added
 - A versioned, decomposed fixture score for role balance, versatility,
