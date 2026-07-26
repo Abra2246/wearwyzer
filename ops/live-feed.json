@@ -1,21 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T02:40:54.854Z",
+  "generatedAtIso": "2026-07-26T02:42:24.344Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "activeWorkSummary": "#127 \"Define fixture Brand Preference and Fit Memory intelligence\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:40:54.854Z",
+      "lastUpdatedIso": "2026-07-26T02:42:24.344Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 127,
+          "title": "Define fixture Brand Preference and Fit Memory intelligence",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/127",
+          "updatedIso": "2026-07-26T02:40:59Z"
+        },
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -45,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:40:54.854Z",
+      "lastUpdatedIso": "2026-07-26T02:42:24.344Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "c8e7b93",
-        "lastDeployIso": "2026-07-26T02:36:21Z",
-        "ageMinutes": 5,
+        "lastHealthyShaShort": "c30283a",
+        "lastDeployIso": "2026-07-26T02:41:16Z",
+        "ageMinutes": 1,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +64,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:40:54.854Z",
+      "lastUpdatedIso": "2026-07-26T02:42:24.344Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T02:40:54.854Z",
+      "lastUpdatedIso": "2026-07-26T02:42:24.344Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:c30283a",
+      "timestampIso": "2026-07-26T02:41:16Z",
+      "type": "deployed",
+      "summary": "Deployed build c30283a — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "issue-started:127",
+      "timestampIso": "2026-07-26T02:40:59Z",
+      "type": "issue-started",
+      "summary": "Issue #127 \"Define fixture Brand Preference and Fit Memory intelligence\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/127"
+    },
     {
       "key": "ci-run:30184929727",
       "timestampIso": "2026-07-26T02:40:39Z",
@@ -461,20 +480,6 @@
       "type": "pr-merged",
       "summary": "PR #100 \"Define fixture outfit calendar and packing contract\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/100"
-    },
-    {
-      "key": "deploy:857cb26",
-      "timestampIso": "2026-07-26T00:56:31Z",
-      "type": "deployed",
-      "summary": "Deployed build 857cb26 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "deploy:2026-07-26T00:56:15Z",
-      "timestampIso": "2026-07-26T00:56:15Z",
-      "type": "deploy-failed",
-      "summary": "Deployment failed its health checks.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
 }
