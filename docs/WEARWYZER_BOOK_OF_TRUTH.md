@@ -1093,13 +1093,17 @@ references, and owner.
   `insufficient-candidates`/`service-unavailable` with no response payload —
   never re-deriving why a step failed. The session is accepted only as an
   opaque server-resolved reference, never embedded in the request or
-  response. A production decision packet names ten still-unresolved choices
+  response. Rejected requests echo only a bounded request ID resolved by
+  trusted middleware, never an invalid browser-provided value, and
+  insufficient candidate evidence asks the user to review available
+  wardrobe evidence rather than implying that they should add or buy more
+  clothing. A production decision packet names ten still-unresolved choices
   (auth/session provider, cookie architecture, hosting, storage, retention,
   privacy/legal review, monitoring, rate limiting, abuse prevention,
   incident response) that this fixture deliberately does not make. No route,
   endpoint, authentication provider, account, database, session, cookie,
   real user record, or external action exists. Current pre-PR validation
-  baseline: 949 tests.
+  baseline: 951 tests.
 
 ## Final north-star statement
 

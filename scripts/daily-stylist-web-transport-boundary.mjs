@@ -47,7 +47,7 @@ const NEXT_STEP_BY_STATUS = Object.freeze({
   'consent-required': 'grant-personalization-consent',
   'unresolved-context': 'reconnect-profile-reference',
   'stale-snapshot': 'refresh-wardrobe-snapshot',
-  'insufficient-candidates': 'add-more-wardrobe-items',
+  'insufficient-candidates': 'review-wardrobe-evidence',
   'service-unavailable': 'retry-later',
 });
 
@@ -66,14 +66,14 @@ function stableReference(value) {
     && /^[A-Za-z0-9][A-Za-z0-9._:-]{0,127}$/.test(value);
 }
 
-function echoRequestId(transportContext, requestBody) {
-  if (typeof requestBody?.requestId === 'string' && requestBody.requestId.trim()) {
-    return requestBody.requestId;
-  }
-  if (typeof transportContext?.requestId === 'string' && transportContext.requestId.trim()) {
-    return transportContext.requestId;
-  }
-  return null;
+function echoRequestId(transportContext) {
+  // Only echo the request ID resolved by trusted middleware, and only after
+  // it passes the same bounded opaque-reference rule used by validation.
+  // The browser-provided body is untrusted and must never become a reflection
+  // surface when the request is rejected.
+  return stableReference(transportContext?.requestId)
+    ? transportContext.requestId
+    : null;
 }
 
 // The closed set of trusted middleware outcomes this boundary may consult:
@@ -123,7 +123,7 @@ export function runDailyStylistWebTransportBoundary({
   fixtureCandidateMode = 'ready',
   nowIso = new Date().toISOString(),
 } = {}) {
-  const requestId = echoRequestId(transportContext, requestBody);
+  const requestId = echoRequestId(transportContext);
 
   const transport = validateWebTransportContext(transportContext, requestBody);
   if (!transport.ok) return closedResponse(requestId, 'request-rejected');

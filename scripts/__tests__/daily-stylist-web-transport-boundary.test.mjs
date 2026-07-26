@@ -204,11 +204,37 @@ for (const [label, expectedStatus, overrides] of STOPPED_SCENARIOS) {
       'consent-required': 'grant-personalization-consent',
       'unresolved-context': 'reconnect-profile-reference',
       'stale-snapshot': 'refresh-wardrobe-snapshot',
-      'insufficient-candidates': 'add-more-wardrobe-items',
+      'insufficient-candidates': 'review-wardrobe-evidence',
     }[expectedStatus]);
     assert.equal(result.response, null);
   });
 }
+
+test('an invalid browser request ID is never reflected in a rejected response', () => {
+  const sensitiveBrowserValue = 'https://example.test/?token=do-not-reflect';
+  const result = run({
+    requestBody: requestBody({ requestId: sensitiveBrowserValue }),
+    transportContext: transportContext({ requestId: 'invalid request id' }),
+    privateService: poisonedPrivateService(),
+  });
+
+  assert.equal(result.status, 'request-rejected');
+  assert.equal(result.requestId, null);
+  assert.equal(JSON.stringify(result).includes(sensitiveBrowserValue), false);
+  assert.equal(result.response, null);
+});
+
+test('a rejected mismatch echoes only the bounded request ID supplied by trusted middleware', () => {
+  const result = run({
+    requestBody: requestBody({ requestId: 'req-browser-mismatch-01' }),
+    transportContext: transportContext({ requestId: 'req-trusted-middleware-01' }),
+    privateService: poisonedPrivateService(),
+  });
+
+  assert.equal(result.status, 'request-rejected');
+  assert.equal(result.requestId, 'req-trusted-middleware-01');
+  assert.equal(JSON.stringify(result).includes('req-browser-mismatch-01'), false);
+});
 
 test('revoked personalization consent maps to the consent-required client status', () => {
   const service = fixtureService();

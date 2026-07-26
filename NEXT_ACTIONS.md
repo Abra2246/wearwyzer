@@ -6,11 +6,11 @@ action from current evidence.
 
 **Last verified:** July 26, 2026
 **Evidence baseline:** implementation branch
-`claude/issue-168-daily-stylist-web-transport-boundary`. 949/949 deterministic
-tests (39 new), every repository validator (`validate-content-data.mjs`,
+`claude/issue-168-daily-stylist-web-transport-boundary`, PR #170.
+951/951 deterministic tests (41 new), every repository validator (`validate-content-data.mjs`,
 `qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
 `validate-hero-product-pages.mjs`, `compare-legacy-adapter.mjs`) passed
-locally. PR pending open for review (not yet merged); full repository,
+locally. PR open for review (not yet merged); full repository,
 deployment, and production evidence remain required before completion. Prior
 baseline: Issue #165 merged via PR #167 after independent scenario, trace,
 privacy, accessibility, and browser review, 910/910 deterministic tests,
@@ -20,8 +20,8 @@ every repository validator, and five GitHub checks passed.
 
 1. **Issue #168 — Signed-in web transport contract for Daily Stylist**
    - Status: implemented on branch
-     `claude/issue-168-daily-stylist-web-transport-boundary`; PR pending
-     open for review (not yet merged).
+     `claude/issue-168-daily-stylist-web-transport-boundary`; PR #170 open
+     for review (not yet merged).
    - Scope delivered: `scripts/daily-stylist-web-transport-boundary.mjs`
      (`runDailyStylistWebTransportBoundary`) validates a closed transport
      context (method, media type, same-origin result, CSRF result,
@@ -32,7 +32,7 @@ every repository validator, and five GitHub checks passed.
      the unmodified Grounded Stylist response, or seven client-safe stopped
      categories with no response payload). Includes a production decision
      packet naming ten still-unresolved production choices.
-   - Evidence: 949/949 deterministic tests (39 new), every repository
+   - Evidence: 951/951 deterministic tests (41 new), every repository
      validator ran clean (pre-existing warnings only, unchanged from
      baseline).
    - Boundary: deterministic fixture adapters only. No endpoint, auth/storage
@@ -43,7 +43,8 @@ every repository validator, and five GitHub checks passed.
 ## Next executable tasks
 
 1. **Independent review of Issue #168's PR**
-   - Dependency: PR opened for `claude/issue-168-daily-stylist-web-transport-boundary`.
+   - Dependency: PR #170 is open from
+     `claude/issue-168-daily-stylist-web-transport-boundary`.
    - Outcome: confirm the transport/envelope rejection order, the client
      status mapping (especially the no-existence-oracle property and the
      absence of trace/session/reason-code leakage), byte stability, and the

@@ -50,8 +50,12 @@ All notable changes to this project are recorded here.
   failed. No route, endpoint, authentication provider, account, database,
   session, cookie, real user record, network call, Chrome permission,
   personalized image, commerce action, or external action is created.
+- Rejected requests echo only a bounded request ID resolved by trusted
+  middleware; an invalid browser-provided request ID is never reflected.
+  `insufficient-candidates` directs the client to review available wardrobe
+  evidence rather than implying that the user should add or buy clothing.
 ### Validation
-- 949/949 deterministic repository tests passed (39 new).
+- 951/951 deterministic repository tests passed (41 new).
 - `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
   `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
   `compare-legacy-adapter.mjs` all ran clean against this change (all
@@ -62,7 +66,8 @@ All notable changes to this project are recorded here.
   every transport-context rejection, every representative envelope
   rejection, that a poisoned private-service stand-in that throws on any
   access is never touched after a pre-seam rejection, every completed and
-  stopped client status, the closed five-key response shape with no trace/
+  stopped client status, trusted-only request-ID reflection, the closed
+  five-key response shape with no trace/
   session/reason-code leakage, byte stability, byte-identical responses for
   two different unresolved profile references, and the absence of any
   commercial, credential, or external-action field.

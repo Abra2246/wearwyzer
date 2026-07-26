@@ -100,7 +100,9 @@ The seam's own result is adapted into exactly one closed shape:
 the unmodified accepted Grounded Stylist response for a completed outcome,
 or `null`. Nothing else — no step trace, no session, no raw profile/
 wardrobe/consent data, no adapter internals, no provider error — ever
-appears in it.
+appears in it. A rejected request may echo only the bounded request ID
+resolved by trusted middleware; the browser-provided request body is never
+used as a reflection source.
 
 | Client `status` | Meaning | Source |
 | --- | --- | --- |
@@ -112,7 +114,7 @@ appears in it.
 | `consent-required` | Personalization consent is revoked or missing | Seam step `verify-active-personalization-consent` |
 | `unresolved-context` | The profile reference did not resolve | Seam step `resolve-profile-reference` |
 | `stale-snapshot` | The wardrobe snapshot is unresolved or older than the fixture freshness limit | Seam step `verify-wardrobe-snapshot-current` |
-| `insufficient-candidates` | Too few trustworthy minimized candidates | Seam step `derive-minimized-outfit-candidates` |
+| `insufficient-candidates` | The minimized evidence did not support enough trustworthy candidates; the client reviews the available wardrobe evidence rather than inferring that the user should buy or add more clothing | Seam step `derive-minimized-outfit-candidates` |
 | `service-unavailable` | An internal delegation invariant did not hold | Seam steps `delegate-daily-outfit-intent`/`adapt-grounded-stylist-response`, or an unsupported internal fixture mode |
 | `request-rejected` | The transport context or request body failed its closed check | Before the service seam runs |
 
@@ -147,7 +149,9 @@ rejection (unsupported version, unknown field, credential, embedded private
 payload, live-context field, commercial field, external-action field, and
 client-asserted authorization/consent/ranking fields); proof that a
 poisoned private-service stand-in that throws on any access is never touched
-after any pre-seam rejection; every completed outcome (ready,
+after any pre-seam rejection; proof that an invalid browser-provided request
+ID is not reflected and a rejected mismatch echoes only the bounded trusted
+middleware ID; every completed outcome (ready,
 review-required from unknown context, abstained from a conflicting context,
 review-required from an exact tie); every stopped client status
 (unauthenticated, unauthorized for both cross-account and missing-scope,

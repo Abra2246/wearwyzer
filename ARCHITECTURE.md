@@ -1097,6 +1097,12 @@ boundary performs exactly two jobs and nothing else:
    both at its single `authorize-same-account-ownership` step; this boundary
    does not split them apart or re-derive why either failed.
 
+Rejected requests echo only the bounded request ID resolved by trusted
+middleware. The browser-provided request body is never used as a reflection
+source. An `insufficient-candidates` result directs the client to review the
+available wardrobe evidence; it does not infer that the wardrobe is too
+small or encourage the user to add or buy clothing.
+
 `docs/DAILY_STYLIST_WEB_TRANSPORT_BOUNDARY_V1.md` also records a production
 decision packet naming ten still-unresolved production choices (auth/session
 provider, cookie architecture, hosting, storage, retention, privacy/legal
