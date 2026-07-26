@@ -399,6 +399,25 @@ canonical item through the existing versioned wardrobe reference.
 **Deferred:** real media permission, upload, vision provider, retention,
 production storage, and photo/likeness privacy decisions.
 
+## Decision — private lifecycle ledger, minimized Wear DNA evidence (issue #97)
+
+**Problem:** canonical ownership cannot distinguish loved items from never-worn
+or forgotten items. Sending purchase price, fit notes, occasions, and exact wear
+dates to every consumer would create an unnecessary privacy surface.
+
+**Decision:** maintain a versioned private lifecycle record with explicit
+condition, acquisition, optional paid amount, fit note, wear events, and
+corrections. Deterministic summaries may compute wear state and cost per wear
+only from present evidence. Public consumers receive an allowlisted coarse
+summary—never the private ledger.
+
+**Benefit:** Wear DNA, closet health, forgotten-item discovery, cost per wear,
+and smarter buy/wait decisions can share one evidence contract without turning
+the Chrome extension or public site into the wardrobe database.
+
+**Deferred:** production storage, analytics, retailer/receipt/email import,
+background activity, current/resale value, and real-user retention.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

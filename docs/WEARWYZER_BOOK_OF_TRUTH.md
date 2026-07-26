@@ -762,6 +762,13 @@ references, and owner.
   consume only confirmed canonical references. Current validation baseline:
   549 tests, all deterministic repository validators, and clean-console browser
   QA for confirm, reject, and consent-revocation paths.
+- Issue #97 defines what happens after ownership. A private versioned lifecycle
+  ledger records explicit condition, acquisition, optional paid amount, fit
+  notes, wear events, and corrections. Wear state and cost per wear are derived
+  only from present evidence. Website and extension consumers receive coarse
+  allowlisted Wear DNA evidence, never price, fit-note text, occasions, exact
+  dates, or the private event ledger. Current validation baseline: 558 tests
+  plus every deterministic repository validator.
 
 ## Final north-star statement
 

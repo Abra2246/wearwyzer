@@ -2,6 +2,26 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Closet lifecycle and Wear DNA evidence (issue #97)
+### Added
+- `scripts/closet-lifecycle-contract.mjs`: immutable, versioned private records
+  for condition, acquisition, optional paid amount, fit notes, explicit wear
+  events, and correction history.
+- Deterministic never-worn, active, forgotten, wear-count, last-worn, and
+  evidence-backed cost-per-wear summaries.
+- A minimized allowlisted consumer view that excludes price, fit-note text,
+  occasions, exact wear dates, and event history.
+- `docs/CLOSET_LIFECYCLE_V1.md` with storage, privacy, deletion, and production
+  gates.
+### Safety
+- No analytics, tracking, account, retailer/email/receipt import, current/resale
+  value, background location, or production storage is introduced.
+### Validation
+- 558/558 repository tests pass.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  validators pass; the one pre-existing graph-eligibility warning remains
+  non-blocking.
+
 ## Unreleased (2026-07-26) — Fixture wardrobe capture correction (issue #95)
 ### Added
 - `scripts/wardrobe-capture-normalizer.mjs`: deterministic manual and
