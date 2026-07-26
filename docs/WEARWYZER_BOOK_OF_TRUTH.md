@@ -796,6 +796,16 @@ references, and owner.
   external-action safety, and repeatability each require a 100% portfolio score,
   with exact scenario and metric failures. Current validation baseline: 589
   tests plus every deterministic repository validator.
+- Issue #106 makes the grounded experience visible without weakening the
+  boundary. An unlinked, `noindex`, default-off route supports all six intents
+  plus current, stale, and insufficient evidence. It renders only minimized
+  claim, citation, uncertainty, opposing-evidence, and abstention data; clears
+  responses when inputs change; resets deterministically; stores nothing; and
+  exposes no external action. Current validation baseline: 600 tests plus every
+  deterministic repository validator. Browser QA confirms all six answer paths,
+  both abstention paths, citation and opposing-evidence rendering, response
+  invalidation, reset/focus behavior, visible focus, layout containment, and a
+  clean console.
 
 ## Final north-star statement
 
