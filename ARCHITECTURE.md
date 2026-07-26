@@ -623,6 +623,12 @@ conversions, and stable owned-item comparisons. It contains no measurements,
 body or protected-attribute inference, photos, private notes, full history,
 price, retailer preference, affiliate incentive, account, or guarantee.
 
+The Issue #125 fixture journey exposes this contract only behind the exact
+`ww_fit_intelligence=1` query flag on an unlinked, `noindex` page. It makes
+cross-product transfer, explicit correction precedence, low confidence,
+staleness, conflict, and unavailable-size outcomes reviewable without
+collecting sensitive input or introducing shopping behavior.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

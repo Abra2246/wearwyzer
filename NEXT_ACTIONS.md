@@ -5,26 +5,26 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #122. The fixture Closet Health
-journey passed 676 tests, all deterministic validators, browser QA, five
-GitHub checks, serialized Ops refreshes, Pages deployment run `30184671172`,
-and Deploy Health Check run `30184699161`. Issue #123 is active.
+**Evidence baseline:** `main` after merged PR #124. The fixture Fit Intelligence
+contract passed 687 tests, all deterministic validators, five GitHub checks,
+serialized Ops refreshes, Pages deployment run `30184805240`, and Deploy
+Health Check run `30184826312`. Issue #125 is active.
 
 ## Active review gates
 
-1. **Issue #123 — fixture Fit Intelligence contract**
-   - Active branch: `codex/issue-123-fit-intelligence-contract`.
-   - Scope: recommend a size only from explicit coarse preferences, corrected
-     known-brand fit, and current verified size evidence; expose confidence,
-     likely issues, silhouette, conversions, and owned-item comparisons.
-   - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
-     No real measurements, camera, inference, guarantee, commerce, or network.
+1. **Issue #125 — fixture Fit Intelligence journey**
+   - Active branch: `codex/issue-125-fit-intelligence-journey`.
+   - Scope: make cross-product guidance, correction precedence, low confidence,
+     stale/conflicting evidence, unavailable sizes, silhouette, issues, and
+     conversions reviewable end to end.
+   - Boundary: exact-flag-gated, unlinked, `noindex`, synthetic, browser-local,
+     and read-only. No measurements, camera, guarantee, commerce, or network.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #123**
-   - Outcome: establish trustworthy size guidance for future website, app, and
-     extension clients without guessing or promising fit.
+1. **Complete and review Issue #125**
+   - Outcome: prove trustworthy fit guidance and abstention in a user-facing
+     flow before any real profile or shopping integration.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -44,6 +44,11 @@ and Deploy Health Check run `30184699161`. Issue #123 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #123 / PR #124:** merged after 687 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refresh, Pages run
+  `30184805240`, and Deploy Health Check run `30184826312`. Guidance uses only
+  explicit/coarse and verified evidence, never measurements, body inference,
+  affiliate incentives, or guarantee language.
 - **Issue #121 / PR #122:** merged after 676 tests, every deterministic
   validator, browser QA, five passing GitHub checks, serialized Ops refresh,
   Pages run `30184671172`, and Deploy Health Check run `30184699161`.

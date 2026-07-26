@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Fit Intelligence Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:980px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); }
+    .notice { border-left:5px solid var(--gold); }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .warn { color:var(--red); background:#f6e6e3; }
+    .size { font-size:clamp(54px,12vw,96px); font-weight:900; line-height:1; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .detail { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .detail strong { display:block; }
+    .meta { color:var(--muted); font-size:13px; }
+    ul { padding-left:22px; }
+    [hidden] { display:none !important; }
+    @media (max-width:680px) {
+      .grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>Know the evidence. Choose the size.</h1><p>Fit guidance without false certainty.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This private route uses only synthetic evidence and cannot measure, photograph, shop, or change an account.</p>
+      <a class="button" href="?ww_fit_intelligence=1">Open synthetic Fit Intelligence</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> size guidance comes only
+        from explicit coarse preferences and current verified product evidence. It is never a
+        guarantee, and missing evidence produces no guess.</section>
+      <section class="panel">
+        <h2>Choose a review case</h2>
+        <label for="mode">Evidence state</label>
+        <select id="mode">
+          <option value="verified-transfer">Verified fit tendency + usual size</option>
+          <option value="correction-precedence">Explicit same-brand correction</option>
+          <option value="low-confidence">Product fit tendency is unknown</option>
+          <option value="stale-evidence">Product evidence is stale</option>
+          <option value="conflicting-corrections">Explicit corrections conflict</option>
+          <option value="unavailable-size">Evidence-backed size is unavailable</option>
+        </select>
+        <div class="actions">
+          <button id="review" type="button">Review fit guidance</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No measurement, network, tracking, or commerce action will run.</p>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="result-status" class="badge"></span></p>
+        <div id="size" class="size"></div>
+        <h2 id="result-title">Fit guidance</h2>
+        <p id="notice" class="meta"></p>
+        <div id="details" class="grid"></div>
+        <h3>Evidence and uncertainty</h3>
+        <ul id="reasons"></ul>
+        <p class="meta"><strong>Commerce and collection actions:</strong> unavailable. This
+          fixture cannot measure, photograph, track, redirect, buy, or change an account.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { createFitIntelligenceJourney } from './scripts/fit-intelligence-journey.mjs';
+    const enabled = new URLSearchParams(location.search).get('ww_fit_intelligence') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+    if (enabled) {
+      const journey = createFitIntelligenceJourney();
+      const mode = document.querySelector('#mode');
+      const panel = document.querySelector('#result');
+      const status = document.querySelector('#status');
+      function detail(title, copy) {
+        const element = document.createElement('article');
+        element.className = 'detail';
+        const heading = document.createElement('strong');
+        heading.textContent = title;
+        const body = document.createElement('span');
+        body.textContent = copy;
+        element.append(heading, body);
+        return element;
+      }
+      function render(view) {
+        panel.hidden = !view.result;
+        if (!view.result) return;
+        const result = view.result;
+        const available = result.status === 'guidance-available';
+        const badge = document.querySelector('#result-status');
+        badge.textContent = available ? `${result.confidence} confidence` : result.status;
+        badge.className = `badge ${available ? 'good' : 'warn'}`;
+        document.querySelector('#size').textContent = result.recommendedSize ?? '—';
+        document.querySelector('#result-title').textContent =
+          available ? 'Evidence-backed size guidance' : 'No responsible size recommendation';
+        document.querySelector('#notice').textContent = result.guidanceNotice;
+        const conversions = Object.entries(result.regionalConversions)
+          .map(([region, value]) => `${region} ${value}`)
+          .join(' · ') || 'None supplied';
+        const comparisons = result.ownedItemComparisons
+          .map(({ itemId, size, outcome, source }) => `${itemId}: ${size}, ${outcome}, ${source}`)
+          .join('; ') || 'None used';
+        document.querySelector('#details').replaceChildren(
+          detail('Expected silhouette', result.expectedSilhouette ?? 'Unavailable'),
+          detail('Regional conversion', conversions),
+          detail('Likely issues', result.likelyIssues.join(', ') || 'None identified'),
+          detail('Owned-item comparison', comparisons),
+        );
+        document.querySelector('#reasons').replaceChildren(...result.reasonCodes.map((reason) => {
+          const item = document.createElement('li');
+          item.textContent = reason;
+          return item;
+        }));
+      }
+      mode.addEventListener('change', () => {
+        journey.selectMode(mode.value);
+        render(journey.getView());
+        status.textContent = 'Evidence changed. Review again to create current guidance.';
+      });
+      document.querySelector('#review').addEventListener('click', () => {
+        const result = journey.run();
+        if (!result.ok) {
+          panel.hidden = true;
+          status.textContent = `Fixture failed safely: ${result.error}.`;
+          return;
+        }
+        render(result.view);
+        status.textContent = 'Review complete. Guidance and uncertainty are both visible.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        mode.value = reset.view.mode;
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior guidance remains.';
+        mode.focus();
+      });
+    }
+  </script>
+</body>
+</html>

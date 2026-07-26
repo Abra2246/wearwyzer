@@ -2,6 +2,27 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fit Intelligence fixture journey (issue #125)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route for verified transfer,
+  explicit correction precedence, low confidence, stale/conflicting evidence,
+  and unavailable sizes.
+- Deterministic mode changes, stale-result invalidation, reset/focus
+  restoration, guidance/abstention states, silhouette, conversions, issues,
+  reasons, and minimized owned-item comparisons.
+### Safety
+- The route delegates every result to the accepted Fit Intelligence contract
+  and never substitutes UI logic for evidence.
+- It collects no sensitive input and provides no measurement, photo, commerce,
+  affiliate, account, network, analytics, purchase, or external action.
+### Validation
+- 698/698 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; the accepted recommendation-eligibility warning remains
+  non-blocking.
+- Browser QA passed every mode, result invalidation, reset/focus restoration,
+  390px containment, 44px visible controls, and console cleanliness.
+
 ## Unreleased (2026-07-26) — Fixture Fit Intelligence contract (issue #123)
 ### Added
 - A closed, versioned Fit Intelligence boundary over explicit coarse
