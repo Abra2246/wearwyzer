@@ -900,6 +900,15 @@ references, and owner.
   defaults and focus. The route collects no behavior and exposes no account,
   network, tracking, analytics, affiliate, retailer, purchase, or external
   action. Current pre-PR validation baseline: 722 tests.
+- Issue #131 defines fixture Style DNA as editable evidence rather than hidden
+  identity. Eight closed style dimensions keep explicit and inferred signals
+  distinct; explicit choices and reversible corrections outrank inference;
+  deterministic decay excludes stale or weak evidence; conflicts require
+  review. Exploration stays temporary and cannot mutate the canonical profile.
+  Raw wardrobe, browsing, shopping, purchase, return, private-note, account,
+  protected-attribute, commerce, analytics, network, credential, and external
+  action data remain outside the result. Current pre-PR validation baseline:
+  734 tests.
 
 ## Final north-star statement
 

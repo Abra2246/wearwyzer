@@ -654,6 +654,27 @@ conflicts, low-confidence exclusion, minimized fit memory, and the fixed policy
 reviewable without observing behavior or introducing account, network,
 tracking, analytics, or commerce behavior.
 
+## Decision — Style DNA is editable evidence, not hidden identity (issue #131)
+
+**Problem:** personalization improves when the system understands aesthetics,
+palette, silhouette, formality, layering, materials, occasions, and fashion
+risk. Treating those signals as opaque identity would make recommendations hard
+to correct and could turn private behavior or commercial incentives into
+unseen influence.
+
+**Decision:** Style DNA uses a closed, versioned fixture contract. Explicit
+positive/negative choices and strictly versioned corrections outrank inference.
+Inference accepts only minimized allowlisted summaries, decays deterministically
+with age, and stays absent when stale or below confidence `0.70`. Contradictions
+remain `review-required`.
+
+**Exploration and privacy boundary:** exploration is explicit, temporary, and
+cannot mutate canonical Style DNA. The minimized result exposes provenance,
+confidence, evidence codes, accepted/ignored counts, conflicts, exploration,
+and user-control policy. It excludes raw wardrobe, browsing, shopping,
+purchase, return, private-note, account, protected-attribute, commerce,
+analytics, network, credential, and external-action data.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

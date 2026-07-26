@@ -5,27 +5,26 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #128. Brand Preference and Fit
-Memory passed 710 tests, all deterministic validators, five GitHub checks,
-serialized Ops refreshes, Pages deployment run `30185153291`, and Deploy
-Health Check run `30185174745`. Issue #129 is active.
+**Evidence baseline:** `main` after merged PR #130. The Brand Preference and Fit
+Memory journey passed 722 tests, all deterministic validators, browser QA, five
+GitHub checks, serialized Ops refreshes, Pages deployment run `30185351915`,
+and Deploy Health Check run `30185370641`. Issue #131 is active.
 
 ## Active review gates
 
-1. **Issue #129 — fixture Brand Preference and Fit Memory journey**
-   - Active branch: `codex/issue-129-brand-memory-journey`.
-   - Scope: make explicit and inferred roles, corrections and reversals,
-     avoidance, conflicts, low-confidence exclusion, minimized fit memory, and
-     recommendation priority reviewable.
-   - Boundary: exact-flag-gated, unlinked, `noindex`, fixture-only, local, and
-     read-only. No behavior collection, account, network, tracking, analytics,
-     affiliate, retailer, purchase, or external action exists.
+1. **Issue #131 — fixture Style DNA intelligence contract**
+   - Active branch: `codex/issue-131-style-dna-contract`.
+   - Scope: define explicit/inferred style dimensions, confidence decay,
+     reversible corrections, conflicts, and temporary exploration.
+   - Boundary: fixture-only, deterministic, provider-neutral, and read-only.
+     Raw private behavior, identity, protected attributes, commerce, network,
+     analytics, credentials, persistence, and external actions remain excluded.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #129**
-   - Outcome: let future website, app, and extension clients explain how brand
-     memory works without exposing real user data or enabling commerce.
+1. **Complete and review Issue #131**
+   - Outcome: give future website, app, and extension clients one transparent,
+     editable personalization vocabulary before real profile persistence.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -45,6 +44,12 @@ Health Check run `30185174745`. Issue #129 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #129 / PR #130:** merged after 722 tests, every deterministic
+  validator, browser QA, five passing GitHub checks, serialized Ops refreshes,
+  Pages run `30185351915`, and Deploy Health Check run `30185370641`. Six
+  evidence states make brand-memory provenance, correction, exclusion,
+  conflict, confidence, fit memory, and influence limits reviewable without
+  observing behavior or enabling commerce.
 - **Issue #127 / PR #128:** merged after 710 tests, every deterministic
   validator, five passing GitHub checks, serialized Ops refreshes, Pages run
   `30185153291`, and Deploy Health Check run `30185174745`. Explicit input and
