@@ -1006,6 +1006,53 @@ that review-required/abstention/tie outcomes pass through unmodified, byte
 stability, and that the minimized result carries no private payload or
 commercial/external-action field.
 
+## Decision — a fixture Daily Stylist service-seam review journey (issue #165)
+
+**Problem:** issue #162 proved the accepted eight-step service seam executes
+correctly in code, but nothing let a person actually see authenticated
+success, each trust failure, an unknown or contradictory context, or an exact
+selection-boundary tie happen — or confirm that a stopped result really does
+carry no response and that no step past the first failure ever ran.
+
+**Decision:** the default-off fixture route
+`daily-stylist-service-seam-fixture.dc.html?ww_daily_stylist_service_seam=1`
+composes `scripts/daily-stylist-service-seam-journey.mjs`
+(`createDailyStylistServiceSeamJourney`) over the accepted
+`runDailyStylistServiceSeam` (issue #162) across thirteen closed, selectable
+scenarios: ready success; missing and expired sessions; missing
+personalization scope and cross-account access; revoked consent; an
+unresolved profile reference; an unresolved and a stale wardrobe snapshot;
+insufficient fixture candidates; unknown-context review; contradictory-context
+abstention; and an exact selection-boundary tie. Each scenario supplies its
+own synthetic session/request-envelope/private-service fixture input — the
+journey never re-derives any composed contract's policy, only which closed
+input to hand it. The page renders the seam's own `RESOLUTION_STEPS` order as
+a fixed, closed row list annotated `passed`/`failed`/`not-executed` from the
+seam's own trace, so the first failed step is visually outlined and every
+step after it is provably marked as never having run. Only the minimized step
+trace, outcome, reason codes, and — when the seam completes — the unmodified
+Grounded Stylist response (title, summary, selected/tied/qualified IDs,
+reason codes, uncertainty, next step, citations, limitations, policy) are
+shown. Changing the scenario invalidates the prior result; reset restores the
+`ready-success` default, clears the result, and returns keyboard focus to the
+scenario control.
+
+**Boundary:** the page does not rerank, break ties, fill missing context,
+rewrite uncertainty, or bypass authentication, authorization, consent,
+reference resolution, or freshness checks — every one of those decisions
+still comes from the already-accepted seam and the contracts it composes. It
+is unlinked, `noindex`, fixture-only, and absent from `sitemap.xml` and every
+other page's navigation. It accesses no live session, account, provider, real
+profile, or real closet, and performs no persistence, network call, tracking,
+commerce, Chrome permission, personalized image, or external action.
+`scripts/__tests__/daily-stylist-service-seam-journey.test.mjs` proves every
+scenario's exact outcome, the fixed step order, first-failure-then-not-
+executed step attribution for every failing scenario, byte-stable output,
+scenario-change/reset invalidation and focus return, the default-off/
+exact-flag/`noindex`/unlinked/absent-from-sitemap route contract, and that no
+session, raw profile, wardrobe payload, consent record, or commercial/
+external-action field ever appears in the journey's output.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

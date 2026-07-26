@@ -2,6 +2,58 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fixture Daily Stylist service-seam review journey (issue #165)
+### Added
+- An unlinked, `noindex`, exact-flag-gated (`ww_daily_stylist_service_seam=1`)
+  review route, `daily-stylist-service-seam-fixture.dc.html`, that composes
+  `scripts/daily-stylist-service-seam-journey.mjs`
+  (`createDailyStylistServiceSeamJourney`) over the accepted
+  `runDailyStylistServiceSeam` (issue #162) across thirteen closed,
+  selectable scenarios: ready success; missing and expired sessions; missing
+  personalization scope and cross-account access; revoked consent; an
+  unresolved profile reference; an unresolved and a stale wardrobe snapshot;
+  insufficient fixture candidates; unknown-context review; contradictory-
+  context abstention; and an exact selection-boundary tie.
+- A closed, fixed `RESOLUTION_STEPS` row list rendered from the seam's own
+  trace and annotated `passed`/`failed`/`not-executed`, so the first failed
+  step is visually outlined and every step after it is provably marked as
+  never having run.
+- The minimized step trace, outcome, reason codes, and — when the seam
+  completes — the unmodified Grounded Stylist response (title, summary,
+  selected/tied/qualified IDs, reason codes, uncertainty, next step,
+  citations, limitations, policy) are rendered.
+### Safety
+- Every scenario supplies its own synthetic session/request-envelope/
+  private-service fixture input directly to the already-accepted seam; the
+  journey never re-derives any composed contract's authentication,
+  authorization, consent, reference-resolution, freshness, ranking, tie, or
+  abstention policy, and never fills missing context or rewrites uncertainty.
+- Changing the scenario invalidates the prior result; reset restores the
+  `ready-success` default, clears the result, and returns keyboard focus to
+  the scenario control.
+- The route is default-off behind the exact query flag, `noindex`, and
+  absent from `sitemap.xml` and every other page's navigation. It accesses
+  no live session, account, provider, real profile, or real closet, and
+  performs no persistence, network call, tracking, commerce, Chrome
+  permission, personalized image, or external action. The journey's output
+  never carries the session, raw profile, wardrobe payload, consent record,
+  or a commercial/external-action field.
+### Validation
+- 910/910 deterministic repository tests passed (16 new).
+- `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
+  `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
+  `compare-legacy-adapter.mjs` all ran clean against this change (all
+  reported warnings are pre-existing, unrelated to this journey, and
+  unchanged from the prior baseline — this change touches no product/guide
+  content data).
+- Playwright browser QA across all thirteen scenarios plus the default-off
+  state confirmed: a clean console; the first-failure step outlined with
+  every later step marked not-executed for every stopping scenario; all
+  steps passed for every completing scenario; scenario-change and reset
+  behavior (default scenario restored, result cleared, focus returned to the
+  scenario control); no horizontal overflow at a 360px viewport; and every
+  interactive control at least 44px tall.
+
 ## Unreleased (2026-07-26) — Fixture authenticated Daily Stylist service seam (issue #162)
 ### Added
 - `scripts/daily-stylist-service-seam.mjs` (`runDailyStylistServiceSeam`,

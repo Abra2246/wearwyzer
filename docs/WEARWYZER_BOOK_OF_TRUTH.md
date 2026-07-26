@@ -1055,6 +1055,24 @@ references, and owner.
   two accepted contracts. No route, endpoint, account, session, database,
   provider, or real private record exists. Current pre-PR validation
   baseline: 894 tests.
+- Issue #165 makes the Issue #162 service seam reviewable as a default-off,
+  exact-flag-gated, `noindex`, unlinked fixture journey. Thirteen closed
+  scenarios — ready success, missing/expired sessions, missing scope,
+  cross-account access, revoked consent, an unresolved profile, an unresolved
+  and a stale wardrobe snapshot, insufficient candidates, unknown-context
+  review, contradictory-context abstention, and an exact selection-boundary
+  tie — each supply their own synthetic session/request/private-service input
+  directly to the accepted seam. The page renders the seam's own
+  `RESOLUTION_STEPS` order as a closed, fixed row list annotated from the
+  seam's own trace, so the first failed step is visually outlined and every
+  step after it is provably marked as never having run. Only the minimized
+  step trace, outcome, reason codes, and — when the seam completes — the
+  unmodified Grounded Stylist response are shown. Scenario changes clear the
+  prior result; reset restores the deterministic default and keyboard focus.
+  No route, endpoint, account, session, database, provider, real private
+  record, network call, persistence, commerce, or external action exists, and
+  the route is absent from `sitemap.xml` and every other page's navigation.
+  Current pre-PR validation baseline: 910 tests.
 
 ## Final north-star statement
 

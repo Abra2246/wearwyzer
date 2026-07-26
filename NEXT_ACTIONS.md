@@ -5,23 +5,36 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** Issue #162 merged via PR #164 after independent
-authorization, failure-attribution, and private-data-minimization review,
-894/894 deterministic tests, every repository validator, and five passing
-GitHub checks. Pages run `30189033020`, Content pipeline run `30189033011`,
-Ops Live Feed run `30189033008`, Ops Status run `30189033024`, and Deploy
-Health Check run `30189056455` succeeded. The queue-dispatched Claude run
-`30188478757` created branch `claude/issue-162-daily-stylist-service-seam`
-and PR #164 in fifteen minutes, providing a third consecutive successful
-autonomous handoff.
+**Evidence baseline:** implementation branch
+`claude/issue-165-daily-stylist-service-seam-journey`. 910/910 deterministic
+tests (16 new), every repository validator (`validate-content-data.mjs`,
+`qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
+`validate-hero-product-pages.mjs`, `compare-legacy-adapter.mjs`), and
+Playwright browser QA across all thirteen scenarios plus the default-off
+state passed locally. PR pending open for review (not yet merged); full
+repository, deployment, and production evidence remain required before
+completion.
 
 ## Queued execution
 
 1. **Issue #165 — Fixture Daily Stylist service-seam review journey**
-   - Status: ready for autonomous implementation.
-   - Outcome: make authenticated success, each trust failure, unknown or
-     contradictory context, exact ties, and insufficiency reviewable behind
-     one default-off, noindex, unlinked route.
+   - Status: implemented on branch
+     `claude/issue-165-daily-stylist-service-seam-journey`; PR pending open
+     for review (not yet merged).
+   - Scope delivered: `daily-stylist-service-seam-fixture.dc.html`
+     (`ww_daily_stylist_service_seam=1`) composes
+     `scripts/daily-stylist-service-seam-journey.mjs`
+     (`createDailyStylistServiceSeamJourney`) over the accepted
+     `runDailyStylistServiceSeam` (issue #162) across thirteen closed
+     scenarios covering authenticated success, every trust failure, unknown
+     and contradictory context, and an exact selection-boundary tie, with a
+     closed `RESOLUTION_STEPS` row list proving the first failed step and
+     every not-executed step after it.
+   - Evidence: 910/910 deterministic tests (16 new), every repository
+     validator ran clean (pre-existing warnings only, unchanged from
+     baseline), and Playwright browser QA confirmed a clean console, correct
+     step attribution for every scenario, scenario-change/reset/focus
+     behavior, no narrow-width overflow, and 44px controls.
    - Boundary: deterministic fixture adapters only. No endpoint, auth/storage
      provider, database, production account/session, real private record,
      network, commerce, Chrome permission, personalized image, or external
@@ -29,11 +42,10 @@ autonomous handoff.
 
 ## Next executable tasks
 
-1. **Implement Issue #165 — fixture service-seam review journey**
-   - Dependency: satisfied by merged Issue #162.
-   - Outcome: make success, each trust failure, and non-answer preservation
-     reviewable behind a default-off, unlinked route without adding collection,
-     persistence, providers, or actions.
+1. **Review and merge PR for Issue #165**
+   - Outcome: independent review of scenario coverage, step-trace fidelity,
+     and privacy exclusions before it becomes the reviewable proof of the
+     Issue #162 service seam.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
