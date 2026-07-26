@@ -2,6 +2,19 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fresh Mission Control feed deployment (issue #174)
+### Fixed
+- Pages now runs its existing validation/build/deploy chain after a successful
+  main-branch `Ops Live Feed Refresh` completion. This closes the gap where the
+  generator committed fresh evidence but `GITHUB_TOKEN` intentionally did not
+  trigger the ordinary Pages push workflow, leaving the dashboard on an older
+  same-origin snapshot whenever its external fetch was unavailable.
+- Failed, cancelled, and non-main refresh runs stop before validation. Existing
+  main-push and manual deployments, permissions, non-cancelling deployment
+  concurrency, content validation, and post-deploy health checks remain intact.
+- Deterministic workflow tests prove the trigger, guards, retained permissions,
+  and absence of an Ops refresh/deployment recursion.
+
 ## Unreleased (2026-07-26) — Signed-in web transport boundary for Daily Stylist (issue #168)
 ### Added
 - `scripts/daily-stylist-web-transport-boundary.mjs`

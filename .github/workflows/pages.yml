@@ -4,6 +4,13 @@ name: Deploy to GitHub Pages
   push:
     branches: [main]
   workflow_dispatch:
+  # Commits made by the Ops Live Feed workflow use GITHUB_TOKEN, so GitHub
+  # intentionally does not emit another push-triggered workflow run. Listen
+  # for that workflow's successful completion explicitly so the same-origin
+  # Pages copy advances with the committed operational snapshot.
+  workflow_run:
+    workflows: ["Ops Live Feed Refresh"]
+    types: [completed]
 
 permissions:
   contents: read
@@ -17,6 +24,10 @@ concurrency:
 jobs:
   validate:
     name: Validate site and Knowledge Graph data
+    if: >-
+      github.event_name != 'workflow_run' ||
+      (github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository

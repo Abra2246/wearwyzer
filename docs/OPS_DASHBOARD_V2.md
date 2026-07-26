@@ -42,6 +42,19 @@ not truly "live" in the request-time sense. That is what the explicit
 Live/Delayed/Offline model below is for: the dashboard never claims data is
 fresher than it actually is.
 
+### Delivering generated evidence to the static dashboard
+
+The deployed dashboard reads a same-origin Pages copy when its external
+main-branch fetch is unavailable inside the client runtime. GitHub does not
+start push-triggered workflows for commits created with `GITHUB_TOKEN`, so an
+Ops Live Feed commit cannot rely on the ordinary Pages `push` trigger.
+`pages.yml` therefore also listens for a successful, main-branch
+`Ops Live Feed Refresh` completion and runs the existing validation, build,
+deployment, and post-deploy health path against current `main`. Failed,
+cancelled, and non-main refreshes are filtered before validation. The live-feed
+workflow ignores its own generated files, so this delivery trigger cannot form
+a refresh/deploy recursion.
+
 ## What changed from v1's model
 
 v1's `ops/status.json` is one document with one `generatedAtIso` and one
