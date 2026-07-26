@@ -1,16 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T01:04:04.471Z",
+  "generatedAtIso": "2026-07-26T01:15:38.131Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 101,
-    "title": "Define the first grounded AI Stylist tool contract",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/101",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-26T01:02:39Z"
-  },
+  "automationState": "idle",
+  "activeWork": null,
   "queue": {
     "depth": 0,
     "readyCount": 0,
@@ -18,8 +11,8 @@
   },
   "ci": {
     "status": "passing",
-    "lastRunIso": "2026-07-26T01:01:08Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30182160063"
+    "lastRunIso": "2026-07-26T01:15:36Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30182584169"
   },
   "deployment": {
     "status": "unknown",
@@ -59,6 +52,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-26T01:02:39.000Z",
+  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
   "staleAfterMinutes": 30
 }
