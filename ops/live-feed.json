@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T03:01:32.484Z",
+  "generatedAtIso": "2026-07-26T03:06:05.229Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#133 \"Add fixture Style DNA review journey\" (no PR yet)"
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:01:32.484Z",
+      "lastUpdatedIso": "2026-07-26T03:06:05.229Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 133,
-          "title": "Add fixture Style DNA review journey",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/133",
-          "updatedIso": "2026-07-26T03:01:29Z"
-        },
+        "automationState": "idle",
+        "activeIssue": null,
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -35,9 +30,9 @@
         },
         "pr": null,
         "ci": {
-          "status": "passing",
-          "latestRunIso": "2026-07-26T03:01:21Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30185473812",
+          "status": "unknown",
+          "latestRunIso": "2026-07-26T03:05:56Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30185614972",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -50,12 +45,12 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:01:32.484Z",
+      "lastUpdatedIso": "2026-07-26T03:06:05.229Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "94b8d94",
-        "lastDeployIso": "2026-07-26T02:57:18Z",
+        "lastHealthyShaShort": "073771a",
+        "lastDeployIso": "2026-07-26T03:01:56Z",
         "ageMinutes": 4,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
@@ -64,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:01:32.484Z",
+      "lastUpdatedIso": "2026-07-26T03:06:05.229Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:01:32.484Z",
+      "lastUpdatedIso": "2026-07-26T03:06:05.229Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -131,6 +126,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:134",
+      "timestampIso": "2026-07-26T03:05:49Z",
+      "type": "pr-merged",
+      "summary": "PR #134 \"Add fixture Style DNA review journey\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/134"
+    },
+    {
+      "key": "deploy:073771a",
+      "timestampIso": "2026-07-26T03:01:56Z",
+      "type": "deployed",
+      "summary": "Deployed build 073771a — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "issue-started:133",
       "timestampIso": "2026-07-26T03:01:29Z",
@@ -466,20 +475,6 @@
       "type": "deployed",
       "summary": "Deployed build d0aa164 — health checks passed.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30182838717",
-      "timestampIso": "2026-07-26T01:24:52Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30182838717"
-    },
-    {
-      "key": "pr-merged:105",
-      "timestampIso": "2026-07-26T01:24:35Z",
-      "type": "pr-merged",
-      "summary": "PR #105 \"Build the fixture AI Stylist evaluation harness\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/105"
     }
   ]
 }
