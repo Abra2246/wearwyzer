@@ -845,6 +845,12 @@ references, and owner.
   tied, and `buy-none` is a first-class success outcome. Affiliate status and
   commission never influence the result. Current pre-PR validation baseline:
   644 tests plus every deterministic repository validator.
+- Issue #117 makes the Purchase Simulator reviewable as a default-off fixture
+  journey. A unique leader, exact tie, `buy-none`, and stale-source exclusion
+  are visible without exposing private profile/wardrobe facts or offering a
+  commerce action. Changing inputs clears the prior result; reset restores
+  deterministic defaults and focus. Current pre-PR validation baseline: 654
+  tests, every deterministic validator, and browser QA.
 
 ## Final north-star statement
 
