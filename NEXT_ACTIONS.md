@@ -5,24 +5,24 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** Issue #154 dispatch run `30187367449` was canceled
-before repeating the known Issue #151 permissions failure. The active Claude
-workflow omitted its minimum non-interactive file tools. Issue #156 is the
-active medium-risk protected-path repair; Issue #154 remains ready and must not
-be re-dispatched until the repair is merged and validated.
+**Evidence baseline:** Issue #156 merged via PR #157, restoring the minimum
+non-interactive file tools. Issue #154 is implemented on branch
+`claude/issue-154-daily-outfit-stylist-composer`: 859/859 deterministic
+repository tests pass (21 new), including explicit boundary-tie and
+insufficient-candidate paths, and `validate-content-data.mjs`,
+`qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
+`validate-hero-product-pages.mjs`, and `compare-legacy-adapter.mjs` all ran
+clean. Review PR #158 is open; interactive browser QA could not be run in
+this sandbox (no `curl`/browser binary in the permitted non-interactive
+command set, no `playwright`/`jsdom` dependency in this build-step-free
+repo), so PR #158 documents an explicit human browser-QA checklist. GitHub
+checks and production evidence also remain required before merge.
 
 ## Queued execution
 
-1. **Issue #156 — Restore Claude workflow file-tool permissions**
-   - Status: in progress; medium-risk protected-path change requires review.
-   - Scope: add the minimum `Read`, `Edit`, `Write`, `Glob`, and `Grep` tools
-     required by non-interactive implementation while keeping Bash narrow and
-     workflow/action edits explicitly denied.
-   - Boundary: no unrestricted Bash, destructive command, secret management,
-     force-push, merge, workflow self-edit/dispatch, deployment, or publication
-     authority. The mandatory handoff postcondition remains unchanged.
-2. **Issue #154 — Explicit-context Daily Outfit Stylist composer fixture**
-   - Status: ready, paused behind Issue #156.
+1. **Issue #154 — Explicit-context Daily Outfit Stylist composer fixture**
+   - Status: implemented; PR #158 open, awaiting human browser QA, GitHub
+     checks, and review before merge.
    - Scope: let a person choose allowlisted coarse context and receive the
      accepted grounded answer or honest non-answer from a deterministic
      synthetic candidate pool.
@@ -34,28 +34,25 @@ be re-dispatched until the repair is merged and validated.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #156**
-   - Outcome: prove a queue agent can create a real implementation handoff
-     without broadening protected or destructive authority.
-2. **Re-dispatch, complete, and review Issue #154**
+1. **Complete and review Issue #154**
    - Outcome: demonstrate the first explicit user-shaped Daily Stylist flow
      without collecting live or private context.
-3. **Define the minimum production Daily Stylist data boundary**
+2. **Define the minimum production Daily Stylist data boundary**
    - Dependency: merged Issue #154 with browser QA and production evidence.
    - Outcome: specify the smallest consented profile/wardrobe/context
      references future clients need, without implementing collection,
      persistence, providers, or production access.
-4. **Founder decision: authorize or defer one live provider experiment**
+3. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
    - Outcome if approved: one bounded, non-production synthetic comparison;
      otherwise remain offline with no loss of production functionality.
-5. **Establish the first verifiable affiliate merchant path**
+4. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-6. **Reconcile and import remaining style-guide sources when real files exist**
+5. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -64,6 +61,14 @@ be re-dispatched until the repair is merged and validated.
 
 ## Closed or blocked with evidence
 
+- **Issue #156 / PR #157:** merged after 838 tests, a focused 45/45
+  automation-permissions suite, and every content/Knowledge Graph/hero-product/
+  metadata/static-site/diff validator. Non-interactive Claude runs now
+  explicitly allow `Read`, `Edit`, `Write`, `Glob`, and `Grep`; edits under
+  `.github/workflows/**` and `.github/actions/**` remain explicitly denied, and
+  no unrestricted Bash, destructive command, secret management, force-push,
+  merge, workflow self-edit/dispatch, deployment, or publication authority was
+  introduced.
 - **Issue #151 / PR #153:** merged after 836 tests, every deterministic
   validator, browser QA across all nine modes, five passing GitHub checks,
   Pages run `30187254783`, Content pipeline run `30187254822`, Ops Live Feed
