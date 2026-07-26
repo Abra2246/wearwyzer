@@ -1,26 +1,21 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T01:03:48.926Z",
+  "generatedAtIso": "2026-07-26T01:15:55.912Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "#101 \"Define the first grounded AI Stylist tool contract\" (no PR yet)"
+    "activeWorkSummary": "No active automation work."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:03:48.926Z",
+      "lastUpdatedIso": "2026-07-26T01:15:55.912Z",
       "fetchOk": true,
       "data": {
-        "automationState": "working",
-        "activeIssue": {
-          "number": 101,
-          "title": "Define the first grounded AI Stylist tool contract",
-          "url": "https://github.com/Abra2246/wearwyzer/issues/101",
-          "updatedIso": "2026-07-26T01:02:39Z"
-        },
+        "automationState": "idle",
+        "activeIssue": null,
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -36,8 +31,8 @@
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-26T01:01:08Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30182160063",
+          "latestRunIso": "2026-07-26T01:15:36Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30182584169",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -50,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:03:48.926Z",
+      "lastUpdatedIso": "2026-07-26T01:15:55.912Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "ee5f008",
         "lastDeployIso": "2026-07-26T01:01:37Z",
-        "ageMinutes": 2,
+        "ageMinutes": 14,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -64,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:03:48.926Z",
+      "lastUpdatedIso": "2026-07-26T01:15:55.912Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -91,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T01:03:48.926Z",
+      "lastUpdatedIso": "2026-07-26T01:15:55.912Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -131,6 +126,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "ci-run:30182584169",
+      "timestampIso": "2026-07-26T01:15:36Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30182584169"
+    },
+    {
+      "key": "pr-merged:103",
+      "timestampIso": "2026-07-26T01:15:18Z",
+      "type": "pr-merged",
+      "summary": "PR #103 \"Define the grounded AI Stylist contract\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/103"
+    },
     {
       "key": "issue-started:101",
       "timestampIso": "2026-07-26T01:02:39Z",
@@ -466,20 +475,6 @@
       "type": "pr-merged",
       "summary": "PR #73 \"Wire production evidence into Mission Control\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/73"
-    },
-    {
-      "key": "deploy:b3efb68",
-      "timestampIso": "2026-07-25T17:02:00Z",
-      "type": "deployed",
-      "summary": "Deployed build b3efb68 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30166786324",
-      "timestampIso": "2026-07-25T17:01:29Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30166786324"
     }
   ]
 }
