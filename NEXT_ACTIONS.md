@@ -11,7 +11,7 @@ tests (16 new), every repository validator (`validate-content-data.mjs`,
 `qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
 `validate-hero-product-pages.mjs`, `compare-legacy-adapter.mjs`), and
 Playwright browser QA across all thirteen scenarios plus the default-off
-state passed locally. PR pending open for review (not yet merged); full
+state passed locally. PR #167 is open for review (not yet merged); full
 repository, deployment, and production evidence remain required before
 completion.
 
@@ -19,7 +19,7 @@ completion.
 
 1. **Issue #165 — Fixture Daily Stylist service-seam review journey**
    - Status: implemented on branch
-     `claude/issue-165-daily-stylist-service-seam-journey`; PR pending open
+     `claude/issue-165-daily-stylist-service-seam-journey`; PR #167 is open
      for review (not yet merged).
    - Scope delivered: `daily-stylist-service-seam-fixture.dc.html`
      (`ww_daily_stylist_service_seam=1`) composes

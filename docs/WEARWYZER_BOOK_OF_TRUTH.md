@@ -1046,15 +1046,16 @@ references, and owner.
   contract, and Grounded Daily Outfit Stylist adapter in the fixed eight-step
   order, stopping at the first failing step with that step's exact reason
   code and a minimized `{ step, outcome, reasonCode }` trace proving no later
-  step ever ran. Steps 2–5 are resolved by one call to the private service's
-  existing `getPersonalizationReferences`, whose single error code is mapped
-  back onto the step it came from rather than re-derived. Step 6 derives
-  synthetic candidates from only the resolved wardrobe snapshot's item count,
-  never its content. Steps 7–8 delegate unchanged, so ready, review-required,
-  tie, insufficiency, and abstention outcomes remain entirely owned by the
-  two accepted contracts. No route, endpoint, account, session, database,
-  provider, or real private record exists. Current pre-PR validation
-  baseline: 894 tests.
+  step ever ran. Step 2 independently requires same-account ownership and
+  `personalization:evaluate` scope before the private service resolves
+  consent, profile, and snapshot references; unresolved profile and snapshot
+  failures are attributed to their distinct steps. Step 6 receives only the
+  authorized snapshot reference plus a closed internal fixture mode and never
+  reads wardrobe contents or item count. Steps 7–8 delegate unchanged, so
+  ready, review-required, tie, insufficiency, and abstention outcomes remain
+  entirely owned by the two accepted contracts. No route, endpoint, account,
+  session, database, provider, or real private record exists. Current pre-PR
+  validation baseline: 894 tests.
 - Issue #165 makes the Issue #162 service seam reviewable as a default-off,
   exact-flag-gated, `noindex`, unlinked fixture journey. Thirteen closed
   scenarios — ready success, missing/expired sessions, missing scope,

@@ -60,19 +60,19 @@ All notable changes to this project are recorded here.
   `serializeDailyStylistServiceSeamResult`) — one deterministic, fixture-only
   seam that executes the Issue #159 eight-step `RESOLUTION_STEPS` order end
   to end by composing four already-accepted contracts: the private-access
-  security policy (`validatePrivateSession`), the fixture private
+  security policy (`validatePrivateSession`, `authorizePrivateAction`), the fixture private
   profile/wardrobe service (`getPersonalizationReferences`), the Daily
   Outfit Intent contract, and the Grounded Daily Outfit Stylist adapter.
-- Step 1 authenticates the session. Steps 2–5 (ownership, consent, profile
-  resolution, snapshot freshness) resolve from a single call to the private
-  service's existing `getPersonalizationReferences`, whose one returned
-  error code is mapped back onto the resolution step it came from instead of
-  being re-derived; earlier steps that its fixed internal order implies must
-  have already passed are back-filled into the trace. Step 6 derives
-  synthetic outfit candidates from only the resolved wardrobe snapshot's
-  item count, never its content. Steps 7–8 delegate the exact explicit
-  context and candidates unchanged to Daily Outfit Intent and then the
-  Grounded Stylist adapter.
+- Step 1 authenticates the session. Step 2 explicitly requires same-account
+  ownership and the `personalization:evaluate` scope before the private
+  service resolves consent, profile, and snapshot references. Private-service
+  errors are mapped back onto the exact resolution step they came from instead
+  of being re-derived; an unresolved snapshot is distinguished from an
+  unresolved profile. Step 6 accepts only the authorized snapshot reference
+  plus a closed internal fixture mode (`ready`, `tie`, or `insufficient`) and
+  never reads wardrobe contents or item count. Steps 7–8 delegate the exact
+  explicit context and candidates unchanged to Daily Outfit Intent and then
+  the Grounded Stylist adapter.
 - The seam returns a minimized `{ ok, schemaVersion, requestId, outcome,
   stoppedAtStep, reasonCode, trace, response }` result. `trace` is an
   ordered `{ step, outcome, reasonCode }` list proving exactly which steps

@@ -965,23 +965,22 @@ their policy:
    unsupported request fails closed before any resolution step runs.
 2. Step 1 (authenticate session) calls `validatePrivateSession`
    (`scripts/private-access-security-policy.mjs`).
-3. Steps 2–5 (authorize same-account ownership, verify active personalization
-   consent, resolve the profile reference, verify the wardrobe snapshot is
-   current) call `getPersonalizationReferences` on a fixture private
+3. Step 2 calls `authorizePrivateAction`
+   (`scripts/private-access-security-policy.mjs`) before private resolution,
+   requiring both same-account ownership and the
+   `personalization:evaluate` scope.
+4. Steps 2–5 then call `getPersonalizationReferences` on a fixture private
    profile/wardrobe service instance
-   (`scripts/private-profile-service-contract.mjs`) exactly once. That
-   function already enforces this same four-step order internally, so the
-   seam maps its single returned error code back onto the step it came from
-   (`access-denied` → ownership, `personalization-consent-required` →
-   consent, `private-context-not-found` → profile resolution,
-   `stale-wardrobe-snapshot` → snapshot freshness) and back-fills a `passed`
-   trace entry for every earlier step in that order the failure implies must
-   have already succeeded, instead of re-deriving the check itself.
-4. Step 6 (derive minimized outfit candidates) turns only the **count** of
-   resolved wardrobe-snapshot items into synthetic capsule candidates — never
-   their identity or content — so real wardrobe data is never inspected past
-   this point. Fewer than two derivable candidates fails closed.
-5. Steps 7–8 delegate the exact explicit context and minimized candidates to
+   (`scripts/private-profile-service-contract.mjs`) exactly once. The seam
+   maps its returned error to the exact step it came from: access denial,
+   missing/revoked consent, unresolved profile, unresolved snapshot, or stale
+   snapshot. It back-fills a `passed` trace entry only for earlier checks the
+   accepted private-service order proves succeeded.
+5. Step 6 (derive minimized outfit candidates) accepts only the authorized
+   wardrobe-snapshot reference plus one closed internal fixture mode
+   (`ready`, `tie`, or `insufficient`). It never reads snapshot contents or
+   item count; real derivation remains a separate production gate.
+6. Steps 7–8 delegate the exact explicit context and minimized candidates to
    `evaluateDailyOutfitIntent` and then `adaptDailyOutfitStylistResponse`
    unchanged; ready, review-required, tie, insufficiency, and abstention
    outcomes remain entirely owned by those two contracts.
@@ -1000,8 +999,9 @@ real endpoint, account, session, provider, database, migration, network call,
 Chrome permission, personalized image, commerce action, or external action.
 `scripts/__tests__/daily-stylist-service-seam.test.mjs` proves success, the
 exact step order, the invalid-request short-circuit, every fail-closed step
-(missing/expired session, cross-account access, revoked consent, an
-unresolved profile reference, a stale snapshot, insufficient candidates),
+(missing/expired session, missing scope, cross-account access, revoked
+consent, unresolved profile or snapshot references, a stale snapshot,
+insufficient candidates),
 that review-required/abstention/tie outcomes pass through unmodified, byte
 stability, and that the minimized result carries no private payload or
 commercial/external-action field.
