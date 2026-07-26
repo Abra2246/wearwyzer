@@ -2,6 +2,22 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Purchase Simulator fixture journey (issue #117)
+### Added
+- An unlinked, `noindex`, exact-flag-gated review route for selected, tie,
+  `buy-none`, and stale-evidence outcomes.
+- Deterministic mode changes, prior-result invalidation, reset, focus
+  restoration, minimized candidate evidence, and explicit commerce unavailability.
+### Safety
+- The route is synthetic and local, renders no private profile or full
+  wardrobe, and provides no checkout, affiliate redirect, account mutation,
+  network request, or external action.
+### Validation
+- 654/654 deterministic repository tests passed.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  checks passed; browser QA passed every state, reset/focus, mobile containment,
+  and console check.
+
 ## Unreleased (2026-07-26) — Personalized Purchase Simulator (issue #115)
 ### Added
 - Deterministic comparison of two or three canonical products against one

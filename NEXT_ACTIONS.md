@@ -5,26 +5,25 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #114. The founder-gated provider
-experiment protocol passed 636 tests, all deterministic validators, five GitHub
-checks, serialized Ops refreshes, Pages deployment run `30183898749`, and
-Deploy Health Check run `30183923195`. Issue #115 is active.
+**Evidence baseline:** `main` after merged PR #116. The fixture Purchase
+Simulator passed 644 tests, all deterministic validators, five GitHub checks,
+serialized Ops refreshes, Pages deployment run `30184046501`, and Deploy Health
+Check run `30184076337`. Issue #117 is active.
 
 ## Active review gates
 
-1. **Issue #115 — fixture personalized Purchase Simulator**
-   - Active branch: `codex/issue-115-purchase-simulator`.
-   - Scope: compare two or three canonical products against one accepted
-     profile and wardrobe snapshot; select the strongest wardrobe investment,
-     preserve ties, or recommend buying none.
-   - Boundary: fixture-only, deterministic, editorial-first, and read-only. No
-     network, affiliate influence, real data, account, purchase, or publication.
+1. **Issue #117 — default-off fixture Purchase Simulator journey**
+   - Active branch: `codex/issue-117-purchase-simulator-journey`.
+   - Scope: make selected, tie, `buy-none`, and excluded-candidate evidence
+     reviewable in the future website/app experience.
+   - Boundary: exact-flag-gated, unlinked, noindex, synthetic, and read-only. No
+     network, affiliate action, account, real data, purchase, or publication.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #115**
-   - Outcome: deliver the core “which item is smartest for my wardrobe?”
-     decision with explicit evidence, ties, and a `buy-none` result.
+1. **Complete and review Issue #117**
+   - Outcome: prove the core “which item is smartest for my wardrobe?” journey
+     end to end with evidence, ties, and an honest `buy-none` result.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -44,6 +43,10 @@ Deploy Health Check run `30183923195`. Issue #115 is active.
 
 ## Closed or blocked with evidence
 
+- **Issue #115 / PR #116:** merged after 644 tests, every deterministic
+  validator, five passing GitHub checks, serialized Ops refresh, Pages run
+  `30184046501`, and Deploy Health Check run `30184076337`. Stale, unavailable,
+  unknown, and weak candidates cannot silently win; commission never ranks.
 - **Issue #113 / PR #114:** merged after 636 tests, every deterministic
   validator, five passing GitHub checks, serialized Ops refresh, Pages run
   `30183898749`, and Deploy Health Check run `30183923195`. Planning has zero

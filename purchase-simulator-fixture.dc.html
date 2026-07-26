@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Purchase Simulator Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:980px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); }
+    .notice { border-left:5px solid var(--gold); }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .bad { color:var(--red); background:#f6e6e3; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .candidate { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .candidate h3 { margin-top:0; }
+    .scores { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; font-size:14px; }
+    .scores span { padding:7px; background:white; }
+    .meta { color:var(--muted); font-size:13px; }
+    ul { padding-left:20px; }
+    [hidden] { display:none !important; }
+    @media (max-width:680px) {
+      .grid,.scores { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>Buy it Wyzer</h1><p>Compare wardrobe value before buying another item.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This private route uses only synthetic local evidence and cannot shop, redirect, or buy.</p>
+      <a class="button" href="?ww_purchase_simulator=1">Open synthetic simulator</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> every option uses the same
+        synthetic profile and wardrobe snapshot. Product truth and editorial usefulness rank
+        before monetization.</section>
+      <section class="panel">
+        <h2>Choose a review case</h2>
+        <label for="mode">Comparison</label>
+        <select id="mode">
+          <option value="best-fit">Two qualified options</option>
+          <option value="tie">Equal qualified options</option>
+          <option value="buy-none">Neither option is worth buying</option>
+          <option value="excluded-evidence">Product evidence is stale</option>
+        </select>
+        <div class="actions">
+          <button id="compare" type="button">Compare with this wardrobe</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No network or commerce action will run.</p>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="decision" class="badge"></span></p>
+        <h2 id="decision-title">Comparison result</h2>
+        <p id="decision-copy"></p>
+        <div id="candidates" class="grid"></div>
+        <p class="meta"><strong>Commerce actions:</strong> unavailable. No checkout, affiliate
+          redirect, account change, or external action exists in this fixture.</p>
+      </section>
+    </section>
+  </main>
+  <script type="module">
+    import { createPurchaseSimulatorJourney } from './scripts/purchase-simulator-journey.mjs';
+    const enabled = new URLSearchParams(location.search).get('ww_purchase_simulator') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+    if (enabled) {
+      const journey = createPurchaseSimulatorJourney();
+      const mode = document.querySelector('#mode');
+      const panel = document.querySelector('#result');
+      const status = document.querySelector('#status');
+      function render(view) {
+        panel.hidden = !view.result;
+        if (!view.result) return;
+        const { decision, candidates } = view.result;
+        const badge = document.querySelector('#decision');
+        badge.textContent = decision.status;
+        badge.className = `badge ${decision.status === 'selected' ? 'good' : 'bad'}`;
+        document.querySelector('#decision-title').textContent =
+          decision.status === 'selected' ? 'Strongest wardrobe investment' :
+          decision.status === 'tie' ? 'The evidence does not break the tie' :
+          'The smart choice is buying none';
+        document.querySelector('#decision-copy').textContent =
+          decision.selectedCandidateIds.length
+            ? `Selected: ${decision.selectedCandidateIds.join(', ')}. ${decision.reasonCodes.join(', ')}.`
+            : decision.reasonCodes.join(', ');
+        document.querySelector('#candidates').replaceChildren(...candidates.map((candidate) => {
+          const card = document.createElement('article');
+          card.className = 'candidate';
+          const title = document.createElement('h3');
+          title.textContent = candidate.candidateId;
+          const state = document.createElement('p');
+          const stateBadge = document.createElement('span');
+          stateBadge.className = `badge ${candidate.eligible ? 'good' : 'bad'}`;
+          stateBadge.textContent = candidate.status;
+          state.append(stateBadge);
+          card.append(title, state);
+          if (candidate.scores) {
+            const scores = document.createElement('div');
+            scores.className = 'scores';
+            for (const [label, value] of Object.entries(candidate.scores)) {
+              const item = document.createElement('span');
+              item.textContent = `${label}: ${value}`;
+              scores.append(item);
+            }
+            card.append(scores);
+          }
+          const evidence = document.createElement('p');
+          evidence.className = 'meta';
+          evidence.textContent = `For: ${candidate.supportingEvidence.join(', ') || 'none'} · Against: ${candidate.opposingEvidence.join(', ') || 'none'}`;
+          card.append(evidence);
+          return card;
+        }));
+      }
+      mode.addEventListener('change', () => {
+        journey.selectMode(mode.value);
+        render(journey.getView());
+        status.textContent = 'Comparison changed. Run it to create new evidence.';
+      });
+      document.querySelector('#compare').addEventListener('click', () => {
+        const result = journey.run();
+        if (!result.ok) {
+          panel.hidden = true;
+          status.textContent = `Fixture failed safely: ${result.error}.`;
+          return;
+        }
+        render(result.view);
+        status.textContent = 'Comparison complete. Review both supporting and opposing evidence.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        mode.value = reset.view.mode;
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior result remains.';
+        mode.focus();
+      });
+    }
+  </script>
+</body>
+</html>

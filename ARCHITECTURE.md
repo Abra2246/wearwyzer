@@ -578,6 +578,11 @@ when none qualifies, the answer is `buy-none`.
 preference never enter ranking. The minimized response contains no full profile,
 wardrobe, or private fit data and performs no purchase or other external action.
 
+The Issue #117 fixture journey exposes this contract only behind the exact
+`ww_purchase_simulator=1` query flag on an unlinked, `noindex` page. It makes
+selected, tie, `buy-none`, and excluded-evidence states reviewable without
+introducing a commerce surface.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

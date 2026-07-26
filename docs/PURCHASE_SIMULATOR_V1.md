@@ -38,3 +38,11 @@ commission, measurements, fit notes, prompts, and external actions.
 
 This milestone adds no network, real user data, production storage, account,
 purchase execution, publication, or Chrome permission.
+
+## Fixture review journey
+
+Issue #117 adds an unlinked, `noindex`, exact-flag-gated route that makes four
+states reviewable: a unique selection, an exact tie, an honest `buy-none`, and
+source-evidence exclusion. Changing the fixture case invalidates the prior
+result; reset restores the deterministic default and keyboard focus. The route
+renders no private profile/wardrobe facts and offers no commerce control.
