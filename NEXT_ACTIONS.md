@@ -5,50 +5,35 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** implementation branch
-`claude/issue-168-daily-stylist-web-transport-boundary`, PR #170.
-951/951 deterministic tests (41 new), every repository validator (`validate-content-data.mjs`,
-`qa-static-site.mjs`, `qa-html-metadata.mjs`, `validate-knowledge-graph.mjs`,
-`validate-hero-product-pages.mjs`, `compare-legacy-adapter.mjs`) passed
-locally. PR open for review (not yet merged); full repository,
-deployment, and production evidence remain required before completion. Prior
-baseline: Issue #165 merged via PR #167 after independent scenario, trace,
-privacy, accessibility, and browser review, 910/910 deterministic tests,
-every repository validator, and five GitHub checks passed.
+**Evidence baseline:** Issue #168 merged through PR #170 after independent
+trust review. 951/951 deterministic tests, every repository validator, all
+five PR checks, Pages run `30190114546`, Content pipeline run `30190114462`,
+Ops Live Feed run `30190114495`, Ops Status run `30190114478`, and Deploy
+Health Check run `30190140417` passed. Issue #171 is the next complete,
+dependency-safe, low-risk contract-to-review-journey slice.
 
 ## Queued execution
 
-1. **Issue #168 — Signed-in web transport contract for Daily Stylist**
-   - Status: implemented on branch
-     `claude/issue-168-daily-stylist-web-transport-boundary`; PR #170 open
-     for review (not yet merged).
-   - Scope delivered: `scripts/daily-stylist-web-transport-boundary.mjs`
-     (`runDailyStylistWebTransportBoundary`) validates a closed transport
-     context (method, media type, same-origin result, CSRF result,
-     request-ID evidence) and the accepted request envelope before the
-     service seam ever runs, delegates unchanged to
-     `runDailyStylistServiceSeam` (issue #162), and renames its outcome into
-     one closed client response (`ready`/`review-required`/`abstained` with
-     the unmodified Grounded Stylist response, or seven client-safe stopped
-     categories with no response payload). Includes a production decision
-     packet naming ten still-unresolved production choices.
-   - Evidence: 951/951 deterministic tests (41 new), every repository
-     validator ran clean (pre-existing warnings only, unchanged from
-     baseline).
-   - Boundary: deterministic fixture adapters only. No endpoint, auth/storage
-     provider, cookie, database, production account/session, real private
-     record, network, commerce, Chrome permission, personalized image, or
-     external action is authorized.
+1. **Issue #171 — Fixture signed-in Daily Stylist web transport review journey**
+   - Status: specified and awaiting guarded queue dispatch.
+   - Scope: add one exact-flag-gated, unlinked, `noindex` review journey over
+     the accepted Issue #168 transport boundary. It must make safe completed,
+     stopped, transport-rejected, and service-unavailable responses visible
+     without exposing the service trace, browser-supplied rejected request
+     IDs, sessions, private records, provider details, or an existence oracle.
+   - Boundary: deterministic fixture adapters only. No production endpoint,
+     middleware, provider, account, cookie, database, private record, network,
+     commerce, Chrome permission, personalized image, or external action is
+     authorized.
 
 ## Next executable tasks
 
-1. **Independent review of Issue #168's PR**
-   - Dependency: PR #170 is open from
-     `claude/issue-168-daily-stylist-web-transport-boundary`.
-   - Outcome: confirm the transport/envelope rejection order, the client
-     status mapping (especially the no-existence-oracle property and the
-     absence of trace/session/reason-code leakage), byte stability, and the
-     production decision packet, then merge.
+1. **Implement and independently review Issue #171**
+   - Dependency: merged Issue #168 / PR #170.
+   - Outcome: exercise every accepted web-transport response in a real
+     browser, prove trusted-only request-ID reflection and owned-first
+     insufficient-evidence wording, and merge only after contract, route,
+     accessibility, browser, CI, deployment, and health evidence is green.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
@@ -68,6 +53,14 @@ every repository validator, and five GitHub checks passed.
 
 ## Closed or blocked with evidence
 
+- **Issue #168 / PR #170:** merged after 951 tests, every deterministic
+  validator, five passing GitHub checks, and independent trust review.
+  Rejected requests now echo only a bounded trusted-middleware request ID;
+  invalid browser-provided IDs are never reflected. Insufficient evidence
+  directs the client to review wardrobe evidence instead of implying the
+  user should buy or add clothing. Pages run `30190114546`, Content pipeline
+  run `30190114462`, Ops Live Feed run `30190114495`, Ops Status run
+  `30190114478`, and Deploy Health Check run `30190140417` succeeded.
 - **Issue #165 / PR #167:** merged after 910 tests, every deterministic
   validator, five passing GitHub checks, and browser QA across all thirteen
   scenarios plus the default-off state. First-failure stopping, non-answer
