@@ -629,6 +629,24 @@ cross-product transfer, explicit correction precedence, low confidence,
 staleness, conflict, and unavailable-size outcomes reviewable without
 collecting sensitive input or introducing shopping behavior.
 
+## Decision — brand memory personalizes only after quality and fit (issue #127)
+
+**Problem:** favorite-brand signals can improve relevance, but unqualified
+preference can reinforce inferred behavior, override better products, or become
+a disguised paid-placement mechanism.
+
+**Decision:** Brand Preference and Fit Memory keeps explicit roles, inferred
+signals, corrections, and coarse owned-item fit outcomes distinct. Explicit
+input and strictly versioned corrections outrank inference. Low-confidence and
+duplicate inferred evidence stays out; avoided-plus-positive roles require
+review; avoidance remains exclusionary until explicitly removed.
+
+**Influence boundary:** styling quality, WearWyzer usefulness, editorial
+credibility, and verified fit all precede brand preference. Preference can only
+break an otherwise equal tie. The minimized result excludes browsing and raw
+wear/purchase history, private notes, account data, prices, retailers,
+commercial incentives, popularity, analytics, network, or external action.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
