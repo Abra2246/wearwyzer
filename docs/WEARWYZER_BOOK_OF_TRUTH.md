@@ -851,6 +851,14 @@ references, and owner.
   commerce action. Changing inputs clears the prior result; reset restores
   deterministic defaults and focus. Current pre-PR validation baseline: 654
   tests, every deterministic validator, and browser QA.
+- Issue #119 defines Closet Health as wardrobe utility, not wardrobe size.
+  Role balance, versatility, redundancy health, and explicit wear utilization
+  are independently visible; missing lifecycle evidence lowers confidence
+  instead of quality. Findings name their supporting owned references, and
+  actions prioritize repair, rediscovery, styling, rotation, and correction.
+  The score cannot recommend buying by default or use affiliate incentives.
+  Current pre-PR validation baseline: 664 tests plus every deterministic
+  repository validator.
 
 ## Final north-star statement
 

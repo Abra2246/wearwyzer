@@ -583,6 +583,22 @@ The Issue #117 fixture journey exposes this contract only behind the exact
 selected, tie, `buy-none`, and excluded-evidence states reviewable without
 introducing a commerce surface.
 
+## Decision — closet health separates quality from evidence confidence (issue #119)
+
+**Problem:** incomplete wear history can look like a weak closet if missing data
+is silently scored as zero. That would produce manipulative purchase advice.
+
+**Decision:** Closet Health scores confirmed role balance, versatility,
+redundancy health, and explicit wear utilization with versioned weights.
+Unavailable components are excluded from the weighted score and lower evidence
+confidence instead. Every redundancy, neglected-item, repair, and gap finding
+names its supporting owned-item or canonical-role evidence.
+
+**Behavior boundary:** prioritized actions repair, rediscover, style, rotate,
+review, or correct owned evidence. There is no default buy action, and no
+affiliate, commission, price, private note, exact date, or raw lifecycle ledger
+enters the minimized result.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
