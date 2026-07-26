@@ -5,34 +5,23 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** Issue #159 merged via PR #161 after independent
-versioning and opaque-reference review, 874/874 deterministic tests, every
-repository validator, and five passing GitHub checks. Pages run `30188393049`,
-Content pipeline run `30188393057`, Ops Live Feed run `30188393041`, Ops
-Status run `30188393063`, and Deploy Health Check run `30188419441` succeeded.
-The queue-dispatched Claude run `30188120561` created branch
-`claude/issue-159-daily-stylist-production-boundary` and PR #161 in eight
-minutes, providing a second consecutive successful autonomous handoff.
+**Evidence baseline:** Issue #162 merged via PR #164 after independent
+authorization, failure-attribution, and private-data-minimization review,
+894/894 deterministic tests, every repository validator, and five passing
+GitHub checks. Pages run `30189033020`, Content pipeline run `30189033011`,
+Ops Live Feed run `30189033008`, Ops Status run `30189033024`, and Deploy
+Health Check run `30189056455` succeeded. The queue-dispatched Claude run
+`30188478757` created branch `claude/issue-162-daily-stylist-service-seam`
+and PR #164 in fifteen minutes, providing a third consecutive successful
+autonomous handoff.
 
 ## Queued execution
 
-1. **Issue #162 — Fixture authenticated Daily Stylist service seam**
-   - Status: implemented on branch `claude/issue-162-daily-stylist-service-seam`;
-     PR #164 open for review (not yet merged).
-   - Scope delivered: `scripts/daily-stylist-service-seam.mjs`
-     (`runDailyStylistServiceSeam`) composes the accepted request boundary,
-     private access security policy, fixture private profile/wardrobe
-     service, Daily Outfit Intent contract, and Grounded Stylist adapter in
-     the fixed eight-step order with first-failure stopping and a minimized
-     `{ step, outcome, reasonCode }` trace. `docs/DAILY_STYLIST_SERVICE_SEAM_V1.md`
-     documents adapter responsibilities, data ownership, failure propagation,
-     revocation timing, stale-snapshot behavior, client trust boundaries, and
-     the later production gates.
-   - Evidence: 894/894 deterministic tests (20 new), and
-     `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
-     `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
-     `compare-legacy-adapter.mjs` all ran clean (all reported warnings
-     pre-existing and unchanged from the prior baseline).
+1. **Issue #165 — Fixture Daily Stylist service-seam review journey**
+   - Status: ready for autonomous implementation.
+   - Outcome: make authenticated success, each trust failure, unknown or
+     contradictory context, exact ties, and insufficiency reviewable behind
+     one default-off, noindex, unlinked route.
    - Boundary: deterministic fixture adapters only. No endpoint, auth/storage
      provider, database, production account/session, real private record,
      network, commerce, Chrome permission, personalized image, or external
@@ -40,26 +29,22 @@ minutes, providing a second consecutive successful autonomous handoff.
 
 ## Next executable tasks
 
-1. **Review and merge PR #164 (Issue #162)**
-   - Outcome: independent review of the composed resolution order and
-     fail-closed step attribution before it becomes the basis for any real
-     server work.
-2. **Build a fixture service-seam review journey**
-   - Dependency: merged Issue #162.
+1. **Implement Issue #165 — fixture service-seam review journey**
+   - Dependency: satisfied by merged Issue #162.
    - Outcome: make success, each trust failure, and non-answer preservation
      reviewable behind a default-off, unlinked route without adding collection,
      persistence, providers, or actions.
-3. **Founder decision: authorize or defer one live provider experiment**
+2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
    - Outcome if approved: one bounded, non-production synthetic comparison;
      otherwise remain offline with no loss of production functionality.
-4. **Establish the first verifiable affiliate merchant path**
+3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-5. **Reconcile and import remaining style-guide sources when real files exist**
+4. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -68,6 +53,14 @@ minutes, providing a second consecutive successful autonomous handoff.
 
 ## Closed or blocked with evidence
 
+- **Issue #162 / PR #164:** merged after 894 tests, every deterministic
+  validator, five passing GitHub checks, and independent review. The seam now
+  requires both same-account ownership and `personalization:evaluate` scope,
+  attributes an unresolved wardrobe snapshot to the correct step, and derives
+  only closed synthetic fixture candidates without reading private wardrobe
+  contents or item count. Pages run `30189033020`, Content pipeline run
+  `30189033011`, Ops Live Feed run `30189033008`, Ops Status run
+  `30189033024`, and Deploy Health Check run `30189056455` succeeded.
 - **Issue #159 / PR #161:** merged after 874 tests, every deterministic
   validator, five passing GitHub checks, and independent schema review. The
   request now requires its exact version and bounded opaque IDs/references;
