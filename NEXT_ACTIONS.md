@@ -5,22 +5,38 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** Issue #168 merged through PR #170 after independent
-trust review. 951/951 deterministic tests, every repository validator, all
-five PR checks, Pages run `30190114546`, Content pipeline run `30190114462`,
-Ops Live Feed run `30190114495`, Ops Status run `30190114478`, and Deploy
-Health Check run `30190140417` passed. Issue #171 is the next complete,
-dependency-safe, low-risk contract-to-review-journey slice.
+**Evidence baseline:** implementation branch
+`claude/issue-171-daily-stylist-web-transport-fixture-journey`. 979/979
+deterministic tests (28 new), every repository validator
+(`validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
+`validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`,
+`compare-legacy-adapter.mjs`), and Playwright browser QA across all twenty
+scenarios plus the default-off state, at both a desktop and a 360px
+viewport, passed locally. PR pending open for review (not yet merged); full
+repository, deployment, and production evidence remain required before
+completion.
 
 ## Queued execution
 
 1. **Issue #171 — Fixture signed-in Daily Stylist web transport review journey**
-   - Status: specified and awaiting guarded queue dispatch.
-   - Scope: add one exact-flag-gated, unlinked, `noindex` review journey over
-     the accepted Issue #168 transport boundary. It must make safe completed,
-     stopped, transport-rejected, and service-unavailable responses visible
-     without exposing the service trace, browser-supplied rejected request
-     IDs, sessions, private records, provider details, or an existence oracle.
+   - Status: implemented on branch
+     `claude/issue-171-daily-stylist-web-transport-fixture-journey`; PR
+     pending open for review (not yet merged).
+   - Scope delivered: `daily-stylist-web-transport-fixture.dc.html`
+     (`ww_daily_stylist_web_transport=1`) composes
+     `scripts/daily-stylist-web-transport-fixture-journey.mjs`
+     (`createDailyStylistWebTransportFixtureJourney`) over the accepted
+     `runDailyStylistWebTransportBoundary` (issue #168) across twenty
+     closed scenarios covering ready/review-required/abstained outcomes, an
+     exact tie, every transport-level rejection, every seam-level stop, and
+     an unsupported internal fixture mode, rendering only the boundary's
+     own closed client response plus a fixed transport-check summary.
+   - Evidence: 979/979 deterministic tests (28 new), every repository
+     validator ran clean (pre-existing warnings/diffs only, unchanged from
+     baseline), and Playwright browser QA confirmed a clean console at
+     desktop and 360px viewports, correct status/requestId/nextStep
+     rendering for every scenario, no response payload for rejected/stopped
+     scenarios, reset/focus behavior, no overflow, and 44px controls.
    - Boundary: deterministic fixture adapters only. No production endpoint,
      middleware, provider, account, cookie, database, private record, network,
      commerce, Chrome permission, personalized image, or external action is
@@ -28,12 +44,11 @@ dependency-safe, low-risk contract-to-review-journey slice.
 
 ## Next executable tasks
 
-1. **Implement and independently review Issue #171**
-   - Dependency: merged Issue #168 / PR #170.
-   - Outcome: exercise every accepted web-transport response in a real
-     browser, prove trusted-only request-ID reflection and owned-first
-     insufficient-evidence wording, and merge only after contract, route,
-     accessibility, browser, CI, deployment, and health evidence is green.
+1. **Review and merge PR for Issue #171**
+   - Outcome: independent review of scenario coverage, transport-check
+     summary safety, request-ID non-reflection, and privacy exclusions
+     before it becomes the reviewable proof of the Issue #168 web transport
+     boundary.
 2. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.

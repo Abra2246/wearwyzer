@@ -186,6 +186,50 @@ selected implicitly by this fixture, and none may be inferred from it:
 A future implementation boundary must choose each of these explicitly and in
 writing before any real endpoint, session, or private record is created.
 
+## Fixture review journey
+
+The unlinked, `noindex` route
+`daily-stylist-web-transport-fixture.dc.html?ww_daily_stylist_web_transport=1`
+(`scripts/daily-stylist-web-transport-fixture-journey.mjs`,
+`createDailyStylistWebTransportFixtureJourney`) makes this boundary's closed
+client responses reviewable without adding a second policy layer. It covers
+all twenty closed scenarios:
+
+- ready;
+- review-required from an unknown context;
+- abstained from a conflicting context;
+- an exact selection-boundary tie;
+- a non-`POST` method, a non-JSON media type, an unverified same-origin
+  result, and a failed CSRF result (all rejected before the service seam
+  runs);
+- a request-ID mismatch and an invalid browser-supplied request ID (both
+  rejected before the service seam runs);
+- missing and expired sessions;
+- a missing personalization scope and cross-account access;
+- revoked consent;
+- an unresolved profile reference;
+- an unresolved and a stale wardrobe snapshot;
+- insufficient fixture candidates; and
+- an unsupported internal fixture mode.
+
+Each scenario supplies its own synthetic transport-context/request-body/
+session/private-service fixture input directly to
+`runDailyStylistWebTransportBoundary` — the journey never re-derives any
+composed contract's policy. The page renders only the boundary's own closed
+client response (`status`, `requestId`, `nextStep`, and — for a completed
+outcome — the unmodified Grounded Stylist response) plus a fixed,
+non-sensitive transport-check summary derived from the scenario's own
+transport-context input. It never renders the seam's step trace, a session,
+raw private data, an internal reason code, provider details, or a
+browser-supplied rejected request ID; a rejected mismatch echoes only the
+trusted middleware request ID. Changing the scenario clears the previous
+result, and reset restores the `ready` default and keyboard focus.
+
+Without the exact query flag the fixture controls remain hidden. The route
+is not linked from any other site page or `sitemap.xml`, and contains no
+network/provider call, live/private input, persistence, analytics,
+commerce, or external action.
+
 ## Production gates
 
 No route, endpoint, provider, database, account, session, cookie, real user
@@ -194,7 +238,7 @@ image, commerce action, or external action is authorized by this boundary.
 
 ## Next implementation boundary
 
-After this contract is reviewed:
+After this contract and its review journey are reviewed:
 
 1. choose the production authentication and session/cookie architecture from
    the decision packet above;

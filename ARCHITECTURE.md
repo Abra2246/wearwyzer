@@ -1128,6 +1128,67 @@ provider, account, database, session, cookie, real user record, network
 call, Chrome permission, personalized image, commerce action, or external
 action is created.
 
+## Decision — a fixture signed-in Daily Stylist web transport review journey (issue #171)
+
+**Problem:** issue #168 proved the signed-in web transport boundary rejects
+every transport- and envelope-level defect and renames the delegated seam's
+outcome into one closed client response, but nothing let a person actually
+see a `ready`/`review-required`/`abstained` answer, every transport-level
+rejection, every seam-level stop, and the exact tie happen in a browser — or
+confirm that a rejected request never reflects an untrusted browser-supplied
+request ID and that a stopped response really does carry no response
+payload.
+
+**Decision:** the default-off fixture route
+`daily-stylist-web-transport-fixture.dc.html?ww_daily_stylist_web_transport=1`
+composes `scripts/daily-stylist-web-transport-fixture-journey.mjs`
+(`createDailyStylistWebTransportFixtureJourney`) over the accepted
+`runDailyStylistWebTransportBoundary` (issue #168) across twenty closed,
+selectable scenarios: ready; review-required from an unknown context;
+abstained from a conflicting context; an exact selection-boundary tie; a
+non-`POST` method, a non-JSON media type, an unverified same-origin result,
+and a failed CSRF result (all rejected pre-seam); a request-ID mismatch and
+an invalid browser-supplied request ID (both rejected pre-seam); missing and
+expired sessions; a missing personalization scope and cross-account access;
+revoked consent; an unresolved profile reference; an unresolved and a stale
+wardrobe snapshot; insufficient fixture candidates; and an unsupported
+internal fixture mode. Each scenario supplies its own synthetic transport
+context / request body / session / private-service fixture input — the
+journey never re-derives any composed contract's transport, authentication,
+authorization, consent, freshness, ranking, tie, or abstention policy, only
+which closed input to hand the already-accepted boundary. The page renders
+only the boundary's own closed client response (`status`, `requestId`,
+`nextStep`, and — for a completed outcome — the unmodified Grounded Stylist
+response) plus a fixed, non-sensitive transport-check summary derived from
+the selected scenario's own closed transport-context input (method, media
+type, same-origin result, CSRF result, whether the request ID matches the
+body). It never renders the seam's step trace, a session, raw private data,
+an internal reason code, provider details, or a browser-supplied rejected
+request ID. Changing the scenario invalidates the prior result; reset
+restores the `ready` default, clears the result, and returns keyboard focus
+to the scenario control.
+
+**Boundary:** the page does not rerank, break a tie, fill missing context,
+rewrite uncertainty, or bypass authentication, authorization, consent,
+reference resolution, or freshness checks — every one of those decisions
+still comes from the already-accepted boundary and the seam it delegates to
+unchanged. It is unlinked, `noindex`, fixture-only, and absent from
+`sitemap.xml` and every other page's navigation. It accesses no live
+session, account, provider, real profile, or real closet, and performs no
+persistence, network call, tracking, commerce, Chrome permission,
+personalized image, or external action.
+`scripts/__tests__/daily-stylist-web-transport-fixture-journey.test.mjs`
+proves every scenario's exact client status, that transport-level and
+seam-level rejections carry no response payload, that a rejected mismatch
+echoes only the trusted middleware request ID, that an invalid
+browser-supplied request ID is never reflected, that insufficient evidence
+directs the client to review wardrobe evidence rather than implying a
+purchase, byte-stable output for both completed and stopped outcomes,
+scenario-change/reset invalidation, the default-off/exact-flag/`noindex`/
+unlinked/absent-from-sitemap route contract, and that no session, raw
+profile, wardrobe payload, consent record, internal trace/reason code, or
+commercial/external-action field ever appears in the journey's output.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

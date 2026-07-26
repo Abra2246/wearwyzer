@@ -2,6 +2,63 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Fixture signed-in Daily Stylist web transport review journey (issue #171)
+### Added
+- An unlinked, `noindex`, exact-flag-gated (`ww_daily_stylist_web_transport=1`)
+  review route, `daily-stylist-web-transport-fixture.dc.html`, that composes
+  `scripts/daily-stylist-web-transport-fixture-journey.mjs`
+  (`createDailyStylistWebTransportFixtureJourney`) over the accepted
+  `runDailyStylistWebTransportBoundary` (issue #168) across twenty closed,
+  selectable scenarios: ready; review-required from an unknown context;
+  abstained from a conflicting context; an exact selection-boundary tie; a
+  non-`POST` method, a non-JSON media type, an unverified same-origin
+  result, and a failed CSRF result; a request-ID mismatch and an invalid
+  browser-supplied request ID; missing and expired sessions; a missing
+  personalization scope and cross-account access; revoked consent; an
+  unresolved profile reference; an unresolved and a stale wardrobe
+  snapshot; insufficient fixture candidates; and an unsupported internal
+  fixture mode.
+- A fixed, non-sensitive transport-check summary (method, media type,
+  same-origin result, CSRF result, whether the request ID matches the body)
+  derived from each scenario's own closed transport-context input, rendered
+  alongside the boundary's own closed client response (`status`,
+  `requestId`, `nextStep`, and — for a completed outcome — the unmodified
+  Grounded Stylist response).
+### Safety
+- Every scenario supplies its own synthetic transport-context/request-body/
+  session/private-service fixture input directly to the already-accepted
+  boundary; the journey never re-derives any composed contract's transport,
+  authentication, authorization, consent, freshness, ranking, tie, or
+  abstention policy, and never fills missing context or rewrites
+  uncertainty.
+- The page never renders the seam's step trace, a session, raw private
+  data, an internal reason code, provider details, or a browser-supplied
+  rejected request ID; a rejected mismatch echoes only the trusted
+  middleware request ID.
+- Changing the scenario invalidates the prior result; reset restores the
+  `ready` default, clears the result, and returns keyboard focus to the
+  scenario control.
+- The route is default-off behind the exact query flag, `noindex`, and
+  absent from `sitemap.xml` and every other page's navigation. It accesses
+  no live session, account, provider, real profile, or real closet, and
+  performs no persistence, network call, tracking, commerce, Chrome
+  permission, personalized image, or external action.
+### Validation
+- 979/979 deterministic repository tests passed (28 new).
+- `validate-content-data.mjs`, `qa-static-site.mjs`, `qa-html-metadata.mjs`,
+  `validate-knowledge-graph.mjs`, `validate-hero-product-pages.mjs`, and
+  `compare-legacy-adapter.mjs` all ran clean against this change (all
+  reported warnings/diffs are pre-existing, unrelated to this journey, and
+  unchanged from the prior baseline — this change touches no product/guide
+  content data).
+- Playwright browser QA across all twenty scenarios plus the default-off
+  state, at both a desktop viewport and a 360px viewport, confirmed: a
+  clean console; the correct closed client status, request ID, and next
+  step for every scenario; no response payload for any rejected or stopped
+  scenario; reset behavior (default scenario restored, result cleared,
+  focus returned to the scenario control); no horizontal overflow; and
+  every interactive control at least 44px tall.
+
 ## Unreleased (2026-07-26) — Signed-in web transport boundary for Daily Stylist (issue #168)
 ### Added
 - `scripts/daily-stylist-web-transport-boundary.mjs`

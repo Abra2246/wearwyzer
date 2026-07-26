@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Daily Stylist Web Transport Fixture — WearWyzer</title>
+  <link rel="icon" href="assets/favicon.png">
+  <style>
+    :root { color-scheme:light; --ink:#0b0b0b; --paper:#f6f1e8; --card:#fffdf8; --line:#d9cfbf; --gold:#c8941e; --green:#276b3d; --red:#a52b24; --muted:#68645d; }
+    * { box-sizing:border-box; }
+    html,body { max-width:100%; overflow-x:hidden; }
+    body { margin:0; background:var(--paper); color:var(--ink); font-family:ui-sans-serif,system-ui,-apple-system,"Helvetica Neue",Arial,sans-serif; }
+    header { background:var(--ink); color:var(--paper); padding:26px 18px; }
+    header div,main { width:100%; max-width:1040px; margin:0 auto; }
+    h1 { margin:0; font-size:clamp(30px,6vw,56px); line-height:.95; text-transform:uppercase; }
+    header p { color:#b7b0a2; }
+    main { padding:24px 16px 72px; }
+    .panel { margin-bottom:16px; padding:18px; border:1px solid var(--line); background:var(--card); overflow-wrap:anywhere; }
+    .notice { border-left:5px solid var(--gold); }
+    label { display:block; margin-top:10px; font-weight:700; }
+    label:first-of-type { margin-top:0; }
+    select,button,a.button { min-height:44px; font:inherit; }
+    select { width:100%; padding:10px; border:1px solid var(--line); background:white; }
+    button,a.button { border:1px solid var(--ink); background:var(--ink); color:white; padding:10px 14px; font-weight:800; cursor:pointer; text-decoration:none; }
+    button.secondary { background:transparent; color:var(--ink); }
+    button:focus-visible,a:focus-visible,select:focus-visible { outline:3px solid var(--gold); outline-offset:3px; }
+    .actions { display:flex; flex-wrap:wrap; gap:8px; margin-top:14px; }
+    .badge { display:inline-block; padding:4px 9px; background:#eee5d7; font-size:11px; font-weight:900; text-transform:uppercase; }
+    .good { color:var(--green); background:#e4f1e8; }
+    .warn { color:var(--red); background:#f6e6e3; }
+    .grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .detail,.evidence { padding:14px; border:1px solid var(--line); background:#fbf7ef; overflow-wrap:anywhere; }
+    .meta { color:var(--muted); font-size:13px; }
+    ol,ul { padding-left:22px; }
+    [hidden] { display:none !important; }
+    @media (max-width:680px) {
+      .grid { grid-template-columns:1fr; }
+      .actions > * { flex:1 1 100%; text-align:center; }
+    }
+  </style>
+</head>
+<body>
+  <header><div><h1>Daily Stylist web transport review</h1><p>Every closed client status this transport boundary can return, in one place.</p></div></header>
+  <main>
+    <section id="disabled" class="panel notice">
+      <h2>Fixture is off</h2>
+      <p>This synthetic route cannot read a live account, session, profile, closet, or provider and cannot store, track, publish, message, or act externally.</p>
+      <a class="button" href="?ww_daily_stylist_web_transport=1">Open the web transport review</a>
+    </section>
+    <section id="enabled" hidden>
+      <section class="panel notice"><strong>Trust boundary:</strong> every scenario below is a
+        closed, synthetic transport-context/session/request/private-service fixture — never a
+        real account or a real network request. The boundary composes the accepted signed-in web
+        transport contract and delegates unchanged to the accepted service seam. This page never
+        reranks, breaks a tie, fills missing context, rewrites uncertainty, or bypasses
+        authentication, authorization, consent, reference resolution, or freshness checks — it
+        only renders their exact closed client response.</section>
+      <section class="panel">
+        <h2>Choose a review scenario</h2>
+        <label for="scenario">Web transport scenario</label>
+        <select id="scenario">
+          <option value="ready">Ready</option>
+          <option value="review-required-unknown-context">Review-required: unknown context</option>
+          <option value="abstained-conflicting-context">Abstained: conflicting context</option>
+          <option value="exact-tie">Review-required: exact selection tie</option>
+          <option value="non-post">Rejected: non-POST method</option>
+          <option value="non-json">Rejected: non-JSON media type</option>
+          <option value="unverified-same-origin">Rejected: unverified same-origin</option>
+          <option value="failed-csrf">Rejected: failed CSRF</option>
+          <option value="request-id-mismatch">Rejected: request-ID mismatch</option>
+          <option value="invalid-request-id">Rejected: invalid browser request ID</option>
+          <option value="missing-session">Unauthenticated: missing session</option>
+          <option value="expired-session">Unauthenticated: expired session</option>
+          <option value="missing-scope">Unauthorized: missing scope</option>
+          <option value="cross-account-access">Unauthorized: cross-account access</option>
+          <option value="revoked-consent">Consent required: revoked consent</option>
+          <option value="unresolved-profile">Unresolved context: unknown profile</option>
+          <option value="unresolved-snapshot">Stale snapshot: unresolved reference</option>
+          <option value="stale-snapshot">Stale snapshot: aged reference</option>
+          <option value="insufficient-evidence">Insufficient candidates</option>
+          <option value="service-unavailable">Service unavailable</option>
+        </select>
+        <p id="scenario-summary" class="meta"></p>
+        <div class="actions">
+          <button id="run" type="button">Run transport boundary</button>
+          <button id="reset" class="secondary" type="button">Reset fixture</button>
+        </div>
+        <p id="status" role="status" aria-live="polite">Ready. No live session, account, profile, closet, provider, network, tracking, or commerce action will run.</p>
+      </section>
+      <section class="panel">
+        <h2>Transport-check summary</h2>
+        <p class="meta">A fixed, non-sensitive summary of this scenario's own closed transport context. It never reflects a raw request ID.</p>
+        <div id="transport-summary" class="grid"></div>
+      </section>
+      <section id="result" class="panel" hidden>
+        <p><span id="response-status" class="badge"></span></p>
+        <p class="meta">Request ID: <span id="response-request-id"></span> · Next step: <span id="response-next-step"></span></p>
+        <div id="response-body" hidden>
+          <h2 id="response-title"></h2>
+          <p id="response-summary"></p>
+          <div class="grid">
+            <article class="detail"><strong>Selected outfits</strong><ul id="selected"></ul></article>
+            <article class="detail"><strong>Tied outfits</strong><ul id="tied"></ul></article>
+            <article class="detail"><strong>Qualified outfits</strong><ul id="qualified"></ul></article>
+            <article class="detail"><strong>Reason codes</strong><ul id="reason-codes"></ul></article>
+            <article class="detail"><strong>Uncertainty</strong><div id="uncertainty"></div></article>
+          </div>
+          <h3>Citations</h3>
+          <div id="citations" class="grid"></div>
+          <h3>Limitations</h3>
+          <ul id="limitations"></ul>
+          <h3>Safety policy</h3>
+          <div id="policy" class="grid"></div>
+        </div>
+        <p id="no-response-notice" class="meta" hidden>No response payload for this client status. No later step ever executed, so no answer, candidate, or evidence exists for this scenario.</p>
+      </section>
+      <p class="meta"><strong>External actions:</strong> unavailable. This fixture cannot
+        access a live session, account, provider, real profile, or real closet, persist data,
+        track, redirect, buy, publish, message, or change an account.</p>
+    </section>
+  </main>
+  <script type="module">
+    import { createDailyStylistWebTransportFixtureJourney } from './scripts/daily-stylist-web-transport-fixture-journey.mjs';
+
+    const enabled = new URLSearchParams(location.search)
+      .get('ww_daily_stylist_web_transport') === '1';
+    document.querySelector('#disabled').hidden = enabled;
+    document.querySelector('#enabled').hidden = !enabled;
+
+    if (enabled) {
+      const journey = createDailyStylistWebTransportFixtureJourney();
+      const scenario = document.querySelector('#scenario');
+      const resultPanel = document.querySelector('#result');
+      const responseBody = document.querySelector('#response-body');
+      const noResponseNotice = document.querySelector('#no-response-notice');
+      const status = document.querySelector('#status');
+
+      function listItems(values) {
+        return (values?.length ? values : ['None']).map((value) => {
+          const item = document.createElement('li');
+          item.textContent = value;
+          return item;
+        });
+      }
+
+      function detail(label, value) {
+        const card = document.createElement('article');
+        card.className = 'detail';
+        const heading = document.createElement('strong');
+        heading.textContent = label;
+        const copy = document.createElement('p');
+        copy.className = 'meta';
+        copy.textContent = String(value);
+        card.append(heading, copy);
+        return card;
+      }
+
+      function citationCard(citation) {
+        return detail(
+          citation.citationId,
+          `${citation.type} · ${citation.schemaVersion} · ${citation.state}`,
+        );
+      }
+
+      function renderTransportSummary(summary) {
+        document.querySelector('#transport-summary').replaceChildren(
+          detail('Method', summary.method),
+          detail('Media type', summary.mediaType),
+          detail('Same-origin verified', summary.sameOriginVerified),
+          detail('CSRF verified', summary.csrfVerified),
+          detail('Request ID matches body', summary.requestIdMatchesBody),
+        );
+      }
+
+      function render(view) {
+        document.querySelector('#scenario-summary').textContent = view.scenarioSummary;
+        renderTransportSummary(view.transportCheckSummary);
+        const result = view.result;
+        resultPanel.hidden = !result;
+        if (!result) return;
+        const badge = document.querySelector('#response-status');
+        badge.textContent = result.status;
+        badge.className = `badge ${['ready', 'review-required', 'abstained'].includes(result.status) ? 'good' : 'warn'}`;
+        document.querySelector('#response-request-id').textContent = result.requestId ?? 'none (not reflected)';
+        document.querySelector('#response-next-step').textContent = result.nextStep;
+        const response = result.response;
+        responseBody.hidden = !response;
+        noResponseNotice.hidden = !!response;
+        if (!response) return;
+        document.querySelector('#response-title').textContent = response.title;
+        document.querySelector('#response-summary').textContent = response.summary;
+        document.querySelector('#selected').replaceChildren(...listItems(response.selectedOutfitIds));
+        document.querySelector('#tied').replaceChildren(...listItems(response.tiedOutfitIds));
+        document.querySelector('#qualified').replaceChildren(...listItems(response.qualifiedOutfitIds));
+        document.querySelector('#reason-codes').replaceChildren(...listItems(response.reasonCodes));
+        document.querySelector('#uncertainty').replaceChildren(
+          detail('Level', response.uncertainty.level),
+          detail('Value', response.uncertainty.value),
+          detail('Reason codes', response.uncertainty.reasonCodes.join(', ')),
+        );
+        document.querySelector('#citations').replaceChildren(
+          ...response.citations.map(citationCard),
+        );
+        document.querySelector('#limitations').replaceChildren(
+          ...listItems(response.limitations),
+        );
+        document.querySelector('#policy').replaceChildren(
+          ...Object.entries(response.policy).map(([key, value]) => detail(key, value)),
+        );
+      }
+
+      render(journey.getView());
+      scenario.addEventListener('change', () => {
+        journey.selectScenario(scenario.value);
+        render(journey.getView());
+        status.textContent = 'Scenario changed. Prior result cleared. Run again for a current response.';
+      });
+      document.querySelector('#run').addEventListener('click', () => {
+        const outcome = journey.run();
+        if (!outcome.ok) {
+          resultPanel.hidden = true;
+          status.textContent = `Fixture failed safely: ${outcome.error}.`;
+          return;
+        }
+        render(outcome.view);
+        status.textContent = 'Review complete. Client status, request ID, and next step are visible.';
+      });
+      document.querySelector('#reset').addEventListener('click', () => {
+        const reset = journey.reset();
+        scenario.value = reset.view.scenario;
+        render(reset.view);
+        status.textContent = 'Fixture reset. No prior result remains.';
+        scenario.focus();
+      });
+    }
+  </script>
+</body>
+</html>

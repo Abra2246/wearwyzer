@@ -1104,6 +1104,28 @@ references, and owner.
   endpoint, authentication provider, account, database, session, cookie,
   real user record, or external action exists. Current pre-PR validation
   baseline: 951 tests.
+- Issue #171 makes the Issue #168 signed-in web transport boundary
+  reviewable as a default-off, exact-flag-gated, `noindex`, unlinked fixture
+  journey. Twenty closed scenarios — ready, review-required from an unknown
+  context, abstained from a conflicting context, an exact selection-boundary
+  tie, a non-`POST` method, a non-JSON media type, an unverified
+  same-origin result, a failed CSRF result, a request-ID mismatch, an
+  invalid browser-supplied request ID, missing/expired sessions, missing
+  scope, cross-account access, revoked consent, an unresolved profile, an
+  unresolved and a stale wardrobe snapshot, insufficient candidates, and an
+  unsupported internal fixture mode — each supply their own synthetic
+  transport-context/request/session/private-service input directly to the
+  accepted boundary. The page renders only the boundary's own closed client
+  response plus a fixed, non-sensitive transport-check summary derived from
+  the scenario's own transport-context input; it never renders the seam's
+  step trace, a session, raw private data, an internal reason code,
+  provider details, or a browser-supplied rejected request ID — a rejected
+  mismatch echoes only the trusted middleware request ID. Scenario changes
+  clear the prior result; reset restores the deterministic default and
+  keyboard focus. No route, endpoint, account, session, database, provider,
+  real private record, network call, persistence, commerce, or external
+  action exists, and the route is absent from `sitemap.xml` and every other
+  page's navigation. Current pre-PR validation baseline: 979 tests.
 
 ## Final north-star statement
 
