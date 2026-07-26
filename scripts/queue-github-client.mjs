@@ -195,6 +195,26 @@ export class GitHubClient {
   }
 
   /**
+   * Best-effort workflow history used by the handoff watchdog before an
+   * implementation branch exists. Queue dispatch permits only one active
+   * implementation issue, and the caller additionally filters runs to those
+   * created after that issue's durable dispatch comment.
+   */
+  async listWorkflowRunsForWorkflow(workflowFileName) {
+    try {
+      const data = await this.request(
+        'GET',
+        `/repos/${this.owner}/${this.repo}/actions/workflows/${encodeURIComponent(
+          workflowFileName
+        )}/runs?event=workflow_dispatch&per_page=20`
+      );
+      return data.workflow_runs || [];
+    } catch {
+      return [];
+    }
+  }
+
+  /**
    * "Required" here means every discoverable commit status + check-run has
    * succeeded — this repo has no admin-level access to the branch
    * protection API's explicit required-checks list, so this is a

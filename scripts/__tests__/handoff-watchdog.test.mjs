@@ -22,6 +22,7 @@ class FakeClient {
     compareFiles = [],
     prFiles = [],
     issues = [],
+    workflowRuns = [],
   } = {}) {
     this.branchRefs = branchRefs;
     this.branchCommitDates = branchCommitDates;
@@ -30,6 +31,7 @@ class FakeClient {
     this.compareFiles = compareFiles;
     this.prFiles = prFiles;
     this.issues = issues;
+    this.workflowRuns = workflowRuns;
     this.calls = [];
   }
   listOpenIssuesWithLabel(label) {
@@ -55,6 +57,9 @@ class FakeClient {
   }
   listWorkflowRunsForBranch() {
     return Promise.resolve([]);
+  }
+  listWorkflowRunsForWorkflow() {
+    return Promise.resolve(this.workflowRuns);
   }
   createPullRequest(opts) {
     this.calls.push(['createPullRequest', opts]);
@@ -189,6 +194,50 @@ test('pending: branch still within the grace period performs no mutation', async
   assert.equal(result.type, 'pending');
   assert.equal(client.calls.length, 0);
   assert.equal(result.events[0].type, 'handoff-pending');
+});
+
+test('Issue #89 regression: active workflow with no branch performs no mutation', async () => {
+  const issue = makeIssue({ number: 89, labels: AUTOMATION_MANAGED_LABELS, body: '' });
+  const dispatchAt = minutesAgoIso(5);
+  const client = new FakeClient({
+    branchRefs: [],
+    comments: [{
+      body: '**Automation dispatch record**',
+      created_at: dispatchAt,
+    }],
+    workflowRuns: [{
+      id: 30180672688,
+      event: 'workflow_dispatch',
+      status: 'in_progress',
+      conclusion: null,
+      created_at: minutesAgoIso(4),
+    }],
+  });
+
+  const result = await evaluateIssue(client, issue, { nowIso: NOW });
+
+  assert.equal(result.type, 'pending');
+  assert.equal(client.calls.length, 0);
+  assert.equal(result.events[0].type, 'handoff-pending');
+  assert.match(result.reason, /implementation workflow run 30180672688 is in_progress/);
+});
+
+test('fresh dispatch gets startup grace if Actions history is temporarily unavailable', async () => {
+  const issue = makeIssue({ number: 90, labels: AUTOMATION_MANAGED_LABELS, body: '' });
+  const client = new FakeClient({
+    branchRefs: [],
+    comments: [{
+      body: '**Automation dispatch record**',
+      created_at: minutesAgoIso(2),
+    }],
+    workflowRuns: [],
+  });
+
+  const result = await evaluateIssue(client, issue, { nowIso: NOW });
+
+  assert.equal(result.type, 'pending');
+  assert.equal(client.calls.length, 0);
+  assert.match(result.reason, /startup grace period/);
 });
 
 test('idempotency: a second pass after both markers are posted performs no further mutation', async () => {

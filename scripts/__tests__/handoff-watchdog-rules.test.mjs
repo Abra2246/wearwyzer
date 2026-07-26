@@ -9,6 +9,8 @@ import {
   hasMarker,
   MARKERS,
   GRACE_PERIOD_MINUTES,
+  latestDispatchStartedAtIso,
+  selectImplementationRun,
 } from '../handoff-watchdog-rules.mjs';
 import { makeIssue } from './fixtures.mjs';
 
@@ -232,4 +234,93 @@ test('hasMarker is a simple substring scan over comment bodies', () => {
   assert.equal(hasMarker([{ body: 'hello' }, { body: `x ${MARKERS.draftPrOpened} y` }], MARKERS.draftPrOpened), true);
   assert.equal(hasMarker([{ body: 'hello' }], MARKERS.draftPrOpened), false);
   assert.equal(hasMarker([], MARKERS.draftPrOpened), false);
+});
+
+test('latestDispatchStartedAtIso selects the newest durable queue dispatch comment', () => {
+  assert.equal(
+    latestDispatchStartedAtIso([
+      { body: '**Automation dispatch record**', created_at: minutesAgoIso(10) },
+      { body: 'ordinary comment', created_at: minutesAgoIso(1) },
+      { body: '**Automation dispatch record**', created_at: minutesAgoIso(5) },
+    ]),
+    minutesAgoIso(5)
+  );
+});
+
+test('selectImplementationRun ignores older workflow runs from prior issues', () => {
+  const selected = selectImplementationRun(
+    [
+      { id: 1, event: 'workflow_dispatch', status: 'completed', created_at: minutesAgoIso(30) },
+      { id: 2, event: 'workflow_dispatch', status: 'in_progress', created_at: minutesAgoIso(4) },
+      { id: 3, event: 'issues', status: 'completed', created_at: minutesAgoIso(2) },
+    ],
+    minutesAgoIso(5)
+  );
+  assert.equal(selected.id, 2);
+});
+
+test('Issue #89 regression: active workflow with no branch remains pending', () => {
+  const issue = AUTOMATION_ISSUE({ number: 89 });
+  const plan = planWatchdogAction({
+    issue,
+    branch: null,
+    implementationRun: {
+      id: 30180672688,
+      event: 'workflow_dispatch',
+      status: 'in_progress',
+      created_at: minutesAgoIso(4),
+    },
+    dispatchStartedAtIso: minutesAgoIso(5),
+    nowIso: NOW,
+  });
+  assert.equal(plan.type, 'pending');
+  assert.match(plan.reason, /30180672688 is in_progress/);
+});
+
+test('queued implementation workflow with no branch remains pending', () => {
+  const issue = AUTOMATION_ISSUE();
+  const plan = planWatchdogAction({
+    issue,
+    branch: null,
+    implementationRun: {
+      id: 123,
+      event: 'workflow_dispatch',
+      status: 'queued',
+      created_at: minutesAgoIso(1),
+    },
+    dispatchStartedAtIso: minutesAgoIso(2),
+    nowIso: NOW,
+  });
+  assert.equal(plan.type, 'pending');
+});
+
+test('newly dispatched issue without a visible workflow or branch gets startup grace', () => {
+  const issue = AUTOMATION_ISSUE();
+  const plan = planWatchdogAction({
+    issue,
+    branch: null,
+    implementationRun: null,
+    dispatchStartedAtIso: minutesAgoIso(3),
+    nowIso: NOW,
+  });
+  assert.equal(plan.type, 'pending');
+  assert.ok(plan.elapsedMinutes < GRACE_PERIOD_MINUTES);
+});
+
+test('completed workflow without branch or PR still escalates after startup grace', () => {
+  const issue = AUTOMATION_ISSUE();
+  const plan = planWatchdogAction({
+    issue,
+    branch: null,
+    implementationRun: {
+      id: 124,
+      event: 'workflow_dispatch',
+      status: 'completed',
+      conclusion: 'success',
+      created_at: minutesAgoIso(30),
+    },
+    dispatchStartedAtIso: minutesAgoIso(30),
+    nowIso: NOW,
+  });
+  assert.equal(plan.type, 'escalate-no-branch');
 });
