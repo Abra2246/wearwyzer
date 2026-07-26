@@ -18,7 +18,7 @@ minutes, providing a second consecutive successful autonomous handoff.
 
 1. **Issue #162 — Fixture authenticated Daily Stylist service seam**
    - Status: implemented on branch `claude/issue-162-daily-stylist-service-seam`;
-     PR pending open for review (not yet merged).
+     PR #164 open for review (not yet merged).
    - Scope delivered: `scripts/daily-stylist-service-seam.mjs`
      (`runDailyStylistServiceSeam`) composes the accepted request boundary,
      private access security policy, fixture private profile/wardrobe
@@ -40,7 +40,7 @@ minutes, providing a second consecutive successful autonomous handoff.
 
 ## Next executable tasks
 
-1. **Review and merge PR for Issue #162**
+1. **Review and merge PR #164 (Issue #162)**
    - Outcome: independent review of the composed resolution order and
      fail-closed step attribution before it becomes the basis for any real
      server work.
