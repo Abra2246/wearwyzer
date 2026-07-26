@@ -1,16 +1,9 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T01:18:19.898Z",
+  "generatedAtIso": "2026-07-26T01:25:09.104Z",
   "overallHealth": "yellow",
-  "automationState": "working",
-  "activeWork": {
-    "issueNumber": 104,
-    "title": "Build the fixture AI Stylist evaluation harness",
-    "url": "https://github.com/Abra2246/wearwyzer/issues/104",
-    "prNumber": null,
-    "prUrl": null,
-    "lastActivityIso": "2026-07-26T01:17:01Z"
-  },
+  "automationState": "idle",
+  "activeWork": null,
   "queue": {
     "depth": 0,
     "readyCount": 0,
@@ -18,8 +11,8 @@
   },
   "ci": {
     "status": "passing",
-    "lastRunIso": "2026-07-26T01:15:36Z",
-    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30182584169"
+    "lastRunIso": "2026-07-26T01:24:52Z",
+    "lastRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30182838717"
   },
   "deployment": {
     "status": "unknown",
@@ -59,6 +52,6 @@
       "type": "link-coverage-below-target"
     }
   ],
-  "lastMeaningfulActivityIso": "2026-07-26T01:17:01.000Z",
+  "lastMeaningfulActivityIso": "2026-07-23T20:25:00.000Z",
   "staleAfterMinutes": 30
 }
