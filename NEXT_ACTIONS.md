@@ -5,40 +5,41 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #88 (Issue #87 consent/correction
-center), active Issue #89 implementation run `30180672688`, and the reproduced
-watchdog false escalation captured in Issue #90.
+**Evidence baseline:** `main` after merged PR #91 (watchdog active-run guard);
+Issue #89's hosted run `30180672688` failed its required handoff after three
+permission denials; direct recovery is active on
+`codex/issue-89-onboarding-wardrobe`.
 
 ## Active review gates
 
 1. **Issue #89 — fixture-only onboarding and wardrobe intake**
-   - Active workflow run: `30180672688`.
+   - Active branch: `codex/issue-89-onboarding-wardrobe`.
    - Scope: mobile-first profile preferences, consented Style/Fit DNA,
      canonical five-item wardrobe intake, minimized personalization
      references, explainable prospective-product evaluation, export,
      deletion, and reset.
    - Human gate: product/privacy review only. No provider, production account,
      database, personal data, photos, or browser permission is authorized.
-2. **Issue #90 — watchdog active-run guard**
-   - Active branch: `codex/watchdog-active-run-guard`.
-   - Scope: prevent no-branch escalation while the relevant queued or
-     in-progress Claude workflow is still running, without weakening completed
-     no-evidence escalation or quiet-branch PR repair.
 
 ## Next executable tasks
 
-1. **Complete and review Issue #90**
-   - Outcome: Issue #89's exact false-escalation shape remains pending while
-     its implementation workflow is active; completed no-evidence handoffs
-     still fail visibly.
-2. **Complete and review Issue #89**
-   - Outcome: one coherent fixture-only onboarding-to-recommendation journey.
-3. **Establish the first verifiable affiliate merchant path**
+1. **Complete browser QA and open the Issue #89 review PR**
+   - Outcome: one coherent fixture-only onboarding-to-recommendation journey
+     with default-off, privacy, consent, mobile, keyboard, export, deletion,
+     reset, and clean-console evidence.
+2. **Review and merge Issue #89**
+   - Outcome: app-first wardrobe ownership and minimized website/extension
+     decision references become repository evidence.
+3. **Define the next dependency-safe app slice**
+   - Outcome: specify camera/manual intake normalization and correction without
+     requesting camera permission, selecting a production storage provider, or
+     collecting real photos.
+4. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-4. **Reconcile and import remaining style-guide sources when real files exist**
+5. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -47,6 +48,9 @@ watchdog false escalation captured in Issue #90.
 
 ## Closed or blocked with evidence
 
+- **Issue #90 / PR #91:** merged after 521 tests and five passing checks. A
+  production dry run confirmed a current active implementation remains pending
+  and receives no failure-label mutation.
 - **Issue #87 / PR #88:** merged after 513 tests, five passing GitHub checks,
   independent browser review, and successful post-merge Pages/health checks.
 - **Issue #85 / PR #86:** merged after 492 tests and passing GitHub checks. The
