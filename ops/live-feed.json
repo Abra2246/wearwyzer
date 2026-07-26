@@ -1,21 +1,26 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T04:49:48.149Z",
+  "generatedAtIso": "2026-07-26T04:53:10.515Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "No active automation work."
+    "activeWorkSummary": "#162 \"Implement the fixture authenticated Daily Stylist service seam\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:49:48.149Z",
+      "lastUpdatedIso": "2026-07-26T04:53:10.515Z",
       "fetchOk": true,
       "data": {
-        "automationState": "idle",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 162,
+          "title": "Implement the fixture authenticated Daily Stylist service seam",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/162",
+          "updatedIso": "2026-07-26T04:52:49Z"
+        },
         "queue": {
           "depth": 0,
           "readyCount": 0,
@@ -31,8 +36,8 @@
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-26T04:49:46Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30188393057",
+          "latestRunIso": "2026-07-26T04:52:55Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30188473233",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,21 +50,21 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:49:48.149Z",
+      "lastUpdatedIso": "2026-07-26T04:53:10.515Z",
       "fetchOk": true,
       "data": {
-        "status": "healthy",
-        "lastHealthyShaShort": "d0cb521",
-        "lastDeployIso": "2026-07-26T04:39:45Z",
-        "ageMinutes": 10,
-        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
+        "status": "unknown",
+        "lastHealthyShaShort": null,
+        "lastDeployIso": "2026-07-26T04:53:09Z",
+        "ageMinutes": 0,
+        "pagesUrl": null
       },
       "note": null
     },
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:49:48.149Z",
+      "lastUpdatedIso": "2026-07-26T04:53:10.515Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:49:48.149Z",
+      "lastUpdatedIso": "2026-07-26T04:53:10.515Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,34 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:2026-07-26T04:53:09Z",
+      "timestampIso": "2026-07-26T04:53:09Z",
+      "type": "deploy-failed",
+      "summary": "Deployment failed its health checks.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30188473233",
+      "timestampIso": "2026-07-26T04:52:55Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30188473233"
+    },
+    {
+      "key": "issue-started:162",
+      "timestampIso": "2026-07-26T04:52:49Z",
+      "type": "issue-started",
+      "summary": "Issue #162 \"Implement the fixture authenticated Daily Stylist service seam\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/162"
+    },
+    {
+      "key": "pr-merged:163",
+      "timestampIso": "2026-07-26T04:52:34Z",
+      "type": "pr-merged",
+      "summary": "PR #163 \"Advance authenticated Daily Stylist seam queue\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/163"
+    },
     {
       "key": "ci-run:30188393057",
       "timestampIso": "2026-07-26T04:49:46Z",
@@ -447,34 +480,6 @@
       "type": "pr-merged",
       "summary": "PR #134 \"Add fixture Style DNA review journey\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/134"
-    },
-    {
-      "key": "deploy:073771a",
-      "timestampIso": "2026-07-26T03:01:56Z",
-      "type": "deployed",
-      "summary": "Deployed build 073771a — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "issue-started:133",
-      "timestampIso": "2026-07-26T03:01:29Z",
-      "type": "issue-started",
-      "summary": "Issue #133 \"Add fixture Style DNA review journey\" started.",
-      "url": "https://github.com/Abra2246/wearwyzer/issues/133"
-    },
-    {
-      "key": "ci-run:30185473812",
-      "timestampIso": "2026-07-26T03:01:21Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30185473812"
-    },
-    {
-      "key": "pr-merged:132",
-      "timestampIso": "2026-07-26T03:01:00Z",
-      "type": "pr-merged",
-      "summary": "PR #132 \"Define fixture Style DNA intelligence contract\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/132"
     }
   ]
 }
