@@ -1,38 +1,43 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T04:10:35.026Z",
+  "generatedAtIso": "2026-07-26T04:15:45.115Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
     "requiredAction": null,
-    "activeWorkSummary": "1 eligible issue(s) queued, none active."
+    "activeWorkSummary": "#154 \"Build explicit-context Daily Outfit Stylist composer fixture\" (no PR yet)"
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:10:35.026Z",
+      "lastUpdatedIso": "2026-07-26T04:15:45.115Z",
       "fetchOk": true,
       "data": {
-        "automationState": "queued",
-        "activeIssue": null,
+        "automationState": "working",
+        "activeIssue": {
+          "number": 154,
+          "title": "Build explicit-context Daily Outfit Stylist composer fixture",
+          "url": "https://github.com/Abra2246/wearwyzer/issues/154",
+          "updatedIso": "2026-07-26T04:15:42Z"
+        },
         "queue": {
-          "depth": 1,
-          "readyCount": 1,
-          "labeledReadyCount": 1,
-          "eligibleReadyCount": 1,
+          "depth": 0,
+          "readyCount": 0,
+          "labeledReadyCount": 0,
+          "eligibleReadyCount": 0,
           "malformedCount": 0,
           "riskGatedCount": 0,
           "dependencyBlockedCount": 0,
           "blockedCount": 2,
-          "stalledSinceIso": "2026-07-26T04:10:35.026Z",
+          "stalledSinceIso": null,
           "rejections": []
         },
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-26T04:10:27Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30187348945",
+          "latestRunIso": "2026-07-26T04:15:25Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30187485223",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,13 +50,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:10:35.026Z",
+      "lastUpdatedIso": "2026-07-26T04:15:45.115Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "609c2b7",
-        "lastDeployIso": "2026-07-26T04:07:27Z",
-        "ageMinutes": 3,
+        "lastHealthyShaShort": "0674517",
+        "lastDeployIso": "2026-07-26T04:11:03Z",
+        "ageMinutes": 5,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +64,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:10:35.026Z",
+      "lastUpdatedIso": "2026-07-26T04:15:45.115Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +91,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T04:10:35.026Z",
+      "lastUpdatedIso": "2026-07-26T04:15:45.115Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +131,34 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "issue-started:154",
+      "timestampIso": "2026-07-26T04:15:42Z",
+      "type": "issue-started",
+      "summary": "Issue #154 \"Build explicit-context Daily Outfit Stylist composer fixture\" started.",
+      "url": "https://github.com/Abra2246/wearwyzer/issues/154"
+    },
+    {
+      "key": "ci-run:30187485223",
+      "timestampIso": "2026-07-26T04:15:25Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30187485223"
+    },
+    {
+      "key": "pr-merged:157",
+      "timestampIso": "2026-07-26T04:15:09Z",
+      "type": "pr-merged",
+      "summary": "PR #157 \"Restore Claude workflow file-tool permissions\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/157"
+    },
+    {
+      "key": "deploy:0674517",
+      "timestampIso": "2026-07-26T04:11:03Z",
+      "type": "deployed",
+      "summary": "Deployed build 0674517 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "ci-run:30187348945",
       "timestampIso": "2026-07-26T04:10:27Z",
@@ -447,34 +480,6 @@
       "type": "pr-merged",
       "summary": "PR #126 \"Build fixture Fit Intelligence journey\" merged.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/126"
-    },
-    {
-      "key": "deploy:c8e7b93",
-      "timestampIso": "2026-07-26T02:36:21Z",
-      "type": "deployed",
-      "summary": "Deployed build c8e7b93 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "deploy:2026-07-26T02:36:05Z",
-      "timestampIso": "2026-07-26T02:36:05Z",
-      "type": "deploy-failed",
-      "summary": "Deployment failed its health checks.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30184805222",
-      "timestampIso": "2026-07-26T02:35:51Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30184805222"
-    },
-    {
-      "key": "pr-merged:124",
-      "timestampIso": "2026-07-26T02:35:33Z",
-      "type": "pr-merged",
-      "summary": "PR #124 \"Define fixture Fit Intelligence contract\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/124"
     }
   ]
 }
