@@ -953,6 +953,13 @@ references, and owner.
   defaults and focus. The route stores nothing and exposes no account, network,
   analytics, tracking, affiliate, retailer, purchase, or external action.
   Current pre-PR validation baseline: 794 tests.
+- Issue #143 defines a minimized Daily Outfit Intent boundary for explicit
+  occasion, season, weather class, dress code, availability window, and desired
+  set size. Coherent context delegates to the accepted Outfit Set contract;
+  unknown, ambiguous, or stale context requires review; contradictions abstain.
+  Live location, calendar, itinerary, health/body facts, full private payloads,
+  commerce, analytics, credentials, network, persistence, and external actions
+  remain outside the result. Current pre-PR validation baseline: 806 tests.
 
 ## Final north-star statement
 

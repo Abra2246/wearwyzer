@@ -769,6 +769,26 @@ stores nothing and has no profile/wardrobe, account, analytics, network,
 commerce, affiliate, retailer, purchase, persistence, or external-action
 capability.
 
+## Decision — daily outfit intent stays explicit and minimized (issue #143)
+
+**Problem:** “What should I wear today?” is valuable, but a naive implementation
+can quietly expand into live location, calendar, itinerary, and full-wardrobe
+collection or invent missing context.
+
+**Decision:** the fixture Daily Outfit Intent boundary accepts only an
+allowlisted occasion, season class, weather class, dress code, availability
+window, desired set size, and already-minimized outfit candidates. Coherent
+explicit context delegates candidate selection to the accepted Outfit Set
+Recommendation contract. Unknown season/weather, ambiguous dress code, and
+unknown/stale availability require review; contradictory context abstains.
+
+**Boundary:** the result contains only the explicit context summary, stable
+reasons, status, and minimized Outfit Set result. Live location/weather,
+calendar, contacts, exact addresses, itinerary text, health/body facts, full
+profiles/wardrobes, prices, retailers, affiliate economics, analytics,
+credentials, network, persistence, purchasing, and external actions remain
+excluded.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
