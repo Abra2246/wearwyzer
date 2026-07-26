@@ -5,41 +5,34 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #91 (watchdog active-run guard);
-Issue #89's hosted run `30180672688` failed its required handoff after three
-permission denials; direct recovery is active on
-`codex/issue-89-onboarding-wardrobe`.
+**Evidence baseline:** `main` after merged PR #92 (fixture onboarding and
+wardrobe intake). Post-merge Ops refresh run `30181324219` exposed a derived-feed
+writer race; Issue #93 is the active P0 reliability repair.
 
 ## Active review gates
 
-1. **Issue #89 — fixture-only onboarding and wardrobe intake**
-   - Active branch: `codex/issue-89-onboarding-wardrobe`.
-   - Scope: mobile-first profile preferences, consented Style/Fit DNA,
-     canonical five-item wardrobe intake, minimized personalization
-     references, explainable prospective-product evaluation, export,
-     deletion, and reset.
-   - Human gate: product/privacy review only. No provider, production account,
-     database, personal data, photos, or browser permission is authorized.
+1. **Issue #93 — serialize Ops feed writers**
+   - Active branch: `codex/issue-93-ops-refresh-race`.
+   - Scope: stop generated-artifact cross-triggering, serialize writers, and
+     regenerate derived JSON from current `main` after a rejected push.
+   - Completion gate: both production workflows succeed when dispatched
+     together, current snapshots reach `main`, and Pages/health pass.
 
 ## Next executable tasks
 
-1. **Complete browser QA and open the Issue #89 review PR**
-   - Outcome: one coherent fixture-only onboarding-to-recommendation journey
-     with default-off, privacy, consent, mobile, keyboard, export, deletion,
-     reset, and clean-console evidence.
-2. **Review and merge Issue #89**
-   - Outcome: app-first wardrobe ownership and minimized website/extension
-     decision references become repository evidence.
-3. **Define the next dependency-safe app slice**
+1. **Review, merge, and production-test Issue #93**
+   - Outcome: Mission Control refresh writers stay current without ping-pong
+     commits or same-file rebase failures.
+2. **Define the next dependency-safe app slice**
    - Outcome: specify camera/manual intake normalization and correction without
      requesting camera permission, selecting a production storage provider, or
      collecting real photos.
-4. **Establish the first verifiable affiliate merchant path**
+3. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-5. **Reconcile and import remaining style-guide sources when real files exist**
+4. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
@@ -48,6 +41,9 @@ permission denials; direct recovery is active on
 
 ## Closed or blocked with evidence
 
+- **Issue #89 / PR #92:** merged after 539 tests, five passing GitHub checks,
+  end-to-end browser review, and explicit product/privacy scope review. The
+  route remains unlinked, `noindex`, default-off, and synthetic.
 - **Issue #90 / PR #91:** merged after 521 tests and five passing checks. A
   production dry run confirmed a current active implementation remains pending
   and receives no failure-label mutation.

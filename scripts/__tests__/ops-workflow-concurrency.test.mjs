@@ -14,17 +14,24 @@ const workflowPairs = [
 ];
 
 for (const [activePath, referencePath] of workflowPairs) {
-  test(`${activePath} safely retries concurrent main updates`, () => {
+  test(`${activePath} serializes writers and regenerates after main advances`, () => {
     const active = readFileSync(activePath, 'utf8');
     const reference = readFileSync(referencePath, 'utf8');
 
     for (const source of [active, reference]) {
       assert.match(source, /fetch-depth:\s*0/);
+      assert.match(source, /group:\s*ops-feed-refresh-writers/);
+      assert.match(source, /cancel-in-progress:\s*false/);
+      assert.match(
+        source,
+        /paths-ignore:\s*\n\s+- 'ops\/(?:live-feed|status)\.json'\s*\n\s+- 'ops\/(?:status|live-feed)\.json'/,
+      );
       assert.match(source, /max_attempts=3/);
       assert.match(source, /git fetch --no-tags origin main/);
-      assert.match(source, /git rebase origin\/main/);
+      assert.match(source, /git reset --hard origin\/main/);
+      assert.match(source, /node scripts\/ops-(?:live|status)-cli\.mjs/);
       assert.match(source, /git push origin HEAD:main/);
-      assert.match(source, /git rebase --abort \|\| true/);
+      assert.doesNotMatch(source, /git rebase origin\/main/);
       assert.doesNotMatch(source, /git push[^\n]*(--force|-f)\b/);
     }
 

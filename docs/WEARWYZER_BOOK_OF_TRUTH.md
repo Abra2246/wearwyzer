@@ -745,6 +745,14 @@ references, and owner.
   permission, affiliate credential, paid call, or likeness workflow is active.
 - `docs/ONBOARDING_WARDROBE_V1.md` is the canonical implementation boundary.
   Current deterministic baseline: 539 tests plus all repository validators.
+- PR #92 merged that journey after five passing GitHub checks and browser QA.
+  Its post-merge audit exposed an operations race rather than hiding it: run
+  `30181324219` generated the v2 feed successfully but collided with a newer
+  generated feed while rebasing.
+- Issue #93 treats both Ops artifacts as derived evidence. The v1 and v2
+  writers ignore both generated JSON files on push, share one serialized
+  writer group, and regenerate only their owned artifact from current `main`
+  inside a bounded retry. They never force-push or auto-resolve source changes.
 
 ## Final north-star statement
 

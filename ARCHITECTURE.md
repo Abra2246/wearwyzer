@@ -362,6 +362,24 @@ the recommendation request/response shape.
 storage, personal data, camera/photo access, Chrome permissions, and likeness
 generation remain explicit founder and privacy/legal gates.
 
+## Decision — serialize and regenerate derived Ops feed commits (issue #93)
+
+**Problem:** the v1 status and v2 live-feed workflows wrote directly to `main`
+from separate concurrency groups. Each ignored only its own artifact, so one
+generated commit triggered the other writer. A second same-file refresh could
+also conflict while rebasing a timestamped snapshot generated from older
+evidence.
+
+**Decision:** both workflows ignore both generated JSON artifacts, share one
+non-cancelling writer group, and regenerate their one owned artifact from the
+latest `origin/main` inside a bounded push loop. The isolated workflow checkout
+may hard-reset; repository source conflicts are never auto-resolved and no
+force-push is allowed.
+
+**Benefit:** routine refreshes cannot create a ping-pong commit loop, and an
+advancing `main` results in a current regenerated snapshot rather than a failed
+or stale rebase.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.

@@ -38,6 +38,7 @@ on:
       - main
     paths-ignore:
       - 'ops/live-feed.json'
+      - 'ops/status.json'
   schedule:
     # Every 5 minutes — the tightest interval GitHub Actions' schedule
     # trigger supports, and deliberately tighter than
@@ -50,8 +51,8 @@ on:
     - cron: '*/5 * * * *'
 
 concurrency:
-  group: ops-live-feed-refresh
-  cancel-in-progress: true
+  group: ops-feed-refresh-writers
+  cancel-in-progress: false
 
 permissions:
   contents: write
@@ -82,27 +83,27 @@ jobs:
 
       - name: Commit and push if changed
         if: ${{ inputs.dry_run != true }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
-          if git diff --quiet -- ops/live-feed.json; then
-            echo "No change to ops/live-feed.json — nothing to commit."
-            exit 0
-          fi
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Deliberately NOT using a "[skip ci]" marker — same reasoning as
           # ops-status-refresh.yml: this push must trigger
           # .github/workflows/pages.yml so the refreshed live feed actually
           # redeploys to GitHub Pages.
-          git add ops/live-feed.json
-          git commit -m "chore(ops): refresh live-feed.json"
           max_attempts=3
           for attempt in $(seq 1 "$max_attempts"); do
             git fetch --no-tags origin main
-            if ! git rebase origin/main; then
-              echo "::error::Generated live-feed commit conflicts with current main; refusing to discard either change."
-              git rebase --abort || true
-              exit 1
+            git reset --hard origin/main
+            node scripts/ops-live-cli.mjs
+            if git diff --quiet -- ops/live-feed.json; then
+              echo "No change to ops/live-feed.json — nothing to commit."
+              exit 0
             fi
+            git add ops/live-feed.json
+            git commit -m "chore(ops): refresh live-feed.json"
             if git push origin HEAD:main; then
               exit 0
             fi
@@ -110,5 +111,5 @@ jobs:
               echo "::error::Could not push live-feed after $max_attempts attempts because main kept advancing."
               exit 1
             fi
-            echo "main advanced during push; retrying after fetch/rebase ($attempt/$max_attempts)."
+            echo "main advanced during push; regenerating from current main ($attempt/$max_attempts)."
           done
