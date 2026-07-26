@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T03:47:57.396Z",
+  "generatedAtIso": "2026-07-26T03:53:37.869Z",
   "overallState": "live",
   "ceo": {
     "headline": "Ready-labeled work is not dispatchable.",
-    "requiredAction": "Fix issue #148: malformed: missing required section(s): scope, exclusions",
+    "requiredAction": "Fix issue #151: malformed: missing required section(s): scope, exclusions",
     "activeWorkSummary": "No eligible issue can enter the engineering queue."
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:47:57.396Z",
+      "lastUpdatedIso": "2026-07-26T03:53:37.869Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -28,7 +28,7 @@
           "stalledSinceIso": null,
           "rejections": [
             {
-              "issueNumber": 148,
+              "issueNumber": 151,
               "category": "malformed",
               "reasons": [
                 "malformed: missing required section(s): scope, exclusions"
@@ -38,9 +38,9 @@
         },
         "pr": null,
         "ci": {
-          "status": "unknown",
-          "latestRunIso": "2026-07-26T03:47:50Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186734163",
+          "status": "passing",
+          "latestRunIso": "2026-07-26T03:52:13Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186843351",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -53,13 +53,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:47:57.396Z",
+      "lastUpdatedIso": "2026-07-26T03:53:37.869Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "ce420d6",
-        "lastDeployIso": "2026-07-26T03:45:50Z",
-        "ageMinutes": 2,
+        "lastHealthyShaShort": "98245f7",
+        "lastDeployIso": "2026-07-26T03:52:42Z",
+        "ageMinutes": 1,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -67,7 +67,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:47:57.396Z",
+      "lastUpdatedIso": "2026-07-26T03:53:37.869Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -94,7 +94,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:47:57.396Z",
+      "lastUpdatedIso": "2026-07-26T03:53:37.869Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -134,6 +134,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:98245f7",
+      "timestampIso": "2026-07-26T03:52:42Z",
+      "type": "deployed",
+      "summary": "Deployed build 98245f7 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30186843351",
+      "timestampIso": "2026-07-26T03:52:13Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30186843351"
+    },
+    {
+      "key": "pr-merged:150",
+      "timestampIso": "2026-07-26T03:51:54Z",
+      "type": "pr-merged",
+      "summary": "PR #150 \"Define grounded Daily Outfit Stylist response\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/150"
+    },
     {
       "key": "pr-merged:149",
       "timestampIso": "2026-07-26T03:47:42Z",
@@ -462,27 +483,6 @@
       "type": "issue-started",
       "summary": "Issue #119 \"Define the fixture Closet Health Score\" started.",
       "url": "https://github.com/Abra2246/wearwyzer/issues/119"
-    },
-    {
-      "key": "deploy:eacc1e9",
-      "timestampIso": "2026-07-26T02:17:15Z",
-      "type": "deployed",
-      "summary": "Deployed build eacc1e9 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "deploy:2026-07-26T02:16:55Z",
-      "timestampIso": "2026-07-26T02:16:55Z",
-      "type": "deploy-failed",
-      "summary": "Deployment failed its health checks.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30184294681",
-      "timestampIso": "2026-07-26T02:16:42Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30184294681"
     }
   ]
 }
