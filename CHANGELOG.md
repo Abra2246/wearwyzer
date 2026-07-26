@@ -2,6 +2,25 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Claude workflow file-tool repair (issue #156)
+### Fixed
+- Queue-dispatched, non-interactive Claude runs now explicitly allow `Read`,
+  `Edit`, `Write`, `Glob`, and `Grep`, the minimum built-in tools needed to
+  inspect and implement ordinary repository changes.
+- Protected file edits under `.github/workflows/**` and `.github/actions/**`
+  are explicitly denied.
+### Safety
+- Existing command-scoped Bash permissions remain unchanged. No unrestricted
+  Bash, destructive filesystem/Git command, secret management, force-push,
+  merge, workflow self-edit/dispatch, deployment, or publication authority is
+  introduced.
+- The mandatory current-run branch, PR, or structured-blocker handoff
+  postcondition remains unchanged.
+### Evidence
+- Issue #151 run `30186961673` recorded eight permission denials and no durable
+  handoff. Issue #154 run `30187367449` was canceled before repeating the same
+  known failure and will be re-dispatched after this protected-path repair.
+
 ## Unreleased (2026-07-26) — Grounded Daily Outfit Stylist fixture journey (issue #151)
 ### Added
 - An unlinked, `noindex`, exact-flag-gated review route that composes accepted

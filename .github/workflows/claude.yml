@@ -72,7 +72,9 @@ jobs:
           # production release outside this allowlist.
           claude_args: >-
             --allowed-tools
-            "Bash(node *),Bash(npm *),Bash(npx *),Bash(python3 *),Bash(git status*),Bash(git diff*),Bash(git log*),Bash(git branch*),Bash(git switch*),Bash(git checkout*),Bash(git add *),Bash(git commit *),Bash(git push *),Bash(gh issue *),Bash(gh pr view*),Bash(gh pr create*),Bash(gh pr checks*),Bash(gh run view*),Bash(gh run list*),Bash(curl http://localhost:*),Bash(curl -I http://localhost:*),Bash(bash scripts/*),Bash(./scripts/*)"
+            "Read,Edit,Write,Glob,Grep,Bash(node *),Bash(npm *),Bash(npx *),Bash(python3 *),Bash(git status*),Bash(git diff*),Bash(git log*),Bash(git branch*),Bash(git switch*),Bash(git checkout*),Bash(git add *),Bash(git commit *),Bash(git push *),Bash(gh issue *),Bash(gh pr view*),Bash(gh pr create*),Bash(gh pr checks*),Bash(gh run view*),Bash(gh run list*),Bash(curl http://localhost:*),Bash(curl -I http://localhost:*),Bash(bash scripts/*),Bash(./scripts/*)"
+            --disallowed-tools
+            "Edit(.github/workflows/**),Edit(.github/actions/**)"
 
       - name: Verify queue-dispatched handoff evidence
         id: handoff

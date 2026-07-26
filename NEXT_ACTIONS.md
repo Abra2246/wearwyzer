@@ -5,17 +5,24 @@ GitHub issues own implementation scope, and this file identifies the next safe
 action from current evidence.
 
 **Last verified:** July 26, 2026
-**Evidence baseline:** `main` after merged PR #153. The Grounded Daily Outfit
-Stylist fixture journey passed 836 tests, every deterministic validator,
-browser QA across all nine modes, five GitHub checks, Pages deployment run
-`30187254783`, Content pipeline run `30187254822`, Ops Live Feed run
-`30187254794`, Ops Status run `30187254791`, and Deploy Health Check run
-`30187277683`. Issue #154 is ready.
+**Evidence baseline:** Issue #154 dispatch run `30187367449` was canceled
+before repeating the known Issue #151 permissions failure. The active Claude
+workflow omitted its minimum non-interactive file tools. Issue #156 is the
+active medium-risk protected-path repair; Issue #154 remains ready and must not
+be re-dispatched until the repair is merged and validated.
 
 ## Queued execution
 
-1. **Issue #154 — Explicit-context Daily Outfit Stylist composer fixture**
-   - Status: ready; no implementation branch or review PR exists yet.
+1. **Issue #156 — Restore Claude workflow file-tool permissions**
+   - Status: in progress; medium-risk protected-path change requires review.
+   - Scope: add the minimum `Read`, `Edit`, `Write`, `Glob`, and `Grep` tools
+     required by non-interactive implementation while keeping Bash narrow and
+     workflow/action edits explicitly denied.
+   - Boundary: no unrestricted Bash, destructive command, secret management,
+     force-push, merge, workflow self-edit/dispatch, deployment, or publication
+     authority. The mandatory handoff postcondition remains unchanged.
+2. **Issue #154 — Explicit-context Daily Outfit Stylist composer fixture**
+   - Status: ready, paused behind Issue #156.
    - Scope: let a person choose allowlisted coarse context and receive the
      accepted grounded answer or honest non-answer from a deterministic
      synthetic candidate pool.
@@ -27,25 +34,28 @@ browser QA across all nine modes, five GitHub checks, Pages deployment run
 
 ## Next executable tasks
 
-1. **Complete and review Issue #154**
+1. **Complete and review Issue #156**
+   - Outcome: prove a queue agent can create a real implementation handoff
+     without broadening protected or destructive authority.
+2. **Re-dispatch, complete, and review Issue #154**
    - Outcome: demonstrate the first explicit user-shaped Daily Stylist flow
      without collecting live or private context.
-2. **Define the minimum production Daily Stylist data boundary**
+3. **Define the minimum production Daily Stylist data boundary**
    - Dependency: merged Issue #154 with browser QA and production evidence.
    - Outcome: specify the smallest consented profile/wardrobe/context
      references future clients need, without implementing collection,
      persistence, providers, or production access.
-3. **Founder decision: authorize or defer one live provider experiment**
+4. **Founder decision: authorize or defer one live provider experiment**
    - Dependency: merged Issue #113 plus explicit provider, credential, data
      processing, and spend approval.
    - Outcome if approved: one bounded, non-production synthetic comparison;
      otherwise remain offline with no loss of production functionality.
-4. **Establish the first verifiable affiliate merchant path**
+5. **Establish the first verifiable affiliate merchant path**
    - Dependency: approved public product feed or affiliate-network/retailer
      credentials.
    - Outcome: verify exact offers and move planned guide coverage toward 80%
      without changing editorial recommendations merely for commission.
-5. **Reconcile and import remaining style-guide sources when real files exist**
+6. **Reconcile and import remaining style-guide sources when real files exist**
    - Current evidence: six complete seven-slide guides exist; the expected
      other six are absent from the repository, visible branches, workspace,
      and synced project sources.
