@@ -21,7 +21,7 @@ can complete the intended issue-to-PR handoff.
 
 1. **Issue #159 — Minimum production Daily Stylist data boundary**
    - Status: implemented on branch `claude/issue-159-daily-stylist-production-boundary`;
-     PR pending open for review (not yet merged).
+     PR #161 open for review (not yet merged).
    - Scope delivered: `docs/DAILY_STYLIST_PRODUCTION_BOUNDARY_V1.md` and
      `scripts/daily-stylist-production-boundary-contract.mjs` define the
      closed, versioned, byte-stable request envelope and the fixed eight-step
@@ -42,7 +42,7 @@ can complete the intended issue-to-PR handoff.
 
 ## Next executable tasks
 
-1. **Review and merge PR for Issue #159**
+1. **Review and merge PR #161 (Issue #159)**
    - Outcome: independent review of the request envelope and resolution-plan
      contract before it becomes the basis for any real server work.
 2. **Define the authenticated Daily Stylist service seam**
