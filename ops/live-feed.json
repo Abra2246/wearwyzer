@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T00:32:17.130Z",
+  "generatedAtIso": "2026-07-26T00:39:59.844Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T00:32:17.130Z",
+      "lastUpdatedIso": "2026-07-26T00:39:59.844Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -31,8 +31,8 @@
         "pr": null,
         "ci": {
           "status": "unknown",
-          "latestRunIso": "2026-07-26T00:32:12Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30181318893",
+          "latestRunIso": "2026-07-26T00:39:52Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30181542871",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,13 +45,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T00:32:17.130Z",
+      "lastUpdatedIso": "2026-07-26T00:39:59.844Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "3364dca",
-        "lastDeployIso": "2026-07-26T00:17:29Z",
-        "ageMinutes": 15,
+        "lastHealthyShaShort": "856b100",
+        "lastDeployIso": "2026-07-26T00:33:03Z",
+        "ageMinutes": 7,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -59,7 +59,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T00:32:17.130Z",
+      "lastUpdatedIso": "2026-07-26T00:39:59.844Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T00:32:17.130Z",
+      "lastUpdatedIso": "2026-07-26T00:39:59.844Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +126,20 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "pr-merged:94",
+      "timestampIso": "2026-07-26T00:39:45Z",
+      "type": "pr-merged",
+      "summary": "PR #94 \"Serialize Ops feed refresh writers\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/94"
+    },
+    {
+      "key": "deploy:856b100",
+      "timestampIso": "2026-07-26T00:33:03Z",
+      "type": "deployed",
+      "summary": "Deployed build 856b100 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "pr-merged:92",
       "timestampIso": "2026-07-26T00:32:04Z",
@@ -460,20 +474,6 @@
       "timestampIso": "2026-07-23T20:25:00.000Z",
       "type": "guide-production-started",
       "summary": "Guide production writer claimed job \"adidas-samba-og-b75806\".",
-      "url": null
-    },
-    {
-      "key": "log:2026-07-23T20:25:00.000Z:guide-production-ready-for-review",
-      "timestampIso": "2026-07-23T20:25:00.000Z",
-      "type": "guide-production-ready-for-review",
-      "summary": "Guide \"adidas-samba-og-b75806\" was written with 8 verified assets, site records, sitemap entry, and guide-adidas-samba-og-b75806.dc.html.",
-      "url": null
-    },
-    {
-      "key": "log:2026-07-23T20:25:00.000Z:guide-production-completed",
-      "timestampIso": "2026-07-23T20:25:00.000Z",
-      "type": "guide-production-completed",
-      "summary": "Guide \"adidas-samba-og-b75806\" was written with 8 verified assets, site records, sitemap entry, and guide-adidas-samba-og-b75806.dc.html.",
       "url": null
     }
   ]
