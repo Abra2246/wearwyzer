@@ -459,6 +459,25 @@ or wardrobe truth.
 **Deferred:** live provider selection, production storage, paid calls,
 prompt/model evaluation, external actions, Chrome permissions, and publishing.
 
+## Decision — deterministic Stylist trust regression gate (issue #104)
+
+**Problem:** a sound contract can still regress when future prompts, providers,
+or surfaces are added. Manual spot checks cannot prove all supported intents,
+adversarial boundaries, privacy, and repeatability remain intact.
+
+**Decision:** maintain a provider-free fixture portfolio with passing coverage
+for every Stylist intent and adversarial scenarios for missing citations,
+invented ownership/product facts, stale or conflicting evidence, privacy
+leakage, external-action requests, and insufficient evidence. Score grounding,
+citations, abstention, privacy, external-action safety, and repeatability at a
+100% fail-closed threshold.
+
+**Benefit:** future live-model evaluation has a stable trust baseline and exact
+failure reasons before spend or real data is introduced.
+
+**Deferred:** live provider/model selection, prompt comparisons, production
+telemetry, human preference evaluation, and paid evaluation.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
