@@ -788,6 +788,14 @@ references, and owner.
   opposing evidence, and a non-mutating next step—not private prompts or raw
   profile and wardrobe evidence. Current validation baseline: 579 tests plus
   every deterministic repository validator.
+- Issue #104 makes those trust rules measurable before a provider exists.
+  Fifteen provider-free fixtures cover every supported intent plus missing
+  citations, invented ownership and price facts, stale/ambiguous/conflicting
+  evidence, private-field leakage, external-action requests, and insufficient
+  evidence. Grounding, citation completeness, abstention correctness, privacy,
+  external-action safety, and repeatability each require a 100% portfolio score,
+  with exact scenario and metric failures. Current validation baseline: 589
+  tests plus every deterministic repository validator.
 
 ## Final north-star statement
 

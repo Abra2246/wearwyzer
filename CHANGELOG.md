@@ -2,6 +2,26 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — AI Stylist evaluation harness (issue #104)
+### Added
+- `scripts/ai-stylist-evaluator.mjs`: deterministic scenario execution,
+  grounding/citation/abstention/privacy/action/repeatability metrics, 100%
+  thresholds, and exact portfolio failure reporting.
+- Fifteen provider-free fixtures covering all six supported intents and nine
+  adversarial trust cases.
+- `docs/AI_STYLIST_EVALUATION_V1.md` with the regression-gate contract.
+### Safety
+- No network, live model/provider, paid spend, real user, production storage,
+  analytics, calendar/location access, photo workflow, affiliate credential,
+  Chrome permission, external action, publishing, or likeness generation.
+### Validation
+- 589/589 repository tests pass.
+- The 15-scenario portfolio scores 100% for all six trust metrics and covers all
+  six supported intents.
+- Content, Knowledge Graph, hero-product, HTML metadata, static-site, and diff
+  validators pass; the one pre-existing graph-eligibility warning remains
+  non-blocking.
+
 ## Unreleased (2026-07-26) — Grounded AI Stylist contract (issue #101)
 ### Added
 - `scripts/ai-stylist-contract.mjs`: provider-agnostic intent and evidence
