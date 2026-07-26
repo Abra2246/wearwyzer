@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-26T03:29:11.893Z",
+  "generatedAtIso": "2026-07-26T03:33:44.659Z",
   "overallState": "live",
   "ceo": {
     "headline": "Everything is healthy — no action needed.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:29:11.893Z",
+      "lastUpdatedIso": "2026-07-26T03:33:44.659Z",
       "fetchOk": true,
       "data": {
         "automationState": "idle",
@@ -31,8 +31,8 @@
         "pr": null,
         "ci": {
           "status": "passing",
-          "latestRunIso": "2026-07-26T03:29:00Z",
-          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186227579",
+          "latestRunIso": "2026-07-26T03:33:31Z",
+          "latestRunUrl": "https://github.com/Abra2246/wearwyzer/actions/runs/30186351255",
           "recentFailureCount": 0
         },
         "handoff": {
@@ -45,21 +45,21 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:29:11.893Z",
+      "lastUpdatedIso": "2026-07-26T03:33:44.659Z",
       "fetchOk": true,
       "data": {
-        "status": "healthy",
-        "lastHealthyShaShort": "942ac22",
-        "lastDeployIso": "2026-07-26T03:23:59Z",
-        "ageMinutes": 5,
-        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
+        "status": "unknown",
+        "lastHealthyShaShort": null,
+        "lastDeployIso": "2026-07-26T03:33:45Z",
+        "ageMinutes": 0,
+        "pagesUrl": null
       },
       "note": null
     },
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:29:11.893Z",
+      "lastUpdatedIso": "2026-07-26T03:33:44.659Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -86,7 +86,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-26T03:29:11.893Z",
+      "lastUpdatedIso": "2026-07-26T03:33:44.659Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -126,6 +126,27 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:2026-07-26T03:33:45Z",
+      "timestampIso": "2026-07-26T03:33:45Z",
+      "type": "deploy-failed",
+      "summary": "Deployment failed its health checks.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
+    {
+      "key": "ci-run:30186351255",
+      "timestampIso": "2026-07-26T03:33:31Z",
+      "type": "ci-passed",
+      "summary": "Content data validation passed on main.",
+      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30186351255"
+    },
+    {
+      "key": "pr-merged:144",
+      "timestampIso": "2026-07-26T03:33:14Z",
+      "type": "pr-merged",
+      "summary": "PR #144 \"Define minimized Daily Outfit Intent\" merged.",
+      "url": "https://github.com/Abra2246/wearwyzer/pull/144"
+    },
     {
       "key": "ci-run:30186227579",
       "timestampIso": "2026-07-26T03:29:00Z",
@@ -454,27 +475,6 @@
       "type": "deployed",
       "summary": "Deployed build f19d9d8 — health checks passed.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "ci-run:30183898745",
-      "timestampIso": "2026-07-26T02:03:10Z",
-      "type": "ci-passed",
-      "summary": "Content data validation passed on main.",
-      "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30183898745"
-    },
-    {
-      "key": "pr-merged:114",
-      "timestampIso": "2026-07-26T02:02:51Z",
-      "type": "pr-merged",
-      "summary": "PR #114 \"Define founder-gated AI provider experiment protocol\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/114"
-    },
-    {
-      "key": "issue-started:113",
-      "timestampIso": "2026-07-26T01:59:10Z",
-      "type": "issue-started",
-      "summary": "Issue #113 \"Define the founder-gated AI Stylist provider experiment protocol\" started.",
-      "url": "https://github.com/Abra2246/wearwyzer/issues/113"
     }
   ]
 }
