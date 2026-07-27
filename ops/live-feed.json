@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-27T16:50:53.786Z",
+  "generatedAtIso": "2026-07-27T18:22:00.626Z",
   "overallState": "live",
   "ceo": {
     "headline": "PR #177 is awaiting review.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-27T16:50:53.786Z",
+      "lastUpdatedIso": "2026-07-27T18:22:00.626Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
@@ -54,13 +54,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-27T16:50:53.786Z",
+      "lastUpdatedIso": "2026-07-27T18:22:00.626Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "75abffd",
-        "lastDeployIso": "2026-07-27T14:45:49Z",
-        "ageMinutes": 125,
+        "lastHealthyShaShort": "d0db501",
+        "lastDeployIso": "2026-07-27T16:52:08Z",
+        "ageMinutes": 90,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -68,7 +68,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-27T16:50:53.786Z",
+      "lastUpdatedIso": "2026-07-27T18:22:00.626Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -95,7 +95,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-27T16:50:53.786Z",
+      "lastUpdatedIso": "2026-07-27T18:22:00.626Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -135,6 +135,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:d0db501",
+      "timestampIso": "2026-07-27T16:52:08Z",
+      "type": "deployed",
+      "summary": "Deployed build d0db501 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:75abffd",
       "timestampIso": "2026-07-27T14:45:49Z",
@@ -476,13 +483,6 @@
       "timestampIso": "2026-07-26T04:49:29Z",
       "type": "pr-merged",
       "summary": "PR #161 \"Define the minimum production Daily Stylist data boundary (#159)\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/161"
-    },
-    {
-      "key": "pr-opened:161",
-      "timestampIso": "2026-07-26T04:46:50Z",
-      "type": "pr-opened",
-      "summary": "PR #161 \"Define the minimum production Daily Stylist data boundary (#159)\" opened.",
       "url": "https://github.com/Abra2246/wearwyzer/pull/161"
     }
   ]
