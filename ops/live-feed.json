@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-27T21:21:59.420Z",
+  "generatedAtIso": "2026-07-27T22:33:42.584Z",
   "overallState": "live",
   "ceo": {
     "headline": "PR #177 is awaiting review.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-27T21:21:59.420Z",
+      "lastUpdatedIso": "2026-07-27T22:33:42.584Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
@@ -54,13 +54,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-27T21:21:59.420Z",
+      "lastUpdatedIso": "2026-07-27T22:33:42.584Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "4fbe30e",
-        "lastDeployIso": "2026-07-27T20:05:16Z",
-        "ageMinutes": 77,
+        "lastHealthyShaShort": "bb4eb26",
+        "lastDeployIso": "2026-07-27T21:22:59Z",
+        "ageMinutes": 71,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -68,7 +68,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-27T21:21:59.420Z",
+      "lastUpdatedIso": "2026-07-27T22:33:42.584Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -95,7 +95,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-27T21:21:59.420Z",
+      "lastUpdatedIso": "2026-07-27T22:33:42.584Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -135,6 +135,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:bb4eb26",
+      "timestampIso": "2026-07-27T21:22:59Z",
+      "type": "deployed",
+      "summary": "Deployed build bb4eb26 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:4fbe30e",
       "timestampIso": "2026-07-27T20:05:16Z",
@@ -477,13 +484,6 @@
       "type": "issue-started",
       "summary": "Issue #162 \"Implement the fixture authenticated Daily Stylist service seam\" started.",
       "url": "https://github.com/Abra2246/wearwyzer/issues/162"
-    },
-    {
-      "key": "pr-merged:163",
-      "timestampIso": "2026-07-26T04:52:34Z",
-      "type": "pr-merged",
-      "summary": "PR #163 \"Advance authenticated Daily Stylist seam queue\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/163"
     }
   ]
 }
