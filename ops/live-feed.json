@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-28T14:41:55.529Z",
+  "generatedAtIso": "2026-07-28T16:25:07.453Z",
   "overallState": "live",
   "ceo": {
     "headline": "PR #177 is awaiting review.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-28T14:41:55.529Z",
+      "lastUpdatedIso": "2026-07-28T16:25:07.453Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
@@ -54,13 +54,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-28T14:41:55.529Z",
+      "lastUpdatedIso": "2026-07-28T16:25:07.453Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "4d8670f",
-        "lastDeployIso": "2026-07-28T12:11:57Z",
-        "ageMinutes": 150,
+        "lastHealthyShaShort": "da63246",
+        "lastDeployIso": "2026-07-28T14:43:14Z",
+        "ageMinutes": 102,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -68,7 +68,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-28T14:41:55.529Z",
+      "lastUpdatedIso": "2026-07-28T16:25:07.453Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -95,7 +95,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-07-28T14:41:55.529Z",
+      "lastUpdatedIso": "2026-07-28T16:25:07.453Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -135,6 +135,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:da63246",
+      "timestampIso": "2026-07-28T14:43:14Z",
+      "type": "deployed",
+      "summary": "Deployed build da63246 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:4d8670f",
       "timestampIso": "2026-07-28T12:11:57Z",
@@ -477,13 +484,6 @@
       "type": "ci-passed",
       "summary": "Content data validation passed on main.",
       "url": "https://github.com/Abra2246/wearwyzer/actions/runs/30189117151"
-    },
-    {
-      "key": "pr-merged:166",
-      "timestampIso": "2026-07-26T05:16:15Z",
-      "type": "pr-merged",
-      "summary": "PR #166 \"docs: advance Daily Stylist execution queue\" merged.",
-      "url": "https://github.com/Abra2246/wearwyzer/pull/166"
     }
   ]
 }
