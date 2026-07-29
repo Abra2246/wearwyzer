@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-07-29T04:26:28.510Z",
-  "overallHealth": "yellow",
+  "generatedAtIso": "2026-07-29T07:12:26.216Z",
+  "overallHealth": "red",
   "automationState": "idle",
   "activeWork": null,
   "queue": {
@@ -41,11 +41,16 @@
     "lastRunIso": "2026-07-23T20:25:00.000Z"
   },
   "incident": {
-    "active": false,
-    "issueNumber": null,
-    "summary": null
+    "active": true,
+    "issueNumber": 178,
+    "summary": "Site incident: production health check failed (05389e278c02)"
   },
   "blockers": [
+    {
+      "summary": "Site incident open (#178) — automation queue is suspended.",
+      "issueNumber": 178,
+      "type": "site-incident"
+    },
     {
       "summary": "Affiliate link coverage is 0% — below the 80% target (83 item(s) need a human).",
       "issueNumber": null,
