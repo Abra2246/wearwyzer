@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-08-07T08:43:11.465Z",
+  "generatedAtIso": "2026-08-07T09:39:58.086Z",
   "overallHealth": "red",
   "automationState": "idle",
   "activeWork": null,
@@ -42,13 +42,13 @@
   },
   "incident": {
     "active": true,
-    "issueNumber": 178,
-    "summary": "Site incident: production health check failed (05389e278c02)"
+    "issueNumber": 179,
+    "summary": "Site incident: production health check failed (14a807f44551)"
   },
   "blockers": [
     {
-      "summary": "Site incident open (#178) — automation queue is suspended.",
-      "issueNumber": 178,
+      "summary": "Site incident open (#179) — automation queue is suspended.",
+      "issueNumber": 179,
       "type": "site-incident"
     },
     {
