@@ -1,17 +1,17 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-08-17T18:15:08.195Z",
+  "generatedAtIso": "2026-08-17T19:04:36.357Z",
   "overallState": "live",
   "ceo": {
-    "headline": "PR #177 is awaiting review.",
-    "requiredAction": "Review and decide whether to merge PR #177: https://github.com/Abra2246/wearwyzer/pull/177",
+    "headline": "The latest deployment is failing health checks.",
+    "requiredAction": "Check the deploy-health-check workflow run and the last-known-healthy build.",
     "activeWorkSummary": "PR #177 \"Add the Daily Stylist production-readiness gate (issue #173)\""
   },
   "sources": {
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-08-17T18:15:08.195Z",
+      "lastUpdatedIso": "2026-08-17T19:04:36.357Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
@@ -54,21 +54,21 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-08-17T18:15:08.195Z",
+      "lastUpdatedIso": "2026-08-17T19:04:36.357Z",
       "fetchOk": true,
       "data": {
-        "status": "healthy",
-        "lastHealthyShaShort": "924590e",
-        "lastDeployIso": "2026-08-17T17:44:02Z",
-        "ageMinutes": 31,
-        "pagesUrl": "https://abra2246.github.io/wearwyzer/"
+        "status": "failing",
+        "lastHealthyShaShort": null,
+        "lastDeployIso": "2026-08-17T18:16:43Z",
+        "ageMinutes": 48,
+        "pagesUrl": null
       },
       "note": null
     },
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-08-17T18:15:08.195Z",
+      "lastUpdatedIso": "2026-08-17T19:04:36.357Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -95,7 +95,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-08-17T18:15:08.195Z",
+      "lastUpdatedIso": "2026-08-17T19:04:36.357Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -135,6 +135,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:2026-08-17T18:16:43Z",
+      "timestampIso": "2026-08-17T18:16:43Z",
+      "type": "deploy-failed",
+      "summary": "Deployment failed its health checks.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:924590e",
       "timestampIso": "2026-08-17T17:44:02Z",
@@ -476,13 +483,6 @@
       "timestampIso": "2026-08-16T12:41:37Z",
       "type": "deployed",
       "summary": "Deployed build e6fc38d — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "deploy:c8ee062",
-      "timestampIso": "2026-08-16T11:53:49Z",
-      "type": "deployed",
-      "summary": "Deployed build c8ee062 — health checks passed.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
