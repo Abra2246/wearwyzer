@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-08-17T15:57:43.656Z",
+  "generatedAtIso": "2026-08-17T16:38:15.063Z",
   "overallState": "live",
   "ceo": {
     "headline": "PR #177 is awaiting review.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-08-17T15:57:43.656Z",
+      "lastUpdatedIso": "2026-08-17T16:38:15.063Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
@@ -34,7 +34,7 @@
           "url": "https://github.com/Abra2246/wearwyzer/pull/177",
           "isDraft": false,
           "reviewDecision": null,
-          "mergeableState": "clean",
+          "mergeableState": null,
           "createdIso": "2026-07-26T07:01:49Z",
           "updatedIso": "2026-07-26T07:01:49Z"
         },
@@ -54,13 +54,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-08-17T15:57:43.656Z",
+      "lastUpdatedIso": "2026-08-17T16:38:15.063Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
         "lastHealthyShaShort": "395e912",
         "lastDeployIso": "2026-08-17T15:37:07Z",
-        "ageMinutes": 21,
+        "ageMinutes": 61,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -68,7 +68,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-08-17T15:57:43.656Z",
+      "lastUpdatedIso": "2026-08-17T16:38:15.063Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -95,7 +95,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-08-17T15:57:43.656Z",
+      "lastUpdatedIso": "2026-08-17T16:38:15.063Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
