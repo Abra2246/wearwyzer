@@ -1128,6 +1128,66 @@ provider, account, database, session, cookie, real user record, network
 call, Chrome permission, personalized image, commerce action, or external
 action is created.
 
+## Decision — the Daily Stylist production-readiness gate (issue #173)
+
+**Problem:** issue #168 recorded ten production decisions as unresolved
+(auth/session provider, session/cookie architecture, hosting, storage,
+retention, privacy/legal review, monitoring, rate limiting, abuse
+prevention, incident response) but only as prose in a table. Nothing
+checked whether a decision had actually been closed, by whom, with what
+evidence, or whether that evidence was still current — so a future
+implementation could plausibly treat a stale approval, an approval from the
+wrong class, or a merely-proposed decision as settled.
+
+**Decision:** `docs/DAILY_STYLIST_PRODUCTION_READINESS_GATE_V1.md` and
+`scripts/daily-stylist-production-readiness-gate-contract.mjs`
+(`evaluateDailyStylistProductionReadiness`) define one closed, versioned
+`daily-stylist-production-readiness-gate-v1` contract that accepts exactly
+one minimized decision record per one of the ten closed decision areas — a
+status (`missing`/`proposed`/`rejected`/`expired`/`approved`), a bounded
+opaque evidence reference, an approver class, and an approval timestamp —
+and evaluates them into one of three closed statuses: `not-ready`,
+`review-required`, or `ready-for-implementation-review`. Each decision area
+has a fixed, code-owned required approval class (`REQUIRED_APPROVAL_CLASS`)
+— `founder` for provider/spend-bearing choices (auth/session provider,
+hosting, storage, monitoring, abuse prevention), `privacy-legal` for real
+personal-data handling (retention, the privacy/legal review itself), and
+`engineering` for internal policy with no vendor or spend choice
+(session/cookie architecture, rate limiting, incident response) — and an
+approval from any other class is evaluated as `wrong-approver-class`, never
+treated as an acceptable substitute. `ready-for-implementation-review`
+requires every decision cleanly approved by its required class with
+evidence no older than 180 days; any unresolved `founder`- or
+`privacy-legal`-required decision keeps the result `not-ready` regardless of
+how many `engineering`-required decisions are settled.
+`evaluateCurrentDailyStylistProductionReadiness` runs the gate against the
+actual current state of all ten decisions (all still `missing`) and proves
+the objective is met today: it evaluates to `not-ready`.
+
+**Boundary:** an unrecognized field, a duplicated or unknown decision area,
+an envelope without exactly ten records, an over-broad or free-text/URL-
+shaped evidence reference, or any status/evidence/approval combination that
+contradicts itself fails the whole envelope as one closed check before any
+decision is evaluated — this is intentionally conservative rather than
+attempting to salvage a partially-malformed submission. The output packet
+carries only decision area, status, the required approval class, the
+bounded evidence reference, freshness, blockers, and a safe next step; the
+submitted approver class is never echoed back, so a `wrong-approver-class`
+blocker communicates the mismatch without naming who signed. A fixed,
+always-present `authorizationScope` field on every result makes explicit
+that `ready-for-implementation-review` authorizes nothing beyond a future
+implementation design review — no endpoint, account, database, migration,
+credential, real private record, deployment, or external action.
+`scripts/__tests__/daily-stylist-production-readiness-gate-contract.test.mjs`
+proves every closed status combination, that `founder`/`privacy-legal`
+gates cannot be satisfied by `engineering`-only evidence, staleness at and
+beyond the freshness boundary, every structural rejection (partial,
+duplicate, unknown field, unknown area, contradictory evidence, over-broad
+evidence reference), byte-stable output independent of submission order,
+and the absence of credentials, secrets, or commercial terms from output.
+This contract selects no vendor, processes no real data, and creates no
+route, endpoint, account, database, or deployment.
+
 ## Non-recommendations (things we're deliberately not changing)
 
 - **Inline styles / no CSS framework:** works fine at current page count; not a scalability bottleneck worth solving speculatively.
