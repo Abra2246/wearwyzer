@@ -2,6 +2,88 @@
 
 All notable changes to this project are recorded here.
 
+## Unreleased (2026-07-26) — Daily Stylist production-readiness gate (issue #173)
+### Added
+- `scripts/daily-stylist-production-readiness-gate-contract.mjs`
+  (`evaluateDailyStylistProductionReadiness`,
+  `evaluateCurrentDailyStylistProductionReadiness`,
+  `serializeDailyStylistProductionReadinessPacket`) — one deterministic,
+  versioned (`daily-stylist-production-readiness-gate-v1`) gate that turns
+  the ten unresolved production decisions Issue #168 recorded (auth/session
+  provider, session/cookie architecture, hosting, storage, retention,
+  privacy/legal review, monitoring, rate limiting, abuse prevention,
+  incident response) into one closed evaluation. It accepts exactly one
+  minimized evidence record per decision area — a status
+  (`missing`/`proposed`/`rejected`/`expired`/`approved`), a bounded opaque
+  evidence reference, an approver class, and an approval timestamp — and
+  produces one of three closed statuses: `not-ready`, `review-required`, or
+  `ready-for-implementation-review`.
+- Each decision area carries a fixed, code-owned required approval class
+  (`REQUIRED_APPROVAL_CLASS`) that cannot be widened, narrowed, or inferred
+  from submitted evidence: `founder` for auth/session provider, hosting,
+  storage, monitoring, and abuse prevention (each selects an external
+  vendor and carries spend); `privacy-legal` for retention and the
+  privacy/legal review itself; `engineering` for session/cookie
+  architecture, rate limiting, and incident response. An approval from any
+  other class evaluates as `wrong-approver-class`, never as an acceptable
+  substitute — engineering evidence alone can never satisfy a founder or
+  privacy/legal gate. Evidence older than 180 days, even from the correct
+  class, evaluates as stale and blocks `ready-for-implementation-review`.
+- `evaluateCurrentDailyStylistProductionReadiness` runs the gate against
+  `CURRENT_DAILY_STYLIST_PRODUCTION_DECISIONS`, the actual current state of
+  all ten decisions (still all `missing`), and evaluates to `not-ready` —
+  the closed-loop proof that the objective is met today.
+- A fixed `authorizationScope` field is present on every result and makes
+  explicit that `ready-for-implementation-review` authorizes nothing beyond
+  a future implementation design review: no endpoint, account, database,
+  migration, credential, real private record, deployment, or external
+  action.
+- `docs/DAILY_STYLIST_PRODUCTION_READINESS_GATE_V1.md` documents the ten
+  decision areas and their required approval classes, the closed decision
+  record shape, the aggregate-status table, the output shape, and the
+  production gates this contract does not cross.
+### Safety
+- An unrecognized top-level or per-decision field, a duplicated or unknown
+  decision area, an envelope without exactly ten records, an over-broad or
+  free-text/URL-shaped evidence reference, or any status/evidence/approval
+  combination that contradicts itself fails the whole envelope closed
+  (`closed-readiness-gate-envelope-required` or `duplicate-decision-area`)
+  before any decision is evaluated.
+- Output carries only decision area, status, the required approval class,
+  the bounded evidence reference, freshness, blockers, and a safe next
+  step. The submitted approver class is never echoed back — a
+  `wrong-approver-class` blocker communicates the mismatch without naming
+  who signed. Decisions are always re-sorted into the canonical ten-area
+  order regardless of submission order, and identical accepted input
+  serializes byte-stably.
+- This contract selects no vendor, processes no real personal data, gives
+  no legal advice, and creates no production endpoint, middleware,
+  authentication, account, cookie, database, storage, migration, monitoring
+  service, rate limiter, abuse service, or incident-response tooling. No
+  UI or route is added in this slice.
+### Tests
+- `scripts/__tests__/daily-stylist-production-readiness-gate-contract.test.mjs`
+  adds 27 deterministic tests covering: a fully approved fresh envelope
+  reaching `ready-for-implementation-review`; the current real (all-missing)
+  state reaching `not-ready`; missing founder- and privacy-legal-required
+  decisions each forcing `not-ready`; a missing engineering-only decision
+  downgrading to `review-required` without a founder or privacy/legal
+  block; `proposed`/`rejected`/`expired` statuses each with their own
+  blocker; founder and privacy/legal gates proven unsatisfiable by
+  engineering-only evidence; `wrong-approver-class` for every non-required
+  approver class; staleness at and one day beyond the 180-day freshness
+  boundary; partial (nine-record), duplicate-area, unknown-area, unknown-
+  field, unsupported-schema-version, unsupported-status,
+  unsupported-approver-class, and contradictory status/evidence/approval
+  rejections; over-broad/free-text/URL-shaped evidence-reference
+  rejections; byte-stable output independent of submission order; the
+  closed three-value status vocabulary; the fixed, always-false-except-one
+  `authorizationScope`; the closed seven-key per-decision output shape with
+  no submitted-approver-class or secret/commercial-term leakage; and that
+  every decision area maps to exactly one of the three approval classes.
+- Full repository baseline after this change: 983/983 deterministic tests
+  (up from 951/951 before Issue #173).
+
 ## Unreleased (2026-07-26) — Fresh Mission Control feed deployment (issue #174)
 ### Fixed
 - Pages now runs its existing validation/build/deploy chain after a successful

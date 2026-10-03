@@ -1104,6 +1104,37 @@ references, and owner.
   endpoint, authentication provider, account, database, session, cookie,
   real user record, or external action exists. Current pre-PR validation
   baseline: 951 tests.
+- Issue #173 turns the ten unresolved production decisions Issue #168
+  recorded into one closed, deterministic readiness gate
+  (`evaluateDailyStylistProductionReadiness`). It accepts exactly one
+  minimized evidence record per decision area — status, a bounded opaque
+  evidence reference, an approver class, and an approval timestamp — and
+  evaluates a fixed, code-owned required approval class per area: `founder`
+  for auth/session provider, hosting, storage, monitoring, and abuse
+  prevention (each selects an external vendor and carries spend); `privacy-
+  legal` for retention and the privacy/legal review itself (real
+  personal-data handling); `engineering` for session/cookie architecture,
+  rate limiting, and incident response (internal policy, no vendor or spend
+  choice). An approval from any other class is `wrong-approver-class`,
+  never treated as sufficient — engineering evidence alone cannot satisfy a
+  founder or privacy/legal gate. The result is one of `not-ready`,
+  `review-required` (every founder/privacy-legal decision settled, some
+  engineering-only decision is not), or `ready-for-implementation-review`
+  (every decision cleanly approved with evidence no older than 180 days).
+  Evaluating the actual current state of all ten decisions (still all
+  `missing`) returns `not-ready`, proving the objective is met today. A
+  fixed `authorizationScope` field on every result makes explicit that
+  `ready-for-implementation-review` authorizes nothing beyond a future
+  implementation design review. An unrecognized field, a duplicated or
+  unknown decision area, a non-ten-record envelope, an over-broad or free-
+  text/URL-shaped evidence reference, or any self-contradictory status/
+  evidence/approval combination fails the whole envelope closed before any
+  decision is evaluated. Output carries only decision area, status, the
+  required approval class, the bounded evidence reference, freshness,
+  blockers, and a safe next step — the submitted approver class is never
+  echoed back. No vendor is selected, no real data is processed, and no
+  route, endpoint, account, database, or deployment exists. Current pre-PR
+  validation baseline: 983 tests.
 
 ## Final north-star statement
 
