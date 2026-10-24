@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "generatedAtIso": "2026-10-24T06:57:49.048Z",
+  "generatedAtIso": "2026-10-24T11:56:43.286Z",
   "overallState": "live",
   "ceo": {
     "headline": "PR #177 is awaiting review.",
@@ -11,7 +11,7 @@
     "engineering": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-10-24T06:57:49.048Z",
+      "lastUpdatedIso": "2026-10-24T11:56:43.286Z",
       "fetchOk": true,
       "data": {
         "automationState": "review",
@@ -54,13 +54,13 @@
     "deployment": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-10-24T06:57:49.048Z",
+      "lastUpdatedIso": "2026-10-24T11:56:43.286Z",
       "fetchOk": true,
       "data": {
         "status": "healthy",
-        "lastHealthyShaShort": "461d1c9",
-        "lastDeployIso": "2026-10-24T01:53:59Z",
-        "ageMinutes": 304,
+        "lastHealthyShaShort": "f6ce4c2",
+        "lastDeployIso": "2026-10-24T06:58:53Z",
+        "ageMinutes": 298,
         "pagesUrl": "https://abra2246.github.io/wearwyzer/"
       },
       "note": null
@@ -68,7 +68,7 @@
     "content": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-10-24T06:57:49.048Z",
+      "lastUpdatedIso": "2026-10-24T11:56:43.286Z",
       "fetchOk": true,
       "data": {
         "state": "idle",
@@ -95,7 +95,7 @@
     "affiliate": {
       "wired": true,
       "state": "live",
-      "lastUpdatedIso": "2026-10-24T06:57:49.048Z",
+      "lastUpdatedIso": "2026-10-24T11:56:43.286Z",
       "fetchOk": true,
       "data": {
         "state": "below-target",
@@ -135,6 +135,13 @@
     }
   },
   "automationFeed": [
+    {
+      "key": "deploy:f6ce4c2",
+      "timestampIso": "2026-10-24T06:58:53Z",
+      "type": "deployed",
+      "summary": "Deployed build f6ce4c2 — health checks passed.",
+      "url": "https://github.com/Abra2246/wearwyzer/deployments"
+    },
     {
       "key": "deploy:461d1c9",
       "timestampIso": "2026-10-24T01:53:59Z",
@@ -476,13 +483,6 @@
       "timestampIso": "2026-10-16T14:22:06Z",
       "type": "deployed",
       "summary": "Deployed build 0b3a4b4 — health checks passed.",
-      "url": "https://github.com/Abra2246/wearwyzer/deployments"
-    },
-    {
-      "key": "deploy:431ada1",
-      "timestampIso": "2026-10-16T09:45:54Z",
-      "type": "deployed",
-      "summary": "Deployed build 431ada1 — health checks passed.",
       "url": "https://github.com/Abra2246/wearwyzer/deployments"
     }
   ]
